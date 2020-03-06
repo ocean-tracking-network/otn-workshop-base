@@ -230,64 +230,81 @@ st<-as_tibble(st) # make sure st is a tibble again for speed's sake
 # calculate lead and lag locations,
 # and calculate new derived values, in this case, bearing and distance.
 
-st<-st %>% 
+st<-st %>%  # overwrite the dataframe with the result of this pipe!
   mutate(dt=ymd_hms(DateTime)) %>% 
-  dplyr::select(-1, -2, -DateTime) %>% 
-  filter(month(dt)>5 & month(dt)<10) %>% 
+  dplyr::select(-1, -2, -DateTime) %>%  # Don't return DateTime, or column 1 or 2 of the data
+ # filter(month(dt)>5 & month(dt)<10) %>%  # filter for just a range of months?
   arrange(dt) %>% 
   group_by(tag.ID) %>% 
-  mutate(llon=lag(lon), llat=lag(lat)) %>% 
-  filter(lon!=lag(lon)) %>% 
+  mutate(llon=lag(lon), llat=lag(lat)) %>%  # lag longitude, lag latitude (previous position)
+  filter(lon!=lag(lon)) %>%  # If you didn't change positions, drop this row.
   rowwise() %>% 
-  filter(!is.na(llon)) %>%
-  mutate(b=argosfilter::bearing(llat, lat, llon, lon)) %>% # use mutate to add bearings!
-  mutate(dist=distance(llat, lat, llon, lon)) # use mutate to add distances!
+  filter(!is.na(llon)) %>%  # Also drop any NA lag longitudes (i.e. the first detection of each)
+  mutate(bearing=argosfilter::bearing(llat, lat, llon, lon)) %>% # use mutate and argosfilter to add bearings!
+  mutate(dist=argosfilter::distance(llat, lat, llon, lon)) # use mutate and argosfilter to add distances!
 
 
 View(st)
+
+# Caveat: these new measurements are based on linear transitions, which is usually incorrect.
+# marmap can ue bathymetry to do a shortest-path distance between two points in water, as we will see in glatos anim.
+
+
 # 4.1: Exploring our processed data
 
 st %>% 
   group_by(tag.ID) %>% 
   mutate(cdist=cumsum(dist)) %>% 
-  ggplot(aes(dt, cdist, colour=tag.ID))+geom_step()+facet_wrap(~Species)
+  ggplot(aes(dt, cdist, colour=tag.ID))+ geom_step()+
+  facet_wrap(~Species) +
+  guides(colour=F)
 
 st %>% 
   filter(dist>2) %>% 
-  ggplot(aes(b, fill=Species))+
-  # geom_histogram()+
-  geom_density()+
-  facet_wrap(~Species)+
+  ggplot(aes(bearing, fill=Species))+
+  # geom_histogram()+  # could do a histogram
+  geom_density()+      # and/or a density plot
+  facet_wrap(~Species) +  # one facet per species
   coord_polar()
+
+# You'd probably do more filtering before arriving at this point, lots of detections at individual receivers might skew this particular plot,
+# but as an example of how to plot the results of telemetry it's a good example.
+# Histogram 
 
 ## Chapter 5: Networks of Stations and Animals using Detections ####
 
 # 5.1: Networks are just connections between nodes and we can draw a simple one
 
 st %>% 
-  group_by(Species, lon, lat, llon, llat) %>% 
-  summarise(n=n()) %>% 
-  ggplot(aes(x=llon, xend=lon, y=llat, yend=lat))+
-  geom_segment()+geom_curve(colour="purple")+
+  group_by(Species, lon, lat, llon, llat) %>%       # we handily have a pair of locations on each row from last example to group by
+  summarise(n=n()) %>%                              # count the number of rows in each group
+  ggplot(aes(x=llon, xend=lon, y=llat, yend=lat))+  # xend and yend define your segments
+  geom_segment()+geom_curve(colour="purple")+       # and geom_segment() and geom_curve() will connect them
   facet_wrap(~Species)+
-  geom_point()
+  geom_point()                                      # draw the points as well to make them clear.
 
 st %>% 
   group_by(Species, lon, lat, llon, llat) %>% 
   summarise(n=n()) %>% 
   ggplot(aes(x=llon, xend=lon, y=llat, yend=lat, size=n %>% log))+
+  geom_point() + # Put this on the bottom of the plot.
   geom_segment()+geom_curve(colour="purple")+
-  facet_wrap(~Species)+
-  geom_point()
+  facet_wrap(~Species)
+  
 
-# 5.2: yes we can add this to our map!
+# 5.2: Could label the receivers to provide context, or, we can add this to our map to see the relationships on top of the spatial data
 
-bplot+
+bplot+ # we saved this earlier when doing bathymetry plotting
   geom_segment(data=st %>% 
                  group_by(Species, lon, lat, llon, llat) %>% 
                  summarise(n=n()),
-               aes(x=llon, xend=lon, y=llat, yend=lat, size=n %>% log, alpha=n %>% log), inherit.aes=F)+
-  facet_wrap(~Species)
+               aes(x=llon, xend=lon, y=llat, yend=lat, size=n %>% log, alpha=n %>% log), inherit.aes=F)+ # bplot has Z, nothing else does, so inherit.aes=F to ignore missing parent aesthetic values
+  facet_wrap(~Species)  # we also scale alpha because we're going to force a lot of these relationship lines on top of one another with this method.
+
+# Network Analysis - you can take things further with the igraph and ggraph packages (too much for this tutorial!), 
+# but when building the source data for it as we've done here, you have to think critically about whether you're 
+# intending to see trends in individuals, species, by other variables, whether regions are nodes or individuals are nodes, 
+# whether a few highly detected individuals are providing most of the story in a summary like the one we made here, etc.
 
 
 ## Chapter 6: Animating plots ####
@@ -309,17 +326,18 @@ an1<-bgo %>%
                distinct(lon, lat),
              aes(lon, lat), inherit.aes=F, pch=21, fill="red", size=2)+
   geom_point(data=st1 %>% filter(tag.ID=="A69-1601-30617"),
-             aes(lon, lat), inherit.aes=F, colour="purple", size=5)+
+             aes(lon, lat), inherit.aes=F, colour="purple", size=5)+ # from here, this plot is not an animation yet. an1
   transition_time(date(st1$dt))+
-  labs(title = 'Date: {frame_time}')
+  labs(title = 'Date: {frame_time}')  # Variables supplied to change with animation.
 
 # an1 is now a list of plot objects but we haven't plotted them.
 
-?gganimate::animate
+?gganimate::animate  # To go deeper into gganimate's animate function and its features.
+
 gganimate::animate(an1)
 
-# We're doing a lot of portage! The perils of working in a river system. 
-# Later we'll use the glato package to help us dodge land masses better in our transitions.
+# Notably: we're doing a lot of portage! The perils of working in a river system. 
+# Later we'll use the glatos package to help us dodge land masses better in our transitions.
 
 
 ## Chapter 7: Some hypothesis tests

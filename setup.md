@@ -49,8 +49,17 @@ install.packages(argosfilter)
 install.packages('sp')
 install.packages('raster')
 
-#Install ffmpeg, which we use for the animations.
+#Install ffmpeg, which we use for the GLATOS-derived animations.
 install_ffmpeg()            
+
+install.packages("TMB")
+install.packages("rgdal")
+install.packages("moveHMM")
+devtools::install_github("lawlerem/markmodmover", build_vignettes=TRUE)
+install.packages('circular')
+install.packages('gridExtra')
+
+
 ```
 
 Once the packages are installed, set your working directory using `setwd('<path-to-folder>')`
