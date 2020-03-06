@@ -1,0 +1,229 @@
+current directory: /Users/bruce/Work/2020-03-11-DFOBIO-telemetry-workshop/.vendor/bundle/ruby/2.6.0/gems/commonmarker-0.17.13/ext/commonmarker
+/Users/bruce/.rvm/rubies/ruby-2.6.3/bin/ruby -I /Users/bruce/.rvm/rubies/ruby-2.6.3/lib/ruby/site_ruby/2.6.0 -r ./siteconf20200306-46350-xe0k41.rb extconf.rb
+creating Makefile
+
+current directory: /Users/bruce/Work/2020-03-11-DFOBIO-telemetry-workshop/.vendor/bundle/ruby/2.6.0/gems/commonmarker-0.17.13/ext/commonmarker
+make "DESTDIR=" clean
+Makefile:174: warning: overriding commands for target `clean'
+Makefile:174: warning: ignoring old commands for target `clean'
+Makefile:181: warning: overriding commands for target `distclean'
+Makefile:181: warning: ignoring old commands for target `distclean'
+Makefile:189: warning: overriding commands for target `install-so'
+Makefile:189: warning: ignoring old commands for target `install-so'
+Makefile:199: warning: overriding commands for target `pre-install-rb-default'
+Makefile:199: warning: ignoring old commands for target `pre-install-rb-default'
+Makefile:201: warning: overriding commands for target `.sitearchdir.-.commonmarker.time'
+Makefile:201: warning: ignoring old commands for target `.sitearchdir.-.commonmarker.time'
+Makefile:211: warning: overriding commands for target `.cc.o'
+Makefile:211: warning: ignoring old commands for target `.cc.o'
+Makefile:215: warning: overriding commands for target `.cc.S'
+Makefile:215: warning: ignoring old commands for target `.cc.S'
+Makefile:219: warning: overriding commands for target `.mm.o'
+Makefile:219: warning: ignoring old commands for target `.mm.o'
+Makefile:223: warning: overriding commands for target `.mm.S'
+Makefile:223: warning: ignoring old commands for target `.mm.S'
+Makefile:227: warning: overriding commands for target `.cxx.o'
+Makefile:227: warning: ignoring old commands for target `.cxx.o'
+Makefile:231: warning: overriding commands for target `.cxx.S'
+Makefile:231: warning: ignoring old commands for target `.cxx.S'
+Makefile:235: warning: overriding commands for target `.cpp.o'
+Makefile:235: warning: ignoring old commands for target `.cpp.o'
+Makefile:239: warning: overriding commands for target `.cpp.S'
+Makefile:239: warning: ignoring old commands for target `.cpp.S'
+Makefile:243: warning: overriding commands for target `.c.o'
+Makefile:243: warning: ignoring old commands for target `.c.o'
+Makefile:247: warning: overriding commands for target `.c.S'
+Makefile:247: warning: ignoring old commands for target `.c.S'
+Makefile:251: warning: overriding commands for target `.m.o'
+Makefile:251: warning: ignoring old commands for target `.m.o'
+Makefile:255: warning: overriding commands for target `.m.S'
+Makefile:255: warning: ignoring old commands for target `.m.S'
+Makefile:259: warning: overriding commands for target `commonmarker.bundle'
+Makefile:259: warning: ignoring old commands for target `commonmarker.bundle'
+
+current directory: /Users/bruce/Work/2020-03-11-DFOBIO-telemetry-workshop/.vendor/bundle/ruby/2.6.0/gems/commonmarker-0.17.13/ext/commonmarker
+make "DESTDIR="
+Makefile:174: warning: overriding commands for target `clean'
+Makefile:174: warning: ignoring old commands for target `clean'
+Makefile:181: warning: overriding commands for target `distclean'
+Makefile:181: warning: ignoring old commands for target `distclean'
+Makefile:189: warning: overriding commands for target `install-so'
+Makefile:189: warning: ignoring old commands for target `install-so'
+Makefile:199: warning: overriding commands for target `pre-install-rb-default'
+Makefile:199: warning: ignoring old commands for target `pre-install-rb-default'
+Makefile:201: warning: overriding commands for target `.sitearchdir.-.commonmarker.time'
+Makefile:201: warning: ignoring old commands for target `.sitearchdir.-.commonmarker.time'
+Makefile:211: warning: overriding commands for target `.cc.o'
+Makefile:211: warning: ignoring old commands for target `.cc.o'
+Makefile:215: warning: overriding commands for target `.cc.S'
+Makefile:215: warning: ignoring old commands for target `.cc.S'
+Makefile:219: warning: overriding commands for target `.mm.o'
+Makefile:219: warning: ignoring old commands for target `.mm.o'
+Makefile:223: warning: overriding commands for target `.mm.S'
+Makefile:223: warning: ignoring old commands for target `.mm.S'
+Makefile:227: warning: overriding commands for target `.cxx.o'
+Makefile:227: warning: ignoring old commands for target `.cxx.o'
+Makefile:231: warning: overriding commands for target `.cxx.S'
+Makefile:231: warning: ignoring old commands for target `.cxx.S'
+Makefile:235: warning: overriding commands for target `.cpp.o'
+Makefile:235: warning: ignoring old commands for target `.cpp.o'
+Makefile:239: warning: overriding commands for target `.cpp.S'
+Makefile:239: warning: ignoring old commands for target `.cpp.S'
+Makefile:243: warning: overriding commands for target `.c.o'
+Makefile:243: warning: ignoring old commands for target `.c.o'
+Makefile:247: warning: overriding commands for target `.c.S'
+Makefile:247: warning: ignoring old commands for target `.c.S'
+Makefile:251: warning: overriding commands for target `.m.o'
+Makefile:251: warning: ignoring old commands for target `.m.o'
+Makefile:255: warning: overriding commands for target `.m.S'
+Makefile:255: warning: ignoring old commands for target `.m.S'
+Makefile:259: warning: overriding commands for target `commonmarker.bundle'
+Makefile:259: warning: ignoring old commands for target `commonmarker.bundle'
+compiling arena.c
+compiling autolink.c
+compiling blocks.c
+compiling buffer.c
+compiling cmark.c
+compiling cmark_ctype.c
+compiling commonmark.c
+commonmark.c:409:18: warning: assigning to 'char *' from 'const char [2]' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+      emph_delim = "_";
+                 ^ ~~~
+commonmark.c:411:18: warning: assigning to 'char *' from 'const char [2]' discards qualifiers [-Wincompatible-pointer-types-discards-qualifiers]
+      emph_delim = "*";
+                 ^ ~~~
+2 warnings generated.
+compiling commonmarker.c
+In file included from commonmarker.c:3:
+In file included from ./houdini.h:9:
+./config.h:8:9: warning: 'HAVE_STDBOOL_H' macro redefined [-Wmacro-redefined]
+#define HAVE_STDBOOL_H
+        ^
+/Users/bruce/.rvm/rubies/ruby-2.6.3/include/ruby-2.6.0/x86_64-darwin18/ruby/config.h:27:9: note: previous definition is here
+#define HAVE_STDBOOL_H 1
+        ^
+commonmarker.c:121:20: warning: implicit conversion loses integer precision: 'long' to 'int' [-Wshorten-64-to-32]
+  extensions_len = RARRAY_LEN(rb_extensions);
+                 ~ ^~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/bruce/.rvm/rubies/ruby-2.6.3/include/ruby-2.6.0/ruby/ruby.h:1058:23: note: expanded from macro 'RARRAY_LEN'
+#define RARRAY_LEN(a) rb_array_len(a)
+                      ^~~~~~~~~~~~~~~
+commonmarker.c:163:9: warning: implicit conversion loses integer precision: 'long' to 'int' [-Wshorten-64-to-32]
+  len = RSTRING_LEN(rb_text);
+      ~ ^~~~~~~~~~~~~~~~~~~~
+/Users/bruce/.rvm/rubies/ruby-2.6.3/include/ruby-2.6.0/ruby/ruby.h:1000:6: note: expanded from macro 'RSTRING_LEN'
+     RSTRING_EMBED_LEN(str) : \
+     ^~~~~~~~~~~~~~~~~~~~~~
+/Users/bruce/.rvm/rubies/ruby-2.6.3/include/ruby-2.6.0/ruby/ruby.h:996:6: note: expanded from macro 'RSTRING_EMBED_LEN'
+     (long)((RBASIC(str)->flags >> RSTRING_EMBED_LEN_SHIFT) & \
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+commonmarker.c:163:9: warning: implicit conversion loses integer precision: 'long' to 'int' [-Wshorten-64-to-32]
+  len = RSTRING_LEN(rb_text);
+      ~ ^~~~~~~~~~~~~~~~~~~~
+/Users/bruce/.rvm/rubies/ruby-2.6.3/include/ruby-2.6.0/ruby/ruby.h:1001:28: note: expanded from macro 'RSTRING_LEN'
+     RSTRING(str)->as.heap.len)
+     ~~~~~~~~~~~~~~~~~~~~~~^~~
+commonmarker.c:538:20: warning: implicit conversion loses integer precision: 'long' to 'int' [-Wshorten-64-to-32]
+  extensions_len = RARRAY_LEN(rb_extensions);
+                 ~ ^~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/bruce/.rvm/rubies/ruby-2.6.3/include/ruby-2.6.0/ruby/ruby.h:1058:23: note: expanded from macro 'RARRAY_LEN'
+#define RARRAY_LEN(a) rb_array_len(a)
+                      ^~~~~~~~~~~~~~~
+commonmarker.c:1077:27: warning: implicit conversion loses integer precision: 'long' to 'bufsize_t' (aka 'int') [-Wshorten-64-to-32]
+                          RSTRING_LEN(rb_text))) {
+                          ^~~~~~~~~~~~~~~~~~~~
+/Users/bruce/.rvm/rubies/ruby-2.6.3/include/ruby-2.6.0/ruby/ruby.h:1000:6: note: expanded from macro 'RSTRING_LEN'
+     RSTRING_EMBED_LEN(str) : \
+     ^~~~~~~~~~~~~~~~~~~~~~
+/Users/bruce/.rvm/rubies/ruby-2.6.3/include/ruby-2.6.0/ruby/ruby.h:996:6: note: expanded from macro 'RSTRING_EMBED_LEN'
+     (long)((RBASIC(str)->flags >> RSTRING_EMBED_LEN_SHIFT) & \
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+commonmarker.c:1077:27: warning: implicit conversion loses integer precision: 'long' to 'bufsize_t' (aka 'int') [-Wshorten-64-to-32]
+                          RSTRING_LEN(rb_text))) {
+                          ^~~~~~~~~~~~~~~~~~~~
+/Users/bruce/.rvm/rubies/ruby-2.6.3/include/ruby-2.6.0/ruby/ruby.h:1001:28: note: expanded from macro 'RSTRING_LEN'
+     RSTRING(str)->as.heap.len)
+     ~~~~~~~~~~~~~~~~~~~~~~^~~
+commonmarker.c:1097:28: warning: implicit conversion loses integer precision: 'long' to 'bufsize_t' (aka 'int') [-Wshorten-64-to-32]
+                           RSTRING_LEN(rb_text), 0)) {
+                           ^~~~~~~~~~~~~~~~~~~~
+/Users/bruce/.rvm/rubies/ruby-2.6.3/include/ruby-2.6.0/ruby/ruby.h:1000:6: note: expanded from macro 'RSTRING_LEN'
+     RSTRING_EMBED_LEN(str) : \
+     ^~~~~~~~~~~~~~~~~~~~~~
+/Users/bruce/.rvm/rubies/ruby-2.6.3/include/ruby-2.6.0/ruby/ruby.h:996:6: note: expanded from macro 'RSTRING_EMBED_LEN'
+     (long)((RBASIC(str)->flags >> RSTRING_EMBED_LEN_SHIFT) & \
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+commonmarker.c:1097:28: warning: implicit conversion loses integer precision: 'long' to 'bufsize_t' (aka 'int') [-Wshorten-64-to-32]
+                           RSTRING_LEN(rb_text), 0)) {
+                           ^~~~~~~~~~~~~~~~~~~~
+/Users/bruce/.rvm/rubies/ruby-2.6.3/include/ruby-2.6.0/ruby/ruby.h:1001:28: note: expanded from macro 'RSTRING_LEN'
+     RSTRING(str)->as.heap.len)
+     ~~~~~~~~~~~~~~~~~~~~~~^~~
+9 warnings generated.
+compiling core-extensions.c
+compiling ext_scanners.c
+compiling footnotes.c
+compiling houdini_href_e.c
+compiling houdini_html_e.c
+compiling houdini_html_u.c
+compiling html.c
+compiling inlines.c
+compiling iterator.c
+compiling latex.c
+compiling linked_list.c
+compiling man.c
+compiling map.c
+compiling node.c
+compiling plaintext.c
+compiling plugin.c
+compiling references.c
+compiling registry.c
+compiling render.c
+compiling scanners.c
+compiling strikethrough.c
+compiling syntax_extension.c
+compiling table.c
+compiling tagfilter.c
+compiling utf8.c
+compiling xml.c
+linking shared-object commonmarker/commonmarker.bundle
+
+current directory: /Users/bruce/Work/2020-03-11-DFOBIO-telemetry-workshop/.vendor/bundle/ruby/2.6.0/gems/commonmarker-0.17.13/ext/commonmarker
+make "DESTDIR=" install
+Makefile:174: warning: overriding commands for target `clean'
+Makefile:174: warning: ignoring old commands for target `clean'
+Makefile:181: warning: overriding commands for target `distclean'
+Makefile:181: warning: ignoring old commands for target `distclean'
+Makefile:189: warning: overriding commands for target `install-so'
+Makefile:189: warning: ignoring old commands for target `install-so'
+Makefile:199: warning: overriding commands for target `pre-install-rb-default'
+Makefile:199: warning: ignoring old commands for target `pre-install-rb-default'
+Makefile:201: warning: overriding commands for target `.sitearchdir.-.commonmarker.time'
+Makefile:201: warning: ignoring old commands for target `.sitearchdir.-.commonmarker.time'
+Makefile:211: warning: overriding commands for target `.cc.o'
+Makefile:211: warning: ignoring old commands for target `.cc.o'
+Makefile:215: warning: overriding commands for target `.cc.S'
+Makefile:215: warning: ignoring old commands for target `.cc.S'
+Makefile:219: warning: overriding commands for target `.mm.o'
+Makefile:219: warning: ignoring old commands for target `.mm.o'
+Makefile:223: warning: overriding commands for target `.mm.S'
+Makefile:223: warning: ignoring old commands for target `.mm.S'
+Makefile:227: warning: overriding commands for target `.cxx.o'
+Makefile:227: warning: ignoring old commands for target `.cxx.o'
+Makefile:231: warning: overriding commands for target `.cxx.S'
+Makefile:231: warning: ignoring old commands for target `.cxx.S'
+Makefile:235: warning: overriding commands for target `.cpp.o'
+Makefile:235: warning: ignoring old commands for target `.cpp.o'
+Makefile:239: warning: overriding commands for target `.cpp.S'
+Makefile:239: warning: ignoring old commands for target `.cpp.S'
+Makefile:243: warning: overriding commands for target `.c.o'
+Makefile:243: warning: ignoring old commands for target `.c.o'
+Makefile:247: warning: overriding commands for target `.c.S'
+Makefile:247: warning: ignoring old commands for target `.c.S'
+Makefile:251: warning: overriding commands for target `.m.o'
+Makefile:251: warning: ignoring old commands for target `.m.o'
+Makefile:255: warning: overriding commands for target `.m.S'
+Makefile:255: warning: ignoring old commands for target `.m.S'
+Makefile:259: warning: overriding commands for target `commonmarker.bundle'
+Makefile:259: warning: ignoring old commands for target `commonmarker.bundle'
+/usr/local/opt/coreutils/bin/ginstall -c -m 0755 commonmarker.bundle ./.gem.20200306-46350-1r4yaeu/commonmarker
