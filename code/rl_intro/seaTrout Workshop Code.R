@@ -1,31 +1,62 @@
+# Using dplyr and ggplot2 to clean and plot telemetry data #####
+# Built originally by Robert Lennox of NORCE, first version of this module delivered as part of ideasOTN in February 2020.
+
+
+# To verify your environment's ready to work along with this code, try all these imports and examine the output for errors.
+# install.packages('name') for the packages that are missing.
+
+# Imports - using require to avoid double-importing packages
+# Tidyverse - provides dplyr, ggplot2, and many other packages that simplify data.frame manipulation in R
 require(tidyverse)
+# Marmap - library that allows non-straight-line interpolation between two points. 
+# Useful for avoiding land masses when interpolating fish positions.
 require(marmap)
+# Lubridate - part of Tidyverse, improves the process of creating date objects 
 require(lubridate)
+# gganimate and gifski help you animate ggplot objects
 require(gganimate)
 require(gifski)
+
+# R language Bindings for the GEOS library, a pre-compiled, open source geometry engine for fast spatial calculation
 require(rgeos)
+require(mapproj)
+
+# Package for dealing with argos data, some useful functions for working with a series of geospatial data points
 require(argosfilter)
-require(nlme)
-require(igraph)
-require(ggraph)
-require(mgcv)
+
+# Other content not covered in this module - network analysis using igraph and ggraph, mixed-effects models.
 
 # seaTrout <- read.csv("ideasOTNtws2020code/rl_intro/seaTrout.csv")
+
+# Load this nice .rda file of your data. We'll explore what it looks like.
+# meanwhile, this is a painless way to dump 1.5m observations into your environment
 load("seaTrout.rda")
 
+
+# Lots of ways to get a clue about what this variable is and how it looks
+
+# Base R way:
 str(seaTrout)
+
+# Tidyverse option:
 glimpse(seaTrout)
 
+# Call a function to print the first few rows
+# Base R way:
 head(seaTrout)
+
+# Tidyverse method of calling the head function:
 seaTrout %>% head
 
-## Chapter 1: base R and the tidyverse
 
+## Chapter 1: base R and the tidyverse #####
 # basic functions 1.1: subsetting
 
+# Select one column by number, base and then Tidy
 seaTrout[,c(6)]
 seaTrout %>% select(6)
 
+# Select the first 5 rows.
 seaTrout[c(1:5),]
 seaTrout %>% slice(1:5)
 
@@ -37,8 +68,9 @@ seaTrout %>% distinct(Species) %>% nrow
 
 # basic function 1.3: format date times
 
-as.POSIXct(seaTrout$DateTime)
-seaTrout %>% mutate(DateTime=ymd_hms(DateTime))
+as.POSIXct(seaTrout$DateTime) # Check if your beverage needs refilling
+
+seaTrout %>% mutate(DateTime=ymd_hms(DateTime))  # Lightning-fast, thanks to Lubridate's ymd_hms(), 'yammed hams'!
 
 # basic function 1.4: filtering
 
@@ -47,12 +79,12 @@ seaTrout %>% filter(Species=="Trout")
 
 # basic function 1.5: plotting
 
-plot(seaTrout$lon, seaTrout$lat)
-seaTrout %>% ggplot(aes(lon, lat))+geom_point()
+plot(seaTrout$lon, seaTrout$lat)  # check again if beverage is full
+seaTrout %>% ggplot(aes(lon, lat))+geom_point() # sometimes plots just take time
 
 # basic function 1.6: getting data summaries
 
-tapply(seaTrout$lon, seaTrout$tag.ID, mean)
+tapply(seaTrout$lon, seaTrout$tag.ID, mean) # get the mean value across a column
 seaTrout %>% group_by(tag.ID) %>% summarise(mean=mean(lon))
 
 ## Chapter 2: expanding our ggplot capacity
@@ -129,46 +161,56 @@ proj4string(seaTrout)<-CRS("+proj=utm +zone=33 +ellps=WGS84 +datum=WGS84 +units=
 st<-spTransform(seaTrout, CRS("+proj=longlat +datum=WGS84")) #change proj4string
 st<-data.frame(st)
 
+# TODO: What have we done here, describe it better
+
 # we want to see the study area, we can subset a world map or get a terrain/bathy map from marmap
 
 x=.5
 bgo <- getNOAA.bathy(lon1 = min(st$lon-x), lon2 = max(st$lon+x),
                      lat1 = min(st$lat-x), lat2 = max(st$lat+x), resolution = 1)
-class(bgo); bgo %>% class
+class(bgo); bgo %>% class # same concept as before, two ways of doing the same thing 
 plot(bgo)
 plot(bgo, col="royalblue")
 autoplot(bgo)
 bgo %>% fortify %>% as_tibble
 
+# ok this is definitely bathymetry. Let's really lay on the aesthetics
 bgo %>% 
-  fortify %>% 
+  fortify %>% # Turn the raster into a data.frame for easy plotting
   ggplot(aes(x, y, fill=z))+
-  geom_raster()+
-  scale_fill_etopo()+
+  geom_raster()+  # raster-fy
+  scale_fill_etopo()+  # color in the pixels with marmap's scale_fill_etopo
   labs(x="Longitude", y="Latitude", fill="Depth")+
   theme_classic()+
   theme(legend.position="top")+
   theme(legend.key.width = unit(5, "cm"))
 
 bplot<-bgo %>%
-  fortify %>% 
-  ggplot(aes(x, y, z=z, fill=z))+
-  geom_raster()+
-  scale_fill_etopo()+
+  fortify %>%  # Turn a raster into a data.frame 
+  ggplot(aes(x, y, z=z, fill=z))+  
+  geom_raster()+       # raster-ify
+  scale_fill_etopo()+  # color in the pixels
   labs(x="Longitude", y="Latitude", fill="Depth")+
   theme_classic()+
-  theme(legend.position="top")+
+  theme(legend.position="top") +
   geom_point(data=st %>% 
                as_tibble() %>% 
                distinct(lon, lat),
              aes(lon, lat), inherit.aes=F, pch=21, fill="red", size=2)+
   theme(legend.key.width = unit(5, "cm"))
 
-## Chapter 4: More tidy functions for your enjoyment
+bplot
 
-# some filtering and data processing 
+## Chapter 4: More tidy functions you may encounter in your workflow
+
+# Filtering and data processing 
 
 st<-as_tibble(st)
+
+# One pipe to fix dates, 
+# filter subsets, 
+# calculate lead and lag locations,
+# and calculate new derived values, in this case, bearing and distance.
 
 st<-st %>% 
   mutate(dt=ymd_hms(DateTime)) %>% 
@@ -193,7 +235,7 @@ st %>%
 st %>% 
   filter(dist>2) %>% 
   ggplot(aes(b, fill=Species))+
-  #geom_histogram()+
+  # geom_histogram()+
   geom_density()+
   facet_wrap(~Species)+
   coord_polar()
@@ -227,83 +269,11 @@ bplot+
                aes(x=llon, xend=lon, y=llat, yend=lat, size=n %>% log, alpha=n %>% log), inherit.aes=F)+
   facet_wrap(~Species)
 
-require(igraph)
-require(ggraph)
-require(tidygraph)
-
-# network by individual
-
-nodes <- st %>%
-  ungroup() %>% 
-  distinct(Receiver) %>% 
-  rowid_to_column("id")
-
-rou <- st %>% 
-  arrange(dt) %>% 
-  group_by(tag.ID, Receiver, l=lag(Receiver, default=first(Receiver)), Species) %>% 
-  summarise(weight=n()) %>% 
-  filter(Receiver!=l) %>% 
-  left_join(nodes) %>% 
-  left_join(nodes, by=c("l"="Receiver")) %>% 
-  rename(from=id.x, to=id.y)
-
-rig <- tbl_graph(nodes = nodes, edges = rou, directed = F)
-
-ggraph(rig)+
-  geom_edge_link(aes(alpha=weight))+
-  #geom_node_label(aes(label=id))+
-  geom_node_point()+
-  facet_wrap(~Species)+
-  theme_classic()
-
-degree(rig) %>% 
-  as_tibble() %>% 
-  bind_cols(nodes) %>% 
-  left_join(st %>% group_by(Receiver) %>% summarise(n=n()), by="Receiver") %>% 
-  rename(degree=value) %>% 
-  ggplot(aes(degree, n))+
-  #scale_y_log10()+
-  geom_point()
-
-# by individual
-
-f1<-function(x){
-  rou_id <- x %>% 
-  arrange(dt) %>% 
-  group_by(tag.ID, Receiver, tag.ID, l=lag(Receiver, default=first(Receiver)), Species) %>% 
-  summarise(weight=n()) %>% 
-  filter(Receiver!=l) %>% 
-  left_join(nodes) %>% 
-  left_join(nodes, by=c("l"="Receiver")) %>% 
-  rename(from=id.x, to=id.y)
-
-rig_id <- tbl_graph(nodes = nodes, edges = rou_id, directed = F)
-
-diameter(rig_id)}
-
-st %>% 
-  split(.$tag.ID) %>% 
-  purrr::map(f1) %>% 
-  as_tibble() %>% 
-  t() %>% 
-  data.frame() %>% 
-  rownames_to_column() %>% 
-  as_tibble() %>% 
-  rename(degree=".", tag.ID=rowname) %>% 
-  left_join(st %>% distinct(tag.ID, Species, Length)) %>% 
-  filter(!is.na(Species)) %>% 
-  left_join(st %>% group_by(tag.ID, Receiver) %>% summarise(n=n())) %>% 
-  group_by(tag.ID, Species, Length, degree) %>% summarise(n=n()) %>% 
-  group_by(Species) %>% 
-  mutate(Length=scale(Length)) %>% 
-  ggplot(aes(Length, degree, colour=Species))+
-  geom_point()+
-  scale_x_log10()+
-  scale_y_log10()
 
 ## Chapter 6: Animating plots
 
-st1<-st %>% filter(tag.ID=="A69-1601-30617")
+# Let's pick one animal to follow
+st1<-st %>% filter(tag.ID=="A69-1601-30617") # another great time to check hydration levels
 
 an1<-bgo %>%
   fortify %>% 
@@ -323,11 +293,19 @@ an1<-bgo %>%
   transition_time(date(st1$dt))+
   labs(title = 'Date: {frame_time}')
 
-animate(an1)
+# an1 is now a list of plot objects but we haven't plotted them.
+
+?gganimate::animate
+gganimate::animate(an1)
+
+# We're doing a lot of portage! The perils of working in a river system. 
+# Later we'll use the glato package to help us dodge land masses better in our transitions.
+
 
 ## Chapter 7: Some hypothesis tests
 
 # H1: Trout moved farther seaward in the summer
+# Plotting all points from here on out, this can take a long time!
 
 st %>% 
   filter(Species=="Trout") %>% 
@@ -345,22 +323,6 @@ st %>%
   geom_point()+
   geom_smooth()
 
-require(nlme)
 
-m1<-lm(lon %>% log~as.numeric(dt), data=st)
-summary(m1)
-hist(resid(m1))
-plot(resid(m1))
-
-m2<-lme(lon~as.numeric(dt), random=~1|tag.ID, data=st)
-hist(resid(m2))
-plot(resid(m2))
-summary(m2)
-
-#m3<-gamm(lon~s(yday(dt)), correlation=corAR1(form=~1|yday(dt)), random=list(~1|tag.ID), data=st)
-m3<-gamm(lon~s(yday(dt)), random=list(tag.ID=~1), data=st)
-
-summary(m3)        
-plot(m3$gam)
 
 
