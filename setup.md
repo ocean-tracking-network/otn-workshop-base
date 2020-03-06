@@ -28,11 +28,24 @@ install.packages('remotes')
 library(remotes)
 install_url("https://gitlab.oceantrack.org/GreatLakes/glatos/repository/master/archive.zip",
             build_opts = c("--no-resave-data", "--no-manual"))  
+
+# Marmap - library that allows non-straight-line interpolation between two points.
+# Useful for avoiding land masses when interpolating fish positions.
+install.packages(marmap)
+# Lubridate - part of Tidyverse, improves the process of creating date objects
+install.packages(lubridate)
+# gganimate and gifski help you animate ggplot objects
+install.packages(gganimate)
+install.packages(gifski)
+
+# R language Bindings for the GEOS library, a pre-compiled, open source geometry engine for fast spatial calculation
+install.packages(rgeos)
+install.packages(mapproj)
+
+# Package for dealing with argos data, some useful functions for working with a series of geospatial data points
+install.packages(argosfilter)            
 ```
 
-Once the packages are installed, create a new directory and set your working directory using `setwd('<path-to-folder>')`
+Once the packages are installed, set your working directory using `setwd('<path-to-folder>')`
 
-If you don't want to live code along, we have provided R Markdown files for each lesson which can be downloaded [here](rmarkdown.zip), but we *highly* recommend coding along with the rest of the workshop.
-
-
-
+We have provided R Markdown files for each lesson which can be downloaded [here](rmarkdown.zip).
