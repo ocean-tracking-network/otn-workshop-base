@@ -43,7 +43,14 @@ install.packages(rgeos)
 install.packages(mapproj)
 
 # Package for dealing with argos data, some useful functions for working with a series of geospatial data points
-install.packages(argosfilter)            
+install.packages(argosfilter)
+
+#SP and Raster packages for mapping.
+install.packages('sp')
+install.packages('raster')
+
+#Install ffmpeg, which we use for the animations.
+install_ffmpeg()            
 ```
 
 Once the packages are installed, set your working directory using `setwd('<path-to-folder>')`
