@@ -105,12 +105,11 @@ seaTrout %>% ggplot(aes(lon, lat))+geom_point() # sometimes plots just take time
 tapply(seaTrout$lon, seaTrout$tag.ID, mean) # get the mean value across a column
 seaTrout %>% 
   group_by(tag.ID) %>% 
-  summarise(mean=mean(lon))   # Can use pipes and newlines to 
+  summarise(mean=mean(lon))   # Can use pipes and newlines to organize this process 
 
 ## Chapter 2: expanding our ggplot capacity ####
 
 # monthly longitudinal distribution of salmon smolts and sea trout
-
 # Benefit of piping and plus-ing in additional aesthetics and geometry - can build and rebuild partial plots
 
 seaTrout %>% 
@@ -124,6 +123,7 @@ seaTrout %>%
   geom_boxplot()+    
   geom_violin(colour="black")
 
+
 seaTrout %>% 
   group_by(m=month(DateTime), tag.ID, Species) %>% 
   summarise(mean=mean(lon)) %>% 
@@ -133,6 +133,7 @@ seaTrout %>%
   scale_colour_manual(values=c("grey", "gold"))+
   scale_fill_manual(values=c("grey", "gold"))+
   geom_density2d(size=2, lty=1)
+
 
 seaTrout %>% 
   group_by(m=month(DateTime), tag.ID, Species) %>% 
@@ -154,21 +155,27 @@ seaTrout %>%
 
 ## Chapter 3: Handling spatial objects in R ####
 
-require(rgdal)
-require(rgeos)
+library(rgdal)
+library(rgeos)
 
 # we have coordinates in UTM, a metric based projection
 # we want to work with latitude longitdude, so we must convert
 
 # Say that stS is a copy of our seaTrout data
-stS<-seaTrout
-coordinates(stS)<-~lon+lat # tell stS that it's a spatial data frame with coordinates in lon and lat
-proj4string(stS)<-CRS("+proj=utm +zone=33 +ellps=WGS84 +datum WS84 +units=m +no_defs") # in reference system UTM 33
+stS<-seaTrout 
 
-# We'd like to project this into GE - but spTransform can take this to any projection / coordinate reference system we need.
+# note: both the sp and raster libraries can provide these functions
+# Currently we're using sp brought in w/ rgeos
+
+coordinates(stS)<-~lon+lat # tell stS that it's a spatial data frame with coordinates in lon and lat
+proj4string(stS)<-CRS("+proj=utm +zone=33 +ellps=WGS84 +datum=WGS84 +units=m +no_defs") # in reference system UTM 33
+
+
+# We'd like to project this into longlat - but spTransform can take this to any projection / coordinate reference system we need.
 st<-spTransform(stS, CRS("+init=epsg:28992"))   # what is epsg:28992 - https://epsg.io/28992 - netherlands/dutch topographic map in easting/northing
 st<-data.frame(st)  # results aren't a data.frame by default though.
-View(st)  # It knows the coords should go in lon and lat columns, but they're easting/northing now as per the CRS.
+View(st)  # It knows the coords should go in lon and lat columns, but they're actually easting/northing now as per the CRS.
+
 st<-spTransform(stS, CRS("+proj=longlat +datum=WGS84")) # ok let's put it in lat/lon WGS84
 st<-data.frame(st)
 View(st)
