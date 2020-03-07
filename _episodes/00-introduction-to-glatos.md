@@ -7,9 +7,6 @@ questions:
     - "How do I filter out false detections?"
     - "How can I consolidate my detections into detection events?"
     - "How do I summarize my data?"
-objectives:
-keypoints:
-
 ---
 
 GLATOS is a powerful toolkit that provides a wide range of functionality for loading,
@@ -214,4 +211,4 @@ detections_w_events <- detection_events(detections_filtered,
 ~~~
 {: .language-r}
 
-With our filtered data in hand, let's move on to some visualization. 
+With our filtered data in hand, let's move on to some visualization.
