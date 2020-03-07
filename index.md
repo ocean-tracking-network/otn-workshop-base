@@ -1,12 +1,8 @@
 ---
 layout: lesson
-root: .
-
-maintainers:
-  - Bruce Delo
+root: .  # Is the only page that doesn't follow the pattern /:path/index.html
+permalink: index.html  # Is the only page that doesn't follow the pattern /:path/index.html
 ---
-
-{% include links.md %}
 
 This workshop contains a brief overview of GLATOS.
 
@@ -15,4 +11,4 @@ an introduction to taking your records from fieldnotes to analysis ready data se
 and where when and how to submit data and metadata to OTN.
 - [Powerpoint](/Resources/DFO_best_practices_2020_03.pptx)
 
-Lessons:
+{% include links.md %}
