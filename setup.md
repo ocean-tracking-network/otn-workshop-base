@@ -65,3 +65,5 @@ install.packages('gridExtra')
 Once the packages are installed, set your working directory using `setwd('<path-to-folder>')`
 
 We have provided R Markdown files for each lesson which can be downloaded [here](rmarkdown.zip).
+
+{% include links.md %}
