@@ -1,7 +1,13 @@
 ---
 title: Loading, formatting, and plotting spatial data objects
 teaching: 20
-exercises: 5
+exercises: 0
+questions:
+      - "How do I plot my data on a map if my coordinates aren't in latitude and longitude?"
+      - "Where can I find environmental data for my study area (like bathymetry)?"
+objectives:
+      - "Learn how to register the spatial component of your dataset, creating a spatial object"
+      - "Learn how to re-project spatial data objects into different coordinate systems"
 ---
 
 You may have noticed that our latitude and longitude columns were in a surprising unit. UTM coordinate systems have some positive aspects that are useful, but some desireable activities, like plotting them alongside rasters of bathymetric data, or with any other dataset that has lat/lon coordinates, requires conversion to 'true' latitude and longitude values. So let's convert our dataset to be a spatial data frame with decimal-degree latitude and longitude as its coordinate system.

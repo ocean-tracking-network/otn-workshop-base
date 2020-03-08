@@ -1,110 +1,54 @@
 ---
 title: Network analysis using detections of animals at stations
 teaching: 15
-exercises: 5
+exercises: 0
+questions:
+      - "How do I prepare my data in order to apply network analysis?"
 ---
 
-We can use GLATOS to quickly and effectively visualize our data, now that we've
-cleaned it up.
-
-One of the simplest ways is to use an abacus plot to display animal detections
-against the appropriate stations.
+One of the more popular analysis domains for movement data has been network analysis. Networks are a system of nodes, and the edges that connect them. There are a few ways to think about animal movement data in this context, but perhaps an obvious one, that we've set ourselves up to use via our previous data exploration, is considering the receiver locations as nodes, and the animals travel between them as edges. More trips between receivers, larger and more significant edges. More trips to a receiver from the rest of the network, more centrality for that receiver 'node'.
 
 ~~~
-# Visualizing Data - Abacus Plots ####
-# ?glatos::abacus_plot
-# customizable version of the standard VUE-derived abacus plots
+# 5.1: Networks are just connections between nodes and we can draw a simple one using animals traveling between receivers.
 
-abacus_plot(detections_w_events,
-            location_col='station',
-            main='NSBS Detections By Station') # can use plot() variables here, they get passed thru to plot()
-~~~
-{: .language-r}
+st %>%
+  group_by(Species, lon, lat, llon, llat) %>%       # we handily have a pair of locations on each row from last example to group by
+  summarise(n=n()) %>%                              # count the number of rows in each group
+  ggplot(aes(x=llon, xend=lon, y=llat, yend=lat))+  # xend and yend define your segments
+  geom_segment()+geom_curve(colour="purple")+       # and geom_segment() and geom_curve() will connect them
+  facet_wrap(~Species)+
+  geom_point()                                      # draw the points as well to make them clear.
 
-This is good, but cluttered. We can also filter out a single animal ID and plot
-only the abacus plot for that.
-~~~
-# pick a single fish to plot
-abacus_plot(detections_filtered[detections_filtered$animal_id== "NSBS-Alison",],
-            location_col='station',
-            main="NSBS-Alison Detections By Station")
 ~~~
 {: .language-r}
 
+So `ggplot` will show us our travel between nodes using `xend` and `yend`, and we can choose a couple ways to display those connections using `geom_segment()` and `geom_curve()`. Splitting on species can show us the different ways each species uses the network, but the scale of the values of edges and nodes is hard to differentiate. Let's switch our plot scale for the edges to a log scale.
 
-Additionally, if we only wanted to plot for a subset of receivers, we could do That
-as well, using the following code to isolate a particular receiver.
 ~~~
-# subset of receivers?
-
-receivers
-
-receivers_subset <- receivers[receivers$station=='HFX005',]
-receivers_subset
-
-det_first <- min(detections$detection_timestamp_utc)
-det_last <- max(detections$detection_timestamp_utc)
-receivers_subset <- receivers_subset[
-  receivers_subset$deploy_date_time < det_last &
-    receivers_subset$recover_date_time > det_first &
-    !is.na(receivers_subset$recover_date_time),] #removes deployments without recoveries
-
-locs <- unique(receivers_subset$station)
-
-locs
+st %>%
+  group_by(Species, lon, lat, llon, llat) %>%
+  summarise(n=n()) %>%
+  ggplot(aes(x=llon, xend=lon, y=llat, yend=lat, size=n %>% log))+
+  geom_point() + # Put this on the bottom of the plot.
+  geom_segment()+geom_curve(colour="purple")+
+  facet_wrap(~Species)
 ~~~
 {: .language-r}
 
-(Have to revisit this after I talk with Ryan to see if it can be done. )
+ So we pass n to the log function in our argument to `aes()`, and that gives us a much clearer context for which edges are dominating. Speaking of adding context, let's bring back `bplot` as our backdrop for this and see where our receivers are geospatially.
+
+
 ~~~
-# Abacus Plots w/ Receiver History ####
-# Using the receiver data frame from the start:
-# See the receiver history behind the detections to know what you could see.
+bplot+ # we saved this earlier when doing bathymetry plotting
+  geom_segment(data=st %>%
+                 group_by(Species, lon, lat, llon, llat) %>%
+                 summarise(n=n()),
+               aes(x=llon, xend=lon, y=llat, yend=lat, size=n %>% log, alpha=n %>% log), inherit.aes=F)+ # bplot has Z, nothing else does, so inherit.aes=F to ignore missing parent aesthetic values
+  facet_wrap(~Species)  # we also scale alpha because we're going to force a lot of these relationship lines on top of one another with this method.
 
-#Mutate new glatos_array column into the receivers.
-receivers_with_ga <-
-  receivers %>%
-  mutate(glatos_array = receivers[station])
-
-abacus_plot(detections_filtered[detections_filtered$animal_id == 'NSBS-Alison',],
-            pch = 16,
-            type='b',
-            locations = sort(locs, decreasing = TRUE),
-            receiver_history=receivers)
 ~~~
 {: .language-r}
 
-If we want to see actual physical distribution, a bubble plot will serve us better.
-(Add part for generating the NS map)
-With the map generated, we can pass it to the bubble plot and see the results.
-~~~
-# Bubble Plots for Spatial Distribution of Fish ####
-# bubble variable gets the summary data that was created to make the plot
-detections_filtered
-bubble <- detection_bubble_plot(detections_filtered,
-                                location_col = 'station',
-                                map = NS,
-                                col_grad=c('white', 'green'),
-                                background_xlim = c(-66, -62),
-                                background_ylim = c(42, 46))
-~~~
-{: .language-r}
+So to keep the map visible and to see the effect of lines that overlap heavily because we're forcing it to spatial bounds, we have alpha being set to log(n) as well, alpha is our transparency setting. We also have to leverage inherit.aes=F again, because our network values don't have a Z axis like our bplot.
 
-There are additional customisations we can perform, which let us tune the output of the
-bubble plot function to better suit our needs. A few of the parameters are demonstrated
-below, but we encourage you to investigate the documentation and see what suits Your
-needs.
-~~~
-# more complex example including zeroes by adding a specific
-# receiver locations dataset, in this case the receivers dataset above.
-
-bubble_custom <- detection_bubble_plot(detections_filtered,
-                                       location_col='station',
-                                       map = NS,
-                                       background_xlim = c(-63.75, -63.25),
-                                       background_ylim = c(44.25, 44.5),
-                                       symbol_radius = 0.7,
-                                       receiver_locs = receivers,
-                                       col_grad=c('white', 'green'))
-~~~
-{: .language-r}
+You can take things further into the specifics of network analysis with this data and the `igraph` and `ggraph` packages (but it's too big a subject for this tutorial!), but when building the source data for it as we've done here, you would want to decide whether you're intending to see trends in individuals, species, by other variables, whether the regions are your nodes or individuals are your nodes, whether a few highly detected individuals are providing most of the story in a summary like the one we made here, etc.
