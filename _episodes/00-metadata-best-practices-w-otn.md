@@ -16,4 +16,4 @@ keypoints:
 
 This presentation will describe how you can interact with the Ocean Tracking Network to extend your study across all the compatible telemetry activity globally, and take advantage of quality control methods and standardized formats in use by hundreds of OTN partners around the world.
 
-- [Powerpoint](./Resources/DFO_best_practices_2020_03.pptx)
+- [Powerpoint](../Resources/DFO_best_practices_2020_03.pptx)
