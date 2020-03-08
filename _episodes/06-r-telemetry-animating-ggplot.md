@@ -37,8 +37,8 @@ an1<-bgo %>%
 ~~~
 {: .language-r}
 
-This is good, but cluttered. We can also filter out a single animal ID and plot
-only the abacus plot for that.
+Now that we have the plots in an1, we can animate them by handing them to `gganimate::animate()`
+
 ~~~
 # an1 is now a list of plot objects but we haven't plotted them.
 
@@ -46,7 +46,10 @@ only the abacus plot for that.
 
 gganimate::animate(an1)
 
-# Notably: we're doing a lot of portage! The perils of working in a river system.
-# Later we'll use the glatos package to help us dodge land masses better in our transitions.
 ~~~
 {: .language-r}
+
+
+Notably: we're doing a lot of portage! The perils of working in a winding river system, or around land masses is that our straight-line interpolations plain look silly when you animate them this way.
+
+Later we'll use the `glatos` package to help us dodge land masses better in our transitions.
