@@ -50,6 +50,7 @@ install.packages('sp')
 install.packages('raster')
 
 #Install ffmpeg, which we use for the GLATOS-derived animations.
+library(glatos) # once you have your GLATOS installed properly
 install_ffmpeg()            
 
 install.packages("TMB")
