@@ -1,5 +1,5 @@
 ---
-title: Basic Visualization and Plotting
+title: Basic Animations
 teaching: 0
 exercises: 0
 ---
