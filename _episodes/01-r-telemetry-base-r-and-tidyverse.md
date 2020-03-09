@@ -1,11 +1,15 @@
 ---
 title: Base R functions vs. Tidyverse
 teaching: 15
-exercises: 5
+exercises: 0
 questions:
       - "How can I introspect, subset, and plot my data using base R?"
       - "How do I reformat dates as 'strings' into date objects?"
       - "What are the Tidyverse functions that will do the same tasks?"
+objectives:
+      - "Learn how to perform basic R data manipulation tasks in base R, and using the Tidyverse"
+keypoints:
+      - "Many of the tasks you will need to do to analyze your data are made easier or more readable via Tidyverse methods."
 ---
 
 The Tidyverse and its component packages are reimagining how you work with tabular data in R. It includes component libraries and functions for organizing code for readability, cleaning data, and plotting it. While tidyverse is only one of a few competing paradigms for performing these jobs in R, here we will show a few examples of performing tasks in base R and again using Tidy methods.

@@ -1,7 +1,15 @@
 ---
 title: Making basic plots using ggplot
 teaching: 20
-exercises: 10
+exercises: 0
+questions:
+      - "How do I make more sophisticated plots in ggplot?"
+objectives:
+      - "Become familiar with ggplot and dplyr's methods to summarize and plot data"
+      - "Explore how ggplot aesthetics and geometry work together"
+keypoints:
+      - "You can feed output from dplyr's data manipulation functions into ggplot using pipes."
+      - "Plotting various summaries and groupings of your data is good practice at the exploratory phase, and dplyr and ggplot make iterating different ideas straightforward."
 ---
 
 `ggplot2` takes advantage of tidyverse pipes and chains of data manipulation as well as separating the aesthetics of the plot (what are we plotting) from the styling of the plot (how should we show it?), in order to produce readable and malleable plotting code.
@@ -27,7 +35,7 @@ seaTrout %>%
 After we apply all the styling, our grouped time factor's on the Y axis to highlight the longitudinal change that we're showing on the X axis, and we're seeing box plots and violins on top of the 'raw' data points to provide additional context. We've also made a few style choices to ensure we can tease apart all these overlapping plots a bit better.
 
 
-There are other ways to present a summary of data like this that we might have chosen. geom_density2d will give us a KDE for our data points and give us some contours across our chosen plot axes.
+There are other ways to present a summary of data like this that we might have chosen. `geom_density2d()` will give us a KDE for our data points and give us some contours across our chosen plot axes.
 ~~~
 seaTrout %>%
   group_by(m=month(DateTime), tag.ID, Species) %>%
@@ -41,7 +49,7 @@ seaTrout %>%
 ~~~
 {: .language-r}
 
-Here we start to potentially see why we might like to use multiple plots for each subset, or facets, for our two distinct species, as they're hard to see on top of one another in this way. Switching to stat_density_2d will fill in my levels and obliterate my ability to see the underlying data points. I'm also going to properly label my axes.
+Here we start to potentially see why we might like to use multiple plots for each subset, or facets, for our two distinct species, as they're hard to see on top of one another in this way. Switching to stat_density_2d will fill in my levels (and obliterate my ability to see the underlying data points). I'm also going to use `labs()` to properly label my axes.
 
 ~~~
 seaTrout %>%

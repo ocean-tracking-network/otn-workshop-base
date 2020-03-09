@@ -276,7 +276,7 @@ st %>%
 
 # You'd probably do more filtering before arriving at this point, lots of detections at individual receivers might skew this particular plot,
 # but as an example of how to plot the results of telemetry it's a good example.
-# Histogram 
+
 
 ## Chapter 5: Networks of Stations and Animals using Detections ####
 
