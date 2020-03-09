@@ -31,19 +31,19 @@ install_url("https://gitlab.oceantrack.org/GreatLakes/glatos/repository/master/a
 
 # Marmap - library that allows non-straight-line interpolation between two points.
 # Useful for avoiding land masses when interpolating fish positions.
-install.packages(marmap)
+install.packages('marmap')
 # Lubridate - part of Tidyverse, improves the process of creating date objects
-install.packages(lubridate)
+install.packages('lubridate')
 # gganimate and gifski help you animate ggplot objects
-install.packages(gganimate)
-install.packages(gifski)
+install.packages('gganimate')
+install.packages('gifski')
 
 # R language Bindings for the GEOS library, a pre-compiled, open source geometry engine for fast spatial calculation
-install.packages(rgeos)
-install.packages(mapproj)
+install.packages('rgeos')
+install.packages('mapproj')
 
 # Package for dealing with argos data, some useful functions for working with a series of geospatial data points
-install.packages(argosfilter)
+install.packages('argosfilter')
 
 #SP and Raster packages for mapping.
 install.packages('sp')
