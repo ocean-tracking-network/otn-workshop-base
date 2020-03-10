@@ -2,6 +2,8 @@
 title: Fitting Hidden Markov Models with moveHMM
 teaching: 30
 exercises: 0
+questions:
+        - "What can applying hidden markov models to my movement data using moveHMM tell me about the behaviour of my animals?"
 objectives:
         - "Fit a hidden markov model."
         - "Picking an appropriate time step."
@@ -49,6 +51,7 @@ Here x is the Easting, and y is the Northing, that means we're projected, it's i
 
 Let's first start just by plotting the data. Since we're looking at predicted values from a model, I would also like to look at a confidence interval around the predictions (normally distributed.
 Let's just use 95% CI)
+
 ~~~
 plot(yaps1335$x, yaps1335$y, type="l")
 points(yaps1335$x-1.96*yaps1335$sd_x, yaps1335$y-1.96*yaps1335$sd_y,
@@ -63,7 +66,7 @@ points(yaps1315$x-1.96*yaps1315$sd_x, yaps1315$y-1.96*yaps1315$sd_y,
 points(yaps1315$x+1.96*yaps1315$sd_x, yaps1315$y+1.96*yaps1315$sd_y,
        type='l', col='skyblue')
 ~~~
-       {:.language-r}
+{:.language-r}
 
 Neither of these confidence intervals look very wide, which is a good sign
 
@@ -135,17 +138,18 @@ pike_prep <- prepData(pike, type="UTM")
 # use coordNames argument if your locations are named other than the default (x, y)
 head(pike_prep)
 tail(pike_prep)
-# here we see a couple of things -
-# there is an animal ID that is automatically created - we'll get back to this later
-# step is the step length - these are in m because our original locations are in m
-# angle is the turning angle - these are in radians (multiply by 180/pi if you want degrees)
-# note a couple of NAs, because it takes two locations to calculate a step length and
-# three to calculate a turning angle. Also note the alignment of these NAs suggests that
-# the step length from times t-1 to t and the angle between times t-1, t, and t+1 will
-# be informing the same state
 
-# now let's take a look at the distributions
-# moveHMM has a generic plotting function for the processed data
+~~~
+{:.language-r}
+
+Here we see a couple of things -
+  * there is an animal ID that is automatically created - we'll get back to this later
+  * step is the step length - these are in m because our original locations are in m
+  * angle is the turning angle - these are in radians (multiply by 180/pi if you want degrees)
+note a couple of NAs, because it takes two locations to calculate a step length and three to calculate a turning angle. Also note the alignment of these NAs suggests that the step length from times t-1 to t and the angle between times t-1, t, and t+1 will be informing the same state
+
+Now let's take a look at the distributions. `moveHMM` has a generic plotting function for the processed data
+~~~
 plot(pike_prep)
 # i also like to look at the densities and histograms side by side
 par(mfrow=c(2,2))
@@ -153,21 +157,18 @@ density(pike_prep$step, na.rm=TRUE) %>% plot(main="Step Length Density")
 hist(pike_prep$step, main = "Step Length Histogram")
 density(pike_prep$angle, na.rm=TRUE) %>% plot(main="Turning Angle Density")
 hist(pike_prep$angle, main = "Turning Angle Histogram")
-# our objective is to look for multiple states
-# in modelling terms, this means that we are assuming that these observations shouldn't be
-# modelled with just one underlying probability distribution, but multiple
-# i.e., these empirical densities actually contain multiple parametric densities within them.
+~~~
+{:.language-r}
 
-# in an HMM, we want to estimate these multiple densities, and the states that relate to them.
-# an optimization routine is an algorithm that seeks to find the optimum from a function
-# moveHMM uses nlm, markmodmover uses nlminb
-# in order to optimize a function, you need to have starting values
-# if your function is bumpy, then it can be harder to find a global optimum, so you want
-# to be careful about your choice of starting values, and it's a good idea
-# to check multiple sets
-# to pick starting values, I like to overlay densities on my histograms
-# for moveHMM, the default densities are gamma (step length) and von mises (turning angle)
+Our objective is to look for multiple states. In modelling terms, this means that we are assuming that these observations shouldn't be modelled with just one underlying probability distribution, but multiple i.e., these empirical densities actually contain multiple parametric densities within them.
 
+In an HMM, we want to estimate these multiple densities, and the states that relate to them.
+An optimization routine is an algorithm that seeks to find the optimum from a function. `moveHMM` uses `nlm`, `markmodmover` uses `nlminb`. In order to optimize a function, you need to have starting values. If your function is bumpy, then it can be harder to find a global optimum, so you want to be careful about your choice of starting values, and it's a good idea to check multiple sets
+
+To pick starting values, I like to overlay densities on my histograms. For `moveHMM`, the default densities are **gamma (step length)** and **von mises (turning angle)**
+
+
+~~~
 ?dgamma # shape and rate parameter
 # rate is inverse of scale, so as rate goes up, the spread goes down
 # shape is eponymous it literally determines the shape of the distribution
@@ -192,7 +193,8 @@ curve(circular::dvonmises(x,pi,1), add=TRUE, col="cadetblue", lwd=2)
 curve(circular::dvonmises(x,pi,5), add=TRUE, col="mediumseagreen", lwd=2)
 # pretty clear that the mean determines the location, and the concentration
 # determines the spread
-
+~~~
+{:.language-r}
 
 # now we need to pick a set of starting values
 # there is a great guide from Théo Michelot and Roland Langrock:
