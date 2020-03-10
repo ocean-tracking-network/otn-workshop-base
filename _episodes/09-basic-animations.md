@@ -51,6 +51,11 @@ points(deploy_lat ~ deploy_long, data = det, pch = 20, col = "red",
 
 That might look OK, but if we're going to animate it, we need more- since we need to be able to interpolate the paths points to properly make the animation, we need to know if our interpolations make any sense. To do that, we need to know whether our paths cross land at any point. And to do that, we need to know what on our map is water, and what on our map is land. Fortunately, glatos lets us do this with the make_transition() function.
 
+make_transition interpolates the paths between points using a least-cost path. In our case,
+the only two costs are 0- if the path only goes through water- or infinity, if the path
+crosses land. This is hypothetically extensible, however, to a broader set of behaviours, if
+multiple rasters were used and costs were differently weighted. 
+
 make_transition generates two objects- a transition layer, and a raster object, both representing the land and water on the map we're plotting on. However, take note! Since glatos was originally designed to run on data from lakes, it will treat any fully-bounded polygon as a lake. This means that depending on your shapefile, glatos may mistake your land for water, and vice-versa!
 
 Fortunately, we can get around this. make_transition takes a parameter, 'invert', that defaults to false. If it is true, then make_transition() will return the inverse of the raster it otherwise would have returned. If it is treating your land masses as water, this should fix the problem.
