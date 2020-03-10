@@ -33,13 +33,16 @@ abacus_plot(detections_filtered[detections_filtered$animal_id== "NSBS-Alison",],
 
 
 Additionally, if we only wanted to plot for a subset of receivers, we could do That
-as well, using the following code to isolate a particular receiver.
+as well, using the following code to isolate a particular subset. This is less useful for our
+Blue Shark dataset, and more applicable to a dataset structured like GLATOS, where the
+glatos_array column would link multiple receivers together into an array, which we could
+then select on. In this case, we're only using our stations, so it's less important.
 ~~~
 # subset of receivers?
 
 receivers
 
-receivers_subset <- receivers[receivers$station=='HFX005',]
+receivers_subset <- receivers[receivers$station %in% c('HFX005', 'HFX031', 'HFX040'),]
 receivers_subset
 
 det_first <- min(detections$detection_timestamp_utc)
@@ -55,22 +58,49 @@ locs
 ~~~
 {: .language-r}
 
-(Have to revisit this after I talk with Ryan to see if it can be done. )
+In keeping with earlier lessons, we could also do the same selection using dplyr's
+filter() method.
+~~~
+receivers
+
+receivers_subset <- receivers[receivers$station %in% c('HFX005', 'HFX031', 'HFX040'),]
+receivers_subset
+
+det_first <- min(detections$detection_timestamp_utc)
+det_last <- max(detections$detection_timestamp_utc)
+
+receivers_subset <- filter(receivers_subset, deploy_date_time < det_last &
+                             recover_date_time > det_first &
+                             !is.na(receivers_subset$recover_date_time))
+
+receivers_subset
+~~~
+{:.language-r}
+
+Note that the row indices are different- filter automatically resets them to 1-3,
+whereas selecting them with base R preserves the original numbering. Use whichever
+best suits your needs.
+
+We can also plot abacus plots with receiver histories, which can give us a better idea of in
+which order our tracked fish travelled through our receivers. We just have to pass
+a few extra parameters to the abacus plot function, including our receivers array
+so that it builds out the history.
+
+Note that we must add a glatos_array column to receivers before we can plot it
+in this way- the function still expects GLATOS data. For our purposes, it is enough
+to use the station column, but different variables may suit your data differently.
 ~~~
 # Abacus Plots w/ Receiver History ####
 # Using the receiver data frame from the start:
 # See the receiver history behind the detections to know what you could see.
 
-#Mutate new glatos_array column into the receivers.
-receivers_with_ga <-
-  receivers %>%
-  mutate(glatos_array = receivers[station])
+receivers$glatos_array = receivers$station
 
-abacus_plot(detections_filtered[detections_filtered$animal_id == 'NSBS-Alison',],
+abacus_plot(detections_filtered[detections_filtered$animal_id == 'NSBS-Hooker',],
             pch = 16,
             type='b',
-            locations = sort(locs, decreasing = TRUE),
-            receiver_history=receivers)
+            receiver_history=receivers,
+            location_col = 'station')
 ~~~
 {: .language-r}
 
