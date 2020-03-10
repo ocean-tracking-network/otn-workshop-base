@@ -1,6 +1,6 @@
 ---
 title: Basic Animations
-teaching: 0
+teaching: 30
 exercises: 0
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: Introduction to GLATOS Data Processing
-teaching: 0
+teaching: 30
 exercises: 0
 questions:
     - "How do I load my data into GLATOS?"
