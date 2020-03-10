@@ -196,6 +196,7 @@ curve(circular::dvonmises(x,pi,5), add=TRUE, col="mediumseagreen", lwd=2)
 ~~~
 {:.language-r}
 
+~~~
 # now we need to pick a set of starting values
 # there is a great guide from Théo Michelot and Roland Langrock:
 # https://cran.r-project.org/web/packages/moveHMM/vignettes/moveHMM-starting-values.pdf
