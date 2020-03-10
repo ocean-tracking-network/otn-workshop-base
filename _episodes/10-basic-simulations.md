@@ -8,8 +8,8 @@ A lession reviewing the simulation capabilities of `glatos` for evaluating tag p
 
 In the interim, you may want to review the relevant functions, and the examples in the `glatos` package vignettes here:
 
-https://gitlab.oceantrack.org/GreatLakes/glatos/tree/master/vignettes
+<https://gitlab.oceantrack.org/GreatLakes/glatos/tree/master/vignettes>
 
 
 or Joseph Stachelek's online documentation of the GLATOS package here:
-https://rdrr.io/github/jsta/glatos/man/calc_collision_prob.html
+<https://rdrr.io/github/jsta/glatos/man/calc_collision_prob.html>
