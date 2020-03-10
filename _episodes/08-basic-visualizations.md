@@ -105,7 +105,18 @@ abacus_plot(detections_filtered[detections_filtered$animal_id == 'NSBS-Hooker',]
 {: .language-r}
 
 If we want to see actual physical distribution, a bubble plot will serve us better.
-(Add part for generating the NS map)
+
+Before we can plot this data properly, we need to download a shapefile of Nova Scotia.
+This will give us a map on which we can plot our data. We can get a suitable Shapefile
+for Nova Scotia from GADM, the Global Administrative boundaries reference. The following
+code will retrieve first the country, then the province:
+
+~~~
+Canada <- getData('GADM', country="CAN", level=1)
+NS <- Canada[Canada$NAME_1=="Nova Scotia",]
+~~~
+{:.language-r}
+
 With the map generated, we can pass it to the bubble plot and see the results.
 ~~~
 # Bubble Plots for Spatial Distribution of Fish ####

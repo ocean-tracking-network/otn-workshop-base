@@ -185,17 +185,6 @@ spatially clustered detections for a single animal into a single detection event
 a powerful and useful way to clean up the data, and makes it easier to present and
 clearer to read. Fortunately, GLATOS lets us to this easily.
 
-Before we can plot this data properly, we need to download a shapefile of Nova Scotia.
-This will give us a map on which we can plot our data. We can get a suitable Shapefile
-for Nova Scotia from GADM, the Global Administrative boundaries reference. The following
-code will retrieve first the country, then the province:
-
-~~~
-Canada <- getData('GADM', country="CAN", level=1)
-NS <- Canada[Canada$NAME_1=="Nova Scotia",]
-~~~
-{:.language-r}
-
 ~~~
 # Reduce Detections to Detection Events ####
 
