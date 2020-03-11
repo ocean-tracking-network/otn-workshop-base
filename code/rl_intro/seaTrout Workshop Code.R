@@ -21,7 +21,7 @@ library(rgeos)
 library(mapproj)
 
 # Package for dealing with argos data, some useful functions for working with a series of geospatial data points
-library(argosfilter)
+library(argosfilter) # we're mainly going to use its distance-calculator.
 
 # Other content not covered in this module - network analysis using igraph and ggraph, mixed-effects models.
 
@@ -40,6 +40,8 @@ args(lm)
 # If you were to read in a CSV file of your own detection data:
 # seaTrout <- read.csv("ideasOTNtws2020code/rl_intro/seaTrout.csv")
 
+# If you're following along, this is a great time to set your working directory!
+# setwd("[/wherever/you/put/this]/code/rl_intro")
 # Load this nice .rda file of your data. We'll explore what it looks like.
 # meanwhile, this is a painless way to dump 1.5m observations into your environment
 load("seaTrout.rda")
@@ -96,13 +98,13 @@ seaTrout %>% filter(Species=="Trout")
 ####
 # basic function 1.5: plotting
 ####
-plot(seaTrout$lon, seaTrout$lat)  # check again if beverage is full
+plot(seaTrout$lon, seaTrout$lat)  # check again if beverage is full, takes a while to finish, another while to show up.
 seaTrout %>% ggplot(aes(lon, lat))+geom_point() # sometimes plots just take time
 
 ####
 # basic function 1.6: getting data summaries
 ####
-tapply(seaTrout$lon, seaTrout$tag.ID, mean) # get the mean value across a column
+tapply(seaTrout$lon, seaTrout$tag.ID, mean) # get the mean value across value groups in a column
 seaTrout %>% 
   group_by(tag.ID) %>% 
   summarise(mean=mean(lon))   # Can use pipes and newlines to organize this process 
@@ -173,7 +175,7 @@ proj4string(stS)<-CRS("+proj=utm +zone=33 +ellps=WGS84 +datum=WGS84 +units=m +no
 
 # We'd like to project this into longlat - but spTransform can take this to any projection / coordinate reference system we need.
 st<-spTransform(stS, CRS("+init=epsg:28992"))   # what is epsg:28992 - https://epsg.io/28992 - netherlands/dutch topographic map in easting/northing
-st<-data.frame(st)  # results aren't a data.frame by default though.
+st<-data.frame(st)  # results are still a SpatialPointsDataFrame, to go back to data.frame
 View(st)  # It knows the coords should go in lon and lat columns, but they're actually easting/northing now as per the CRS.
 
 st<-spTransform(stS, CRS("+proj=longlat +datum=WGS84")) # ok let's put it in lat/lon WGS84
@@ -185,15 +187,15 @@ View(st)
 # or to fetch a terrain/bathy map from NOAA using marmap
 
 x=.5 # padding for our bounds
-st<- st %>% as_tibble(st) # put our data back into tibble form explicitly
+st<- st %>% as_tibble # put our data back into tibble form explicitly
 bgo <- getNOAA.bathy(lon1 = min(st$lon-x), lon2 = max(st$lon+x),
                      lat1 = min(st$lat-x), lat2 = max(st$lat+x), resolution = 1) # higher resolutions are very big.
 class(bgo); bgo %>% class # same %>% concept as before, these are just two ways of doing the same thing 
 plot(bgo) # what's a 'bathy' object?
 plot(bgo, col="royalblue")
 autoplot(bgo)
-# Turn the raster into a data.frame for easy plotting and then into a tibble.
-# This works for any raster file! Turn it into a square matrix and let it be a tibble.
+# Turn the raster into a x,y,z data.frame for easy plotting and then into a tibble.
+# This pipe chain works for any raster file! Turn it into (x,y,z) and let it be a tibble.
 bgo %>% fortify %>% as_tibble   
 
 # Let's really lay on the style with ggplot
@@ -230,14 +232,14 @@ bplot  # now that it's in bplot, here's how you can show it if you need to.
 
 # Filtering and data processing 
 
-st<-as_tibble(st) # make sure st is a tibble again for speed's sake
+st<-as_tibble(st) # make sure st is a tibble again (speedier?)
 
 # One pipe to fix dates, 
 # filter subsets, 
 # calculate lead and lag locations,
 # and calculate new derived values, in this case, bearing and distance.
 
-st<-st %>%  # overwrite the dataframe with the result of this pipe!
+st<-st %>%  # overwrites the dataframe we're working on with the result of this pipe!
   mutate(dt=ymd_hms(DateTime)) %>% 
   dplyr::select(-1, -2, -DateTime) %>%  # Don't return DateTime, or column 1 or 2 of the data
  # filter(month(dt)>5 & month(dt)<10) %>%  # filter for just a range of months?
@@ -245,7 +247,7 @@ st<-st %>%  # overwrite the dataframe with the result of this pipe!
   group_by(tag.ID) %>% 
   mutate(llon=lag(lon), llat=lag(lat)) %>%  # lag longitude, lag latitude (previous position)
   filter(lon!=lag(lon)) %>%  # If you didn't change positions, drop this row.
-  rowwise() %>% 
+  # rowwise() %>% 
   filter(!is.na(llon)) %>%  # Also drop any NA lag longitudes (i.e. the first detection of each)
   mutate(bearing=argosfilter::bearing(llat, lat, llon, lon)) %>% # use mutate and argosfilter to add bearings!
   mutate(dist=argosfilter::distance(llat, lat, llon, lon)) # use mutate and argosfilter to add distances!
@@ -343,14 +345,13 @@ an1<-bgo %>%
 
 gganimate::animate(an1)
 
-# Notably: we're doing a lot of portage! The perils of working in a river system. 
-# Later we'll use the glatos package to help us dodge land masses better in our transitions.
+# Notably: If we were to animate the paths between these blinking points, we'd be doing a lot of portage! The perils of working in a river system. 
+# Later we'll use the glatos package to help us dodge land masses better while animating transitions between stations.
 
 
 ## Chapter 7: Some hypothesis tests
 
 # H1: Trout moved farther seaward in the summer
-# Plotting all points from here on out, this can take a long time!
 
 st %>% 
   filter(Species=="Trout") %>% 
