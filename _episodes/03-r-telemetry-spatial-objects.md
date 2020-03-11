@@ -61,7 +61,7 @@ autoplot(bgo)
 ~~~
 {: .language-r}
 
-As a housekeeping step, we'll often use `fortify` to first turn the raster into a data.frame and then optionally `as_tibble` to make it explicitly a tibble. This makes our plotting functions happy, and works for any raster file! Here's the syntax to turn `bgo` into a square matrix and then into a tibble.
+As a housekeeping step, we'll often use `fortify` to first turn the raster into an x,y,z data.frame and then optionally `as_tibble` to make it explicitly a tibble. This makes our plotting functions happy, and works for any raster file! Here's the syntax to turn `bgo` into a x,y,z dataframe and then into a tibble.
 
 ~~~
 bgo %>% fortify %>% as_tibble   
