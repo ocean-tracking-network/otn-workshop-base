@@ -1,6 +1,6 @@
 ---
 title: Collaborating with OTN - Advantages and Best Practices
-teaching: 30
+teaching: 0
 exercises: 0
 questions:
     - "What is the Ocean Tracking Network?"
