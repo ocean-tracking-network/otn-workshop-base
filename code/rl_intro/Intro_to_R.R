@@ -4,6 +4,7 @@
 
 
 install.packages("tidyverse") # really neat collection of packages! https://www.tidyverse.org/ 
+library('tidyverse')
 
 setwd('C:/Users/ct991305/Documents/Workshop Material/SPG_July_2020') #set folder you're going to work in
 getwd() #check working directory
@@ -93,6 +94,7 @@ seaTrout %>% dplyr::select(7)
 seaTrout[c(1:5),] #selects rows 1 to 5
 seaTrout %>% slice(1:5) #dplyr way
 
+seaTrout_full = seaTrout
 seaTrout <- seaTrout %>% slice(1:100000) #make dataframe smaller, so that it will be easier to work with later
 
 nrow(data.frame(unique(seaTrout$Species))) #number of species, in base R
@@ -126,17 +128,82 @@ plot(seaTrout$lon, seaTrout$lat)  #base R
 
 library(ggplot2) #tidyverse-style plotting, a very customizable plotting package
 seaTrout %>%  
-  ggplot(aes(lon, lat)) + #aes = the aesthetic. x and y and colours etc.
+  ggplot(aes(lon, lat)) + #aes = the aesthetic. x and y etc.
   geom_point() #geom = the type of plot
+
+
+## intro to ggplot ---------------------------------
+
+#ggplot(data = <DATA>, mapping = aes(<MAPPINGS>)) +  <GEOM_FUNCTION>()
+
+# Assign plot to a variable
+seaTroutplot <- ggplot(data = seaTrout, 
+                       mapping = aes(x = lon, y = lat)) #can assign a base plot to data
+
+#Draw the plot
+seaTroutplot + 
+  geom_point(alpha=0.1, 
+             color = "blue") #layer whatever geom you want onto your plot template
+                             #very easy to explore diff geoms without re-typing
+                             #alpha is a transparency argument in case points overlap
+
+
+
+# monthly longitudinal distribution of salmon smolts and sea trout
+
+seaTrout %>%
+  group_by(m=month(DateTime), tag.ID, Species) %>% #make our groups
+  summarise(mean=mean(lon)) %>% #mean lon
+  ggplot(aes(m %>% factor, mean, colour=Species, fill=Species))+ #the data is supplied, but no info on how to show it!
+  geom_point(size=3, position="jitter")+   # draw data as points, and use jitter to help see all points instead of superimposition
+  coord_flip()+   #flip x y    
+  scale_colour_manual(values=c("grey", "gold"))+  # change the color palette to reflect species a bit better
+  scale_fill_manual(values=c("grey", "gold"))+ 
+  geom_boxplot()+ #another layer
+  geom_violin(colour="black") #aaaaaand another layer
+
+
+#There are other ways to present a summary of data like this that we might have chosen. 
+#geom_density2d() will give us a KDE for our data points and give us some contours across our chosen plot axes.
+
+seaTrout_full %>% #doesnt work on the subsetted data, back to original dataset for this one
+  group_by(m=month(DateTime), tag.ID, Species) %>%
+  summarise(mean=mean(lon)) %>%
+  ggplot(aes(m, mean, colour=Species, fill=Species))+
+  geom_point(size=3, position="jitter")+
+  coord_flip()+
+  scale_colour_manual(values=c("grey", "gold"))+
+  scale_fill_manual(values=c("grey", "gold"))+
+  geom_density2d(size=2, lty=1) #this is the only difference from the plot above 
+
+#we might like to use multiple plots for each subset, or facets, for our two distinct species,
+#as they're hard to see on top of one another in this way. 
+
+seaTrout %>% #maybe try with full dataset seaTrout1 as well, up to you
+  group_by(m=month(DateTime), tag.ID, Species) %>%
+  summarise(mean=mean(lon)) %>%
+  ggplot(aes(m, mean))+
+  stat_density_2d(aes(fill = stat(nlevel)), geom = "polygon")+ #new plot type
+  geom_point(size=3, position="jitter")+
+  coord_flip()+
+  facet_wrap(~Species)+ #faceting our plot by species! we already grouped  them
+  scale_fill_viridis_c() +
+  labs(x="Mean Month", y="Longitude (UTM 33)") #axis labeling
+
+# per-individual density contours - lots of facets!
+seaTrout %>%
+  ggplot(aes(lon, lat))+
+  stat_density_2d(aes(fill = stat(nlevel)), geom = "polygon")+
+  facet_wrap(~tag.ID)
+
 
 ## new R, new dplyr ---------------------------------
 #just an FYI, there is a new dplyr and new R version out recently! 
 #see full changes w R version 4.0 here https://cran.r-project.org/doc/manuals/r-devel/NEWS.html
 #see the full changes to dplyr 1.0 here https://www.tidyverse.org/blog/2020/06/dplyr-1-0-0/ 
 #the changes as I recognize them:
-#1. read.csv(), data.frame(), read.table() no longer has `StringsAsFactors = TRUE` as default. 
-    # check data types on import. 
-    # now functions like the dplyr read_csv() function
+#1. read.csv(), data.frame(), read.table() no longer have `StringsAsFactors = TRUE` as default. 
+# check data types on import. 
+# now functions same as the dplyr read_csv() function
 #2. packages need to be re-installed under R version 4.0+
 #3. some packages won't work (yet) on R 4.0+
-
