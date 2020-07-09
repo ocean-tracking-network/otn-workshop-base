@@ -4,8 +4,7 @@ root: .  # Is the only page that doesn't follow the pattern /:path/index.html
 permalink: index.html  # Is the only page that doesn't follow the pattern /:path/index.html
 ---
 
-This one-day workshop begins with an overview of OTN and its role in aggregating telemetry data, an introduction to taking your records from fieldnotes to analysis ready data sets,
-and where when and how to submit data and metadata to OTN. In the second session, you will be introduced to exploring and plotting acoustic telemetry data in R using dplyr and ggplot. The third session offers a brief overview of the `glatos` R package for performing some of these same tasks using standard functions, and in the final session, you'll get an introduction to statistical analysis of animal behavioural states using Hidden Markov models and the `moveHMM` R package.
+This one-day workshop will be introduce the R programming language, a popular language for biologists, featuring many software packages that are suitable for exploring and plotting acoustic telemetry data (`dplyr` and `ggplot`). The second session offers a brief overview of the `glatos` R package for performing some of these same tasks using standard functions, and in the final session, we will have discussion of choosing an appropriate analysis for your telemetry data, and applying the knowledge gained from your studies to decision makers and to enhance public knowledge.
 
 
 - [Powerpoint](/Resources/DFO_best_practices_2020_03.pptx)
