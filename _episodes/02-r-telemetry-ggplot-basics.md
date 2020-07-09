@@ -17,7 +17,8 @@ keypoints:
 
 `ggplot2` takes advantage of tidyverse pipes and chains of data manipulation as well as separating the aesthetics of the plot (what are we plotting) from the styling of the plot (how should we show it?), in order to produce readable and malleable plotting code.
 
-general formula **ggplot(data = <DATA>, mapping = aes(<MAPPINGS>)) +  <GEOM_FUNCTION>()**
+general formula `ggplot(data = <DATA>, mapping = aes(<MAPPINGS>)) + <GEOM_FUNCTION>()`
+
 ~~~
 # Assign plot to a variable
 seaTroutplot <- ggplot(data = seaTrout, 
