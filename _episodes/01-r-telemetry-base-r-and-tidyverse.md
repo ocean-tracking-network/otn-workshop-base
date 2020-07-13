@@ -209,9 +209,10 @@ Questions:
 * What method of summarizing do you find more readable?
 * In base R, what is c()?
 
-FYI, there is a new dplyr and new R version out recently! 
+FYI, there is a new dplyr, ggplot and R version out recently! 
 see full changes w R version 4.0 here https://cran.r-project.org/doc/manuals/r-devel/NEWS.html
 see the full changes to dplyr 1.0 here https://www.tidyverse.org/blog/2020/06/dplyr-1-0-0/ 
+see the changes to ggplot2 3.0 here https://www.tidyverse.org/blog/2020/03/ggplot2-3-3-0/
 the changes as I recognize them:
 1. read.csv(), data.frame(), read.table() no longer have `StringsAsFactors = TRUE` as default. 
       check data types on import. 
