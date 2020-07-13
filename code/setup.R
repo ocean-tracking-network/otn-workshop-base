@@ -48,3 +48,14 @@ install.packages('raster')
 library(glatos) # once you have your GLATOS installed properly
 install_ffmpeg()  
 
+### Dataset and Code -----
+# Once the packages are installed, you can download the datasets and code for this workshop from https://github.com/ocean-tracking-network/2020-07-16-OTNSPG-R-workshop/.
+
+# 1) Select the GREEN "code" button at the top and choose "Download ZIP"
+# 2) Unzip the folder and move to secure location on your computer (Documents, Desktop etc.)
+# 3) Copy the folder's path and use it to set your working directly in R using `setwd('<path-to-folder>')`.
+
+# If you are familiar with Git and Github, feel free to clone this repository as you normally would, 
+# by running `git clone https://github.com/ocean-tracking-network/2020-07-16-OTNSPG-R-workshop.git` in a terminal program 
+# and following from step 3 above.
+
