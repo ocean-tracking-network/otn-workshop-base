@@ -4,7 +4,7 @@
 
 
 install.packages("tidyverse") # really neat collection of packages! https://www.tidyverse.org/ 
-library('tidyverse')
+library(tidyverse)
 
 setwd('C:/Users/ct991305/Documents/Workshop Material/SPG_July_2020') #set folder you're going to work in
 getwd() #check working directory

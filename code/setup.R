@@ -1,16 +1,11 @@
----
-title: Setup
----
-
 ## Requirements
 
 ### R version: 3.6.x or newer (recommend 4.0.x) and RStudio
 
-Open RStudio and run this install script. It's best to run it line by line instead of all at once in case there are errors.
+#Open RStudio and run this install script. It's best to run it line by line instead of all at once in case there are errors.
 
-<b>Note:</b> When running through the installs, you may encounter a prompt asking you to upgrade dependent packages. Choosing Option `3: None`, works in most situations and will prevent upgrades of packages you weren't explicitly looking to upgrade.
-```r
-
+#Note: When running through the installs, you may encounter a prompt asking you to upgrade dependent packages. 
+      #Choosing Option `3: None`, works in most situations and will prevent upgrades of packages you weren't explicitly looking to upgrade.
 
 # Tidyverse (data cleaning and arrangement)
 install.packages('tidyverse')
@@ -45,17 +40,11 @@ install.packages('mapproj')
 # Package for dealing with argos data, some useful functions for working with a series of geospatial data points
 install.packages('argosfilter')
 
-# SP and Raster packages for mapping.
+#SP and Raster packages for mapping.
 install.packages('sp')
 install.packages('raster')
 
-# Install ffmpeg, which we use for the GLATOS-derived animations.
+#Install ffmpeg, which we use for the GLATOS-derived animations.
 library(glatos) # once you have your GLATOS installed properly
-install_ffmpeg()            
+install_ffmpeg()  
 
-```
-
-Once the packages are installed, set your working directory using `setwd('<path-to-folder>')`
-
-
-{% include links.md %}
