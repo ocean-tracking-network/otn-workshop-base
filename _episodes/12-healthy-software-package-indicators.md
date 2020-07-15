@@ -14,6 +14,7 @@ keypoints:
     - CRAN, GitHub, literature
 * How do I learn the right way to use them?
     - vignettes that are legible and show me how this package fits my workflow
+    - how can I read the source of a function to confirm it's doing what it says?
 * Checking the Pulse of a Package
     - Open source? Regular updates? Tickets being submitted, addressed, and resolved?
 * Can I cite this thing?
