@@ -117,7 +117,8 @@ bplot<-bgo %>%  # Save the output of the plot call to a variable instead of show
 bplot  # now the plot is saved in bplot, show it by running just the variable name.
 
 ~~~
+{: .language-r}
 
 Hang onto `bplot` in your environment for now. We'll use it later on!
 
-{: .language-r}
+
