@@ -98,6 +98,14 @@ st<- st %>% as_tibble # put our data back into tibble form explicitly
 bgo <- getNOAA.bathy(lon1 = min(st$lon-x), lon2 = max(st$lon+x),
                      lat1 = min(st$lat-x), lat2 = max(st$lat+x), resolution = 1) # higher resolutions are very big.
 
+# Because there are some strange interplay between marmap and raster and rgdal on Windows,
+# you may have to round down and up your boundary variables to whole numbers.
+# Here's how to do that:
+
+#bgo <- getNOAA.bathy(lon1 = floor(min(st$lon-x)), lon2 = ceiling(max(st$lon+x)),
+#                       lat1 = floor(min(st$lat-x)), lat2 = ceiling(max(st$lat+x)),
+#                       resolution = 1)
+
 class(bgo); # check the data type of bgo
 # what's a 'bathy' object?
 View(bgo)   # can't View it...
