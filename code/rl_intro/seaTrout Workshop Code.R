@@ -1,17 +1,23 @@
 # Using dplyr and ggplot2 to view, clean and plot telemetry data #####
+# with a bit of discussion about handling geospatial data #
 # Built originally by Robert Lennox of NORCE, first version of this module delivered as part of ideasOTN in February 2020.
 
-# To verify your environment is ready to work along with this code, try all of these imports and examine the output closely for errors.
+# To verify your environment is ready to work along with this code, 
+# try all of these imports and examine the output closely for errors.
 # install.packages('name') for the packages that are missing.
+# If you ran through the setup for this, you should be alright.
 
 # Imports
 # Tidyverse - provides dplyr, ggplot2, and many other packages that simplify data.frame manipulation in R
 library(tidyverse)
+
 # Marmap - library that allows non-straight-line interpolation between two points. 
 # Useful for avoiding land masses when interpolating fish positions.
 library(marmap)
+
 # Lubridate - part of Tidyverse, improves the process of creating date objects 
 library(lubridate)
+
 # gganimate and gifski help you animate ggplot objects
 library(gganimate)
 library(gifski)
@@ -23,7 +29,12 @@ library(mapproj)
 # Package for dealing with argos data, some useful functions for working with a series of geospatial data points
 library(argosfilter) # we're mainly going to use its distance-calculator.
 
-# Other content not covered in this module - network analysis using igraph and ggraph, mixed-effects models.
+# spdplyr - use subsetting/selection syntax on spatial dataframes.
+# mapview - generate a local webservice that shows you a map representation of your
+# spatial dataframe.
+library(spdplyr)
+library(mapview)
+
 
 #### Organizing your Code - Making Headers ####
 # four #, -s, =s after the comment == header makes an entry.
@@ -40,119 +51,17 @@ args(lm)
 # If you were to read in a CSV file of your own detection data:
 # seaTrout <- read.csv("ideasOTNtws2020code/rl_intro/seaTrout.csv")
 
+# setwd() !====================================
 # If you're following along, this is a great time to set your working directory!
+#
 # setwd("[/wherever/you/put/this]/code/rl_intro")
-# Load this nice .rda file of your data. We'll explore what it looks like.
-# meanwhile, this is a painless way to dump 1.5m observations into your environment
+
+
+# If you want to, you can re-load this nice .rda file of your data.
+# We can quickly peek at it again to make sure it's what we want.
 load("seaTrout.rda")
 
-# Lots of ways to get a clue about what this variable is and how it looks
-
-# Base R way:
-str(seaTrout)
-
-# Tidyverse option:
 glimpse(seaTrout)
-
-# Call a function to print the first few rows
-# Base R way:
-head(seaTrout)
-
-# Tidyverse method of calling the head function:
-seaTrout %>% head
-
-
-## Chapter 1: base R and the tidyverse #####
-# basic functions 1.1: subsetting
-####
-# Select one column by number, base and then Tidy
-####
-seaTrout[,c(6)]
-seaTrout %>% select(6)
-
-####
-# Select the first 5 rows.
-####
-seaTrout[c(1:5),]
-seaTrout %>% slice(1:5)
-
-####
-# basic functions 1.2: how many species do we have?
-####
-nrow(data.frame(unique(seaTrout$Species))) 
-
-seaTrout %>% distinct(Species) %>% nrow
-####
-# basic function 1.3: format date times
-####
-as.POSIXct(seaTrout$DateTime) # Check if your beverage needs refilling
-
-seaTrout %>% mutate(DateTime=ymd_hms(DateTime))  # Lightning-fast, thanks to Lubridate's ymd_hms(), 'yammed hams'!
-                                                 # For datestrings in American, try dmy_hms()
-####
-# basic function 1.4: filtering
-####
-seaTrout[which(seaTrout$Species=="Trout"),]
-seaTrout %>% filter(Species=="Trout")
-
-####
-# basic function 1.5: plotting
-####
-plot(seaTrout$lon, seaTrout$lat)  # check again if beverage is full, takes a while to finish, another while to show up.
-seaTrout %>% ggplot(aes(lon, lat))+geom_point() # sometimes plots just take time
-
-####
-# basic function 1.6: getting data summaries
-####
-tapply(seaTrout$lon, seaTrout$tag.ID, mean) # get the mean value across value groups in a column
-seaTrout %>% 
-  group_by(tag.ID) %>% 
-  summarise(mean=mean(lon))   # Can use pipes and newlines to organize this process 
-
-## Chapter 2: expanding our ggplot capacity ####
-
-# monthly longitudinal distribution of salmon smolts and sea trout
-# Benefit of piping and plus-ing in additional aesthetics and geometry - can build and rebuild partial plots
-
-seaTrout %>% 
-  group_by(m=month(DateTime), tag.ID, Species) %>% 
-  summarise(mean=mean(lon)) %>% 
-  ggplot(aes(m %>% factor, mean, colour=Species, fill=Species))+ # the data is supplied, but no info on how to show it!
-  geom_point(size=3, position="jitter")+   # draw data as points, and use jitter to help see all points instead of superimposition
-  coord_flip()+       
-  scale_colour_manual(values=c("grey", "gold"))+  # change the color palette to reflect species a bit better
-  scale_fill_manual(values=c("grey", "gold"))+  
-  geom_boxplot()+    
-  geom_violin(colour="black")
-
-
-seaTrout %>% 
-  group_by(m=month(DateTime), tag.ID, Species) %>% 
-  summarise(mean=mean(lon)) %>% 
-  ggplot(aes(m, mean, colour=Species, fill=Species))+
-  geom_point(size=3, position="jitter")+
-  coord_flip()+
-  scale_colour_manual(values=c("grey", "gold"))+
-  scale_fill_manual(values=c("grey", "gold"))+
-  geom_density2d(size=2, lty=1)
-
-
-seaTrout %>% 
-  group_by(m=month(DateTime), tag.ID, Species) %>% 
-  summarise(mean=mean(lon)) %>% 
-  ggplot(aes(m, mean))+
-  stat_density_2d(aes(fill = stat(nlevel)), geom = "polygon")+
-  #geom_point(size=3, position="jitter")+
-  coord_flip()+
-  facet_wrap(~Species)+
-  scale_fill_viridis_c() +
-  labs(x="Mean Month", y="Longitude (UTM 33)")
-
-# per-individual density contours - lots of facets
-seaTrout %>% 
-  ggplot(aes(lon, lat))+
-  stat_density_2d(aes(fill = stat(nlevel)), geom = "polygon")+
-  facet_wrap(~tag.ID)
 
 
 ## Chapter 3: Handling spatial objects in R ####
@@ -161,7 +70,7 @@ library(rgdal)
 library(rgeos)
 
 # we have coordinates in UTM, a metric based projection
-# we want to work with latitude longitdude, so we must convert
+# we want to work with latitude longitude, so we must convert
 
 # Say that stS is a copy of our seaTrout data
 stS<-seaTrout 
@@ -170,8 +79,9 @@ stS<-seaTrout
 # Currently we're using sp brought in w/ rgeos
 
 coordinates(stS)<-~lon+lat # tell stS that it's a spatial data frame with coordinates in lon and lat
-proj4string(stS)<-CRS("+proj=utm +zone=33 +ellps=WGS84 +datum=WGS84 +units=m +no_defs") # in reference system UTM 33
-
+proj4string(stS)<-CRS("+proj=utm +zone=33 +ellps=WGS84 +datum=WGS84 +units=m +no_defs") 
+# Northern Norway is in reference system UTM 33
+# http://www.dmap.co.uk/utmworld.htm is one of many lookups for UTM zone selection (NS is zone 20N)
 
 # We'd like to project this into longlat - but spTransform can take this to any projection / coordinate reference system we need.
 st<-spTransform(stS, CRS("+init=epsg:28992"))   # what is epsg:28992 - https://epsg.io/28992 - netherlands/dutch topographic map in easting/northing
@@ -316,7 +226,38 @@ bplot+ # we saved this earlier when doing bathymetry plotting
 # whether a few highly detected individuals are providing most of the story in a summary like the one we made here, etc.
 
 
+# Intermission - Exploring the data interactively
+
+library(mapview)
+library(spdplyr)  # this is a bit of a new package, 
+                  # this will let us keep our spatial data frame 
+                  # and still explore the data in the tidyverse way!
+
+
+
+# How long would plotting all of this take? 
+# A long time! And the resulting browser window will be overloaded and
+# non-functional. So don't pass -too- many points to mapview!
+# mapview(stS)
+
+# Instead, look at a single animal? # 18,000 rows of data
+# Quick and snappy.
+mapview(stS %>% filter(tag.ID == "A69-1601-30617"))
+
+# A single month?  # 100,000 rows of data, at the edge of what mapview can do comfortably
+# Plotting this one takes a little longer, and the plot may be very slow to interact!
+mapview(stS %>% mutate(DateTime = ymd_hms(DateTime)) %>% 
+                filter(DateTime > as.POSIXct("2012-05-01") & DateTime < as.POSIXct("2012-06-01")))
+
+# Investigate how big a dataframe you're going to pass to a tool like mapview!
+
+
 ## Chapter 6: Animating plots ####
+# Telemetry data is millions of things that happened in the same places 
+# over and over again through time.
+# So static geographic maps don't really give a sense of what's happening!
+# We could use animation to get a better picture of what each animal 
+# was doing as they were using the system.
 
 # Let's pick one animal to follow
 st1<-st %>% filter(tag.ID=="A69-1601-30617") # another great time to check hydration levels
@@ -344,6 +285,9 @@ an1<-bgo %>%
 ?gganimate::animate  # To go deeper into gganimate's animate function and its features.
 
 gganimate::animate(an1)
+
+
+# This lovely gif tells the story of one animal effectively, but not interactively.
 
 # Notably: If we were to animate the paths between these blinking points, we'd be doing a lot of portage! The perils of working in a river system. 
 # Later we'll use the glatos package to help us dodge land masses better while animating transitions between stations.

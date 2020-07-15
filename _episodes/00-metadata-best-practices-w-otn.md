@@ -1,6 +1,6 @@
 ---
 title: Collaborating with OTN - Advantages and Best Practices
-teaching: 30
+teaching: 0
 exercises: 0
 questions:
     - "What is the Ocean Tracking Network?"
@@ -16,4 +16,4 @@ keypoints:
 
 This presentation will describe how you can interact with the Ocean Tracking Network to extend your study across all the compatible telemetry activity globally, and take advantage of quality control methods and standardized formats in use by hundreds of OTN partners around the world.
 
-- [Powerpoint](../Resources/metadata_best_practices_2020_03.pptx)
+- [Powerpoint](../Resources/metadata_best_practices_2020_07.pptx)
