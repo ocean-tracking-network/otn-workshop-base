@@ -2,6 +2,9 @@
 title: Basic Animations
 teaching: 30
 exercises: 0
+questions:
+    - "Where and how do I get a shapefile to use in my animation?"
+    - "How can I use GLATOS functions and a shapefile to animate my data?"
 ---
 
 With just a little extra code, we can go from static visualizations right into animations
