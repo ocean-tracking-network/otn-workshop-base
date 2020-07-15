@@ -16,8 +16,7 @@ keypoints:
 * literature reviews?  https://doi.org/10.1111/1365-2656.13116 (Joo et al, 2019)
 
 ### How do I learn the right way to use them?
-* **Vignettes** that are legible and show how this package fits your intended workflow
-* How can I read the source of a function in a package, if I want to confirm that it's doing what I expect?
+* Most importantly, are there **Vignettes** that are legible and show you how this package fits your intended workflow
 
 ### Should I keep this? 
 Checking the Pulse of a Package
