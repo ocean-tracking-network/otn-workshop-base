@@ -18,12 +18,14 @@ Now that we have an idea of what an exploratory workflow might look like with Ti
 
 st<-as_tibble(st) # make sure st is a tibble again for speed's sake
 
-# One pipe to fix dates,
-# filter subsets,
+
+# One pipe to fix dates, 
+# filter subsets, 
 # calculate lead and lag locations,
+# summarize multiple consecutive detections at one station into one entry,
 # and calculate new derived values, in this case, bearing and distance.
 
-st<-st %>%  # overwrite the dataframe with the result of this pipe!
+st_summary <- st %>%  # overwrites the dataframe we're working on with the result of this pipe!
   mutate(dt=ymd_hms(DateTime)) %>%
   dplyr::select(-1, -2, -DateTime) %>%  # Don't return DateTime, or column 1 or 2 of the data
  # filter(month(dt)>5 & month(dt)<10) %>%  # filter for just a range of months?
@@ -31,13 +33,15 @@ st<-st %>%  # overwrite the dataframe with the result of this pipe!
   group_by(tag.ID) %>%
   mutate(llon=lag(lon), llat=lag(lat)) %>%  # lag longitude, lag latitude (previous position)
   filter(lon!=lag(lon)) %>%  # If you didn't change positions, drop this row.
-  rowwise() %>%
+ # rowwise() %>%
   filter(!is.na(llon)) %>%  # Also drop any NA lag longitudes (i.e. the first detection of each)
   mutate(bearing=argosfilter::bearing(llat, lat, llon, lon)) %>% # use mutate and argosfilter to add bearings!
   mutate(dist=argosfilter::distance(llat, lat, llon, lon)) # use mutate and argosfilter to add distances!
 
 
 View(st)
+dim(st_summary) # only 192,000 'animal changed location' entries, down from 1.5m!
+
 ~~~
 {: .language-r}
 
@@ -46,7 +50,7 @@ So there's a lot going on here. First, we're going to write the result of our pi
  So in our pipe chain here, we are doing a lot of the things we saw earlier. We're fixing up the date object into a new column `dt` using `lubridate`. We're throwing out the first two columns, as well as the old `DateTime` string column. We're potentially filtering on `dt`, picking a range of months to keep. We're re-indexing the result with `arrange(dt)` before we start grouping to ensure that everything is in temporal order. We `group_by()` tag.ID, which is a stand-in for individual in this dataset. Then we use `mutate()` again within our grouped data along with `lag()` to produce new variables `llat` and `llon`. The `lag()` function operates on each group, grabbing the previous location (in time) for each animal, and storing it in two new columns. With this position and the previous position, we can calculate a distance and bearing between them. Now, this isn't a real distance or bearing for the trip between these points, that's not how acoustic detections work, we'll never say 'the animal traveled exactly X metres along this path between detections' but there might be a pattern to uncover using these measurements.
 
 ~~~
-st %>%
+st_summary %>%
   group_by(tag.ID) %>%
   mutate(cdist=cumsum(dist)) %>%
   ggplot(aes(dt, cdist, colour=tag.ID))+ geom_step()+
@@ -58,7 +62,7 @@ st %>%
 Now that we have our distance and bearing data, we can do things like calculate the total distance traveled per animal. Which as we mentioned, is more of a lower bound than a true measure, but especially in well-gated rivers could produce a useful metric.
 
 ~~~
-st %>%
+st_summary %>%
   filter(dist>2) %>%
   ggplot(aes(bearing, fill=Species))+
   # geom_histogram()+  # could do a histogram

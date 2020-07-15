@@ -169,7 +169,7 @@ st<-as_tibble(st) # make sure st is a tibble again (speedier?)
 
 
 
-st_summary<-st %>%  # overwrites the dataframe we're working on with the result of this pipe!
+st_summary <- st %>%  # overwrites the dataframe we're working on with the result of this pipe!
   mutate(dt=ymd_hms(DateTime)) %>% 
   dplyr::select(-1, -2, -DateTime) %>%  # Don't return DateTime, or column 1 or 2 of the data
  # filter(month(dt)>5 & month(dt)<10) %>%  # filter for just a range of months?
@@ -223,6 +223,10 @@ st_summary %>%
   facet_wrap(~Species)+
   geom_point()                                      # draw the points as well to make them clear.
 
+# Splitting on species can show us the different ways each species uses the network, 
+# but the scale of the values of edges and nodes is hard to differentiate. 
+# Let's switch our plot scale for the edges to a log scale.
+
 st_summary %>% 
   group_by(Species, lon, lat, llon, llat) %>% 
   summarise(n=n()) %>% 
@@ -232,7 +236,8 @@ st_summary %>%
   facet_wrap(~Species)
   
 
-# 5.2: Could label the receivers to provide context, or, we can add this to our map to see the relationships on top of the spatial data
+# Could label the receivers to provide context, or, 
+# we can add this to our basemap to see the relationships on top of the spatial data
 
 bplot+ # remember: we saved this bathy plot earlier
   geom_segment(data=st_summary %>% 
@@ -298,7 +303,7 @@ an1<-bgo %>%  # re-use our nice-looking background object bgo from earlier this 
   theme_classic()+    
   theme(legend.key.width=unit(5, "cm"), legend.position="top")+  # adjust some specific theme variables
   theme(legend.position="top")+                                  # check here for full list: https://ggplot2.tidyverse.org/reference/theme.html
-  geom_point(data=st %>%                 # draw the distinct lat/lon data in st as points
+  geom_point(data=st_summary %>%                 # draw the distinct lat/lon data in st as points
                as_tibble() %>%           # showing where receivers are
                distinct(lon, lat),
              aes(lon, lat), inherit.aes=F, pch=21, fill="red", size=2)+

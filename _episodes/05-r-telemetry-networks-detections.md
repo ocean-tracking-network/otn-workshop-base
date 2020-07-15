@@ -11,7 +11,7 @@ One of the more popular analysis domains for movement data has been network anal
 ~~~
 # 5.1: Networks are just connections between nodes and we can draw a simple one using animals traveling between receivers.
 
-st %>%
+st_summary %>%
   group_by(Species, lon, lat, llon, llat) %>%       # we handily have a pair of locations on each row from last example to group by
   summarise(n=n()) %>%                              # count the number of rows in each group
   ggplot(aes(x=llon, xend=lon, y=llat, yend=lat))+  # xend and yend define your segments
@@ -25,7 +25,7 @@ st %>%
 So `ggplot` will show us our travel between nodes using `xend` and `yend`, and we can choose a couple ways to display those connections using `geom_segment()` and `geom_curve()`. Splitting on species can show us the different ways each species uses the network, but the scale of the values of edges and nodes is hard to differentiate. Let's switch our plot scale for the edges to a log scale.
 
 ~~~
-st %>%
+st_summary %>%
   group_by(Species, lon, lat, llon, llat) %>%
   summarise(n=n()) %>%
   ggplot(aes(x=llon, xend=lon, y=llat, yend=lat, size=n %>% log))+
@@ -39,8 +39,8 @@ st %>%
 
 
 ~~~
-bplot+ # we saved this earlier when doing bathymetry plotting
-  geom_segment(data=st %>%
+bplot+ # remember: we saved this bathy plot earlier
+  geom_segment(data=st_summary %>%
                  group_by(Species, lon, lat, llon, llat) %>%
                  summarise(n=n()),
                aes(x=llon, xend=lon, y=llat, yend=lat, size=n %>% log, alpha=n %>% log), inherit.aes=F)+ # bplot has Z, nothing else does, so inherit.aes=F to ignore missing parent aesthetic values

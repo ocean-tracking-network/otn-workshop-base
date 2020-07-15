@@ -24,7 +24,7 @@ proj4string(stS)<-CRS("+proj=utm +zone=33 +ellps=WGS84 +datum=WGS84 +units=m +no
 ~~~
 {: .language-r}
 
-We can find from a UTM lookup reference what UTM zone we're supposed to be in. Northern Norway is UTM33, for example. http://www.dmap.co.uk/utmworld.htm 
+We can find from a [UTM lookup reference](http://www.dmap.co.uk/utmworld.htm) what UTM zone we're supposed to be in. Northern Norway is UTM33, for example.  
 
 ![UTM Zones in Europe](../Resources/800px-LA2-Europe-UTM-zones.png)
 
