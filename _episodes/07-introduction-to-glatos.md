@@ -138,7 +138,7 @@ sum_animal
 ~~~
 {: .language-r}
 
-We can also summarize by loation, grouping our data by distinct locations.
+We can also summarize by location, grouping our data by distinct locations.
 
 ~~~
 # By location ====

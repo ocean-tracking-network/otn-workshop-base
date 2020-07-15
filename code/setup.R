@@ -1,6 +1,6 @@
 ## Requirements
 
-### R version: 3.6.x or newer (recommend 4.0.x) and RStudio -----
+### R version: 3.6.x or newer (recommend 4.0.x) and RStudio
 
 #Open RStudio and run this install script. It's best to run it line by line instead of all at once in case there are errors.
 
