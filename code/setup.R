@@ -44,6 +44,13 @@ install.packages('argosfilter')
 install.packages('sp')
 install.packages('raster')
 
+# spdplyr - use dplyr's subsetting/grouping/selection syntax on spatial data frames.
+install.packages('spdplyr')
+
+# mapview - generate a local webservice that shows you a map representation of your
+# spatial dataframe.
+install.packages('mapview')
+
 #Install ffmpeg, which we use for the GLATOS-derived animations.
 library(glatos) # once you have your GLATOS installed properly
 install_ffmpeg()  
