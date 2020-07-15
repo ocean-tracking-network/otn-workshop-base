@@ -25,7 +25,7 @@ st<-as_tibble(st) # make sure st is a tibble again for speed's sake
 # summarize multiple consecutive detections at one station into one entry,
 # and calculate new derived values, in this case, bearing and distance.
 
-st_summary <- st %>%  # overwrites the dataframe we're working on with the result of this pipe!
+st_summary <- st %>%  
   mutate(dt=ymd_hms(DateTime)) %>%
   dplyr::select(-1, -2, -DateTime) %>%  # Don't return DateTime, or column 1 or 2 of the data
  # filter(month(dt)>5 & month(dt)<10) %>%  # filter for just a range of months?
@@ -45,7 +45,7 @@ dim(st_summary) # only 192,000 'animal changed location' entries, down from 1.5m
 ~~~
 {: .language-r}
 
-So there's a lot going on here. First, we're going to write the result of our pipe right back into the source dataset. This is good for saving memory, but bad for rapid reproducability/tinkering with the workflow. If we get it wrong, we have to go back and re-instantiate our dataset before trying again. So you may not want to jump to doing this right away.
+So there's a lot going on here. First, we're not going to write the result of our pipe right back into the source dataset. That's sometimes good for saving memory, but bad for rapid reproducability/tinkering with the workflow. If we get it wrong, we have to go back and re-instantiate our dataset before trying again. So you may not want to jump to doing this right away, but in a well-established workflow, maybe it's ok. I decided I didn't want to do that here.
 
  So in our pipe chain here, we are doing a lot of the things we saw earlier. We're fixing up the date object into a new column `dt` using `lubridate`. We're throwing out the first two columns, as well as the old `DateTime` string column. We're potentially filtering on `dt`, picking a range of months to keep. We're re-indexing the result with `arrange(dt)` before we start grouping to ensure that everything is in temporal order. We `group_by()` tag.ID, which is a stand-in for individual in this dataset. Then we use `mutate()` again within our grouped data along with `lag()` to produce new variables `llat` and `llon`. The `lag()` function operates on each group, grabbing the previous location (in time) for each animal, and storing it in two new columns. With this position and the previous position, we can calculate a distance and bearing between them. Now, this isn't a real distance or bearing for the trip between these points, that's not how acoustic detections work, we'll never say 'the animal traveled exactly X metres along this path between detections' but there might be a pattern to uncover using these measurements.
 
