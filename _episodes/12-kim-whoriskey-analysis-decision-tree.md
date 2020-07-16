@@ -15,4 +15,4 @@ A quick intro to different analytical techniques that can be used for analyzing 
 
 (Speaker: Kim Whoriskey)
 
-- [Powerpoint](../Resources/TBD.pptx)
+- [Powerpoint](../Resources/whoriskey_telemstats101.pptx)
