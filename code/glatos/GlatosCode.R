@@ -103,3 +103,7 @@ ATTdata <- convert_otn_to_att(detections, tags, deploymentObj = receivers)
 ATTdata$Tag.Detections
 ATTdata$Tag.Metadata
 ATTdata$Station.Information
+
+?COA
+coa <- VTrack::COA(ATTdata)
+View(coa)
