@@ -1,16 +1,13 @@
-<<<<<<< HEAD
-# 2020-07-16-OTNSPG-R-workshop
-Telemetry workshop materials for the SPG telemetry workshop occuring July 16th, 2020
+# 2020-12-17 FACT Virtual Workshops
+Telemetry workshop materials for the virtual FACT Network Workshops of December 2020
 
 ## Maintainer(s)
 
 Current maintainers of this lesson are 
 
-* Bruce Delo
 * Caitlin Bate
 * Ryan Gosse
 * Jon Pye
-
 
 ## Authors
 
