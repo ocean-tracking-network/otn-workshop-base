@@ -71,6 +71,6 @@ install_ffmpeg()
 # 3) Copy the folder's path and use it to set your working directly in R using `setwd('<path-to-folder>')`.
 
 # If you are familiar with Git and Github, feel free to clone this repository as you normally would, 
-# by running `git clone https://github.com/ocean-tracking-network/2020-07-16-OTNSPG-R-workshop.git` in a terminal program 
+# by running `git clone https://github.com/ocean-tracking-network/2020-12-17-telemetry-packages-FACT.git` in a terminal program 
 # and following from step 3 above.
 
