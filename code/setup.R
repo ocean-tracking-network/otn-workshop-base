@@ -1,8 +1,11 @@
 ## Requirements
 
-### R version: 3.6.x or newer (recommend 4.0.x) and RStudio
+### R version: 3.6.x or newer (recommend 4.0.x) and RStudio. 
+### Please also download the Rtools version compatible with your R version https://cran.r-project.org/bin/windows/Rtools/history.html
 
-#Open RStudio and run this install script. It's best to run it line by line instead of all at once in case there are errors.
+# You must install also GDAL software, can take a long time. See the extra setup document provided. 
+
+# Once R/RStudio is installed: open RStudio and run this install script. Please run it line-by-line instead of all at once in case there are errors.
 
 #Note: When running through the installs, you may encounter a prompt asking you to upgrade dependent packages. 
       #Choosing Option `3: None`, works in most situations and will prevent upgrades of packages you weren't explicitly looking to upgrade.
@@ -28,6 +31,9 @@ install.packages('marmap')
 # Lubridate - part of Tidyverse, improves the process of creating date objects
 install.packages('lubridate')
 
+# GGmap - complimentary to ggplot2, which is in the Tidyverse
+istall.packages('ggmap')
+
 # gganimate and gifski help you animate ggplot objects
 install.packages('gganimate')
 install.packages('gifski')
@@ -51,12 +57,14 @@ install.packages('spdplyr')
 # spatial dataframe.
 install.packages('mapview')
 
-#Install ffmpeg, which we use for the GLATOS-derived animations.
+# Install ffmpeg, which we use for the GLATOS-derived animations.
 library(glatos) # once you have your GLATOS installed properly
 install_ffmpeg()  
 
+
+
 ### Dataset and Code -----
-# Once the packages are installed, you can download the datasets and code for this workshop from https://github.com/ocean-tracking-network/2020-07-16-OTNSPG-R-workshop/.
+# Once the packages are installed, you can download the datasets and code for this workshop from https://github.com/ocean-tracking-network/2020-12-17-telemetry-packages-FACT/.
 
 # 1) Select the GREEN "code" button at the top and choose "Download ZIP"
 # 2) Unzip the folder and move to secure location on your computer (Documents, Desktop etc.)
