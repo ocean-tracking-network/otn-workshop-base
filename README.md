@@ -1,2 +1,2 @@
-# 2020-07-16-OTNSPG-R-workshop
-Telemetry workshop materials for the SPG telemetry workshop occuring July 16th, 2020
+# 2020-12-16-OTNxFACT-R-workshop
+Telemetry workshop materials for the FACT telemetry workshop occuring December 16th and 17th, 2020
