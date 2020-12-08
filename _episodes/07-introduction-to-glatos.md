@@ -19,8 +19,10 @@ First, we must set our working directory and import the relevant library.
 ~~~
 ## Set your working directory ####
 
-setwd("./code/glatos/")
+setwd("./data")
 library(glatos)
+library(tidyverse)
+library(VTrack)
 ~~~
 {: .language-r}
 
@@ -33,19 +35,11 @@ for each. Both, however, provide a marked performance boost over base R, and Bot
 ensure that the resulting data set will be compatible with the rest of the glatos
 framework.
 
-We will use the NSBS Blue Shark detections that come bundled with GLATOS. Please
-read the system.file documentation to understand how to load your own data from
-its location. You may not need to use the system.file command to build the path
-if the data is stored in the same place you're running your script from.
+We will use the CQCS detections.
 
 ~~~
-# Get file path to example blue shark OTN data
-det_file_name <- system.file("extdata", "blue_shark_detections.csv",
-                        package = "glatos")
-
-# Receiver Location
-rec_file_name <- system.file("extdata", "hfx_deployments.csv",
-                               package = "glatos")
+# Get file path to example FACT data
+det_file_name <- 'tqcs_matched_detections.csv'
 ~~~
 {:.language-r}
 
@@ -59,13 +53,19 @@ mark, followed by the name of the function.
 {: .language-r}
 
 With our file path in hand, we'll want to use the read_otn_detections function
-to load our data into a dataframe. In this case, our data is formatted in the OTN
+to load our data into a dataframe. In this case, our data is formatted in the FACT
 style- if it were GLATOS formatted, we would want to use read_glatos_detections()
 instead.
 
 ~~~
 # Save our detections file data into a dataframe called detections
 detections <- read_otn_detections(det_file=det_file_name)
+~~~
+{: .language-r}
+
+We will also filter out all the release rows.
+~~~
+detections <- detections %>% filter(receiver_sn != "release")
 ~~~
 {: .language-r}
 
@@ -76,17 +76,6 @@ was loaded properly.
 ~~~
 # View first 2 rows of output
 head(detections, 2)
-~~~
-{: .language-r}
-
-We can do the same for our receivers with the read_otn_deployments function.
-
-~~~
-?read_otn_deployments
-# Save receiver information into receivers dataframe
-
-receivers <- read_otn_deployments(rec_file_name)
-head(receivers, 2)
 ~~~
 {: .language-r}
 
@@ -132,7 +121,7 @@ detected.
 # Summarize Detections ####
 
 # By animal ====
-sum_animal <- summarize_detections(detections_filtered, summ_type='animal')
+sum_animal <- summarize_detections(detections_filtered, location_col = 'station', summ_type='animal')
 
 sum_animal
 ~~~
@@ -143,7 +132,7 @@ We can also summarize by location, grouping our data by distinct locations.
 ~~~
 # By location ====
 
-sum_location <- summarize_detections(detections_filtered, location_col='glatos_array', summ_type='location')
+sum_location <- summarize_detections(detections_filtered, location_col = 'station', summ_type='location')
 
 head(sum_location)
 ~~~
@@ -153,7 +142,7 @@ Finally, we can summarize by both dimensions.
 ~~~
 # By both dimensions
 sum_animal_location <- summarize_detections(det = detections_filtered,
-                                            location_col = 'glatos_array',
+                                            location_col = 'station',
                                             summ_type='both')
 
 head(sum_animal_location)
@@ -167,7 +156,7 @@ that we want to see summarized.
 ~~~
 # create a custom vector of Animal IDs to pass to the summary function
 # look only for these ids when doing your summary
-tagged_fish <- c("NSBS-Alison", "NSBS-Brandy", "NSBS-Hey Jude")
+tagged_fish <- c("TQCS-1049258-2008-02-14", "TQCS-1055546-2008-04-30", "TQCS-1064459-2009-06-29")
 
 sum_animal_custom <- summarize_detections(det=detections_filtered,
                                           animals=tagged_fish,

@@ -37,28 +37,32 @@ crosswalk OTN data over to the package [VTrack](https://github.com/RossDwyer/VTr
 ~~~
 ?convert_otn_to_att
 
-# OTN's tagging metadata sheet
-tag_sheet_path <- system.file("extdata", "otn_nsbs_tag_metadata.xls",
-                        package = "glatos")
-# detections
-det_file_name <- system.file("extdata", "blue_shark_detections.csv",
-                             package = "glatos")
-# Receiver Location
-rec_file_name <- system.file("extdata", "hfx_deployments.csv",
-                             package = "glatos")
+# FACT's tagging and deployment metadata sheet
+tag_sheet_path <- 'TQCS_metadata_tagging.xlsx'
+rcvr_sheet_path <- 'TEQ_Deployments.xlsx'
 
-detections <- read_otn_detections(det_file=det_file_name)
-receivers <- read_otn_deployments(rec_file_name)
-# Load the data from the tagging sheet
-# the 5 means start on line 5, and the 2 means use sheet 2
-tags <- prepare_tag_sheet(tag_sheet_path, 5, 2)
+# Load the data from the tagging sheet and the receiver sheet
+tags <- prepare_tag_sheet(tag_sheet_path, sheet=2)
+receivers <- prepare_deploy_sheet(rcvr_sheet_path)
 
+# Add columns missing from FACT extracts
+detections_filtered['sensorvalue'] = NA
+detections_filtered['sensorunit'] = NA
 
-ATTdata <- convert_otn_to_att(detections, tags, deploymentObj = receivers)
+# Rename the station names in receivers to match station names in detections
+receivers <- receivers %>% mutate(station=substring(station, 4))
+
+ATTdata <- convert_otn_to_att(detections_filtered, tags, deploymentSheet = receivers)
 ~~~
 {: .language-r}
 
-And then you can use your data with the VTrack package.
+And then you can use your data with the VTrack package. Here's an example of the Centers of Activity
+function from VTrack.
+~~~
+coa <- VTrack::COA(ATTdata)
+coa
+~~~
+{: .language-r}
 
 GLATOS also includes tools for planning receiver arrays, simulating fish moving in an array, 
 and some nice visualizations (which we will cover in the next episode).
