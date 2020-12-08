@@ -1,18 +1,32 @@
-## Requirements
+## Requirements------
 
 ### R version: 3.6.x or newer (recommend 4.0.x) and RStudio. 
 ### Please also download the Rtools version compatible with your R version https://cran.r-project.org/bin/windows/Rtools/history.html
 
-# You must install also GDAL software, can take a long time. See the extra setup document provided. 
+# For day 2 only: You must install also GDAL software, which can take a long time. See the extra setup document provided. 
 
 # Once R/RStudio is installed: open RStudio and run this install script. Please run it line-by-line instead of all at once in case there are errors.
 
 #Note: When running through the installs, you may encounter a prompt asking you to upgrade dependent packages. 
       #Choosing Option `3: None`, works in most situations and will prevent upgrades of packages you weren't explicitly looking to upgrade.
 
+
+
+## DAY 1 WORKSHOP REQUIREMENTS ----
 # Tidyverse (data cleaning and arrangement)
 install.packages('tidyverse')
 
+# Lubridate - part of Tidyverse, improves the process of creating date objects
+install.packages('lubridate')
+
+# GGmap - complimentary to ggplot2, which is in the Tidyverse
+istall.packages('ggmap')
+
+
+
+
+
+## DAY 2 WORKSHOP REQUIREMENTS ----
 # VTrack - Tools for Telemetry Analysis
 install.packages("devtools")
 library(devtools)
