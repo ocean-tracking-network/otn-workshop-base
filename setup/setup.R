@@ -20,7 +20,7 @@ install.packages('tidyverse')
 install.packages('lubridate')
 
 # GGmap - complimentary to ggplot2, which is in the Tidyverse
-intall.packages('ggmap')
+install.packages('ggmap')
 
 # Plotly - Interactive web-based data visualization
 install.packages('plotly')
@@ -38,38 +38,15 @@ library(remotes)
 install_url("https://gitlab.oceantrack.org/GreatLakes/glatos/-/raw/spg-workshop-2020/glatos_0.4.2.1.tar.gz",
             build_opts = c("--no-resave-data", "--no-manual"))  
 
-# Marmap - library that allows non-straight-line interpolation between two points.
-# Useful for avoiding land masses when interpolating fish positions.
-install.packages('marmap')
-
 # Lubridate - part of Tidyverse, improves the process of creating date objects
 install.packages('lubridate')
 
 # GGmap - complimentary to ggplot2, which is in the Tidyverse
-istall.packages('ggmap')
-
-# gganimate and gifski help you animate ggplot objects
-install.packages('gganimate')
-install.packages('gifski')
-
-# R language Bindings for the GEOS library, a pre-compiled, open source geometry engine for fast spatial calculation
-install.packages('rgeos')
-install.packages('rgdal')
-install.packages('mapproj')
-
-# Package for dealing with argos data, some useful functions for working with a series of geospatial data points
-install.packages('argosfilter')
+install.packages('ggmap')
 
 #SP and Raster packages for mapping.
 install.packages('sp')
 install.packages('raster')
-
-# spdplyr - use dplyr's subsetting/grouping/selection syntax on spatial data frames.
-install.packages('spdplyr')
-
-# mapview - generate a local webservice that shows you a map representation of your
-# spatial dataframe.
-install.packages('mapview')
 
 # Install ffmpeg, which we use for the GLATOS-derived animations.
 library(glatos) # once you have your GLATOS installed properly
