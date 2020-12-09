@@ -1,12 +1,14 @@
 # Intro to R for Telemetry Reporting ---------------------------------
-# FACT workshop 2020-12
+# FACT workshop 2020-12-16
 # Instructor: Caitlin Bate
 
 install.packages("tidyverse") # really neat collection of packages! https://www.tidyverse.org/ 
 library(tidyverse)
 
-setwd('C:/Users/ct991305/Documents/Workshop Material/2020-12-16-FACT') #set folder you're going to work in
+setwd('C:/Users/ct991305/Documents/Workshop Material/2020-12-17-telemetry-packages-FACT/') #set folder you're going to work in
 getwd() #check working directory
+
+#Everyone check to make sure all the files in the /data folder are UNZIPPED
 
 ## Operators ---------------------------------
 
@@ -23,6 +25,10 @@ weight_lb <- 2.2 * weight_kg #can assign output to an object. can use objects to
 
 #Answer 1: no! you have to re-assign 2.2*weight_kg to the object weight_lb for it to update.
 # The order you run your operations is very important, if you change something you may need to re-run everything!
+
+
+#TODO - put challenge answers in a separate file!!
+
 
 ## Functions ---------------------------------
 
@@ -103,7 +109,7 @@ heights[complete.cases(heights)] #select only complete cases
 
 ## Exploring Detection Extracts ---------------------------------
 
-tqcs_matched_2010 <- read_csv("tqcs_matched_detections_2010/tqcs_matched_detections_2010.csv") #imports file into R
+tqcs_matched_2010 <- read_csv("data/tqcs_matched_detections_2010.csv") #imports file into R. paste the filepath to the unzipped file here!
 #read_csv() is from tidyverse's readr package --> you can also use read.csv() from base R but it created a dataframe (not tibble) so loads slower
 #see https://link.medium.com/LtCV6ifpQbb 
 
@@ -168,12 +174,11 @@ tqcs_matched_2010 %>%
 
 #Bring in data from RW, combine years, remove duplicate release lines 
 #TODO - get code from Joy
-#TODO - maybe we need to subset once we're all combined?
 
-tqcs_matched_2011 <- read_csv("tqcs_matched_detections_2011/tqcs_matched_detections_2011.csv")
+
+tqcs_matched_2011 <- read_csv("data/tqcs_matched_detections_2011.csv")
 tqcs_matched_10_11 <- rbind(tqcs_matched_2010, tqcs_matched_2011) #join the two files
 
-#TODO - remake tqcs 2011 extract!! needs 36 columns
 
 View(tqcs_matched_10_11)
 
@@ -241,8 +246,8 @@ tqcs_10_11_plot +
 View(tqcs_matched_10_11) #already have our Tag matches
 
 #need our Array matches, joined
-teq_qual_2010 <- read_csv("teq_qualified_detections_2010_ish.csv")
-teq_qual_2011 <- read_csv("teq_qualified_detections_2011_ish.csv")
+teq_qual_2010 <- read_csv("data/teq_qualified_detections_2010_ish.csv")
+teq_qual_2011 <- read_csv("data/teq_qualified_detections_2011_ish.csv")
 teq_qual_10_11 <- rbind(teq_qual_2010, teq_qual_2011) 
 
 
@@ -251,17 +256,14 @@ teq_qual_10_11 <- teq_qual_10_11 %>% slice(1:100000) #subset our example data fo
 
 
 #need Array metadata
-teq_deploy <- read.csv("TEQ_Deployments_201001_201201.csv")
+teq_deploy <- read.csv("data/TEQ_Deployments_201001_201201.csv")
 
 
 #need Tag metadata
-tqcs_tag <- read.csv("TQCS_metadata_tagging.csv") 
+tqcs_tag <- read.csv("data/TQCS_metadata_tagging.csv") 
 #TODO - show how to change timezone?
 
-#TODO -Warning message:
-#Missing column names filled in: 'X59' [59], 'X60' [60], 'X61' [61], 'X62' [62], 'X63' [63], 'X64' [64], 'X65' [65], 'X66' [66], 'X67' [67], 'X68' [68], 'X69' [69], 'X70' [70], 'X71' [71], 'X72' [72], 'X73' [73] 
-
-#TODO - show temporal and location bounding
+#TODO - show temporal AND location bounding --> bounding box example?
 
 # Section 1: for Array Operators --------------------
 #1. map array locations, by year/month - deploy metadata
@@ -270,7 +272,7 @@ library(ggmap)
 
 #make a basemap for your stations, using the min/max deploy lat and longs as bounding box
 base <- get_stamenmap(
-  bbox = c(left = min(teq_deploy$DEPLOY_LONG), #TODO - fact format 
+  bbox = c(left = min(teq_deploy$DEPLOY_LONG), 
            bottom = min(teq_deploy$DEPLOY_LAT), 
            right = max(teq_deploy$DEPLOY_LONG), 
            top = max(teq_deploy$DEPLOY_LAT)),
@@ -279,7 +281,7 @@ base <- get_stamenmap(
   zoom = 8)
 
 #filter for stations you want to plot
-teq_deploy_plot <- teq_deploy %>% #TODO - fact format
+teq_deploy_plot <- teq_deploy %>% 
   mutate(deploy_date=ymd_hms(DEPLOY_DATE_TIME....yyyy.mm.ddThh.mm.ss.)) %>% #make a datetime
   mutate(recover_date=ymd_hms(RECOVER_DATE_TIME..yyyy.mm.ddThh.mm.ss.)) %>% #make a datetime
   filter(!is.na(deploy_date)) %>% #no null deploys
@@ -301,7 +303,7 @@ teq_map <-
 teq_map
 
 #save your receiver map into your working directory
-ggsave(plot = teq_map, file = "teq_map.tiff", units="in", width=15, height=8)
+ggsave(plot = teq_map, file = "code/day1/teq_map.tiff", units="in", width=15, height=8)
 
 #2. interactive map? https://plotly.com/r/scatter-plots-on-maps/
 
@@ -346,13 +348,13 @@ teq_qual_summary <- teq_qual_10_11 %>%
 teq_qual_summary #remember, this is just the first 10,000 rows!
 
 #export our summary table
-write_csv(teq_qual_summary, "teq_detection_summary_June2010_to_Dec2011.csv", col_names = TRUE)
+write_csv(teq_qual_summary, "code/day1/teq_detection_summary_June2010_to_Dec2011.csv", col_names = TRUE)
 
 
 #4. detection attributes by year/month
 #TODO - what attributes? dets per station?
 
-teq_det_summary  <- teq_qual_10_11  %>% #TODO - FACT format??
+teq_det_summary  <- teq_qual_10_11  %>% 
   mutate(datecollected=ymd_hms(datecollected))  %>% 
   group_by(station, year = year(datecollected), month = month(datecollected)) %>% 
   summarize(count =n())
@@ -445,7 +447,7 @@ tqcs_map_plotly
 
 #8. table of attributes of animals (all which are in SC notebook plus arrayowner)
 
-#TODO - what attributes? do we need to join tag meta w dets? #DO WE WANNA?????
+#TODO - what attributes? do we need to join the detections in here??
 
 # summary of animals you've tagged
 tqcs_tag_summary <- tqcs_tag %>% 
@@ -466,18 +468,30 @@ tqcs_tag_summary
 
 #TODO- join to tag meta? what kind of attributes?
 
-#10. total detection counts by year
 
-#TODO - by year?? by year and month??
 
-tqcs_matched_10_11 %>% 
-  group_by(year = year(datecollected), month = month(datecollected)) %>% 
-  summarize(count = n()) %>% 
-  ggplot(aes(month %>% as.factor(), count))+ #TODO - add years in here, see what we did for Q extracts
-  geom_col()+
+#10. total detection counts by year/month
+
+tqcs_matched_10_11  %>% #try with tqcs_matched_10_11_full if you're feeling bold!
+  mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
+  mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
+  group_by(year_month) %>% #can group by station, species etc.
+  summarize(count =n()) %>% #how many dets per year_month
+  ggplot(aes(x = (month(year_month) %>% as.factor()), 
+             y = count, 
+             fill = (year(year_month) %>% as.factor())
+  )
+  )+ 
+  geom_bar(stat = "identity", position = "dodge2")+ 
   xlab("Month")+
   ylab("Total Detection Count")+
-  ggtitle('TQCS Detections by Month (2010-2011')
+  ggtitle('TQCS Detections by Month (2010-2011)')+ #title
+  labs(fill = "Year") #legend title
+
+
+
+
+
 
 
 # Other Example Plots -----------
