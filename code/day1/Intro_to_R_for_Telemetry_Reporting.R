@@ -100,7 +100,6 @@ View(tqcs_matched_2010) #can also click on object in Environment window
 str(tqcs_matched_2010) #can see the type of each column (vector)
 glimpse(tqcs_matched_2010) #similar to str()
 
-#important to know what functions will work on which, and which need to be converted
 
 summary(tqcs_matched_2010$latitude) #summary() is a base R function that will spit out some quick stats about a vector (column)
 #the $ syntax is the way base R selects columns from a data frame
@@ -145,17 +144,16 @@ tqcs_matched_2010 %>%
 
 
 #Bring in data from RW, combine years, remove duplicate release lines 
-#TODO - get code from Joy
-
 
 tqcs_matched_2011 <- read_csv("data/tqcs_matched_detections_2011.csv")
-tqcs_matched_10_11 <- rbind(tqcs_matched_2010, tqcs_matched_2011) #join the two files
+tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #join the two files
 
+#release records for animals often appear in >1 year, this will remove the duplicates
+tqcs_matched_10_11_full <- tqcs_matched_10_11_full %>% distinct() 
 
 View(tqcs_matched_10_11)
 
-tqcs_matched_10_11_full <- tqcs_matched_10_11 #tuck the full dataset in a new object for safe keeping
-tqcs_matched_10_11 <- tqcs_matched_10_11 %>% slice(1:100000) #subset our example data for ease of analysis!
+tqcs_matched_10_11 <- tqcs_matched_10_11_full %>% slice(1:100000) #subset our example data for ease of analysis!
 
 ## Dealing with Datetimes in lubridate ---------------------------------
 
@@ -184,7 +182,7 @@ library(ggplot2) #tidyverse-style plotting, a very customizable plotting package
 
 # Assign plot to a variable
 tqcs_10_11_plot <- ggplot(data = tqcs_matched_10_11, 
-                    mapping = aes(x = latitude, y = longitude)) #can assign a base plot to data
+                  mapping = aes(x = latitude, y = longitude)) #can assign a base plot to data
 
 # Draw the plot
 tqcs_10_11_plot + 
@@ -223,25 +221,25 @@ View(tqcs_matched_10_11) #already have our Tag matches
 #need our Array matches, joined
 teq_qual_2010 <- read_csv("data/teq_qualified_detections_2010_ish.csv")
 teq_qual_2011 <- read_csv("data/teq_qualified_detections_2011_ish.csv")
-teq_qual_10_11 <- rbind(teq_qual_2010, teq_qual_2011) 
+teq_qual_10_11_full <- rbind(teq_qual_2010, teq_qual_2011) 
 
-
-teq_qual_10_11_full <- teq_qual_10_11 #tuck the full dataset in a new object for safe keeping
-teq_qual_10_11 <- teq_qual_10_11 %>% slice(1:100000) #subset our example data for ease of analysis!
+teq_qual_10_11 <- teq_qual_10_11_full %>% slice(1:100000) #subset our example data for ease of analysis!
 
 
 #need Array metadata
 teq_deploy <- read.csv("data/TEQ_Deployments_201001_201201.csv")
-
+View(teq_deploy)
 
 #need Tag metadata
 tqcs_tag <- read.csv("data/TQCS_metadata_tagging.csv") 
-#TODO - show how to change timezone?
+View(tqcs_tag)
 
-#TODO - show temporal AND location bounding --> bounding box example?
+#remember: we learned how to switch timezone of datetime columns above, if that is something you need to do with your dataset!!
+
+#TODO -  bounding box example for any of the below?
 
 # Section 1: for Array Operators --------------------
-#1. map array locations, by year/month - deploy metadata
+#1. map array locations
 
 library(ggmap)
 
@@ -255,7 +253,7 @@ base <- get_stamenmap(
   crop = FALSE,
   zoom = 8)
 
-#filter for stations you want to plot
+#filter for stations you want to plot - this is very customizable
 teq_deploy_plot <- teq_deploy %>% 
   mutate(deploy_date=ymd_hms(DEPLOY_DATE_TIME....yyyy.mm.ddThh.mm.ss.)) %>% #make a datetime
   mutate(recover_date=ymd_hms(RECOVER_DATE_TIME..yyyy.mm.ddThh.mm.ss.)) %>% #make a datetime
@@ -280,7 +278,7 @@ teq_map
 #save your receiver map into your working directory
 ggsave(plot = teq_map, file = "code/day1/teq_map.tiff", units="in", width=15, height=8)
 
-#2. interactive map? https://plotly.com/r/scatter-plots-on-maps/
+#2. interactive map https://plotly.com/r/scatter-plots-on-maps/
 
 library(plotly)
 
@@ -311,7 +309,7 @@ teq_map_plotly <- teq_map_plotly %>% layout(
 teq_map_plotly
 
 
-#3. table of attributes of animals detected - q extracts (n, commonname, sciname, owner)
+#3. table of attributes of animals detected - using q extracts
 
 teq_qual_summary <- teq_qual_10_11 %>% 
   filter(datecollected > '2010-06-01') %>% #select timeframe, stations etc.
@@ -327,7 +325,6 @@ write_csv(teq_qual_summary, "code/day1/teq_detection_summary_June2010_to_Dec2011
 
 
 #4. detection attributes by year/month
-#TODO - what attributes? dets per station?
 
 teq_det_summary  <- teq_qual_10_11  %>% 
   mutate(datecollected=ymd_hms(datecollected))  %>% 
@@ -336,13 +333,15 @@ teq_det_summary  <- teq_qual_10_11  %>%
 
 teq_det_summary #number of dets per month/year per station, remember: this is a subset!
 
+teq_anim_summary  <- teq_qual_10_11  %>% 
+  mutate(datecollected=ymd_hms(datecollected))  %>% 
+  group_by(station, year = year(datecollected), month = month(datecollected), scientificname) %>% 
+  summarize(count =n())
+
+teq_anim_summary #number of dets per month/year per station & species, remember: this is a subset!
 
 #5. total detection counts by year
-#library(zoo)
-#library(scales)
-#library(reshape2)
-#TODO - figure out if i need those ^
-  
+
 teq_qual_10_11 %>% #try with teq_qual_10_11_full if you're feeling bold! takes about 1 min to run on a fast machine
   mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
   mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
@@ -362,8 +361,17 @@ teq_qual_10_11 %>% #try with teq_qual_10_11_full if you're feeling bold! takes a
        
 # Section 2: for Taggers --------------------
 
-#6. map detections and releases - t extracts
-#TODO - use unfiltered dataset here to keep release locations in!
+#optional subsetted dataset to use: detections with releases filtered out!
+
+tqcs_matched_10_11_no_release <- tqcs_matched_10_11 %>% 
+  filter(receiver != "release")
+
+#optional full dataset to use: detections with releases filtered out!
+tqcs_matched_10_11_full_no_release <- tqcs_matched_10_11_full %>% 
+  filter(receiver != "release")
+
+
+#6. map detections and releases 
 
 base <- get_stamenmap(
   bbox = c(left = min(tqcs_matched_10_11$longitude),
@@ -380,7 +388,7 @@ tqcs_map <-
   ggmap(base, extent='panel') +
   ylab("Latitude") +
   xlab("Longitude") +
-  geom_point(data = tqcs_matched_10_11, #filtering for recent deployments
+  geom_point(data = tqcs_matched_10_11,
              aes(x = longitude,y = latitude), #specify the data
              colour = 'blue', shape = 19, size = 2) #lots of aesthetic options here!
 
@@ -388,7 +396,7 @@ tqcs_map <-
 tqcs_map
 
 
-#7. interactive map ^? https://plotly.com/r/scatter-plots-on-maps/ 
+#7. interactive map https://plotly.com/r/scatter-plots-on-maps/ 
 
 #set your basemap
 geo_styling <- list(
@@ -447,8 +455,7 @@ tqcs_tag_summary
 
 #10. total detection counts by year/month
 
-tqcs_matched_10_11_full  %>% #try with tqcs_matched_10_11_full if you're feeling bold! 
-  #TODO - filtered for no releases
+tqcs_matched_10_11_no_release  %>% #try with tqcs_matched_10_11_full_no_release if you're feeling bold! takes ~30 secs
   mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
   mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
   group_by(year_month) %>% #can group by station, species etc.
