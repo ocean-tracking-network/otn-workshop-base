@@ -35,7 +35,7 @@ devtools::install_github("rossdwyer/VTrack")
 # GLATOS - acoustic telemetry package that does filtering, vis, array simulation, etc.
 install.packages('remotes')
 library(remotes)
-install_url("https://gitlab.oceantrack.org/GreatLakes/glatos/-/raw/spg-workshop-2020/glatos_0.4.2.1.tar.gz",
+install_url("https://gitlab.oceantrack.org/GreatLakes/glatos/-/raw/fact-workshop-2020/glatos_0.4.2.1.tar.gz",
             build_opts = c("--no-resave-data", "--no-manual"))  
 
 # Lubridate - part of Tidyverse, improves the process of creating date objects
