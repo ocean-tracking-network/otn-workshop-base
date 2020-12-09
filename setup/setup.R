@@ -20,10 +20,10 @@ install.packages('tidyverse')
 install.packages('lubridate')
 
 # GGmap - complimentary to ggplot2, which is in the Tidyverse
-istall.packages('ggmap')
+intall.packages('ggmap')
 
-
-
+# Plotly - Interactive web-based data visualization
+install.packages('plotly')
 
 
 ## DAY 2 WORKSHOP REQUIREMENTS ----
