@@ -23,11 +23,6 @@ weight_lb <- 2.2 * weight_kg #can assign output to an object. can use objects to
 # if we change the value of weight_kg to be 100, does the value of weight_lb also change automatically?
 # remember: you can check the contents of an object by simply typing out its name
 
-#Answer 1: no! you have to re-assign 2.2*weight_kg to the object weight_lb for it to update.
-# The order you run your operations is very important, if you change something you may need to re-run everything!
-
-
-#TODO - put challenge answers in a separate file!!
 
 
 ## Functions ---------------------------------
@@ -45,10 +40,7 @@ args(round) #the args() function will show you the required arguments of another
 #Challenge 2: can you round the value 3.14159 to two decimal places?
 # using args() should give a clue!
 
-#Answer 2:
-# round(3.14159, 2) #the round function's second argument is the number of digits you want in the result
-# round(3.14159, digits = 2) #same as above
-# round(digits = 2, x = 3.14159) #when reordered you need to specify
+
 
 ## Vectors and Data Types ---------------------------------
 
@@ -66,9 +58,7 @@ animals <- c("mouse", "rat", "dog") #to create a character vector, use quotes
 #Challenge 3: what data type will this vector become? You can check using class()
 #challenge3 <- c(1, 2, 3, "4")
 
-#Answer 3: R will force all of these to be characters, since the number 4 has quotes around it! 
-#Will always coerce data types following this struture: logical → numeric → character ← logical
-#class(challenge3)
+
 
 #R will convert (force) all values in a vector to the same data type.
 #for this reason: try to keep one data type in each vector
@@ -97,15 +87,7 @@ heights[complete.cases(heights)] #select only complete cases
 #2. Use the function median() to calculate the median of the heights vector.
 #BONUS: Use R to figure out how many people in the set are taller than 67 inches.
 
-#Answer 4:
-#1. heights_no_na <- heights[!is.na(heights)] 
-  # or
-  # heights_no_na <- na.omit(heights)
-  # or
-  # heights_no_na <- heights[complete.cases(heights)]
-#2. median(heights, na.rm = TRUE)
-#BONUS: heights_above_67 <- heights_no_na[heights_no_na > 67]
-        #length(heights_above_67)
+
 
 ## Exploring Detection Extracts ---------------------------------
 
@@ -127,10 +109,7 @@ summary(tqcs_matched_2010$latitude) #summary() is a base R function that will sp
 #1. What is is the class of the station column in tqcs_matched_2010?
 #2. How many rows and columns are in the tqcs_matched_2010 dataset?
 
-#Answer 5: The column is a character, and there are 1,737,597 rows with 36 columns
-# str(tqcs_matched_2010)
-# or
-# glimpse(tqcs_matched_2010)
+
 
 ## Data Manipulation with dplyr --------------------------------------
 
@@ -161,15 +140,8 @@ tqcs_matched_2010 %>%
 #1. find the mean latitude and mean longitude for animal "TQCS-1049258-2008-02-14"
 #2. find the min lat/long of each animal for detections occurring in July
 
-#Answer 6:
-#1. tqcs_matched_2010 %>% 
-      #filter(catalognumber=="TQCS-1049258-2008-02-14") %>% 
-      #summarise(MeanLat=mean(latitude), MeanLong=mean(longitude))
 
-#2. tqcs_matched_2010 %>% 
-      #filter(monthcollected == 7) %>% 
-      #group_by(catalognumber) %>% 
-      #summarise(MinLat=min(latitude), MinLong=min(longitude))
+
 
 
 #Bring in data from RW, combine years, remove duplicate release lines 
@@ -209,13 +181,6 @@ tqcs_matched_10_11 %>% mutate(datecollected=ymd_hms(datecollected)) #Tells R to 
 
 library(ggplot2) #tidyverse-style plotting, a very customizable plotting package
 
-tqcs_matched_10_11 %>%  
-  ggplot(aes(latitude, longitude)) + #aes = the aesthetic. x and y etc.
-  geom_point() #geom = the type of plot
-
-tqcs_matched_10_11 %>%  
-  ggplot(aes(latitude, longitude, colour = commonname)) + #colour by species!
-  geom_point()
 
 # Assign plot to a variable
 tqcs_10_11_plot <- ggplot(data = tqcs_matched_10_11, 
@@ -229,12 +194,22 @@ tqcs_10_11_plot +
 #very easy to explore diff geoms without re-typing
 #alpha is a transparency argument in case points overlap
 
+tqcs_matched_10_11 %>%  
+  ggplot(aes(latitude, longitude)) + #aes = the aesthetic. x and y etc.
+  geom_point() #geom = the type of plot
+
+tqcs_matched_10_11 %>%  
+  ggplot(aes(latitude, longitude, colour = commonname)) + #colour by species!
+  geom_point()
+
+#anything you specify in the aes() is applied to the actual data points/whole plot, 
+#anything specified in geom() is applied to that layer only (colour, size...)
+
 #Challenge 7: try making a scatterplot showing the lat/long for animal "TQCS-1049258-2008-02-14", coloured by detection array
 
-#Answer 7: tqcs_matched_10_11 %>%  
-            #filter(catalognumber=="TQCS-1049258-2008-02-14") %>% 
-            #ggplot(aes(latitude, longitude, colour = detectedby)) + 
-            #geom_point()
+
+
+
 
 #Question: what other geoms are there? Try typing `geom_` into R to see what it suggests!
 
@@ -368,7 +343,7 @@ teq_det_summary #number of dets per month/year per station, remember: this is a 
 #library(reshape2)
 #TODO - figure out if i need those ^
   
-teq_qual_10_11  %>% #try with teq_qual_10_11_full if you're feeling bold! takes about 1 min to run on a fast machine
+teq_qual_10_11 %>% #try with teq_qual_10_11_full if you're feeling bold! takes about 1 min to run on a fast machine
   mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
   mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
   group_by(year_month) %>% #can group by station, species etc.
@@ -438,7 +413,7 @@ tqcs_map_plotly <- tqcs_map_plotly %>% add_markers(
 
 #Add layout (title + geo stying)
 tqcs_map_plotly <- tqcs_map_plotly %>% layout(
-  title = 'TQCS Detections<br />(2018-2019)', geo = geo_styling
+  title = 'TQCS Detections<br />(2010-2011)', geo = geo_styling
 )
 
 #View map
@@ -472,7 +447,8 @@ tqcs_tag_summary
 
 #10. total detection counts by year/month
 
-tqcs_matched_10_11  %>% #try with tqcs_matched_10_11_full if you're feeling bold!
+tqcs_matched_10_11_full  %>% #try with tqcs_matched_10_11_full if you're feeling bold! 
+  #TODO - filtered for no releases
   mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
   mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
   group_by(year_month) %>% #can group by station, species etc.

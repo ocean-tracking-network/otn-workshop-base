@@ -10,6 +10,12 @@
 #Answer 1: no! you have to re-assign 2.2*weight_kg to the object weight_lb for it to update.
 # The order you run your operations is very important, if you change something you may need to re-run everything!
 
+weight_kg <- 100
+
+weight_lb #didnt change!
+
+weight_lb <- 2.2 * weight_kg #now its updated
+
 
 
 
