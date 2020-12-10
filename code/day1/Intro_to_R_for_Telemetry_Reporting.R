@@ -91,15 +91,16 @@ heights[complete.cases(heights)] #select only complete cases
 
 ## Exploring Detection Extracts ---------------------------------
 
-tqcs_matched_2010 <- read_csv("data/tqcs_matched_detections_2010.csv") #imports file into R. paste the filepath to the unzipped file here!
+tqcs_matched_2010 <- read_csv("data/tqcs_matched_detections_2010.csv", guess_max = 117172) #imports file into R. paste the filepath to the unzipped file here!
 #read_csv() is from tidyverse's readr package --> you can also use read.csv() from base R but it created a dataframe (not tibble) so loads slower
 #see https://link.medium.com/LtCV6ifpQbb 
+#guess_max is helpful when there are many rows of NAs at the top.
 
 head(tqcs_matched_2010) #first 6 rows
 View(tqcs_matched_2010) #can also click on object in Environment window
 str(tqcs_matched_2010) #can see the type of each column (vector)
 glimpse(tqcs_matched_2010) #similar to str()
-
+?read_csv
 
 summary(tqcs_matched_2010$latitude) #summary() is a base R function that will spit out some quick stats about a vector (column)
 #the $ syntax is the way base R selects columns from a data frame
@@ -145,7 +146,7 @@ tqcs_matched_2010 %>%
 
 #Bring in data from RW, combine years, remove duplicate release lines 
 
-tqcs_matched_2011 <- read_csv("data/tqcs_matched_detections_2011.csv")
+tqcs_matched_2011 <- read_csv("data/tqcs_matched_detections_2011.csv", guess_max = 41880) #likley need to add a guess_max = 41880
 tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #join the two files
 
 #release records for animals often appear in >1 year, this will remove the duplicates
@@ -214,7 +215,6 @@ tqcs_matched_10_11 %>%
 
 
 ## Answering Qs for Reporting ---------------------------------
-#TODO - convert to UTC from Eastern??
 
 View(tqcs_matched_10_11) #already have our Tag matches
 
@@ -236,7 +236,6 @@ View(tqcs_tag)
 
 #remember: we learned how to switch timezone of datetime columns above, if that is something you need to do with your dataset!!
 
-#TODO -  bounding box example for any of the below?
 
 # Section 1: for Array Operators --------------------
 #1. map array locations
@@ -244,6 +243,10 @@ View(tqcs_tag)
 library(ggmap)
 
 #make a basemap for your stations, using the min/max deploy lat and longs as bounding box
+#what are our columns called?
+names(teq_deploy)
+
+
 base <- get_stamenmap(
   bbox = c(left = min(teq_deploy$DEPLOY_LONG), 
            bottom = min(teq_deploy$DEPLOY_LAT), 
@@ -261,6 +264,12 @@ teq_deploy_plot <- teq_deploy %>%
   filter(deploy_date > 2010-07-03) %>% #only looking at certain deployments
   group_by(STATION_NO) %>% 
   summarise(MeanLat=mean(DEPLOY_LAT), MeanLong=mean(DEPLOY_LONG)) #get the mean location per station
+
+# you could choose to plot stations which are within a certain bounding box!
+#to do this you would add another filter to the above data, before passing to the map
+# ex: add this line after the mutate() clauses:
+# filter(latitude <= 0.5 & latitude >= 24.5 & longitude <= 0.6 & longitude >= 34.9)
+
 
 
 #add your stations onto your basemap
@@ -342,7 +351,7 @@ teq_anim_summary #number of dets per month/year per station & species, remember:
 
 #5. total detection counts by year
 
-teq_qual_10_11 %>% #try with teq_qual_10_11_full if you're feeling bold! takes about 1 min to run on a fast machine
+teq_qual_10_11_full %>% #try with teq_qual_10_11_full if you're feeling bold! takes about 1 min to run on a fast machine
   mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
   mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
   group_by(year_month) %>% #can group by station, species etc.
@@ -367,6 +376,7 @@ tqcs_matched_10_11_no_release <- tqcs_matched_10_11 %>%
   filter(receiver != "release")
 
 #optional full dataset to use: detections with releases filtered out!
+
 tqcs_matched_10_11_full_no_release <- tqcs_matched_10_11_full %>% 
   filter(receiver != "release")
 
@@ -428,9 +438,7 @@ tqcs_map_plotly <- tqcs_map_plotly %>% layout(
 tqcs_map_plotly
 
 
-#8. table of attributes of animals (all which are in SC notebook plus arrayowner)
-
-#TODO - what attributes? do we need to join the detections in here??
+#8. Summary of tagged animals
 
 # summary of animals you've tagged
 tqcs_tag_summary <- tqcs_tag %>% 
@@ -449,8 +457,36 @@ tqcs_tag_summary
 
 #9. detection attributes by year/month, per collector array or species
 
-#TODO- join to tag meta? what kind of attributes?
+#Average location of each animal!
+tqcs_matched_10_11_no_release %>% 
+  group_by(catalognumber) %>% 
+  summarize(NumberOfStations = n_distinct(station),
+            AvgLat = mean(latitude),
+            AvgLong =mean(longitude))
 
+#Lets try to join to our tag metadata to get some more context!!
+#First we need to make a tagname column, and figure out the enddate of the tag battery
+
+tqcs_tag <- tqcs_tag %>% 
+  mutate(enddatetime = (ymd_hms(UTC_RELEASE_DATE_TIME) + days(EST_TAG_LIFE))) %>% 
+  mutate(tagname = paste(TAG_CODE_SPACE,TAG_ID_CODE, sep = '-'))
+
+#Now we join by tagname
+tag_joined_dets <-  left_join(x = tqcs_matched_10_11_no_release, y = tqcs_tag, by = "tagname")
+
+#make sure the redeployed tags have matched within their deployment period only
+tag_joined_dets <- tag_joined_dets %>% 
+  filter(datecollected >= UTC_RELEASE_DATE_TIME & datecollected <= enddatetime)
+
+View(tag_joined_dets)
+
+#Lets use this new dataframe to make summaries! Avg length per location
+tqcs_tag_det_summary <- tag_joined_dets %>% 
+  mutate(datecollected = ymd_hms(datecollected)) %>% 
+  group_by(detectedby, station, latitude, longitude)  %>%  #, catalognumber, LENGTH..m
+  summarise(AvgSize = mean(LENGTH..m., na.rm=TRUE))
+
+tqcs_tag_det_summary
 
 
 #10. total detection counts by year/month
@@ -513,6 +549,5 @@ tqcs_matched_10_11 %>%
   ggplot(aes(latitude, longitude))+
   facet_wrap(~catalognumber)+ #make one plot per individual
   geom_violin()
-
 
 
