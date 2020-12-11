@@ -1,16 +1,16 @@
 ---
-title: Intro to plotting
+title: Intro to Plotting
 teaching: 15
 exercises: 10
 questions:
-      - "How do I plot my data?"
-      - "How can I plot summaries of my data?"
+    - "How do I plot my data?"
+    - "How can I plot summaries of my data?"
 objectives:
-      - "Learn how to make basic plots with ggplot2"
-      - "Learn how to combine dplyr summaries with ggplot2 plots"
+    - "Learn how to make basic plots with ggplot2"
+    - "Learn how to combine dplyr summaries with ggplot2 plots"
 keypoints:
-      - "You can feed output from dplyr's data manipulation functions into ggplot using pipes."
-      - "Plotting various summaries and groupings of your data is good practice at the exploratory phase, and dplyr and ggplot make iterating different ideas straightforward."	  
+    - "You can feed output from dplyr's data manipulation functions into ggplot using pipes."
+    - "Plotting various summaries and groupings of your data is good practice at the exploratory phase, and dplyr and ggplot make iterating different ideas straightforward."	  
 ---
 
 ### Background
@@ -62,6 +62,8 @@ Try combining with `dplyr` functions in this challenge!
 ~~~
 #Challenge 7: try making a scatterplot showing the lat/long for animal "TQCS-1049258-2008-02-14", coloured by detection array
 
+
+#Question: what other geoms are there? Try typing `geom_` into R to see what it suggests!
 ~~~
 {: .language-r}
 

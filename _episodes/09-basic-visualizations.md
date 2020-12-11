@@ -48,7 +48,7 @@ code will retrieve first the country, then the province/state:
 library(raster)
 library(sp)
 USA <- getData('GADM', country="USA", level=1)
-FL <- Canada[Canada$NAME_1=="Florida",]
+FL <- USA[USA$NAME_1=="Florida",]
 ~~~
 {:.language-r}
 

@@ -1,17 +1,16 @@
 ---
-title: Starting with data frames
+title: Starting with Data Frames
 teaching: 25
 exercises: 10
 questions:
-      - "How do I import tabular data?"
-	  - "How do I explore my data set?"
-	  - "What are some basic data manipulation functions?"
+    - "How do I import tabular data?"
+	- "How do I explore my data set?"
+	- "What are some basic data manipulation functions?"
 objectives:
-      - "Become familiar with dplyr's methods to summarize and manipulate data"
+    - "Become familiar with dplyr's methods to summarize and manipulate data"
 keypoints:
-      - "dpylr makes creating complex data summaries easier, using pipes"
+    - "dpylr makes creating complex data summaries easier, using pipes"
 ---
-
 
 ### Importing from csv
 
@@ -19,10 +18,21 @@ keypoints:
 
 ~~~
 #imports file into R. paste the filepath to the unzipped file here!
-tqcs_matched_2010 <- read_csv("data/tqcs_matched_detections_2010.csv") 
+tqcs_matched_2010 <- read_csv("data/tqcs_matched_detections_2010.csv", guess_max = 117172)
 
 #read_csv() is from tidyverse's readr package --> you can also use read.csv() from base R but it created a dataframe (not tibble) so loads slower
 #see https://link.medium.com/LtCV6ifpQbb 
+
+#the guess_max argument is helpful when there are many rows of NAs at the top. R will not assign a data type to that columns until it reaches the max guess.
+#I chose to use these here because I got the following warning from read_csv()
+	# Warning: 82 parsing failures.
+	#   row            col           expected actual                                    file
+	#117172 bottom_depth   1/0/T/F/TRUE/FALSE   5    'data/tqcs_matched_detections_2010.csv'
+	#117172 receiver_depth 1/0/T/F/TRUE/FALSE   4    'data/tqcs_matched_detections_2010.csv'
+	#122664 bottom_depth   1/0/T/F/TRUE/FALSE   17.5 'data/tqcs_matched_detections_2010.csv'
+	#122664 receiver_depth 1/0/T/F/TRUE/FALSE   16.5 'data/tqcs_matched_detections_2010.csv'
+	#162757 bottom_depth   1/0/T/F/TRUE/FALSE   6    'data/tqcs_matched_detections_2010.csv'
+
 ~~~
 {: .language-r}
 
@@ -82,7 +92,7 @@ tqcs_matched_2010 %>%
 ### Joining Detection Extracts
 Here we will join and filter our detection extracts
 ~~~
-tqcs_matched_2011 <- read_csv("data/tqcs_matched_detections_2011.csv")
+tqcs_matched_2011 <- read_csv("data/tqcs_matched_detections_2011.csv", guess_max = 41880)
 tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #join the two files
 
 #release records for animals often appear in >1 year, this will remove the duplicates

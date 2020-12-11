@@ -1,14 +1,11 @@
 ---
-title: Telemetry Reports: Array Operators
+title: Telemetry Reports for Array Operators
 teaching: 30
 exercises: 0
 questions:
-      - "How do I summarize and plot my deployments?"
-      - "How do I summarize and plot my detections?"
-objectives:
-      - "Learn to use dplyr, ggplot2, ggmap and plotly to make array summaries."
+    - "How do I summarize and plot my deployments?"
+    - "How do I summarize and plot my detections?"
 ---
-
 
 ### Mapping my stations - Static map
 
@@ -17,6 +14,10 @@ Since we have already imported and joined our datasets, we can jump in. This sec
 library(ggmap)
 
 #make a basemap for your stations, using the min/max deploy lat and longs as bounding box
+
+#first, what are our columns called?
+names(teq_deploy)
+
 base <- get_stamenmap(
   bbox = c(left = min(teq_deploy$DEPLOY_LONG), 
            bottom = min(teq_deploy$DEPLOY_LAT), 
@@ -34,6 +35,11 @@ teq_deploy_plot <- teq_deploy %>%
   filter(deploy_date > 2010-07-03) %>% #only looking at certain deployments!
   group_by(STATION_NO) %>% 
   summarise(MeanLat=mean(DEPLOY_LAT), MeanLong=mean(DEPLOY_LONG)) #get the mean location per station
+  
+# you could choose to plot stations which are within a certain bounding box!
+# to do this you would add another filter to the above data, before passing to the map
+# ex: add this line after the mutate() clauses:
+	# filter(latitude >= 0.5 & latitude <= 24.5 & longitude >= 0.6 & longitude <= 34.9)
 
 
 #add your stations onto your basemap
@@ -116,6 +122,13 @@ teq_det_summary  <- teq_qual_10_11  %>%
   summarize(count =n())
 
 teq_det_summary #number of dets per month/year per station, remember: this is a subset!
+
+teq_anim_summary  <- teq_qual_10_11  %>% 
+  mutate(datecollected=ymd_hms(datecollected))  %>% 
+  group_by(station, year = year(datecollected), month = month(datecollected), scientificname) %>% 
+  summarize(count =n())
+
+teq_anim_summary #number of dets per month/year per station & species, remember: this is a subset!
 
 ~~~
 {: .language-r}

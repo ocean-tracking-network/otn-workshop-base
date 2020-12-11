@@ -1,12 +1,25 @@
 ---
-title: Telemetry Reports: Tag Owners
+title: Telemetry Reports for Tag Owners
 teaching: 30
 exercises: 0
 questions:
-      - "How do I summarize and plot my detections?"
-objectives:
-      - "Learn to use dplyr, ggplot2, ggmap and plotly to make tag summaries."
+    - "How do I summarize and plot my detections?"
+    - "How do I summarize and plot my tag metadata?"
 ---
+
+### New data frames
+~~~
+#optional subsetted dataset to use: detections with releases filtered out!
+
+tqcs_matched_10_11_no_release <- tqcs_matched_10_11 %>% 
+  filter(receiver != "release")
+
+#optional full dataset to use: detections with releases filtered out!
+
+tqcs_matched_10_11_full_no_release <- tqcs_matched_10_11_full %>% 
+  filter(receiver != "release")
+~~~
+{: .language-r}
 
 ### Mapping my Detections and Releases - static map
 
@@ -26,7 +39,7 @@ tqcs_map <-
   ggmap(base, extent='panel') +
   ylab("Latitude") +
   xlab("Longitude") +
-  geom_point(data = tqcs_matched_10_11, #filtering for recent deployments
+  geom_point(data = tqcs_matched_10_11, 
              aes(x = longitude,y = latitude), #specify the data
              colour = 'blue', shape = 19, size = 2) #lots of aesthetic options here!
 
@@ -95,12 +108,40 @@ tqcs_tag_summary
 
 Q: Since we don't have the ability to represent time, what are some optimal subsetting strategies for presenting data to `mapview()`?
 
-### Detection attributes by year/month
+### Detection Attributes
 
-????
+Joining the detections to the tag metadata will add line-by-line morphometrics and other information!
 
 ~~~
-??????
+#Average location of each animal, without release records
+tqcs_matched_10_11_no_release %>% 
+  group_by(catalognumber) %>% 
+  summarize(NumberOfStations = n_distinct(station),
+            AvgLat = mean(latitude),
+            AvgLong =mean(longitude))
+
+#Lets try to join to our tag metadata to get some more context!!
+#First we need to make a tagname column in the tag metadata, and figure out the enddate of the tag battery
+
+tqcs_tag <- tqcs_tag %>% 
+  mutate(enddatetime = (ymd_hms(UTC_RELEASE_DATE_TIME) + days(EST_TAG_LIFE))) %>% #adding enddate
+  mutate(tagname = paste(TAG_CODE_SPACE,TAG_ID_CODE, sep = '-')) #adding tagname column
+
+#Now we join by tagname, to the detections without the release information
+tag_joined_dets <-  left_join(x = tqcs_matched_10_11_no_release, y = tqcs_tag, by = "tagname")
+
+#make sure the redeployed tags have matched within their deployment period only
+tag_joined_dets <- tag_joined_dets %>% 
+  filter(datecollected >= UTC_RELEASE_DATE_TIME & datecollected <= enddatetime)
+
+View(tag_joined_dets)
+
+#Lets use this new dataframe to make summaries! Avg length per location
+tqcs_tag_det_summary <- tag_joined_dets %>% 
+  group_by(detectedby, station, latitude, longitude)  %>%  
+  summarise(AvgSize = mean(LENGTH..m., na.rm=TRUE))
+
+tqcs_tag_det_summary
 ~~~
 {: .language-r}
 
@@ -109,8 +150,7 @@ Q: Since we don't have the ability to represent time, what are some optimal subs
 Lets make an informative plot showing number of matched detections, per year and month.
 
 ~~~
-tqcs_matched_10_11  %>% #try with tqcs_matched_10_11_full if you're feeling bold! takes ~30 secs
-  #TODO - filtered for no releases
+tqcs_matched_10_11_no_release  %>% #try with tqcs_matched_10_11_full_no_release if you're feeling bold! takes ~30 secs
   mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
   mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
   group_by(year_month) %>% #can group by station, species etc.
