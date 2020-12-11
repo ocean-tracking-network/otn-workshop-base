@@ -20,7 +20,7 @@ Once all are installed, open RStudio and run these packages install scripts. It'
 # Tidyverse (data cleaning and arrangement)
 install.packages('tidyverse')
 
-# Lubridate - part of Tidyverse, improves the process of creating date objects
+# Lubridate - same group as Tidyverse, improves the process of creating date objects
 install.packages('lubridate')
 
 # GGmap - complimentary to ggplot2, which is in the Tidyverse
