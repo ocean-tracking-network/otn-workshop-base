@@ -8,6 +8,9 @@ questions:
 ---
 
 ### New data frames
+
+Filtering out release records from the detection extracts
+
 ~~~
 #optional subsetted dataset to use: detections with releases filtered out!
 
@@ -23,6 +26,8 @@ tqcs_matched_10_11_full_no_release <- tqcs_matched_10_11_full %>%
 
 ### Mapping my Detections and Releases - static map
 
+Where were my fish observed?
+
 ~~~
 base <- get_stamenmap(
   bbox = c(left = min(tqcs_matched_10_11$longitude),
@@ -35,6 +40,7 @@ base <- get_stamenmap(
 
 
 #add your releases and detections onto your basemap
+
 tqcs_map <- 
   ggmap(base, extent='panel') +
   ylab("Latitude") +
@@ -44,6 +50,7 @@ tqcs_map <-
              colour = 'blue', shape = 19, size = 2) #lots of aesthetic options here!
 
 #view your tagging map!
+
 tqcs_map
 
 ~~~
@@ -55,6 +62,7 @@ Let's use plotly!
 
 ~~~
 #set your basemap
+
 geo_styling <- list(
   fitbounds = "locations", visible = TRUE, #fits the bounds to your data!
   showland = TRUE,
@@ -64,9 +72,11 @@ geo_styling <- list(
 )
 
 #decide what data you're going to use
+
 tqcs_map_plotly <- plot_geo(tqcs_matched_10_11, lat = ~latitude, lon = ~longitude) 
 
 #add your markers for the interactive map
+
 tqcs_map_plotly <- tqcs_map_plotly %>% add_markers(
   text = ~paste(catalognumber, scientificname, paste("Date detected:", datecollected), 
                 paste("Latitude:", latitude), paste("Longitude",longitude), 
@@ -76,11 +86,13 @@ tqcs_map_plotly <- tqcs_map_plotly %>% add_markers(
 )
 
 #Add layout (title + geo stying)
+
 tqcs_map_plotly <- tqcs_map_plotly %>% layout(
   title = 'TQCS Detections<br />(2010-2011)', geo = geo_styling
 )
 
 #View map
+
 tqcs_map_plotly
 ~~~
 {: .language-r}
@@ -90,6 +102,7 @@ tqcs_map_plotly
 This section will use your Tagging Metadata
 ~~~
 # summary of animals you've tagged
+
 tqcs_tag_summary <- tqcs_tag %>% 
   mutate(UTC_RELEASE_DATE_TIME = ymd_hms(UTC_RELEASE_DATE_TIME)) %>% 
   #filter(UTC_RELEASE_DATE_TIME > '2019-06-01') %>% #select timeframe, specific animals etc.
@@ -101,12 +114,12 @@ tqcs_tag_summary <- tqcs_tag %>%
             MeanWeight = mean(WEIGHT..kg., na.rm = TRUE)) 
 			
 #view our summary table
+
 tqcs_tag_summary
 
 ~~~
 {: .language-r}
 
-Q: Since we don't have the ability to represent time, what are some optimal subsetting strategies for presenting data to `mapview()`?
 
 ### Detection Attributes
 
@@ -114,6 +127,7 @@ Joining the detections to the tag metadata will add line-by-line morphometrics a
 
 ~~~
 #Average location of each animal, without release records
+
 tqcs_matched_10_11_no_release %>% 
   group_by(catalognumber) %>% 
   summarize(NumberOfStations = n_distinct(station),
@@ -128,15 +142,18 @@ tqcs_tag <- tqcs_tag %>%
   mutate(tagname = paste(TAG_CODE_SPACE,TAG_ID_CODE, sep = '-')) #adding tagname column
 
 #Now we join by tagname, to the detections without the release information
+
 tag_joined_dets <-  left_join(x = tqcs_matched_10_11_no_release, y = tqcs_tag, by = "tagname")
 
 #make sure the redeployed tags have matched within their deployment period only
+
 tag_joined_dets <- tag_joined_dets %>% 
   filter(datecollected >= UTC_RELEASE_DATE_TIME & datecollected <= enddatetime)
 
 View(tag_joined_dets)
 
 #Lets use this new dataframe to make summaries! Avg length per location
+
 tqcs_tag_det_summary <- tag_joined_dets %>% 
   group_by(detectedby, station, latitude, longitude)  %>%  
   summarise(AvgSize = mean(LENGTH..m., na.rm=TRUE))
@@ -150,7 +167,9 @@ tqcs_tag_det_summary
 Lets make an informative plot showing number of matched detections, per year and month.
 
 ~~~
-tqcs_matched_10_11_no_release  %>% #try with tqcs_matched_10_11_full_no_release if you're feeling bold! takes ~30 secs
+#try with tqcs_matched_10_11_full_no_release if you're feeling bold! takes ~30 secs
+
+tqcs_matched_10_11_no_release  %>% 
   mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
   mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
   group_by(year_month) %>% #can group by station, species etc.
@@ -203,6 +222,7 @@ tqcs_matched_10_11 %>% #doesnt work on the subsetted data, back to original data
 #anything specified in geom() is applied to that layer only (colour, size...)
 
 # per-individual density contours - lots of plots: called facets!
+
 tqcs_matched_10_11 %>%
   ggplot(aes(latitude, longitude))+
   facet_wrap(~catalognumber)+ #make one plot per individual

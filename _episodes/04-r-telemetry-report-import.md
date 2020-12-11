@@ -14,6 +14,7 @@ Now that we have an idea of what an exploratory workflow might look like with Ti
 View(tqcs_matched_10_11) #already have our Tag matches
 
 #need our Array matches, joined
+
 teq_qual_2010 <- read_csv("data/teq_qualified_detections_2010_ish.csv")
 teq_qual_2011 <- read_csv("data/teq_qualified_detections_2011_ish.csv")
 teq_qual_10_11_full <- rbind(teq_qual_2010, teq_qual_2011) 
@@ -22,10 +23,12 @@ teq_qual_10_11 <- teq_qual_10_11_full %>% slice(1:100000) #subset our example da
 
 
 #need Array metadata
+
 teq_deploy <- read.csv("data/TEQ_Deployments_201001_201201.csv")
 View(teq_deploy)
 
 #need Tag metadata
+
 tqcs_tag <- read.csv("data/TQCS_metadata_tagging.csv") 
 View(tqcs_tag)
 

@@ -4,12 +4,12 @@ teaching: 25
 exercises: 10
 questions:
     - "How do I import tabular data?"
-	- "How do I explore my data set?"
+    - "How do I explore my data set?"
 	- "What are some basic data manipulation functions?"
 objectives:
     - "Become familiar with dplyr's methods to summarize and manipulate data"
 keypoints:
-    - "dpylr makes creating complex data summaries easier, using pipes"
+    - "dpylr makes creating complex data summaries easier, using pipes"	  
 ---
 
 ### Importing from csv
@@ -18,6 +18,7 @@ keypoints:
 
 ~~~
 #imports file into R. paste the filepath to the unzipped file here!
+
 tqcs_matched_2010 <- read_csv("data/tqcs_matched_detections_2010.csv", guess_max = 117172)
 
 #read_csv() is from tidyverse's readr package --> you can also use read.csv() from base R but it created a dataframe (not tibble) so loads slower
@@ -46,8 +47,11 @@ View(tqcs_matched_2010) #can also click on object in Environment window
 str(tqcs_matched_2010) #can see the type of each column (vector)
 glimpse(tqcs_matched_2010) #similar to str()
 
-summary(tqcs_matched_2010$latitude) #summary() is a base R function that will spit out some quick stats about a vector (column)
+#summary() is a base R function that will spit out some quick stats about a vector (column)
 #the $ syntax is the way base R selects columns from a data frame
+
+summary(tqcs_matched_2010$latitude) 
+
 
 #Challenge 5: 
 #1. What is is the class of the station column in tqcs_matched_2010?
@@ -78,6 +82,7 @@ tqcs_matched_2010 %>% filter(catalognumber=="TQCS-1049258-2008-02-14") #filterin
 tqcs_matched_2010 %>% filter(monthcollected >= 10) #month is in/after Oct
 
 #get the mean value across a column
+
 tqcs_matched_2010 %>%
   group_by(catalognumber) %>%
   summarise(MeanLat=mean(latitude)) #uses pipes and dplyr functions to find mean latitude for each fish
@@ -96,12 +101,12 @@ tqcs_matched_2011 <- read_csv("data/tqcs_matched_detections_2011.csv", guess_max
 tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #join the two files
 
 #release records for animals often appear in >1 year, this will remove the duplicates
+
 tqcs_matched_10_11_full <- tqcs_matched_10_11_full %>% distinct() 
 
 View(tqcs_matched_10_11) #wow this is huge!
 
 tqcs_matched_10_11 <- tqcs_matched_10_11_full %>% slice(1:100000) #subset our example data to help this workshop run smoother!
-
 ~~~
 {: .language-r}
 

@@ -28,11 +28,13 @@ R can access files on and save outputs to any folder on your computer. R knows w
 # once you install packages to your computer, you can "check them out" of your packages library each time you need them
 
 library(tidyverse)# really neat collection of packages! https://www.tidyverse.org/ 
+library(lubridate)
 library(plotly)
 library(ggmap)
 
 
 # Working Directory ####
+
 setwd('C:/Users/ct991305/Documents/Workshop Material/2020-12-17-telemetry-packages-FACT/') #set folder you're going to work in
 getwd() #check working directory
 
@@ -64,15 +66,16 @@ weight_lb <- 2.2 * weight_kg #can assign output to an object. can use objects to
 
 ### Functions
 ~~~
-ten <- sqrt(weight_kg) #contain calculations wrapped into one command to type. 
 #functions take "arguments": you have to tell them what to run their script against
+
+ten <- sqrt(weight_kg) #contain calculations wrapped into one command to type. 
 
 round(3.14159) #don't have to assign
 
 args(round) #the args() function will show you the required arguments of another function
 
 ?round #will show you the full help page for a function, so you can see what it does, 
-#what argument it takes etc.
+
 
 #Challenge 2: can you round the value 3.14159 to two decimal places?
 # using args() should give a clue!
@@ -86,6 +89,7 @@ weight_g <- c(21, 34, 39, 54, 55) #use the combine function to join values into 
 length(weight_g) #explore vector
 class(weight_g) #a vector can only contain one data type
 str(weight_g) #find the structure of your object.
+
 #our vector is numeric. 
 #other options include: character (words), logical (TRUE or FALSE), integer etc.
 
