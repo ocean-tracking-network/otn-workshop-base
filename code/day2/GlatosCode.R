@@ -111,6 +111,25 @@ rit_data <- glatos::residence_index(events,
                                     time_interval_size = "6 hours")
 rit_data
 
+
+library(raster)
+library(sp)
+USA <- getData('GADM', country="USA", level=1)
+FL <- USA[USA$NAME_1=="Florida",]
+
+
+
+# Bubble Plots for Spatial Distribution of Fish ####
+# bubble variable gets the summary data that was created to make the plot
+detections_filtered
+bubble <- detection_bubble_plot(detections_filtered,
+                                location_col = 'station',
+                                map = FL,
+                                col_grad=c('white', 'green'),
+                                background_xlim = c(-81, -80),
+                                background_ylim = c(26, 28))
+
+
 # Converting FACT/OTN/GLATOS-style dataframes to ATT format for use with VTrack ####
 
 ?convert_otn_to_att
@@ -136,6 +155,9 @@ ATTdata$Tag.Detections
 ATTdata$Tag.Metadata
 ATTdata$Station.Information
 
+
+# If you're going to do spatial things:
+library(rgdal)
 # Tell the ATT dataframe its coordinates are in decimal lat/lon
 proj <- CRS("+init=epsg:4326")
 attr(ATTdata, "CRS") <-proj
@@ -197,7 +219,7 @@ actel_deployments <- full_receiver_meta %>% filter(!is.na(recover_date_time)) %>
                                    Receiver = INS_SERIAL_NO) %>% 
                                    arrange(Receiver, Start)
   
-# Renaming some columns in the Detection extract files and   
+# Renaming some columns in the Detection extract files   
 actel_dets <- detections %>% mutate(Transmitter = transmitter_id,
                                    Receiver = as.integer(receiver_sn),
                                    Timestamp = format(detection_timestamp_utc, actel_datefmt), 
@@ -242,7 +264,7 @@ actel_project <- preload(biometrics = actel_biometrics,
 
 # Once you have an Actel object, you can run things like explore:
 
-actel_explore_output <- explore(actel_project, tz=tz, report=TRUE)
+actel_explore_output <- explore(actel_project, tz=tz, report=TRUE, print.releases=FALSE)
 
 
 # See more on what to do with this output in Hugo's talk
