@@ -6,10 +6,6 @@ questions:
     - "How do I import tabular data?"
     - "How do I explore my data set?"
 	- "What are some basic data manipulation functions?"
-objectives:
-    - "Become familiar with dplyr's methods to summarize and manipulate data"
-keypoints:
-    - "dpylr makes creating complex data summaries easier, using pipes"	  
 ---
 
 ### Importing from csv
@@ -104,7 +100,7 @@ tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #join the
 
 tqcs_matched_10_11_full <- tqcs_matched_10_11_full %>% distinct() 
 
-View(tqcs_matched_10_11) #wow this is huge!
+View(tqcs_matched_10_11_full) #wow this is huge!
 
 tqcs_matched_10_11 <- tqcs_matched_10_11_full %>% slice(1:100000) #subset our example data to help this workshop run smoother!
 ~~~
@@ -116,7 +112,7 @@ Datetimes are special formats which are not numbers nor characters.
 ~~~
 library(lubridate) 
 
-tqcs_matched_10_11 %>% mutate(datecollected=ymd_hms(datecollected)) #Tells R to treat this column as a date, not number numbers
+tqcs_matched_10_11 %>% mutate(datecollected=ymd_hms(datecollected)) #Tells R to treat this column as a date, not regular numbers
 
 #as.POSIXct(tqcs_matched_2010$datecollected) #this is the base R way - if you ever see this function
 

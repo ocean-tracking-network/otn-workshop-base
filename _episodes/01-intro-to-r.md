@@ -7,10 +7,6 @@ questions:
     - "What are common data types in R?"
 	- "What are some base R functions?"
 	- "How do I deal with missing data?"
-objectives:
-    - "Learn how to perform basic R tasks in R"
-keypoints:
-    - "R is a computer with built in functions."
 ---
 
 First, lets learna bout RStudio.

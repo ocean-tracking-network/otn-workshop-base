@@ -102,6 +102,14 @@ teq_map_plotly <- teq_map_plotly %>% layout(
 #View map
 
 teq_map_plotly
+
+#You might see the following warning: it just means that the plotly package has some updating to do
+  # Warning message:
+  # `arrange_()` is deprecated as of dplyr 0.7.0.
+  # Please use `arrange()` instead.
+  # See vignette('programming') for more help
+  # This warning is displayed once every 8 hours.
+  # Call `lifecycle::last_warnings()` to see where this warning was generated.
 ~~~
 {: .language-r}
 

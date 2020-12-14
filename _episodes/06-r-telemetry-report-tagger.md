@@ -107,10 +107,10 @@ tqcs_tag_summary <- tqcs_tag %>%
   mutate(UTC_RELEASE_DATE_TIME = ymd_hms(UTC_RELEASE_DATE_TIME)) %>% 
   #filter(UTC_RELEASE_DATE_TIME > '2019-06-01') %>% #select timeframe, specific animals etc.
   group_by(year = year(UTC_RELEASE_DATE_TIME), COMMON_NAME_E) %>% 
-  summarize(count = n(), 
+ summarize(count = n(), 
             Meanlength = mean(LENGTH..m., na.rm=TRUE), 
-            minlength= min(LENGTH..m.), 
-            maxlength = max(LENGTH..m.), 
+            minlength= min(LENGTH..m., na.rm=TRUE), 
+            maxlength = max(LENGTH..m., na.rm=TRUE), 
             MeanWeight = mean(WEIGHT..kg., na.rm = TRUE)) 
 			
 #view our summary table
@@ -192,7 +192,7 @@ tqcs_matched_10_11_no_release  %>%
 
 Some examples of complex plotting options
 ~~~
-# monthly latitudinal distribution of blue sharks (works best w >1 species)
+# monthly latitudinal distribution of your animals (works best w >1 species)
 
 tqcs_matched_10_11 %>%
   group_by(m=month(datecollected), catalognumber, scientificname) %>% #make our groups
@@ -203,16 +203,16 @@ tqcs_matched_10_11 %>%
   scale_colour_manual(values = "blue")+ #change the colour to represent the species better!
   scale_fill_manual(values = "grey")+ 
   geom_boxplot()+ #another layer
-  geom_violin(colour="black") #aaaaaand another layer
+  geom_violin(colour="black") #and one more layer
 
 
 #There are other ways to present a summary of data like this that we might have chosen. 
 #geom_density2d() will give us a KDE for our data points and give us some contours across our chosen plot axes.
 
 tqcs_matched_10_11 %>% #doesnt work on the subsetted data, back to original dataset for this one
-  group_by(m=month(datecollected), catalognumber, scientificname) %>%
-  summarise(mean=mean(latitude)) %>%
-  ggplot(aes(m, mean, colour=scientificname, fill=scientificname))+
+  group_by(month=month(datecollected), catalognumber, scientificname) %>%
+  summarise(meanlat=mean(latitude)) %>%
+  ggplot(aes(month, meanlat, colour=scientificname, fill=scientificname))+
   geom_point(size=3, position="jitter")+
   scale_colour_manual(values = "blue")+
   scale_fill_manual(values = "grey")+
@@ -222,12 +222,10 @@ tqcs_matched_10_11 %>% #doesnt work on the subsetted data, back to original data
 #anything specified in geom() is applied to that layer only (colour, size...)
 
 # per-individual density contours - lots of plots: called facets!
-
 tqcs_matched_10_11 %>%
-  ggplot(aes(latitude, longitude))+
+  ggplot(aes(longitude, latitude))+
   facet_wrap(~catalognumber)+ #make one plot per individual
   geom_violin()
-
 
 ~~~
 {: .language-r}
