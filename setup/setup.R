@@ -48,12 +48,8 @@ install.packages('ggmap')
 install.packages('sp')
 install.packages('raster')
 
-# Install ffmpeg, which we use for the GLATOS-derived animations.
-library(glatos) # once you have your GLATOS installed properly
-install_ffmpeg()  
-
 # Install actel
-intstall.packages('actel')
+install.packages('actel')
 
 ### Dataset and Code -----
 # Once the packages are installed, you can download the datasets and code for this workshop from https://github.com/ocean-tracking-network/2020-12-17-telemetry-packages-FACT/.
