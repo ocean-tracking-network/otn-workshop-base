@@ -173,7 +173,7 @@ y
 {: .language-r}
 
 ## For home: Transforming the results
-```
+~~~
 # Try some of the stuff in this manual page!
 vignette("f-0_post_functions", "actel")
 ~~~

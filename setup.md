@@ -60,8 +60,7 @@ install.packages('raster')
 
 # Install actel
 library(remotes)
-remotes::install_github("hugomflavio/actel", 
-						build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
+remotes::install_github("hugomflavio/actel", build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
 ```        
 
 ### Dataset and Code 

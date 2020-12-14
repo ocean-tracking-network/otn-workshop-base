@@ -3,13 +3,13 @@ title: Intro to R
 teaching: 30
 exercises: 20
 questions:
-    - "What are common operators in R?"
-    - "What are common data types in R?"
+	- "What are common operators in R?"
+	- "What are common data types in R?"
 	- "What are some base R functions?"
 	- "How do I deal with missing data?"
 ---
 
-First, lets learna bout RStudio.
+First, lets learn about RStudio.
 
 RStudio is divided into 4 "Panes": the Source for your scripts and documents (top-left, in the default layout); your Environment/History (top-right) which shows all the objects in your working space (Environment) and your command history (History); your Files/Plots/Packages/Help/Viewer (bottom-right); and the R Console (bottom-left). The placement of these panes and their content can be customized (see menu, Tools -> Global Options -> Pane Layout).
 
