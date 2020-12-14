@@ -3,10 +3,10 @@ title: Intro to R
 teaching: 30
 exercises: 20
 questions:
-	- "What are common operators in R?"
-	- "What are common data types in R?"
-	- "What are some base R functions?"
-	- "How do I deal with missing data?"
+    - "What are common operators in R?"
+    - "What are common data types in R?"
+    - "What are some base R functions?"
+    - "How do I deal with missing data?"
 ---
 
 First, lets learn about RStudio.

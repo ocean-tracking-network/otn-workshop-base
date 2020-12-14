@@ -3,9 +3,9 @@ title: Starting with Data Frames
 teaching: 25
 exercises: 10
 questions:
-	- "How do I import tabular data?"
-	- "How do I explore my data set?"
-	- "What are some basic data manipulation functions?"
+    - "How do I import tabular data?"
+    - "How do I explore my data set?"
+    - "What are some basic data manipulation functions?"
 ---
 
 ### Importing from csv

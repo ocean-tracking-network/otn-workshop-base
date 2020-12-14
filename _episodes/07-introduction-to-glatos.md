@@ -35,7 +35,7 @@ for each. Both, however, provide a marked performance boost over base R, and Bot
 ensure that the resulting data set will be compatible with the rest of the glatos
 framework.
 
-We will use the CQCS detections.
+We will use the TQCS detections.
 
 ~~~
 # Get file path to example FACT data
