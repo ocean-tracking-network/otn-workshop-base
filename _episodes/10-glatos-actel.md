@@ -1,13 +1,13 @@
 ---
-title: Prepping Data for `actel`
+title: Preparing FACT/OTN/GLATOS Data for actel
 teaching: 15
 exercises: 0
 questions:
-    - "How do I take my `glatos` data and format for `actel`?"
+    - "How do I take my `glatos` data and format for actel?"
 ---
-  ### Preparing our data to use in Actel
-  
-  Up next, we're going to be learning about Actel, a new player in the acoustic telemetry data analysis ecosystem. We've got the package author coming up next to tell you all about it, so let's quickly look at how we can take the data we have been working with from FACT (and any OTN/GLATOS style data) and make it ready for Actel.
+### Preparing our data to use in Actel
+
+Up next, we're going to be learning about Actel, a new player in the acoustic telemetry data analysis ecosystem. We've got the package author coming up next to tell you all about it, so let's quickly look at how we can take the data we have been working with from FACT (and any OTN/GLATOS style data) and make it ready for Actel.
 
 ~~~
 # Using FACT/OTN/GLATOS-style data in Actel ####

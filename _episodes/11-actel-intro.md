@@ -1,5 +1,5 @@
 ---
-title: Introduction to `actel`
+title: Introduction to actel
 teaching: 45
 exercises: 0
 questions:
