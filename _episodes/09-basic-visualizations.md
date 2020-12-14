@@ -50,7 +50,7 @@ library(sp)
 USA <- getData('GADM', country="USA", level=1)
 FL <- USA[USA$NAME_1=="Florida",]
 ~~~
-{:.language-r}
+{: .language-r}
 
 With the map generated, we can pass it to the bubble plot and see the results.
 ~~~

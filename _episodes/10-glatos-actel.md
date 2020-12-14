@@ -37,7 +37,7 @@ full_receiver_meta <- readxl::read_excel(rcvr_sheet_path, sheet=1, skip=0) %>%
 
 
 ~~~
-{:.language-r}
+{: .language-r}
 
  We rename a few columns from the receiver metadata sheet so that they are in a nicer format. We also create a 'station' column that is array_code + station_name, guaranteed unique for any project across the entire Network.
 
@@ -64,7 +64,7 @@ actel_deployments <- full_receiver_meta %>% filter(!is.na(recover_date_time)) %>
                                    arrange(Receiver, Start)
 
 ~~~
-{:.language-r}
+{: .language-r}
 
 ### Detections
 
@@ -78,7 +78,7 @@ actel_dets <- detections %>% mutate(Transmitter = transmitter_id,
                                    CodeSpace = extractCodeSpaces(transmitter_id),
                                    Signal = extractSignals(transmitter_id))
 ~~~
-{:.language-r}
+{: .language-r}
 
 ### Creating the Spatial dataframe
 
@@ -112,7 +112,7 @@ actel_spatial_sum <- actel_spatial %>% group_by(Station.name, Type) %>%
                                                         Array =  first(Array))
 
 ~~~
-{:.language-r}
+{: .language-r}
 
 
 ### Creating the Actel data object w/ `preload()`
@@ -133,16 +133,16 @@ actel_project <- preload(biometrics = actel_biometrics,
                          detections = actel_dets, 
                          tz = tz)
 ~~~
-{:.language-r}
+{: .language-r}
 
 There will be some issues with the data that the Actel checkers find. Detections outside the deployment time bounds, receivers that aren't in your metadata. For the purposes of today, we will drop those rows from the final copy of the data, but you can take these prompts as cues to verify your input metadata is accurate and complete.
 
 ~~~
 # Once you have an Actel object, you can run things like explore to generate the summary reports you're about to see:
-actel_explore_output <- explore(actel_project, tz=tz, report=TRUE)
+actel_explore_output <- explore(actel_project, tz=tz, report=TRUE, print.releases=FALSE)
 
 ~~~
-{:.language-r}
+{: .language-r}
 
 See more on what you can do with this output coming up next!
 
