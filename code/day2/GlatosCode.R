@@ -111,25 +111,6 @@ rit_data <- glatos::residence_index(events,
                                     time_interval_size = "6 hours")
 rit_data
 
-
-library(raster)
-library(sp)
-USA <- getData('GADM', country="USA", level=1)
-FL <- USA[USA$NAME_1=="Florida",]
-
-
-
-# Bubble Plots for Spatial Distribution of Fish ####
-# bubble variable gets the summary data that was created to make the plot
-detections_filtered
-bubble <- detection_bubble_plot(detections_filtered,
-                                location_col = 'station',
-                                map = FL,
-                                col_grad=c('white', 'green'),
-                                background_xlim = c(-81, -80),
-                                background_ylim = c(26, 28))
-
-
 # Converting FACT/OTN/GLATOS-style dataframes to ATT format for use with VTrack ####
 
 ?convert_otn_to_att
@@ -156,7 +137,7 @@ ATTdata$Tag.Metadata
 ATTdata$Station.Information
 
 
-# If you're going to do spatial things:
+# If you're going to do spatial things in ATT:
 library(rgdal)
 # Tell the ATT dataframe its coordinates are in decimal lat/lon
 proj <- CRS("+init=epsg:4326")
@@ -173,7 +154,28 @@ VTrack::abacusPlot(ATTdata)
 coa <- VTrack::COA(ATTdata)
 View(coa)
 
-# TODO: adapt example from VTrack vignette to calc and plot bbkud estimates - currently error prone
+
+# Bubble Plots #### 
+
+library(raster)
+library(sp)
+USA <- getData('GADM', country="USA", level=1)
+FL <- USA[USA$NAME_1=="Florida",]
+
+
+
+# Bubble Plots for Spatial Distribution of Fish ####
+# bubble variable gets the summary data that was created to make the plot
+detections_filtered
+bubble <- detection_bubble_plot(detections_filtered,
+                                location_col = 'station',
+                                map = FL,
+                                col_grad=c('white', 'green'),
+                                background_xlim = c(-81, -80),
+                                background_ylim = c(26, 28))
+
+
+
 
 
 # Using FACT/OTN/GLATOS-style data in Actel ####
