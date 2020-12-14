@@ -56,8 +56,18 @@ ATTdata <- convert_otn_to_att(detections_filtered, tags, deploymentSheet = recei
 ~~~
 {: .language-r}
 
-And then you can use your data with the VTrack package. Here's an example of the Centers of Activity
-function from VTrack.
+And then you can use your data with the VTrack package. You can call its abacusPlot function to generate an abacus plot:
+
+~~~
+# Now that we have an ATT dataframe, we can use it in VTrack functions:
+
+# Abacus plot:
+VTrack::abacusPlot(ATTdata)
+~~~
+{: .language-r}
+
+
+Here's an example of the Centers of Activity function from VTrack.
 ~~~
 coa <- VTrack::COA(ATTdata)
 coa
