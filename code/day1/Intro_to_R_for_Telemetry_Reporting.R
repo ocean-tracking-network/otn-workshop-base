@@ -152,7 +152,7 @@ tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #join the
 #release records for animals often appear in >1 year, this will remove the duplicates
 tqcs_matched_10_11_full <- tqcs_matched_10_11_full %>% distinct() 
 
-View(tqcs_matched_10_11)
+View(tqcs_matched_10_11_full)
 
 tqcs_matched_10_11 <- tqcs_matched_10_11_full %>% slice(1:100000) #subset our example data for ease of analysis!
 
@@ -317,8 +317,16 @@ teq_map_plotly <- teq_map_plotly %>% layout(
 #View map
 teq_map_plotly
 
+#You might see the following warning: it just means that the plotly package has some updating to do
+  # Warning message:
+  # `arrange_()` is deprecated as of dplyr 0.7.0.
+  # Please use `arrange()` instead.
+  # See vignette('programming') for more help
+  # This warning is displayed once every 8 hours.
+  # Call `lifecycle::last_warnings()` to see where this warning was generated. 
 
-#3. table of attributes of animals detected - using q extracts
+
+#3. summary of animals detected
 
 teq_qual_summary <- teq_qual_10_11 %>% 
   filter(datecollected > '2010-06-01') %>% #select timeframe, stations etc.
@@ -349,7 +357,7 @@ teq_anim_summary  <- teq_qual_10_11  %>%
 
 teq_anim_summary #number of dets per month/year per station & species, remember: this is a subset!
 
-#5. total detection counts by year
+#5. plotting detection counts
 
 teq_qual_10_11_full %>% #try with teq_qual_10_11_full if you're feeling bold! takes about 1 min to run on a fast machine
   mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
@@ -447,10 +455,9 @@ tqcs_tag_summary <- tqcs_tag %>%
   group_by(year = year(UTC_RELEASE_DATE_TIME), COMMON_NAME_E) %>% 
   summarize(count = n(), 
             Meanlength = mean(LENGTH..m., na.rm=TRUE), 
-            minlength= min(LENGTH..m.), 
-            maxlength = max(LENGTH..m.), 
+            minlength= min(LENGTH..m., na.rm=TRUE), 
+            maxlength = max(LENGTH..m., na.rm=TRUE), 
             MeanWeight = mean(WEIGHT..kg., na.rm = TRUE)) 
-
 #view our summary table
 tqcs_tag_summary
 
@@ -483,7 +490,7 @@ View(tag_joined_dets)
 #Lets use this new dataframe to make summaries! Avg length per location
 tqcs_tag_det_summary <- tag_joined_dets %>% 
   mutate(datecollected = ymd_hms(datecollected)) %>% 
-  group_by(detectedby, station, latitude, longitude)  %>%  #, catalognumber, LENGTH..m
+  group_by(detectedby, station, latitude, longitude)  %>%  
   summarise(AvgSize = mean(LENGTH..m., na.rm=TRUE))
 
 tqcs_tag_det_summary
@@ -515,7 +522,7 @@ tqcs_matched_10_11_no_release  %>% #try with tqcs_matched_10_11_full_no_release 
 
 # Other Example Plots -----------
 
-# monthly latitudinal distribution of blue sharks (works best w >1 species)
+# monthly latitudinal distribution of your animals (works best w >1 species)
 
 tqcs_matched_10_11 %>%
   group_by(m=month(datecollected), catalognumber, scientificname) %>% #make our groups
@@ -526,15 +533,15 @@ tqcs_matched_10_11 %>%
   scale_colour_manual(values = "blue")+ #change the colour to represent the species better!
   scale_fill_manual(values = "grey")+ 
   geom_boxplot()+ #another layer
-  geom_violin(colour="black") #aaaaaand another layer
+  geom_violin(colour="black") #and one more layer
 
 
 #There are other ways to present a summary of data like this that we might have chosen. 
 #geom_density2d() will give us a KDE for our data points and give us some contours across our chosen plot axes.
 
 tqcs_matched_10_11 %>% #doesnt work on the subsetted data, back to original dataset for this one
-  group_by(m=month(datecollected), catalognumber, scientificname) %>%
-  summarise(mean=mean(latitude)) %>%
+  group_by(month=month(datecollected), catalognumber, scientificname) %>%
+  summarise(meanlat=mean(latitude)) %>%
   ggplot(aes(m, mean, colour=scientificname, fill=scientificname))+
   geom_point(size=3, position="jitter")+
   scale_colour_manual(values = "blue")+
@@ -546,7 +553,7 @@ tqcs_matched_10_11 %>% #doesnt work on the subsetted data, back to original data
 
 # per-individual density contours - lots of plots: called facets!
 tqcs_matched_10_11 %>%
-  ggplot(aes(latitude, longitude))+
+  ggplot(aes(longitude, latitude))+
   facet_wrap(~catalognumber)+ #make one plot per individual
   geom_violin()
 

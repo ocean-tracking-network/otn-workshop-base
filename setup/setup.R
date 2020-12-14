@@ -49,7 +49,9 @@ install.packages('sp')
 install.packages('raster')
 
 # Install actel
-install.packages('actel')
+library(remotes)
+remotes::install_github("hugomflavio/actel", 
+                        build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
 
 ### Dataset and Code -----
 # Once the packages are installed, you can download the datasets and code for this workshop from https://github.com/ocean-tracking-network/2020-12-17-telemetry-packages-FACT/.
