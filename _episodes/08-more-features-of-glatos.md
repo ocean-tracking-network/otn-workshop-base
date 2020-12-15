@@ -53,11 +53,15 @@ detections_filtered['sensorunit'] = NA
 receivers <- receivers %>% mutate(station=substring(station, 4))
 
 ATTdata <- convert_otn_to_att(detections_filtered, tags, deploymentSheet = receivers)
+
+# ATT is split into 3 objects, we can view them like this
+ATTdata$Tag.Detections
+ATTdata$Tag.Metadata
+ATTdata$Station.Information
 ~~~
 {: .language-r}
 
 And then you can use your data with the VTrack package. You can call its abacusPlot function to generate an abacus plot:
-
 ~~~
 # Now that we have an ATT dataframe, we can use it in VTrack functions:
 
@@ -66,9 +70,19 @@ VTrack::abacusPlot(ATTdata)
 ~~~
 {: .language-r}
 
+To use the spacial features of VTrack, we have to give the ATT object a coordinate system to use.
+~~~
+# If you're going to do spatial things in ATT:
+library(rgdal)
+# Tell the ATT dataframe its coordinates are in decimal lat/lon
+proj <- CRS("+init=epsg:4326")
+attr(ATTdata, "CRS") <-proj
+~~~
+{: .language-r}
 
 Here's an example of the Centers of Activity function from VTrack.
 ~~~
+?COA
 coa <- VTrack::COA(ATTdata)
 coa
 ~~~
