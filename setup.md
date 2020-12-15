@@ -5,7 +5,7 @@ title: Setup
 ## Requirements
 
 ### R version: 3.6.x or newer (recommend 4.0.x) and RStudio
-### Rtools and GDAL (required for workshop day 2 only)
+### Rtools (Windows users only) and GDAL are only required for Workshop Day 2
 
 Please see the attached document for program instructions: - [Program Install Instructions](/Resources/FACT_2020_install_instructions.docx)
 
