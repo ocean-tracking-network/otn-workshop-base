@@ -7,7 +7,7 @@ title: Setup
 ### R version: 3.6.x or newer (recommend 4.0.x) and RStudio
 ### Rtools and GDAL (required for workshop day 2 only)
 
-Please see the attached document for program instructions: - [Program Install Instructions](../Resources/FACT_2020_install_instructions.docx)
+Please see the attached document for program instructions: - [Program Install Instructions](/Resources/FACT_2020_install_instructions.docx)
 
 Once all are installed, open RStudio and run these packages install scripts. It's best to run it line by line instead of all at once in case there are errors.
 
