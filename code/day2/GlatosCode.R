@@ -1,4 +1,6 @@
-## Set your working directory ####
+# 07 - Introduction to GLATOS ####
+
+## Set your working directory
 
 setwd("./data/")  
 library(glatos)
@@ -7,7 +9,7 @@ library(VTrack)
 # Get file path to example FACT data
 det_file_name <- 'tqcs_matched_detections.csv'
 
-## GLATOS help files are helpful!! ####
+## GLATOS help files are helpful!!
 ?read_otn_detections
 
 # Save our detections file data into a dataframe called detections
@@ -98,6 +100,9 @@ detections_w_events <- detection_events(detections_filtered,
                                         location_col = 'station', # combines events across different receivers in a single array
                                         time_sep=432000, condense=FALSE)
 
+# 08 - More Features of glatos ####
+
+
 ?residence_index
 
 # Calc residence index using the Kessel method
@@ -145,44 +150,17 @@ attr(ATTdata, "CRS") <-proj
 
 # Now that we have an ATT dataframe, we can use it in VTrack functions:
 
-# Abacus plot:
-VTrack::abacusPlot(ATTdata)
-
-
 # Calculate centers of activity
 ?COA
 coa <- VTrack::COA(ATTdata)
 View(coa)
 
+# BREAK - Jump over to code/Vis.R for the accompanying code for module 9
 
-# Bubble Plots #### 
+# 10 - Using FACT/OTN/GLATOS-style data in Actel ####
 
-library(raster)
-library(sp)
-USA <- getData('GADM', country="USA", level=1)
-FL <- USA[USA$NAME_1=="Florida",]
-
-
-
-# Bubble Plots for Spatial Distribution of Fish ####
-# bubble variable gets the summary data that was created to make the plot
-detections_filtered
-bubble <- detection_bubble_plot(detections_filtered,
-                                location_col = 'station',
-                                map = FL,
-                                col_grad=c('white', 'green'),
-                                background_xlim = c(-81, -80),
-                                background_ylim = c(26, 28))
-
-
-
-
-
-# Using FACT/OTN/GLATOS-style data in Actel ####
-
-# install.packages('actel')  # CRAN Version 1.2.0
-
-# Or the development version:
+# We'll be using the development version, if it's not already installed, do:
+# library(remotes)
 # remotes::install_github("hugomflavio/actel", build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
 
 library(actel)
