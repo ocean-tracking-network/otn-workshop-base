@@ -12,15 +12,10 @@ Up next, we're going to be learning about Actel, a new player in the acoustic te
 ~~~
 # Using FACT/OTN/GLATOS-style data in Actel ####
 
-# install.packages('actel')  # CRAN Version 1.2.0
-
-# Or the development version:
-# remotes::install_github("hugomflavio/actel", build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
-
 library(actel)
 library(stringr)
 
-# Hugo has created within Actel a preload() function for folks who are holding their deployment, tagging, and detection data in R variables already. This function expects 4 input objects, similar to VTrack's 3 objects, plus a 'spatial' data object that will help us describe the places we are able to detect animals and how the animals are allowed to move between them.
+# Actel now contains a preload() function that is very useful for folks who are getting detection extracts from one of the major networks, or otherwise are holding their deployment, tagging, and detection data in R variables already. This function expects 4 input objects, similar to VTrack's 3 objects, plus a 'spatial' data object that will help us describe the places we are able to detect animals and how the animals are allowed to move between them.
 
 # But it wants a bit more data than VTrack did, so we're going to have to go back to our deployment metadata sheet and reload it:
 full_receiver_meta <- readxl::read_excel(rcvr_sheet_path, sheet=1, skip=0) %>% 
@@ -34,8 +29,6 @@ full_receiver_meta <- readxl::read_excel(rcvr_sheet_path, sheet=1, skip=0) %>%
                       dplyr::mutate(
                                 station = paste(OTN_ARRAY, STATION_NO, sep = '')
                       )
-
-
 ~~~
 {: .language-r}
 

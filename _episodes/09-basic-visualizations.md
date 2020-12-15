@@ -65,3 +65,12 @@ bubble <- detection_bubble_plot(detections_filtered,
                                 background_ylim = c(26, 28))
 ~~~
 {: .language-r}
+
+If you still have your ATTData object from last module, you could call VTrack's version of abacusPlot() as well:
+
+~~~
+
+# Abacus plot:
+VTrack::abacusPlot(ATTdata)
+~~~
+{: .language-r}
