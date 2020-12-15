@@ -100,7 +100,7 @@ head(tqcs_matched_2010) #first 6 rows
 View(tqcs_matched_2010) #can also click on object in Environment window
 str(tqcs_matched_2010) #can see the type of each column (vector)
 glimpse(tqcs_matched_2010) #similar to str()
-?read_csv
+
 
 summary(tqcs_matched_2010$latitude) #summary() is a base R function that will spit out some quick stats about a vector (column)
 #the $ syntax is the way base R selects columns from a data frame
@@ -359,7 +359,7 @@ teq_anim_summary #number of dets per month/year per station & species, remember:
 
 #5. plotting detection counts
 
-teq_qual_10_11_full %>% #try with teq_qual_10_11_full if you're feeling bold! takes about 1 min to run on a fast machine
+teq_qual_10_11 %>% #try with teq_qual_10_11_full if you're feeling bold! takes about 1 min to run on a fast machine
   mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
   mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
   group_by(year_month) %>% #can group by station, species etc.
@@ -458,6 +458,7 @@ tqcs_tag_summary <- tqcs_tag %>%
             minlength= min(LENGTH..m., na.rm=TRUE), 
             maxlength = max(LENGTH..m., na.rm=TRUE), 
             MeanWeight = mean(WEIGHT..kg., na.rm = TRUE)) 
+
 #view our summary table
 tqcs_tag_summary
 
@@ -525,9 +526,9 @@ tqcs_matched_10_11_no_release  %>% #try with tqcs_matched_10_11_full_no_release 
 # monthly latitudinal distribution of your animals (works best w >1 species)
 
 tqcs_matched_10_11 %>%
-  group_by(m=month(datecollected), catalognumber, scientificname) %>% #make our groups
-  summarise(mean=mean(latitude)) %>% #mean lat
-  ggplot(aes(m %>% factor, mean, colour=scientificname, fill=scientificname))+ #the data is supplied, but no info on how to show it!
+  group_by(month=month(datecollected), catalognumber, scientificname) %>% #make our groups
+  summarise(meanlat=mean(latitude)) %>% #mean lat
+  ggplot(aes(month %>% factor, meanlat, colour=scientificname, fill=scientificname))+ #the data is supplied, but no info on how to show it!
   geom_point(size=3, position="jitter")+   # draw data as points, and use jitter to help see all points instead of superimposition
   #coord_flip()+   #flip x y, not needed here
   scale_colour_manual(values = "blue")+ #change the colour to represent the species better!
