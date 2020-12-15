@@ -7,8 +7,6 @@ questions:
 objectives:
 
 keypoints:
-
-
 ---
 
 `actel` is designed for studies where animals tagged with acoustic tags are expected to move through receiver arrays. `actel` combines the advantages of automatic sorting and checking of animal movements with the possibility for user intervention on tags that deviate from expected behaviour. The three analysis functions: explore, migration and residency, allow the users to analyse their data in a systematic way, making it easy to compare results from different studies.
@@ -16,13 +14,13 @@ keypoints:
 
 (Speaker: Dr. Hugo Flavio, hflavio@wlu.ca)
 
-- [actel: Standardised analysis of acoustic telemetry data from animals moving through receiver arrays](../Resources/actel_paper_published_version.pdf)
+- [PAPER - actel: Standardised analysis of acoustic telemetry data from animals moving through receiver arrays](../Resources/actel_paper_published_version.pdf)
 
-- [Powerpoint](../Resources/actel_introduction.ppsx)
+- [POWERPOINT](../Resources/actel_introduction.ppsx)
 
 ### Exploring
 ~~~
-library(actel)
+library("actel")
 
 # The first thing you want to do when you try out a package is...
 # explore the documentation!
@@ -68,22 +66,18 @@ setwd('actel_example')
 # Run analysis. Note: This will open an analysis report on your web browser.
 exp.results <- explore(tz = 'Europe/Copenhagen', report = TRUE)
 
-# If the explore analysis failed while producing the report,
-# run the line below to load the results directly from the results file.
-exp.results <- dataToList("actel_example_results.RData")
-
 # Because this is an example dataset, this analysis will run very smoothly. 
 # Real data is not always this nice to us!
 
 # ----------
 # IF your analysis failed while compiling the report, you can load 
 # the saved results back in using the dataToList() function:
-exp.results <- dataToList("actel_example_results.RData")
+exp.results <- dataToList("actel_explore_results.RData")
 
 # IF your analysis failed before you had a chance to save the results,
 # load the pre-compiled results, so you can keep up with the workshop.
 # Remember to change the path so R can find the RData file.
-exp.results <- dataToList("path/to/pre-compiled_results.RData")
+exp.results <- dataToList("pre-compiled_results.RData")
 # ----------
 
 # -----------------------
@@ -124,8 +118,8 @@ head(spatial)
 # size to be 10 metres.
 #
 # NOTE: Change the 'path' to the folder where you have the shape file.
-# Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨Â¨
-water <- loadShape(path = "C:/Users/hdmfla/Google Drive/workshops/2020-12-17_FACT/actel_intro",
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+water <- loadShape(path = "replace/with/path/to/shapefile",
 									 shape = "stora_shape_epsg32632.shp", size = 10,
 									 coord.x = "x", coord.y = "y")
 
@@ -152,12 +146,15 @@ dist.mat
 # Let's go ahead and try running migration() and residency() on this dataset.
 mig.results <- migration(tz = 'Europe/Copenhagen', report = TRUE)
 
-# now try copying the whole block (user decisions included) and running it at once.
+# Now try copy-pasting the next five lines as a block and run it all at once.
 res.results <- residency(tz = 'Europe/Copenhagen', report = TRUE)
 comment
 This is a lovely fish
 n
 y
+# R will know to answer each of the questions that pop up during the analysis
+# with the lines you copy-pasted together with your code!
+
 # explore the reports to see what's new!
 
 # Note: There is a known bug in residency() as of actel 1.2.0, which for some datasets
@@ -169,6 +166,7 @@ y
 # This has already been corrected in development and a fix will be released in actel 1.2.1.
 # In the meantime, if you come across this error, get in contact with me and I will guide
 # you through how to install the development version.
+
 ~~~
 {: .language-r}
 
