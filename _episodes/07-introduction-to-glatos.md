@@ -65,6 +65,10 @@ detections <- read_otn_detections(det_file=det_file_name)
 
 We will also filter out all the release rows.
 ~~~
+# Detection extracts have rows that report the animal release 
+# for all the animals in the file:
+View(detections %>% filter(receiver_sn == "release") %>% dplyr::select(transmitter_id, receiver_sn, detection_timestamp_utc, notes))
+
 detections <- detections %>% filter(receiver_sn != "release")
 ~~~
 {: .language-r}
@@ -149,6 +153,15 @@ head(sum_animal_location)
 ~~~
 {: .language-r}
 
+Summerizing by both dimensions will create a row for each station and each animal pair, let's filter out the station where the animal wasn't detected.
+~~~
+# Filter out stations where the animal was NOT detected.
+sum_animal_location <- sum_animal_location %>% filter(num_dets > 0)
+
+sum_animal_location
+~~~
+{: .language-r}
+
 One other method- we can summarize by a subset of our animals as well. If we only want
 to see summary data for a fixed set of animals, we can pass an array containing the animal_ids
 that we want to see summarized.
@@ -160,6 +173,7 @@ tagged_fish <- c("TQCS-1049258-2008-02-14", "TQCS-1055546-2008-04-30", "TQCS-106
 
 sum_animal_custom <- summarize_detections(det=detections_filtered,
                                           animals=tagged_fish,
+                                          location_col = 'station',
                                           summ_type='animal')
 
 sum_animal_custom
