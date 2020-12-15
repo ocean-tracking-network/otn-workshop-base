@@ -1,7 +1,7 @@
 ## Requirements------
 
 ### R version: 3.6.x or newer (recommend 4.0.x) and RStudio. 
-### Please also download the Rtools version compatible with your R version https://cran.r-project.org/bin/windows/Rtools/history.html
+### Windows users: Please also download the Rtools version compatible with your R version https://cran.r-project.org/bin/windows/Rtools/history.html (not for MacOS)
 
 # For day 2 only: You must install also GDAL software, which can take a long time. See the extra setup document provided. 
 
