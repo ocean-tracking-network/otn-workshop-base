@@ -61,7 +61,7 @@ sum_animal_location <- summarize_detections(det = detections_filtered,
                                             location_col = 'station',
                                             summ_type='both')
 
-sum_animal_location
+head(sum_animal_location)
 
 
 # Filter out stations where the animal was NOT detected.
@@ -137,10 +137,15 @@ receivers <- receivers %>% mutate(station=substring(station, 4))
 
 ATTdata <- convert_otn_to_att(detections_filtered, tags, deploymentSheet = receivers)
 
+# ATT is split into 3 objects, we can view them like this
 ATTdata$Tag.Detections
 ATTdata$Tag.Metadata
 ATTdata$Station.Information
 
+# Now that we have an ATT dataframe, we can use it in VTrack functions:
+
+# Abacus plot:
+VTrack::abacusPlot(ATTdata)
 
 # If you're going to do spatial things in ATT:
 library(rgdal)
@@ -148,14 +153,45 @@ library(rgdal)
 proj <- CRS("+init=epsg:4326")
 attr(ATTdata, "CRS") <-proj
 
-# Now that we have an ATT dataframe, we can use it in VTrack functions:
 
 # Calculate centers of activity
 ?COA
 coa <- VTrack::COA(ATTdata)
 View(coa)
 
-# BREAK - Jump over to code/Vis.R for the accompanying code for module 9
+# BREAK 
+
+# 9 - Basic Visualization and Plotting
+
+# Visualizing Data - Abacus Plots ####
+# ?glatos::abacus_plot
+# customizable version of the standard VUE-derived abacus plots
+
+abacus_plot(detections_w_events, 
+            location_col='station', 
+            main='TQCS Detections By Station') # can use plot() variables here, they get passed thru to plot()
+
+# pick a single fish to plot
+abacus_plot(detections_filtered[detections_filtered$animal_id== "TQCS-1049258-2008-02-14",],
+            location_col='station',
+            main="TQCS-1049258-2008-02-14 Detections By Station")
+
+library(raster)
+library(sp)
+
+USA <- getData('GADM', country="USA", level=1)
+FL <- USA[USA$NAME_1=="Florida",]
+
+# Bubble Plots for Spatial Distribution of Fish ####
+# bubble variable gets the summary data that was created to make the plot
+detections_filtered
+bubble <- detection_bubble_plot(detections_filtered, 
+                                out_file = '../tqcs_bubble.png',
+                                location_col = 'station',
+                                map = FL,
+                                col_grad=c('white', 'green'),
+                                background_xlim = c(-81, -80),
+                                background_ylim = c(26, 28))
 
 # 10 - Using FACT/OTN/GLATOS-style data in Actel ####
 
