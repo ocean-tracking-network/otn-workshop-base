@@ -4,12 +4,14 @@ title: Setup
 
 ## Requirements
 
-### R version: 3.6.x or newer (recommend 4.0.x) and RStudio
-### Rtools (Windows users only) and GDAL are only required for Workshop Day 2
+You will requre 1) all the correct programs, 2) all the listed R packages 3) the dataset and code. Instructions for all these are below.
 
-Please see the attached document for program instructions: - [Program Install Instructions](/Resources/FACT_2020_install_instructions.docx)
 
-Once all are installed, open RStudio and run these packages install scripts. It's best to run it line by line instead of all at once in case there are errors.
+### Please see the attached document for program instructions: - [Program Install Instructions.docx](/Resources/FACT_2020_install_instructions.docx)
+-  R version: 3.6.x or newer (recommend 4.0.x) and RStudio
+-  Rtools (Windows users only) and GDAL are only required for Workshop Day 2
+
+Once all of the programs are installed, open RStudio and run the below package install scripts. It's best to run it line by line instead of all at once in case there are errors.
 
 <b>Note:</b> When running through the installs, you may encounter a prompt asking you to upgrade dependent packages. Choosing Option `3: None`, works in most situations and will prevent upgrades of packages you weren't explicitly looking to upgrade.
 
@@ -31,6 +33,7 @@ install.packages('plotly')
 ```
 
 ### Day 2 Workshop Requirements
+<b>Note:</b> When running through the installs, you may encounter a prompt asking you to upgrade dependent packages. Choosing Option `3: None`, works in most situations and will prevent upgrades of packages you weren't explicitly looking to upgrade.
 
 ```r
 # Tidyverse (data cleaning and arrangement)
@@ -63,7 +66,7 @@ library(remotes)
 remotes::install_github("hugomflavio/actel", build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
 ```        
 
-### Dataset and Code 
+## Dataset and Code 
 
 <b>Once the above packages are installed</b>, you can download the datasets and code for this workshop from <b>[this link](https://github.com/ocean-tracking-network/2020-12-17-telemetry-packages-FACT/)</b>
 
@@ -72,6 +75,9 @@ remotes::install_github("hugomflavio/actel", build_opts = c("--no-resave-data", 
 3. Copy the folder's path and use it to set your working directly in R using `setwd('<path-to-folder>')`.
 
 If you are familiar with Git and Github, feel free to clone this repository as you normally would, by running `git clone https://github.com/ocean-tracking-network/2020-12-17-telemetry-packages-FACT.git` in a terminal program and following from step `3` above.
+
+
+
 
 
 
