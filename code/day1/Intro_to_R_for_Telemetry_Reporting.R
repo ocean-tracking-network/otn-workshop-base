@@ -90,11 +90,20 @@ heights[complete.cases(heights)] #select only complete cases
 
 
 ## Exploring Detection Extracts ---------------------------------
+# what is a detection extract? https://members.oceantrack.org/data/otn-detection-extract-documentation-matched-to-animals
 
 tqcs_matched_2010 <- read_csv("data/tqcs_matched_detections_2010.csv", guess_max = 117172) #imports file into R. paste the filepath to the unzipped file here!
 #read_csv() is from tidyverse's readr package --> you can also use read.csv() from base R but it created a dataframe (not tibble) so loads slower
 #see https://link.medium.com/LtCV6ifpQbb 
-#guess_max is helpful when there are many rows of NAs at the top.
+#the guess_max argument is helpful when there are many rows of NAs at the top. R will not assign a data type to that columns until it reaches the max guess.
+#I chose to use this here because I got the following warning from read_csv()
+# Warning: 82 parsing failures.
+#   row            col           expected actual                                    file
+#117172 bottom_depth   1/0/T/F/TRUE/FALSE   5    'data/tqcs_matched_detections_2010.csv'
+#117172 receiver_depth 1/0/T/F/TRUE/FALSE   4    'data/tqcs_matched_detections_2010.csv'
+#122664 bottom_depth   1/0/T/F/TRUE/FALSE   17.5 'data/tqcs_matched_detections_2010.csv'
+#122664 receiver_depth 1/0/T/F/TRUE/FALSE   16.5 'data/tqcs_matched_detections_2010.csv'
+#162757 bottom_depth   1/0/T/F/TRUE/FALSE   6    'data/tqcs_matched_detections_2010.csv'
 
 head(tqcs_matched_2010) #first 6 rows
 View(tqcs_matched_2010) #can also click on object in Environment window
@@ -543,7 +552,7 @@ tqcs_matched_10_11 %>%
 tqcs_matched_10_11 %>% #doesnt work on the subsetted data, back to original dataset for this one
   group_by(month=month(datecollected), catalognumber, scientificname) %>%
   summarise(meanlat=mean(latitude)) %>%
-  ggplot(aes(m, mean, colour=scientificname, fill=scientificname))+
+  ggplot(aes(month, meanlat, colour=scientificname, fill=scientificname))+
   geom_point(size=3, position="jitter")+
   scale_colour_manual(values = "blue")+
   scale_fill_manual(values = "grey")+
