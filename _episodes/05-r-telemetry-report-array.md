@@ -7,61 +7,102 @@ questions:
     - "How do I summarize and plot my detections?"
 ---
 
-### Mapping my stations - Static map
+### Mapping GLATOS stations - Static map
 
-Since we have already imported and joined our datasets, we can jump in. This section will use the Deployment metadata for your array.
+This section will use the Receivers CSV for the entire GLATOS Network.
 ~~~
 library(ggmap)
 
 
 #first, what are our columns called?
-names(teq_deploy)
+names(glatos_receivers)
 
 
-#make a basemap for your stations, using the min/max deploy lat and longs as bounding box
+#make a basemap for all of the stations, using the min/max deploy lat and longs as bounding box
+#what are our columns called?
+names(glatos_receivers)
+
 
 base <- get_stamenmap(
-  bbox = c(left = min(teq_deploy$DEPLOY_LONG), 
-           bottom = min(teq_deploy$DEPLOY_LAT), 
-           right = max(teq_deploy$DEPLOY_LONG), 
-           top = max(teq_deploy$DEPLOY_LAT)),
+  bbox = c(left = min(glatos_receivers$deploy_long), 
+           bottom = min(glatos_receivers$deploy_lat), 
+           right = max(glatos_receivers$deploy_long), 
+           top = max(glatos_receivers$deploy_lat)),
   maptype = "terrain-background", 
   crop = FALSE,
   zoom = 8)
 
-#filter for stations you want to plot
-
-teq_deploy_plot <- teq_deploy %>% 
-  mutate(deploy_date=ymd_hms(DEPLOY_DATE_TIME....yyyy.mm.ddThh.mm.ss.)) %>% #make a datetime
-  mutate(recover_date=ymd_hms(RECOVER_DATE_TIME..yyyy.mm.ddThh.mm.ss.)) %>% #make a datetime
+#filter for stations you want to plot - this is very customizable
+glatos_deploy_plot <- glatos_receivers %>% 
+  mutate(deploy_date=ymd_hms(deploy_date_time)) %>% #make a datetime
+  mutate(recover_date=ymd_hms(recover_date_time)) %>% #make a datetime
   filter(!is.na(deploy_date)) %>% #no null deploys
-  filter(deploy_date > 2010-07-03) %>% #only looking at certain deployments!
-  group_by(STATION_NO) %>% 
-  summarise(MeanLat=mean(DEPLOY_LAT), MeanLong=mean(DEPLOY_LONG)) #get the mean location per station
-  
+  filter(deploy_date > '2011-07-03' & recover_date < '2018-12-11') %>% #only looking at certain deployments, can add start/end dates here
+  group_by(station, glatos_array) %>% 
+  summarise(MeanLat=mean(deploy_lat), MeanLong=mean(deploy_long)) #get the mean location per station, in case there is >1 deployment
+
 # you could choose to plot stations which are within a certain bounding box!
-# to do this you would add another filter to the above data, before passing to the map
+#to do this you would add another filter to the above data, before passing to the map
 # ex: add this line after the mutate() clauses:
-	# filter(latitude >= 0.5 & latitude <= 24.5 & longitude >= 0.6 & longitude <= 34.9)
+# filter(latitude <= 0.5 & latitude >= 24.5 & longitude <= 0.6 & longitude >= 34.9)
 
 
 #add your stations onto your basemap
+glatos_map <- 
+  ggmap(base, extent='panel') + 
+  ylab("Latitude") +
+  xlab("Longitude") +
+  geom_point(data = glatos_deploy_plot, #filtering for recent deployments
+             aes(x = MeanLong,y = MeanLat, colour = glatos_array), #specify the data
+             shape = 19, size = 2) #lots of aesthetic options here!
 
-teq_map <- 
+#view your receiver map!
+glatos_map
+
+#save your receiver map into your working directory
+ggsave(plot = glatos_map, filename = "glatos_map.tiff", units="in", width=15, height=8) 
+#can specify location, file type and dimensions
+~~~
+{: .language-r}
+
+### Mapping our stations - Static map
+
+This section will use the Deployment and Recovery metadata for our array, from our Workbook.
+~~~
+base <- get_stamenmap(
+  bbox = c(left = min(walleye_recievers$DEPLOY_LONG), 
+           bottom = min(walleye_recievers$DEPLOY_LAT), 
+           right = max(walleye_recievers$DEPLOY_LONG), 
+           top = max(walleye_recievers$DEPLOY_LAT)),
+  maptype = "terrain-background", 
+  crop = FALSE,
+  zoom = 8)
+
+#filter for stations you want to plot - this is very customizable
+walleye_deploy_plot <- walleye_recievers %>% 
+  mutate(deploy_date=ymd_hms(GLATOS_DEPLOY_DATE_TIME)) %>% #make a datetime
+  mutate(recover_date=ymd_hms(GLATOS_RECOVER_DATE_TIME)) %>% #make a datetime
+  filter(!is.na(deploy_date)) %>% #no null deploys
+  filter(deploy_date > '2011-07-03' & is.na(recover_date)) %>% #only looking at certain deployments, can add start/end dates here
+  group_by(STATION_NO, GLATOS_ARRAY) %>% 
+  summarise(MeanLat=mean(DEPLOY_LAT), MeanLong=mean(DEPLOY_LONG)) #get the mean location per station, in case there is >1 deployment
+
+#add your stations onto your basemap
+walleye_deploy_map <- 
   ggmap(base, extent='panel') +
   ylab("Latitude") +
   xlab("Longitude") +
-  geom_point(data = teq_deploy_plot, #filtering for recent deployments
-             aes(x = MeanLong,y = MeanLat), #specify the data
-             colour = 'blue', shape = 19, size = 2) #lots of aesthetic options here!
+  geom_point(data = walleye_deploy_plot, #filtering for recent deployments
+             aes(x = MeanLong,y = MeanLat, colour = GLATOS_ARRAY), #specify the data
+             shape = 19, size = 2) #lots of aesthetic options here!
+
 
 #view your receiver map!
-
-teq_map
+walleye_deploy_map
 
 #save your receiver map into your working directory
-
-ggsave(plot = teq_map, file = "code/day1/teq_map.tiff", units="in", width=15, height=8)
+ggsave(plot = walleye_deploy_map, filename = "walleye_deploy_map.tiff", units="in", width=15, height=8) 
+#can specify location, file type and dimensions
 ~~~
 {: .language-r}
 
@@ -77,113 +118,61 @@ library(plotly)
 geo_styling <- list(
   fitbounds = "locations", visible = TRUE, #fits the bounds to your data!
   showland = TRUE,
+  showlakes = TRUE,
+  lakecolor = toRGB("blue", alpha = 0.2), #make it transparent
+  showcountries = TRUE,
   landcolor = toRGB("gray95"),
-  subunitcolor = toRGB("gray85"),
   countrycolor = toRGB("gray85")
 )
 
 #decide what data you're going to use
 
-teq_map_plotly <- plot_geo(teq_deploy_plot, lat = ~MeanLat, lon = ~MeanLong)  
+glatos_map_plotly <- plot_geo(glatos_deploy_plot, lat = ~MeanLat, lon = ~MeanLong)  
 
 #add your markers for the interactive map
 
-teq_map_plotly <- teq_map_plotly %>% add_markers(
-  text = ~paste(STATION_NO, MeanLat, MeanLong, sep = "<br />"),
+glatos_map_plotly <- glatos_map_plotly %>% add_markers(
+  text = ~paste(station, MeanLat, MeanLong, sep = "<br />"),
   symbol = I("square"), size = I(8), hoverinfo = "text" 
 )
 
 #Add layout (title + geo stying)
 
-teq_map_plotly <- teq_map_plotly %>% layout(
-  title = 'TEQ Deployments<br />(> 2010-07-03)', geo = geo_styling
+glatos_map_plotly <- glatos_map_plotly %>% layout(
+  title = 'GLATOS Deployments<br />(> 2011-07-03)', geo = geo_styling
 )
 
 #View map
 
-teq_map_plotly
-
-#You might see the following warning: it just means that the plotly package has some updating to do
-  # Warning message:
-  # `arrange_()` is deprecated as of dplyr 0.7.0.
-  # Please use `arrange()` instead.
-  # See vignette('programming') for more help
-  # This warning is displayed once every 8 hours.
-  # Call `lifecycle::last_warnings()` to see where this warning was generated.
+glatos_map_plotly
 ~~~
 {: .language-r}
 
-### Summary of Animals Detected.
+### How are my stations performing?
 
 Let's find out more about the animals detected by our array!
 ~~~
-#How many of each animals did we detect from each collaborator, by species
+#How many detections of my tags does each station have?
 
-teq_qual_summary <- teq_qual_10_11 %>% 
-  filter(datecollected > '2010-06-01') %>% #select timeframe, stations etc.
-  group_by(trackercode, scientificname, tag_contact_pi, tag_contact_poc) %>% 
-  summarize(count = n()) %>% 
-  select(trackercode, tag_contact_pi, tag_contact_poc, scientificname, count)
-
-#view our summary table
-
-teq_qual_summary #remember, this is just the first 10,000 rows!
-
-#export our summary table
-
-write_csv(teq_qual_summary, "code/day1/teq_detection_summary_June2010_to_Dec2011.csv", col_names = TRUE)
-
-~~~
-{: .language-r}
-
-### Summary of Detections
-
-This can suggest array performance, hotspot stations, and be used as a metric for funders.
-
-~~~
-# number of dets per month/year per station 
-
-teq_det_summary  <- teq_qual_10_11  %>% 
-  mutate(datecollected=ymd_hms(datecollected))  %>% 
-  group_by(station, year = year(datecollected), month = month(datecollected)) %>% 
+det_summary  <- all_dets  %>%
+  filter(glatos_project_receiver == 'HECST') %>%  #choose to summarize by array, project etc!
+  mutate(detection_timestamp_utc=ymd_hms(detection_timestamp_utc))  %>%
+  group_by(station, year = year(detection_timestamp_utc), month = month(detection_timestamp_utc)) %>%
   summarize(count =n())
 
-teq_det_summary #remember: this is a subset!
+det_summary #number of dets per month/year per station
 
-# number of dets per month/year per station & species
 
-teq_anim_summary  <- teq_qual_10_11  %>% 
-  mutate(datecollected=ymd_hms(datecollected))  %>% 
-  group_by(station, year = year(datecollected), month = month(datecollected), scientificname) %>% 
+#How many detections of my tags does each station have? Per species
+
+anim_summary  <- all_dets  %>%
+  filter(glatos_project_receiver == 'HECST') %>%  #choose to summarize by array, project etc!
+  mutate(detection_timestamp_utc=ymd_hms(detection_timestamp_utc))  %>%
+  group_by(station, year = year(detection_timestamp_utc), month = month(detection_timestamp_utc), common_name_e) %>%
   summarize(count =n())
 
-teq_anim_summary # remember: this is a subset!
+anim_summary #number of dets per month/year per station & species
 
-~~~
-{: .language-r}
-
-### Plot of Detections
-
-Lets make an informative plot showing number of matched detections, per year and month.
-
-~~~
-#try with teq_qual_10_11_full if you're feeling bold! takes about 1 min to run on a fast machine
-
-teq_qual_10_11 %>% 
-  mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
-  mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
-  group_by(year_month) %>% #can group by station, species etc.
-  summarize(count =n()) %>% #how many dets per year_month
-  ggplot(aes(x = (month(year_month) %>% as.factor()), 
-             y = count, 
-             fill = (year(year_month) %>% as.factor())
-             )
-         )+ 
-  geom_bar(stat = "identity", position = "dodge2")+ 
-  xlab("Month")+
-  ylab("Total Detection Count")+
-  ggtitle('TEQ Animal Detections by Month')+ #title
-  labs(fill = "Year") #legend title
 
 ~~~
 {: .language-r}

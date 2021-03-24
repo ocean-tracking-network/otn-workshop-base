@@ -22,17 +22,18 @@ general formula `ggplot(data = <DATA>, mapping = aes(<MAPPINGS>)) + <GEOM_FUNCTI
 library(ggplot2) #tidyverse-style plotting, a very customizable plotting package
 
 
-# Assign plot layout to a variable
-tqcs_10_11_plot <- ggplot(data = tqcs_matched_10_11, 
-                    mapping = aes(x = latitude, y = longitude)) #can assign a base plot to data, and add the geom() later
+# Assign plot to a variable
+lamprey_dets_plot <- ggplot(data = lamprey_dets, 
+                  mapping = aes(x = deploy_lat, y = deploy_long)) #can assign a base plot to data
 
-# Draw the plot
-tqcs_10_11_plot + 
+# Draw the plot 
+lamprey_dets_plot + 
   geom_point(alpha=0.1, 
              colour = "blue") 
 #layer whatever geom you want onto your plot template
 #very easy to explore diff geoms without re-typing
 #alpha is a transparency argument in case points overlap
+
 
 ~~~
 {: .language-r}
@@ -42,16 +43,17 @@ tqcs_10_11_plot +
 You can build your plots iteratively, without assigning to a variale as well.
 ~~~
 
-tqcs_matched_10_11 %>%  
-  ggplot(aes(latitude, longitude)) + 
+lamprey_dets %>%  
+  ggplot(aes(deploy_lat, deploy_long)) + #aes = the aesthetic/mappings. x and y etc.
   geom_point() #geom = the type of plot
 
-tqcs_matched_10_11 %>%  
-  ggplot(aes(latitude, longitude, colour = commonname)) + #colour by species!
+lamprey_dets %>%  
+  ggplot(aes(deploy_lat, deploy_long, colour = animal_id)) + #colour by individual! specify in the aesthetic
   geom_point()
 
 #anything you specify in the aes() is applied to the actual data points/whole plot, 
-#anything specified in geom() is applied to that layer only (colour, size...)
+#anything specified in geom() is applied to that layer only (colour, size...). sometimes you have >1 geom layer so this makes more sense!
+
 
 ~~~
 {: .language-r}
@@ -60,8 +62,7 @@ tqcs_matched_10_11 %>%
 
 Try combining with `dplyr` functions in this challenge!
 ~~~
-#Challenge 7: try making a scatterplot showing the lat/long for animal "TQCS-1049258-2008-02-14", coloured by detection array
-
+#Challenge 7: try making a scatterplot showing the lat/long for animal "A69-1601-1363", coloured by detection array
 
 #Question: what other geoms are there? Try typing `geom_` into R to see what it suggests!
 ~~~

@@ -22,19 +22,23 @@ R can access files on and save outputs to any folder on your computer. R knows w
 ~~~
 # Packages ####
 # once you install packages to your computer, you can "check them out" of your packages library each time you need them
+# make sure you check the "mask" messages that appear - sometimes packages have functions with the same names!
 
 library(tidyverse)# really neat collection of packages! https://www.tidyverse.org/ 
 library(lubridate)
+library(readxl)
+library(viridis)
 library(plotly)
 library(ggmap)
 
 
 # Working Directory ####
 
-setwd('C:/Users/ct991305/Documents/Workshop Material/2020-12-17-telemetry-packages-FACT/') #set folder you're going to work in
+setwd('C:/Users/ct991305/Documents/Workshop Material/2021-03-30-glatos-workshop/data/') #set folder you're going to work in
 getwd() #check working directory
 
-#you can also change it in the RStudio interface by navigating in the file browser where your working directory should be, 
+#you can also change it in the RStudio interface by navigating in the file browser where your working directory should be 
+#(if you can't see the folder you want, choose the three horizonal dots on the right side of the Home bar),
 #and clicking on the blue gear icon "More", and select "Set As Working Directory".
 ~~~
 {: .language-r}
@@ -94,6 +98,13 @@ animals <- c("mouse", "rat", "dog") #to create a character vector, use quotes
 
 #Challenge 3: what data type will this vector become? You can check using class()
 #challenge3 <- c(1, 2, 3, "4")
+
+
+# Note:
+#R will convert (force) all values in a vector to the same data type.
+#for this reason: try to keep one data type in each vector
+#a data table / data frame is just multiple vectors (columns)
+#this is helpful to remember when setting up your field sheets!
 ~~~
 {: .language-r}
 

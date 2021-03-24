@@ -16,20 +16,20 @@ If you're unfamiliar with detection extracts formats from OTN-style database nod
 ~~~
 #imports file into R. paste the filepath to the unzipped file here!
 
-tqcs_matched_2010 <- read_csv("data/tqcs_matched_detections_2010.csv", guess_max = 117172)
+lamprey_dets <- read_csv("inst_extdata_lamprey_detections.csv", guess_max = 3102) 
 
 #read_csv() is from tidyverse's readr package --> you can also use read.csv() from base R but it created a dataframe (not tibble) so loads slower
 #see https://link.medium.com/LtCV6ifpQbb 
 
 #the guess_max argument is helpful when there are many rows of NAs at the top. R will not assign a data type to that columns until it reaches the max guess.
-#I chose to use these here because I got the following warning from read_csv()
-	# Warning: 82 parsing failures.
-	#   row            col           expected actual                                    file
-	#117172 bottom_depth   1/0/T/F/TRUE/FALSE   5    'data/tqcs_matched_detections_2010.csv'
-	#117172 receiver_depth 1/0/T/F/TRUE/FALSE   4    'data/tqcs_matched_detections_2010.csv'
-	#122664 bottom_depth   1/0/T/F/TRUE/FALSE   17.5 'data/tqcs_matched_detections_2010.csv'
-	#122664 receiver_depth 1/0/T/F/TRUE/FALSE   16.5 'data/tqcs_matched_detections_2010.csv'
-	#162757 bottom_depth   1/0/T/F/TRUE/FALSE   6    'data/tqcs_matched_detections_2010.csv'
+#I chose to use this here because I got the following warning from read_csv()
+# Warning: 4497 parsing failures.
+#row                col           expected     actual                                  file
+#3102 sensor_value       1/0/T/F/TRUE/FALSE 66.000     'inst_extdata_lamprey_detections.csv'
+#3102 sensor_unit        1/0/T/F/TRUE/FALSE ADC        'inst_extdata_lamprey_detections.csv'
+##3102 glatos_caught_date 1/0/T/F/TRUE/FALSE 2012-07-04 'inst_extdata_lamprey_detections.csv'
+#3103 sensor_value       1/0/T/F/TRUE/FALSE 62.000     'inst_extdata_lamprey_detections.csv'
+#3103 sensor_unit        1/0/T/F/TRUE/FALSE ADC        'inst_extdata_lamprey_detections.csv'
 
 ~~~
 {: .language-r}
@@ -39,20 +39,20 @@ tqcs_matched_2010 <- read_csv("data/tqcs_matched_detections_2010.csv", guess_max
 
 Let's start with a practical example. What can we find out about these matched detections?
 ~~~
-head(tqcs_matched_2010) #first 6 rows
-View(tqcs_matched_2010) #can also click on object in Environment window
-str(tqcs_matched_2010) #can see the type of each column (vector)
-glimpse(tqcs_matched_2010) #similar to str()
+head(lamprey_dets) #first 6 rows
+View(lamprey_dets) #can also click on object in Environment window
+str(lamprey_dets) #can see the type of each column (vector)
+glimpse(lamprey_dets) #similar to str()
 
 #summary() is a base R function that will spit out some quick stats about a vector (column)
 #the $ syntax is the way base R selects columns from a data frame
 
-summary(tqcs_matched_2010$latitude) 
+summary(lamprey_dets$release_latitude) 
 
 
 #Challenge 5: 
-#1. What is is the class of the station column in tqcs_matched_2010?
-#2. How many rows and columns are in the tqcs_matched_2010 dataset?
+#1. What is is the class of the station column in lamprey_dets?
+#2. How many rows and columns are in the lamprey_dets dataset?
 ~~~
 {: .language-r}
 
@@ -65,47 +65,37 @@ library(dplyr) #can use tidyverse package dplyr to do exploration on dataframes 
 # %>% is a "pipe" which allows you to join functions together in sequence. 
 #it can be read as "and then". shortcut: ctrl + shift + m
 
-tqcs_matched_2010 %>% dplyr::select(8) #selects column 8
+lamprey_dets %>% dplyr::select(6) #selects column 6
 
 # dplyr::select this syntax is to specify that we want the select function from the dplyr package. 
 #often functions are named the same but do diff things
 
-tqcs_matched_2010 %>% slice(1:5) #selects rows 1 to 5 dplyr way
+lamprey_dets %>% slice(1:5) #selects rows 1 to 5 dplyr way
 
-tqcs_matched_2010 %>% distinct(detectedby) %>% nrow #number of arrays that detected my fish in dplyr!
-tqcs_matched_2010 %>% distinct(catalognumber) %>% nrow #number of animals that were detected in 2018 (includes release records)
+lamprey_dets %>% 
+  distinct(glatos_array) %>% 
+  nrow #number of arrays that detected my fish in dplyr! first: find the distinct values, then count 
+  
+lamprey_dets %>% 
+  distinct(animal_id) %>% 
+  nrow #number of animals that were detected 
 
-tqcs_matched_2010 %>% filter(catalognumber=="TQCS-1049258-2008-02-14") #filtering in dplyr!
-tqcs_matched_2010 %>% filter(monthcollected >= 10) #month is in/after Oct
+lamprey_dets %>% filter(animal_id=="A69-1601-1363") #filtering in dplyr!
+lamprey_dets %>% filter(detection_timestamp_utc >= '2012-06-01 00:00:00') #all dets on/after June 1 2012 - conditional filtering!
 
-#get the mean value across a column
+#get the mean value across a column using GroupBy and Summarize
 
-tqcs_matched_2010 %>%
-  group_by(catalognumber) %>%
-  summarise(MeanLat=mean(latitude)) #uses pipes and dplyr functions to find mean latitude for each fish
+lamprey_dets %>%
+  group_by(animal_id) %>%  #we want to find meanLat for each animal
+  summarise(MeanLat=mean(deploy_lat)) #uses pipes and dplyr functions to find mean latitude for each fish. 
+                                      #we named this new column "MeanLat" but you could name it anything
 
 #Challenge 6: 
-#1. find the mean latitude and mean longitude for animal "TQCS-1049258-2008-02-14"
-#2. find the min lat/long of each animal for detections occurring in July
+#1. find the max lat and max longitude for animal "A69-1601-1363"
+#2. find the min lat/long of each animal for detections occurring in July 2012
 ~~~
 {: .language-r}
 
-
-### Joining Detection Extracts
-Here we will join and filter our detection extracts
-~~~
-tqcs_matched_2011 <- read_csv("data/tqcs_matched_detections_2011.csv", guess_max = 41880)
-tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #join the two files
-
-#release records for animals often appear in >1 year, this will remove the duplicates
-
-tqcs_matched_10_11_full <- tqcs_matched_10_11_full %>% distinct() 
-
-View(tqcs_matched_10_11_full) #wow this is huge!
-
-tqcs_matched_10_11 <- tqcs_matched_10_11_full %>% slice(1:100000) #subset our example data to help this workshop run smoother!
-~~~
-{: .language-r}
 
 
 ### Dealing with Datetimes
@@ -113,9 +103,9 @@ Datetimes are special formats which are not numbers nor characters.
 ~~~
 library(lubridate) 
 
-tqcs_matched_10_11 %>% mutate(datecollected=ymd_hms(datecollected)) #Tells R to treat this column as a date, not regular numbers
+lamprey_dets %>% mutate(detection_timestamp_utc=ymd_hms(detection_timestamp_utc)) #Tells R to treat this column as a date, not number numbers
 
-#as.POSIXct(tqcs_matched_2010$datecollected) #this is the base R way - if you ever see this function
+#as.POSIXct(lamprey_dets$detection_timestamp_utc) #this is the base R way - if you ever see this function
 
 #lubridate is amazing if you have a dataset with multiple datetime formats / timezone
 #the function parse_date_time() can be used to specify multiple date formats if you have a dataset with mixed rows
