@@ -25,6 +25,14 @@ install.packages('ggmap')
 # Plotly - Interactive web-based data visualization
 install.packages('plotly')
 
+# ReadXL - reads Excel format
+install.packages("readxl")
+
+# Viridis - color scales in this package are easier to read by those with colorblindness, and print well in grey scale.
+install.packages("viridis")
+
+
+
 
 ## DAY 2 WORKSHOP REQUIREMENTS ----
 # VTrack - Tools for Telemetry Analysis

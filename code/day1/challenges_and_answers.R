@@ -67,44 +67,44 @@ length(heights_above_67)
 
 
 # Challenge 5 ----
-#1. What is is the class of the station column in tqcs_matched_2010?
-#2. How many rows and columns are in the tqcs_matched_2010 dataset?
+#1. What is is the class of the station column in lamprey_dets?
+#2. How many rows and columns are in the lamprey_dets dataset?
 
-#Answer 5: The column is a character, and there are 1,737,597 rows with 36 columns
-str(tqcs_matched_2010)
+#Answer 5: The column is a character, and there are 5,923 rows with 30 columns
+str(lamprey_dets)
 # or
-glimpse(tqcs_matched_2010)
+glimpse(lamprey_dets)
 
 
 
 
 # Challenge 6 ----
-#1. find the mean latitude and mean longitude for animal "TQCS-1049258-2008-02-14"
+#1. find the max lat and max longitude for animal "A69-1601-1363"
 #2. find the min lat/long of each animal for detections occurring in July
 
 #Answer 6:
 #1. 
-tqcs_matched_2010 %>% 
-  filter(catalognumber=="TQCS-1049258-2008-02-14") %>% 
-  summarise(MeanLat=mean(latitude), MeanLong=mean(longitude))
+lamprey_dets %>% 
+  filter(animal_id=="A69-1601-1363") %>% 
+  summarise(MaxLat=max(deploy_lat), MaxLong=max(deploy_long))
 
 #2. 
-tqcs_matched_2010 %>% 
-  filter(monthcollected == 7) %>% 
-  group_by(catalognumber) %>% 
-  summarise(MinLat=min(latitude), MinLong=min(longitude))
+lamprey_dets %>% 
+  filter(detection_timestamp_utc >= "2012-07-01 00:00:00" | detection_timestamp_utc < "2012-08-01 00:00:00" ) %>% 
+  group_by(animal_id) %>% 
+  summarise(MinLat=min(deploy_lat), MinLong=min(deploy_long))
 
 
 
 
 # Challenge 7 ----
-# try making a scatterplot showing the lat/long for animal "TQCS-1049258-2008-02-14", 
+# try making a scatterplot showing the lat/long for animal "A69-1601-1363", 
 # coloured by detection array
 
 #Answer 7: 
-tqcs_matched_10_11 %>%  
-  filter(catalognumber=="TQCS-1049258-2008-02-14") %>% 
-  ggplot(aes(latitude, longitude, colour = detectedby)) + 
+lamprey_dets %>%  
+  filter(animal_id=="A69-1601-1363") %>% 
+  ggplot(aes(deploy_lat, deploy_long, colour = glatos_array)) + 
   geom_point()
 
 #Question: what other geoms are there? Try typing `geom_` into R to see what it suggests!
