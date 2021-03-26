@@ -7,18 +7,19 @@ library(glatos)
 library(tidyverse)
 library(VTrack)
 # Get file path to example FACT data
-det_file_name <- 'tqcs_matched_detections.csv'
+det_file_name <- system.file("extdata", "walleye_detections.csv",
+                             package = "glatos")
 
 ## GLATOS help files are helpful!!
-?read_otn_detections
+?read_glatos_detections
 
 # Save our detections file data into a dataframe called detections
-detections <- read_otn_detections(det_file=det_file_name)
+detections <- read_glatos_detections(det_file=det_file_name)
 
 # Detection extracts have rows that report the animal release 
 # for all the animals in the file:
 
-View(detections %>% filter(receiver_sn == "release") %>% dplyr::select(transmitter_id, receiver_sn, detection_timestamp_utc, notes))
+View(detections %>% filter(receiver_sn == "release") %>% dplyr::select(transmitter_id, receiver_sn, detection_timestamp_utc))
 
 # Remove these rows from our dataset, leaving just acoustic detection data:
 detections <- detections %>% filter(receiver_sn != "release")
@@ -72,7 +73,7 @@ sum_animal_location
 
 # Create a custom vector of Animal IDs to pass to the summary function
 # look only for these ids when doing your summary
-tagged_fish <- c("TQCS-1049258-2008-02-14", "TQCS-1055546-2008-04-30", "TQCS-1064459-2009-06-29")
+tagged_fish <- c('22', '23')
 
 sum_animal_custom <- summarize_detections(det=detections_filtered,
                                           animals=tagged_fish,  # Supply the vector to the function
@@ -90,7 +91,7 @@ sum_animal_custom
 
 events <- detection_events(detections_filtered,
                            location_col = 'station', # combines events across different receivers in a single array
-                           time_sep=432000)
+                           time_sep=3600)
 
 head(events)
 
@@ -98,7 +99,7 @@ head(events)
 # keep detections, but add a 'group' column for each event group
 detections_w_events <- detection_events(detections_filtered,
                                         location_col = 'station', # combines events across different receivers in a single array
-                                        time_sep=432000, condense=FALSE)
+                                        time_sep=3600, condense=FALSE)
 
 # 08 - More Features of glatos ####
 
@@ -121,21 +122,19 @@ rit_data
 ?convert_otn_to_att
 
 # OTN's tagging metadata sheet
-tag_sheet_path <- 'TQCS_metadata_tagging.xlsx'
-rcvr_sheet_path <- 'TEQ_Deployments.xlsx'
+rec_file <- system.file("extdata", 
+                        "sample_receivers.csv", package = "glatos")
 
-# Load the data from the tagging sheet and the receiver sheet
-tags <- prepare_tag_sheet(tag_sheet_path, sheet=2)
-receivers <- prepare_deploy_sheet(rcvr_sheet_path)
+receivers <- read_glatos_receivers(rec_file)
 
-# Add columns missing from FACT extracts
-detections_filtered['sensorvalue'] = NA
-detections_filtered['sensorunit'] = NA
+?convert_glatos_to_att
+
+att
 
 # Rename the station names in receivers to match station names in detections
 receivers <- receivers %>% mutate(station=substring(station, 4))
 
-ATTdata <- convert_otn_to_att(detections_filtered, tags, deploymentSheet = receivers)
+ATTdata <- convert_glatos_to_att(detections_filtered, receivers)
 
 # ATT is split into 3 objects, we can view them like this
 ATTdata$Tag.Detections
@@ -169,118 +168,36 @@ View(coa)
 
 abacus_plot(detections_w_events, 
             location_col='station', 
-            main='TQCS Detections By Station') # can use plot() variables here, they get passed thru to plot()
+            main='Walleye Detection by Station') # can use plot() variables here, they get passed thru to plot()
+
+abacus_plot(detections_w_events, 
+            location_col='glatos_array', 
+            main='Walleye Detection by Array') # can use plot() variables here, they get passed thru to plot()
 
 # pick a single fish to plot
-abacus_plot(detections_filtered[detections_filtered$animal_id== "TQCS-1049258-2008-02-14",],
+abacus_plot(detections_filtered[detections_filtered$animal_id== "22",],
             location_col='station',
-            main="TQCS-1049258-2008-02-14 Detections By Station")
+            main="Animal 22 Detections By Station")
 
 library(raster)
 library(sp)
 
-USA <- getData('GADM', country="USA", level=1)
-FL <- USA[USA$NAME_1=="Florida",]
+# USA <- getData('GADM', country="USA", level=1)
+# FL <- USA[USA$NAME_1=="Florida",]
 
 # Bubble Plots for Spatial Distribution of Fish ####
 # bubble variable gets the summary data that was created to make the plot
 detections_filtered
-bubble <- detection_bubble_plot(detections_filtered, 
-                                out_file = '../tqcs_bubble.png',
+
+?detection_bubble_plot
+
+bubble_station <- detection_bubble_plot(detections_filtered, 
+                                out_file = '../walleye_station_bubble.png',
                                 location_col = 'station',
-                                map = FL,
-                                col_grad=c('white', 'green'),
-                                background_xlim = c(-81, -80),
-                                background_ylim = c(26, 28))
+)
 
-# 10 - Using FACT/OTN/GLATOS-style data in Actel ####
+bubble_station <- detection_bubble_plot(detections_filtered, 
+                                        out_file = '../walleye_array_bubble.png',
+)
 
-# We'll be using the development version, if it's not already installed, do:
-# library(remotes)
-# remotes::install_github("hugomflavio/actel", build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
-
-library(actel)
-library(stringr)
-
-# Hugo has created a preload() function that expects 4 objects, similar to VTrack's 3 objects
-
-# But it wants a bit more data, so we're going to go back to our deployment metadata sheet and reload it:
-full_receiver_meta <- readxl::read_excel(rcvr_sheet_path, sheet=1, skip=0) %>% 
-                      dplyr::rename(
-                                deploy_lat = DEPLOY_LAT,
-                                deploy_long = DEPLOY_LONG,
-                                ins_model_no = INS_MODEL_NO,
-                                deploy_date_time = `DEPLOY_DATE_TIME   (yyyy-mm-ddThh:mm:ss)`,
-                                recover_date_time = `RECOVER_DATE_TIME (yyyy-mm-ddThh:mm:ss)`,
-                              ) %>%
-                      dplyr::mutate(
-                                station = paste(OTN_ARRAY, STATION_NO, sep = '')
-                      )
-
-
-
-# dates will be supplied in this format:
-actel_datefmt = '%Y-%m-%d %H:%M:%S'
-
-# biometrics is the tag metadata. If you have a tag metadata sheet, it looks like this:
-actel_biometrics <- tags %>% mutate(Release.date = format(time, actel_datefmt), 
-                         Signal=as.integer(TAG_ID_CODE),
-                         Release.site = RELEASE_LOCATION)
-  
-# deployments is based in the receiver deployment metadata sheet
-actel_deployments <- full_receiver_meta %>% filter(!is.na(recover_date_time)) %>%
-                                   mutate(Station.name = station, 
-                                   Start = format(deploy_date_time, actel_datefmt), # no time data for these deployments
-                                   Stop = format(recover_date_time, actel_datefmt),  # not uncommon for this region
-                                   Receiver = INS_SERIAL_NO) %>% 
-                                   arrange(Receiver, Start)
-  
-# Renaming some columns in the Detection extract files   
-actel_dets <- detections %>% mutate(Transmitter = transmitter_id,
-                                   Receiver = as.integer(receiver_sn),
-                                   Timestamp = format(detection_timestamp_utc, actel_datefmt), 
-                                   CodeSpace = extractCodeSpaces(transmitter_id),
-                                   Signal = extractSignals(transmitter_id))
-  
-# Spatial is all release locations and all receiver deployment locations. 
-  # Basically, every distinct location we can say we know an animal has been.
-actel_receivers <- full_receiver_meta %>% mutate( Station.name = station, 
-                                        Latitude = deploy_lat, 
-                                        Longitude = deploy_long,
-                                        Type='Hydrophone') %>% 
-                                        mutate(Array=OTN_ARRAY) %>%    # Having this many distinct arrays breaks things with few clues as to why.
-                                        dplyr::select(Station.name, Latitude, Longitude, Array, Type) %>% 
-                                        distinct(Station.name, Latitude, Longitude, Array, Type)
-  
-actel_tag_releases <- tags %>% mutate(Station.name = RELEASE_LOCATION,
-                                      Latitude = latitude,
-                                      Longitude = longitude,
-                                      Type='Release') %>% 
-                                      mutate(Array = 'TEQ') %>% # released by TEQ, TEQ is 'first array'
-                                      distinct(Station.name, Latitude, Longitude, Array, Type)
-
-# Bind the releases and the deployments together for the unique set of spatial locations
-actel_spatial <- actel_receivers %>% bind_rows(actel_tag_releases)
-
-# Now, for stations that are named the same, take an average location.
-
-actel_spatial_sum <- actel_spatial %>% group_by(Station.name, Type) %>% dplyr::summarize(Latitude = mean(Latitude), 
-                                                                                         Longitude = mean(Longitude),
-                                                                                         Array =  first(Array))
-# and a timezone
-
-tz <- "GMT0"
-
-# Then you can create the Actel Project object.
-actel_project <- preload(biometrics = actel_biometrics, 
-                         spatial = actel_spatial_sum, 
-                         deployments = actel_deployments, 
-                         detections = actel_dets, 
-                         tz = tz)
-
-# Once you have an Actel object, you can run things like explore:
-
-actel_explore_output <- explore(actel_project, tz=tz, report=TRUE, print.releases=FALSE)
-
-
-# See more on what to do with this output in Hugo's talk
+bubble
