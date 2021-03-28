@@ -6,7 +6,8 @@ setwd("./data/")
 library(glatos)
 library(tidyverse)
 library(VTrack)
-# Get file path to example FACT data
+
+# Get file path to example walleye data
 det_file_name <- system.file("extdata", "walleye_detections.csv",
                              package = "glatos")
 
@@ -16,15 +17,8 @@ det_file_name <- system.file("extdata", "walleye_detections.csv",
 # Save our detections file data into a dataframe called detections
 detections <- read_glatos_detections(det_file=det_file_name)
 
-# Detection extracts have rows that report the animal release 
-# for all the animals in the file:
 
-View(detections %>% filter(receiver_sn == "release") %>% dplyr::select(transmitter_id, receiver_sn, detection_timestamp_utc))
-
-# Remove these rows from our dataset, leaving just acoustic detection data:
-detections <- detections %>% filter(receiver_sn != "release")
-
-# Don't have to use View, can quickly look at first 2 rows of output
+# View first 2 rows of output
 head(detections, 2)
 
 ## Filtering False Detections ####
@@ -43,8 +37,11 @@ nrow(detections_filtered) # Smaller than before
 
 
 # Summarize Detections ####
+# ?summarize_detections
+# summarize_detections(detections_filtered)
 
 # By animal ====
+
 sum_animal <- summarize_detections(detections_filtered, location_col = 'station', summ_type='animal')
 
 sum_animal
@@ -107,32 +104,26 @@ detections_w_events <- detection_events(detections_filtered,
 ?residence_index
 
 # Calc residence index using the Kessel method
-rik_data <- glatos::residence_index(events, 
-                                    calculation_method = 'kessel')
+rik_data <- residence_index(events, 
+                            calculation_method = 'kessel')
 rik_data
 
 # Calc residence index using the time interval method, interval set to 6 hours
-rit_data <- glatos::residence_index(events, 
-                                    calculation_method = 'time_interval', 
-                                    time_interval_size = "6 hours")
+rit_data <- residence_index(events, 
+                            calculation_method = 'time_interval', 
+                            time_interval_size = "6 hours")
 rit_data
 
-# Converting FACT/OTN/GLATOS-style dataframes to ATT format for use with VTrack ####
+# Converting GLATOS/FACT/OTN-style dataframes to ATT format for use with VTrack ####
 
-?convert_otn_to_att
+?convert_glatos_to_att
 
-# OTN's tagging metadata sheet
+# The receiver metadata for the walleye dataset
 rec_file <- system.file("extdata", 
                         "sample_receivers.csv", package = "glatos")
 
 receivers <- read_glatos_receivers(rec_file)
 
-?convert_glatos_to_att
-
-att
-
-# Rename the station names in receivers to match station names in detections
-receivers <- receivers %>% mutate(station=substring(station, 4))
 
 ATTdata <- convert_glatos_to_att(detections_filtered, receivers)
 
@@ -172,7 +163,7 @@ abacus_plot(detections_w_events,
 
 abacus_plot(detections_w_events, 
             location_col='glatos_array', 
-            main='Walleye Detection by Array') # can use plot() variables here, they get passed thru to plot()
+            main='Walleye Detection by Array') 
 
 # pick a single fish to plot
 abacus_plot(detections_filtered[detections_filtered$animal_id== "22",],
@@ -192,12 +183,10 @@ detections_filtered
 ?detection_bubble_plot
 
 bubble_station <- detection_bubble_plot(detections_filtered, 
-                                out_file = '../walleye_station_bubble.png',
                                 location_col = 'station',
-)
+                                out_file = 'walleye_bubbles_by_stations.png')
+bubble_station
 
-bubble_station <- detection_bubble_plot(detections_filtered, 
-                                        out_file = '../walleye_array_bubble.png',
-)
-
-bubble
+bubble_array <- detection_bubble_plot(detections_filtered,
+                                      out_file = 'walleye_bubbles_by_array.png')
+bubble_array

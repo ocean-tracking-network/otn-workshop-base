@@ -35,11 +35,11 @@ for each. Both, however, provide a marked performance boost over base R, and Bot
 ensure that the resulting data set will be compatible with the rest of the glatos
 framework.
 
-We will use the TQCS detections.
+We will use the walleye detections from the glatos package.
 
 ~~~
-# Get file path to example FACT data
-det_file_name <- 'tqcs_matched_detections.csv'
+# Get file path to example walleye data
+det_file_name <- system.file("extdata", "walleye_detections.csv",
 ~~~
 {:.language-r}
 
@@ -63,19 +63,8 @@ detections <- read_otn_detections(det_file=det_file_name)
 ~~~
 {: .language-r}
 
-We will also filter out all the release rows.
-~~~
-# Detection extracts have rows that report the animal release 
-# for all the animals in the file:
-View(detections %>% filter(receiver_sn == "release") %>% dplyr::select(transmitter_id, receiver_sn, detection_timestamp_utc, notes))
 
-detections <- detections %>% filter(receiver_sn != "release")
-~~~
-{: .language-r}
-
-
-Remember that we can use head() to inspect a few lines of our data to ensure it
-was loaded properly.
+Remember that we can use head() to inspect a few lines of our data to ensure it was loaded properly.
 
 ~~~
 # View first 2 rows of output
@@ -123,6 +112,8 @@ detected.
 
 ~~~
 # Summarize Detections ####
+#?summarize_detections
+#summarize_detections(detections_filtered)
 
 # By animal ====
 sum_animal <- summarize_detections(detections_filtered, location_col = 'station', summ_type='animal')
@@ -169,7 +160,7 @@ that we want to see summarized.
 ~~~
 # create a custom vector of Animal IDs to pass to the summary function
 # look only for these ids when doing your summary
-tagged_fish <- c("TQCS-1049258-2008-02-14", "TQCS-1055546-2008-04-30", "TQCS-1064459-2009-06-29")
+tagged_fish <- c('22', '23')
 
 sum_animal_custom <- summarize_detections(det=detections_filtered,
                                           animals=tagged_fish,
@@ -197,7 +188,7 @@ clearer to read. Fortunately, GLATOS lets us to this easily.
 
 events <- detection_events(detections_filtered,
                            location_col = 'station', # combines events across different receivers in a single array
-                           time_sep=432000)
+                           time_sep=3600)
 
 head(events)
 ~~~
@@ -210,7 +201,7 @@ would have been condensed.
 # keep detections, but add a 'group' column for each event group
 detections_w_events <- detection_events(detections_filtered,
                                         location_col = 'station', # combines events across different receivers in a single array
-                                        time_sep=432000, condense=FALSE)
+                                        time_sep=3600, condense=FALSE)
 ~~~
 {: .language-r}
 

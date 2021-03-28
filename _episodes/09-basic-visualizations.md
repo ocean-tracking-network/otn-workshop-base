@@ -18,9 +18,14 @@ against the appropriate stations.
 # ?glatos::abacus_plot
 # customizable version of the standard VUE-derived abacus plots
 
-abacus_plot(detections_w_events,
-            location_col='station',
-            main='TQCS Detections By Station') # can use plot() variables here, they get passed thru to plot()
+abacus_plot(detections_w_events, 
+            location_col='station', 
+            main='Walleye Detection by Station') # can use plot() variables here, they get passed thru to plot()
+
+abacus_plot(detections_w_events, 
+            location_col='glatos_array', 
+            main='Walleye Detection by Array') 
+
 ~~~
 {: .language-r}
 
@@ -28,9 +33,10 @@ This is good, but cluttered. We can also filter out a single animal ID and plot
 only the abacus plot for that.
 ~~~
 # pick a single fish to plot
-abacus_plot(detections_filtered[detections_filtered$animal_id== "TQCS-1049258-2008-02-14",],
+# pick a single fish to plot
+abacus_plot(detections_filtered[detections_filtered$animal_id== "22",],
             location_col='station',
-            main="TQCS-1049258-2008-02-14 Detections By Station")
+            main="Animal 22 Detections By Station")
 ~~~
 {: .language-r}
 
@@ -39,30 +45,21 @@ abacus_plot(detections_filtered[detections_filtered$animal_id== "TQCS-1049258-20
 
 If we want to see actual physical distribution, a bubble plot will serve us better.
 
-Before we can plot this data properly, we need to download a shapefile of Florida
-This will give us a map on which we can plot our data. We can get a suitable Shapefile
-for Florida from GADM, the Global Administrative boundaries reference. The following
-code will retrieve first the country, then the province/state:
-
-~~~
-library(raster)
-library(sp)
-USA <- getData('GADM', country="USA", level=1)
-FL <- USA[USA$NAME_1=="Florida",]
-~~~
-{: .language-r}
-
-With the map generated, we can pass it to the bubble plot and see the results.
+The glatos package provides a raster of the Great Lakes to the bubble plot, we will just use that.
 ~~~
 # Bubble Plots for Spatial Distribution of Fish ####
 # bubble variable gets the summary data that was created to make the plot
 detections_filtered
-bubble <- detection_bubble_plot(detections_filtered,
-                                out_file = '../tqcs_bubble.png',
+
+?detection_bubble_plot
+
+bubble_station <- detection_bubble_plot(detections_filtered, 
                                 location_col = 'station',
-                                map = FL,
-                                col_grad=c('white', 'green'),
-                                background_xlim = c(-81, -80),
-                                background_ylim = c(26, 28))
+                                out_file = 'walleye_bubbles_by_stations.png')
+bubble_station
+
+bubble_array <- detection_bubble_plot(detections_filtered,
+                                      out_file = 'walleye_bubbles_by_array.png')
+bubble_array
 ~~~
 {: .language-r}

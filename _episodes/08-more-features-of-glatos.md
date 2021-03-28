@@ -32,27 +32,18 @@ explore them all to see what method works best for your data.
 
 
 GLATOS strives to be interoperable with other scientific R packages. Currently, we can 
-crosswalk OTN data over to the package [VTrack](https://github.com/RossDwyer/VTrack). Here's an example:
+crosswalk GLATOS data over to the package [VTrack](https://github.com/RossDwyer/VTrack). Here's an example:
 
 ~~~
-?convert_otn_to_att
+?convert_glatos_to_att
 
-# FACT's tagging and deployment metadata sheet
-tag_sheet_path <- 'TQCS_metadata_tagging.xlsx'
-rcvr_sheet_path <- 'TEQ_Deployments.xlsx'
+# The receiver metadata for the walleye dataset
+rec_file <- system.file("extdata", 
+                        "sample_receivers.csv", package = "glatos")
 
-# Load the data from the tagging sheet and the receiver sheet
-tags <- prepare_tag_sheet(tag_sheet_path, sheet=2)
-receivers <- prepare_deploy_sheet(rcvr_sheet_path)
+receivers <- read_glatos_receivers(rec_file)
 
-# Add columns missing from FACT extracts
-detections_filtered['sensorvalue'] = NA
-detections_filtered['sensorunit'] = NA
-
-# Rename the station names in receivers to match station names in detections
-receivers <- receivers %>% mutate(station=substring(station, 4))
-
-ATTdata <- convert_otn_to_att(detections_filtered, tags, deploymentSheet = receivers)
+ATTdata <- convert_glatos_to_att(detections_filtered, receivers)
 
 # ATT is split into 3 objects, we can view them like this
 ATTdata$Tag.Detections
