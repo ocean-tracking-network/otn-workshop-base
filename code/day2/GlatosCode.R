@@ -149,6 +149,16 @@ attr(ATTdata, "CRS") <-proj
 coa <- VTrack::COA(ATTdata)
 View(coa)
 
+
+# Dispersal information
+# ?dispersalSummary
+dispSum<-dispersalSummary(ATTdata)
+
+View(dispSum)
+
+# Get only the detections when the animal just arrives at a station
+dispSum %>% filter(Consecutive.Dispersal > 0) %>%  View
+
 # BREAK 
 
 # 9 - Basic Visualization and Plotting
