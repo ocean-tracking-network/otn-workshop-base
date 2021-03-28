@@ -79,6 +79,21 @@ coa
 ~~~
 {: .language-r}
 
+Here's an example of a VTrack function for getting metrics of dispersal.
+~~~
+# Dispersal information
+# ?dispersalSummary
+dispSum<-dispersalSummary(ATTdata)
+
+View(dispSum)
+
+# Get only the detections when the animal just arrives at a station
+dispSum %>% filter(Consecutive.Dispersal > 0) %>%  View
+~~~
+{: .language-r}
+
+VTrack has some more analysis functions like creating activity space models.
+
 GLATOS also includes tools for planning receiver arrays, simulating fish moving in an array, 
 and some nice visualizations (which we will cover in the next episode).
 
