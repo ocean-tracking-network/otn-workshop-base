@@ -11,14 +11,38 @@ keypoints:
 
 `actel` is designed for studies where animals tagged with acoustic tags are expected to move through receiver arrays. `actel` combines the advantages of automatic sorting and checking of animal movements with the possibility for user intervention on tags that deviate from expected behaviour. The three analysis functions: explore, migration and residency, allow the users to analyse their data in a systematic way, making it easy to compare results from different studies.
 
+Author: Dr. Hugo Flavio, ( hflavio@wlu.ca )
 
-(Speaker: Dr. Hugo Flavio, hflavio@wlu.ca)
+Actel on GitHub: https://github.com/hugomflavio/actel/
 
 - [PAPER - actel: Standardised analysis of acoustic telemetry data from animals moving through receiver arrays](../Resources/actel_paper_published_version.pdf)
 
 - [POWERPOINT](../Resources/actel_introduction.ppsx)
 
+
+### Actel - a package for the analysis of acoustic telemetry data
+
+`actel` seeks to be a one-stop package that guides the user through the compilation and cleaning of their telemetry data, the description of their study system, and the production of many reports and analyses that are generally applicable to closed-system telemetry projects. `actel` tracks receiver deployments, tag releases, and detection data, as well as an additional concept of receiver groups and a network of the interconnectivity between them within our study area, and uses all of this information to raise warnings and potential oddities in the detection data to the user.
+
+![Actel - a study's receivers and arrays split up into sections](../Resources/actel_study_sections.png)
+
+![Actel graph of receiver group interactivity](../Resources/actel_mb_arrays.svg)
+
+If you're working in river systems, you've probably got a sense of which receivers form arrays. There is a larger-order grouping you can make called 'sections', and this will be something we can inter-compare our results with.
+
+### Preparing to use `actel`
+
+With our receiver, tag, and detection data mapped to `actel`'s formats, and after creating our receiver groups and graphing out how detected animals may move between them, we can leverage `actel`'s analyses for our own datasets. Thanks to some efforts on the part of Hugo and of the `glatos` development team, we can move fairly easily with our `glatos` data into `actel`.
+
+`actel`'s standard suite of analyses are grouped into three main functions - explore(), migration(), and residency().
+
+
+The first thing we will do is use `actel`'s built-in dataset to ensure we've got a working environment, and also to see what sorts of default analysis output Actel can give us.
+
+
+
 ### Exploring
+
 ~~~
 library("actel")
 
@@ -31,7 +55,7 @@ library("actel")
 # See the manual:
 browseVignettes("actel")
 
-# access the paper:
+# Get the citation for actel, and access the paper:
 citation("actel")
 
 # Finally, every function in actel contains detailed documentation
@@ -44,22 +68,25 @@ citation("actel")
 ## Example data exercise
 
 ~~~
-# Start by checking where you are working with (it is always good to known this)
+# Start by checking where your working directory is (it is always good to know this)
 getwd()
 
-# We will deploy actel's example files into a new folder, called "actel_example".
+# We will then deploy actel's example files into a new folder, called "actel_example".
 # exampleWorkspace() will provide you with some information about how to run the example analysis.
 exampleWorkspace("actel_example")
 
-# Side note: When preparing your own data, you can crate template files
+# Side note: When preparing your own data, you can create the initial template files
 # with the function createWorkspace("directory_name")
 
-# Take a minute to explore the folder contents. You will find the files that were presented earlier.
+# Take a minute to explore this folder's contents.
 
 # -----------------------
+~~~
+{: .language-r}
 
-# If you read the information provided by exampleWorkspace, you will find these two commands:
+![Actel example data folder output](/Resources/actel_example_folder.PNG)
 
+~~~
 # move into the newly created folder
 setwd('actel_example')
 
@@ -70,11 +97,11 @@ exp.results <- explore(tz = 'Europe/Copenhagen', report = TRUE)
 # Real data is not always this nice to us!
 
 # ----------
-# IF your analysis failed while compiling the report, you can load 
+# If your analysis failed while compiling the report, you can load 
 # the saved results back in using the dataToList() function:
 exp.results <- dataToList("actel_explore_results.RData")
 
-# IF your analysis failed before you had a chance to save the results,
+# If your analysis failed before you had a chance to save the results,
 # load the pre-compiled results, so you can keep up with the workshop.
 # Remember to change the path so R can find the RData file.
 exp.results <- dataToList("pre-compiled_results.RData")
