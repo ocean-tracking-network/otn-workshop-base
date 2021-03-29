@@ -64,7 +64,7 @@ bubble_array
 ~~~
 {: .language-r}
 
-> ## Spot the Difference
+> ## Glatos Challenge
 >
 > Create a bubble plot of the station in Lake Erie only. Set the bounding box using the provided nw + se cordinates and 
 > resize the points. As a bonus, add points for the other receivers in Lake Erie.
@@ -76,12 +76,13 @@ bubble_array
 > se <- c(41.25, -82)
 > ~~~
 > {: .language-r}
+>
 > > ## Solution
+> >
 > > ~~~
 > > erie_arrays <-c("DRF", "DRL", "DRU", "MAU", "RAR", "SCL", "SCM", "TSR") # Given
 > > nw <- c(43, -83.75) # Given
 > > se <- c(41.25, -82) # Given
-
 > > erie_detections <- detections_filtered %>% filter(glatos_array %in% erie_arrays)
 > > erie_rcvrs <- receivers %>% filter(glatos_array %in% erie_arrays) # For bonus
 > >
@@ -93,6 +94,7 @@ bubble_array
 > >                                      symbol_radius = 0.75,
 > >                                      out_file = 'erie_bubbles_by_stations.png')
 > > ~~~
+> > {: .language-r}
 > > ![Bubble plot for detections on Lake Erie Stations](../Resources/ErieBubblePlot.png)
 > {: .solution}
 {: .challenge}
