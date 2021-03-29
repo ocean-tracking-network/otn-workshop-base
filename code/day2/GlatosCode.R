@@ -200,3 +200,13 @@ bubble_station
 bubble_array <- detection_bubble_plot(detections_filtered,
                                       out_file = 'walleye_bubbles_by_array.png')
 bubble_array
+
+
+# Challenge 1 ----
+# Create a bubble plot of the station in Lake Erie only. Set the bounding box using the provided nw + se cordinates and 
+# resize the points. As a bonus, add points for the other receivers in Lake Erie.
+# Hint: ?detection_bubble_plot will help a lot
+# Here's some code to get you started
+erie_arrays <-c("DRF", "DRL", "DRU", "MAU", "RAR", "SCL", "SCM", "TSR") 
+nw <- c(43, -83.75) 
+se <- c(41.25, -82) 
