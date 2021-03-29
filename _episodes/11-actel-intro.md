@@ -229,12 +229,14 @@ C -- E
 >> A -- C
 >> B -> C
 >> ~~~
+>> {: .source}
 >> **Right-hand diagram**:
 >> ~~~
 >>A -- B
 >>A -> C
 >>B -> C
 >> ~~~
+>> {: .output}
 >{: .solution}
 {: .challenge}
 
