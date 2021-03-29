@@ -79,6 +79,31 @@ coa
 ~~~
 {: .language-r}
 
+Let's take a look at a plot of the COAs from VTrack. We'll use animal 153 for this.
+
+~~~
+# Plot a COA
+coa153 <- coa %>% filter(Tag.ID == 153)
+
+data(greatLakesPoly) # Get spacial object from glatos package
+
+# plot the object and zoom in to lake Huron. Set colour of water to blue. Add labels to the axises
+plot(greatLakesPoly, xlim=c(-85, -82), ylim=c(43, 46), col='blue', xlab="Longitude", ylab="Latitude")
+
+# Create a palette
+color <- c(colorRampPalette(c('pink', 'red'))(max(coa153$Number.of.Detections)))
+
+#add the points
+points(coa153$Longitude.coa, coa153$Latitude.coa, pch=19, col=color[coa153$Number.of.Detections], 
+    cex=log(coa153$Number.of.Stations) + 0.5) # cex is for point size. natural log is for scaling purposes
+
+# add axises and title
+axis(1)
+axis(2)
+title("Centers of Activities for 153")
+~~~
+{: .languege-r}
+
 Here's an example of a VTrack function for getting metrics of dispersal.
 ~~~
 # Dispersal information
