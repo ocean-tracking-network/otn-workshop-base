@@ -195,7 +195,7 @@ With the `inactive.warning` and `inactive.error` arguments, we can flag entries 
 
 ### Creating a spatial.txt file
 
-Your study area might be simple and linear, may be complicated and open, completely interconnected. It is more likely a combination of the two! We can use DOT notation to create a graph of our areas and how they are allowed to inter-mingle. `actel` can read this information as DOT notation using `readDOT()` or you can provide a spatial.txt with the DOT information already inline.
+Your study area might be simple and linear, may be complicated and open, completely interconnected. It is more likely a combination of the two! We can use [DOT notation](https://graphs.grevian.org/example) (commonly used in graphing applications like [GraphViz](https://graphviz.org/doc/info/lang.html) and [Gephi](https://gephi.org/users/supported-graph-formats/graphviz-dot-format/)) to create a graph of our areas and how they are allowed to inter-mingle. `actel` can read this information as DOT notation using `readDOT()` or you can provide a spatial.txt with the DOT information already inline.
 
 ![Actel spatial domain examples](../Resources/actel_spatial_txt.png)
 
@@ -219,10 +219,24 @@ B -- F
 C -- E 
 ```
 
-Challenge:
-Write the DOT for the system marked here
-
-![Actel spatial diagram challenge](../Resources/actel_spatial_challenge.png)
+> #### Challenge : DOT notation
+>Using the DOT notation tutorial linked [here](https://graphs.grevian.org/example), discover the notation for a one-way connection and write the DOT notations for the systems shown here:
+>![Actel spatial diagram challenge](../Resources/actel_spatial_challenge.png)
+>> #### Solution:
+>> **Left-hand diagram**:
+>> ~~~
+>> A -- B
+>> A -- C
+>> B -> C
+>> ~~~
+>> **Right-hand diagram**:
+>> ~~~
+>>A -- B
+>>A -> C
+>>B -> C
+>> ~~~
+>{: .solution}
+{: .challenge}
 
 
 ### Generating an initial distance matrix file
@@ -294,11 +308,11 @@ the `migration()` function will ask us to invalidate some flagged data or leave 
 
 ... a breakdown of the biometrics variables it finds in biometrics.csv
 
-![actel biometrics summary graph](../Resources/actel_migration_biometrics_variables_mass.png) ![actel biometrics summary graph](../Resources/actel_migration_biometrics_variables_length.png)
+![](../Resources/actel_migration_biometrics_variables.png) 
 
 ... and a temporal analysis of when animals arrived at each of the array sections of the study area.
 
-[actel time of arrival example](../Resources/actel_toa_array_example.png)
+![actel time of arrival example](../Resources/actel_toa_array_example.png)
 
 
 To save our choices in `actel`'s interactives, let's include them as raw text in our R block. We'll test this by calling `residency()` with a few pre-recorded choices, as below:
