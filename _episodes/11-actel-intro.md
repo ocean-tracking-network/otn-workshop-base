@@ -34,8 +34,7 @@ If you're working in river systems, you've probably got a sense of which receive
 
 With our receiver, tag, and detection data mapped to `actel`'s formats, and after creating our receiver groups and graphing out how detected animals may move between them, we can leverage `actel`'s analyses for our own datasets. Thanks to some efforts on the part of Hugo and of the `glatos` development team, we can move fairly easily with our `glatos` data into `actel`.
 
-`actel`'s standard suite of analyses are grouped into three main functions - explore(), migration(), and residency().
-
+`actel`'s standard suite of analyses are grouped into three main functions - explore(), migration(), and residency(). As we will see in this and the next modules, these functions specialize in terms of their outputs but accept the same input data and arguments.
 
 The first thing we will do is use `actel`'s built-in dataset to ensure we've got a working environment, and also to see what sorts of default analysis output Actel can give us.
 
