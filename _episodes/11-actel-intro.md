@@ -83,26 +83,26 @@ exampleWorkspace("actel_example")
 ~~~
 {: .language-r}
 
-![Actel example data folder output](/Resources/actel_example_folder.PNG)
+![Actel example data folder output](../Resources/actel_example_folder.PNG)
 
 These are the files the Actel package depends on to create its output plots and result summary files.
 
 biometrics.csv contains the detailed information on your tagged animals, where they were released and when, what the tag code is for that animal, and a grouping variable for you to set. Additional columns can be part of biometrics.csv but these are the minimum requirements. The names of our release sites must match up to a place in our spatial.csv file, where you release the animal has a bearing on how it will begin to interact with your study area.
 
-![Biometrics.csv in Actel](/Resources/actel_biometrics.png)
+![Biometrics.csv in Actel](../Resources/actel_biometrics.png)
 
 deployments.csv concerns your receiver deployments, when and where each receiver by serial number was deployed. Here again you can have more than the required columns but you have to have a column that corresponds to the station's 'name', which will have a paired entry in the spatial.csv file as well, and a start and end time for the deployment.
 
-![deployments.csv in Actel](/Resources/actel_deployments.png)
+![deployments.csv in Actel](../Resources/actel_deployments.png)
 
 Finally, we have to have some number of detection files. This is helpfully a folder to make it easier on folks who don't have aggregators like GLATOS and OTN to pull together all the detection information for their tags. While we could drop our detection data in here, when the time comes to use GLATOS data with `actel` we'll see how we can create these data structures straight from the `glatos` data objects.
 
-![detections files in Actel](/Resources/actel_detections.png)
+![detections files in Actel](../Resources/actel_detections.png)
 
 
 OK, now we have a biometrics file of our tag releases with names for each place we released our tags in spatial.csv, we have a deployments file of all our receiver deployments and the matching names in spatial.csv, and we've got our detections. These are the minimum components necessary for `actel` to go to work.
 
-![Actel inputs and outputs](/Resources/actel_input_output.png)
+![Actel inputs and outputs](../Resources/actel_input_output.png)
 
 
 ~~~
@@ -129,7 +129,7 @@ exp.results <- dataToList("pre-compiled_results.RData")
 
 This example dataset is a salmon project working in a river-and-estuary system in northeastern Denmark. There are lots of clear logical separations in the array design and the general geography here that we will want to compare and deal with separately.
 
-![spatial extent of actel example data](/Resources/actel_example_dataset.png)
+![spatial extent of actel example data](../Resources/actel_example_dataset.png)
 
 
 
@@ -161,7 +161,7 @@ A good deal of checking occurs when you first run any analysis function against 
 
 Actel will calculate the movement path for each individual animal, and determine whether that animal has met a threshhold for minimum detections and detection events, whether it snuck across arrays that should have detected it but didn't, whether it reached unlikely speeds or crossed impassable areas
 
-![QC checks run by explore() in Actel](/Resources/actel_explore_checks.png)
+![QC checks run by explore() in Actel](../Resources/actel_explore_checks.png)
 
 
 **Minimum detections:**
@@ -172,32 +172,32 @@ Controlled by the `minimum.detections` and `max.interval` arguments, if a tag ha
 
 In cases where you have gates of arrays designed to capture all movement up and down a linear system, you may want to verify that your tags have not 'jumped' past one or more arrays before being re-detected. You can use the `jump.warning` and `jump.error` arguments to `explore()` to set the number of acceptable jumps across your array system are permissible.
 
-![Actel jumping arrays illustration](/Resources/actel_checks_jumping_arrays.png)
+![Actel jumping arrays illustration](../Resources/actel_checks_jumping_arrays.png)
 
 **Impassables:**
 When we define how our areas are connected in the spatial.txt file, it tells `actel` which movements are -not- permitted explicitly, and can tell us about when those movements occur. This way, we can account for manmade obstacles or make other assumptions about one-way movement and verify our data against them.
 
-![Actel impassables illustration](/Resources/actel_checks_impassables.png)
+![Actel impassables illustration](../Resources/actel_checks_impassables.png)
 
 **Speed:**
 
 `actel` can calculate the minimum speed of an animal between (and optionally within) detection events using the distances calculated from spatial.csv into a new distance matrix file, distances.csv, and we can supply `speed.warning`, `speed.error`, and `speed.method` to tailor our report to the speed and calculation method we want to submit our data to.
 
-![Actel speed illustration](/Resources/actel_checks_speed.png)
+![Actel speed illustration](../Resources/actel_checks_speed.png)
 
 
 **Inactivity:**
 
 With the `inactive.warning` and `inactive.error` arguments, we can flag entries that have spent a longer time than expected not transiting between locations.
 
-![Actel inactivity table](/Resources/actel_checks_inactivity.png)
+![Actel inactivity table](../Resources/actel_checks_inactivity.png)
 
 
 ### Creating a spatial.txt file
 
 Your study area might be simple and linear, may be complicated and open, completely interconnected. It is more likely a combination of the two! We can use DOT notation to create a graph of our areas and how they are allowed to inter-mingle. `actel` can read this information as DOT notation using `readDOT()` or you can provide a spatial.txt with the DOT information already inline.
 
-![Actel spatial domain examples](/Resources/actel_spatial_txt.png)
+![Actel spatial domain examples](../Resources/actel_spatial_txt.png)
 
 The question you must ask when creating spatial.txt files is: for each location, where could my animal move to and be detected next?
 
@@ -222,18 +222,18 @@ C -- E
 Challenge:
 Write the DOT for the system marked here
 
-![Actel spatial diagram challenge](/Resources/actel_spatial_challenge.png)
+![Actel spatial diagram challenge](../Resources/actel_spatial_challenge.png)
 
 
 ### Generating an initial distance matrix file
 
 A distance matrix tracks the distance between each pair of spatial data points in a dataframe. In `actel`, our dataframe is spatial.csv, and we can use this datafile as well as a shapefile describing our body or bodies of water, with the functions `loadShape()`, `transitionLayer()` and `distancesMatrix()` to generate a distance matrix for our study area.
 
-![Generating a distance matrix file with Actel](/Resources/actel_distances_csv_example.png)
+![Generating a distance matrix file with Actel](../Resources/actel_distances_csv_example.png)
 
 Let's use `actel`'s built-in functions to create a distance matrix file. The process generally will be:
 
-![Generating a distance matrix file with Actel](/Resources/actel_distances_csv_generating_steps.png)
+![Generating a distance matrix file with Actel](../Resources/actel_distances_csv_generating_steps.png)
 
 ~~~
 # Let's load the spatial file individually, so we can have a look at it.
