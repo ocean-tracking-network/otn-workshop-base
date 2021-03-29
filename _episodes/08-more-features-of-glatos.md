@@ -102,7 +102,7 @@ axis(1)
 axis(2)
 title("Centers of Activities for 153")
 ~~~
-{: .languege-r}
+{: .language-r}
 
 Here's an example of a VTrack function for getting metrics of dispersal.
 ~~~
