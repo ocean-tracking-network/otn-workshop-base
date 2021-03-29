@@ -95,7 +95,7 @@ deployments.csv concerns your receiver deployments, when and where each receiver
 
 ![deployments.csv in Actel](../Resources/actel_deployments.png)
 
-Finally, we have to have some number of detection files. This is helpfully a folder to make it easier on folks who don't have aggregators like GLATOS and OTN to pull together all the detection information for their tags. While we could drop our detection data in here, when the time comes to use GLATOS data with `actel` we'll see how we can create these data structures straight from the `glatos` data objects.
+Finally, we have to have some number of detection files. This is helpfully a folder to make it easier on folks who don't have aggregators like GLATOS and OTN to pull together all the detection information for their tags. While we could drop our detection data in here, when the time comes to use GLATOS data with `actel` we'll see how we can create these data structures straight from the `glatos` data objects. Here also Hugo likes to warn people about opening their detection data files in Excel directly... Excel's eaten a few date fields on all of us, I'm sure. We don't have a hate-on for Excel or anything, like our beloved household pet, we've just had to learn there are certain places we just can't bring it with us.
 
 ![detections files in Actel](../Resources/actel_detections.png)
 
@@ -276,15 +276,35 @@ dist.mat
 
 ## migration and residency
 
-`migration()` runs the same cchecks as `explore()`
+`migration()` runs the same checks as `explore()` and can be advantageous in cases where your animals can be assumed to be moving predictably.
 
+ The built-in vignettes (remember: ` browseVignettes("actel")` for the interactive vignette) are the most comprehensive description of all that `migration()` offers over and above `explore()` but one good way might be to examine its output. For simple datasets and study areas like our example dataset, the arguments and extra spatial.txt and distances.csv aren't necessary. Our mileage may vary.
 
 
 ~~~
-# Let's go ahead and try running migration() and residency() on this dataset.
+# Let's go ahead and try running migration() on this dataset.
 mig.results <- migration(tz = 'Europe/Copenhagen', report = TRUE)
+~~~
+{: .language-r}
 
-# Now try copy-pasting the next five lines as a block and run it all at once.
+the `migration()` function will ask us to invalidate some flagged data or leave it in the analysis, and then it will ask us to save a copy of the source data once we've cleared all the flags. Then we get to see the report. It will show us things like our study locations and their graph relationship:
+
+![actel migration sites graph](../Resources/actel_migration_sites_graph.svg)
+
+
+... a breakdown of the biometrics variables it finds in biometrics.csv
+
+![actel biometrics summary graph](../Resources/actel_migration_biometrics_variables_mass.png) ![actel biometrics summary graph](../Resources/actel_migration_biometrics_variables_length.png)
+
+... and a temporal analysis of when animals arrived at each of the array sections of the study area.
+
+[actel time of arrival example](../Resources/actel_toa_array_example.png)
+
+
+To save our choices in `actel`'s interactives, let's include them as raw text in our R block. We'll test this by calling `residency()` with a few pre-recorded choices, as below:
+
+~~~
+# Try copy-pasting the next five lines as a block and run it all at once.
 res.results <- residency(tz = 'Europe/Copenhagen', report = TRUE)
 comment
 This is a lovely fish
@@ -301,14 +321,12 @@ y
 # Error in tableInteraction(moves = secmoves, tag = tag, trigger = the.warning,  : 
 #  argument "save.tables.locally" is missing, with no default
 #
-# This has already been corrected in development and a fix will be released in actel 1.2.1.
-# In the meantime, if you come across this error, get in contact with me and I will guide
-# you through how to install the development version.
+# This has already been corrected in development and a fix has been released in actel 1.2.1.
 
 ~~~
 {: .language-r}
 
-## For home: Transforming the results
+## Further exploration of `actel`: Transforming the results
 ~~~
 # Try some of the stuff in this manual page!
 vignette("f-0_post_functions", "actel")
