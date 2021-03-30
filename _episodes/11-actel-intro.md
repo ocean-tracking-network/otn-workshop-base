@@ -13,16 +13,18 @@ keypoints:
 
 Author: Dr. Hugo Flavio, ( hflavio@wlu.ca )
 
-Actel on GitHub: https://github.com/hugomflavio/actel/
+Supplemental Links and Related Materials:
+- [Actel on GitHub](https://github.com/hugomflavio/actel/)
 
 - [PAPER - actel: Standardised analysis of acoustic telemetry data from animals moving through receiver arrays](../Resources/actel_paper_published_version.pdf)
 
-- [POWERPOINT](../Resources/actel_introduction.ppsx)
+- [Introduction to Actel - POWERPOINT](../Resources/actel_introduction.ppsx)
 
+- [Video presentation by Dr. Hugo Flavio to the European Tracking Network](https://www.youtube.com/watch?v=IIiKVwAQImc)
 
 ### Actel - a package for the analysis of acoustic telemetry data
 
-`actel` seeks to be a one-stop package that guides the user through the compilation and cleaning of their telemetry data, the description of their study system, and the production of many reports and analyses that are generally applicable to closed-system telemetry projects. `actel` tracks receiver deployments, tag releases, and detection data, as well as an additional concept of receiver groups and a network of the interconnectivity between them within our study area, and uses all of this information to raise warnings and potential oddities in the detection data to the user.
+The R package `actel` seeks to be a one-stop package that guides the user through the compilation and cleaning of their telemetry data, the description of their study system, and the production of many reports and analyses that are generally applicable to closed-system telemetry projects. `actel` tracks receiver deployments, tag releases, and detection data, as well as an additional concept of receiver groups and a network of the interconnectivity between them within our study area, and uses all of this information to raise warnings and potential oddities in the detection data to the user.
 
 ![Actel - a study's receivers and arrays split up into sections](../Resources/actel_study_sections.png)
 
@@ -292,9 +294,9 @@ dist.mat
 
 ## migration and residency
 
-`migration()` runs the same checks as `explore()` and can be advantageous in cases where your animals can be assumed to be moving predictably.
+The `migration()` function runs the same checks as `explore()` and can be advantageous in cases where your animals can be assumed to be moving predictably.
 
- The built-in vignettes (remember: ` browseVignettes("actel")` for the interactive vignette) are the most comprehensive description of all that `migration()` offers over and above `explore()` but one good way might be to examine its output. For simple datasets and study areas like our example dataset, the arguments and extra spatial.txt and distances.csv aren't necessary. Our mileage may vary.
+ The built-in vignettes (remember: `browseVignettes("actel")` for the interactive vignette) are the most comprehensive description of all that `migration()` offers over and above `explore()` but one good way might be to examine its output. For simple datasets and study areas like our example dataset, the arguments and extra spatial.txt and distances.csv aren't necessary. Our mileage may vary.
 
 
 ~~~
@@ -337,14 +339,14 @@ y
 # Error in tableInteraction(moves = secmoves, tag = tag, trigger = the.warning,  : 
 #  argument "save.tables.locally" is missing, with no default
 #
-# This has already been corrected in development and a fix has been released in actel 1.2.1.
+# This has already been corrected and a fix has been released in actel 1.2.1.
 
 ~~~
 {: .language-r}
 
 ## Further exploration of `actel`: Transforming the results
 ~~~
-# Try some of the stuff in this manual page!
+# Review more available features of Actel in the manual pages!
 vignette("f-0_post_functions", "actel")
 ~~~
 {: .language-r}
