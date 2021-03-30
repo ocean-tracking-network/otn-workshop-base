@@ -7,12 +7,12 @@ questions:
 ---
 ### Preparing our data to use in Actel
 
-Up next, we're going to be learning about Actel, a new player in the acoustic telemetry data analysis ecosystem. We've got the package author coming up next to tell you all about it, so let's quickly look at how we can take the data we have been working with from FACT (and any OTN/GLATOS style data) and make it ready for Actel.
+So now, as the last piece of stock curriculum for this workshop, let's quickly look at how we can take the data reports we get from GLATOS (or any other OTN-compatible data partner, like FACT, ACT, or OTN proper) and make it ready for Actel.
 
 ~~~
-# Using FACT/OTN/GLATOS-style data in Actel ####
+# Using GLATOS-style data in Actel ####
 
-# install.packages('actel')  # CRAN Version 1.2.0
+# install.packages('actel')  # CRAN Version 1.2.1
 
 # Or the development version:
 # remotes::install_github("hugomflavio/actel", build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
@@ -20,9 +20,15 @@ Up next, we're going to be learning about Actel, a new player in the acoustic te
 library(actel)
 library(stringr)
 
-# Hugo has created within Actel a preload() function for folks who are holding their deployment, tagging, and detection data in R variables already. This function expects 4 input objects, similar to VTrack's 3 objects, plus a 'spatial' data object that will help us describe the places we are able to detect animals and how the animals are allowed to move between them.
+~~~
+{: .language-r}
 
-# But it wants a bit more data than VTrack did, so we're going to have to go back to our deployment metadata sheet and reload it:
+
+Within `actel` there is a `preload()` function for folks who are holding their deployment, tagging, and detection data in R variables already instead of the files and folders we saw in the `actel` intro. This function expects 4 input objects, plus the 'spatial' data object that will help us describe the locations of our receivers and how the animals are allowed to move between them.
+
+To achieve the minimum required data for `actel`'s ingestion, we'll want deployment and recovery datetimes, instrument models, etc. We can transform our metadata's standard format into the standard format and naming schemes expected by `actel::preload()` with a bit of dplyr magic:
+
+~~~
 full_receiver_meta <- readxl::read_excel(rcvr_sheet_path, sheet=1, skip=0) %>%
                       dplyr::rename(
                                 deploy_lat = DEPLOY_LAT,
@@ -39,14 +45,12 @@ full_receiver_meta <- readxl::read_excel(rcvr_sheet_path, sheet=1, skip=0) %>%
 ~~~
 {: .language-r}
 
- We rename a few columns from the receiver metadata sheet so that they are in a nicer format. We also create a 'station' column that is array_code + station_name, guaranteed unique for any project across the entire Network.
+ We've now renamed a few columns from the receiver metadata sheet so that they are in a nicer format. We also create a 'station' column that is of the form `array_code` + `station_name`, guaranteed unique for any project across the entire Network.
 
 ### Formatting - Tagging and Deployment Data
 
-Tagging metadata is entered into Actel as `biometrics`, and deployment metadata as `deployments`. It needs a few specially named columns, and a properly formatted date.
+As we saw earlier, tagging metadata is entered into Actel as `biometrics`, and deployment metadata as `deployments`. These data structures also require a few specially named columns, and a properly formatted date.
 ~~~
-
-
 # All dates will be supplied to Actel in this format:
 actel_datefmt = '%Y-%m-%d %H:%M:%S'
 
@@ -82,10 +86,9 @@ actel_dets <- detections %>% mutate(Transmitter = transmitter_id,
 
 ### Creating the Spatial dataframe
 
-
+The `spatial` dataframe must have entries for all release locations and all receiver deployment locations. Basically, it must have an entry for every distinct location we can say we know an animal has been.
 ~~~
-# Spatial is all release locations and all receiver deployment locations.
-  # Basically, every distinct location we can say we know an animal has been.
+# Prepare and style entries for receivers
 actel_receivers <- full_receiver_meta %>% mutate( Station.name = station,
                                         Latitude = deploy_lat,
                                         Longitude = deploy_long,
@@ -94,6 +97,7 @@ actel_receivers <- full_receiver_meta %>% mutate( Station.name = station,
                                         dplyr::select(Station.name, Latitude, Longitude, Array, Type) %>%
                                         distinct(Station.name, Latitude, Longitude, Array, Type)
 
+# Prepare and style entries for tag releases
 actel_tag_releases <- tags %>% mutate(Station.name = RELEASE_LOCATION,
                                       Latitude = latitude,
                                       Longitude = longitude,
@@ -103,9 +107,15 @@ actel_tag_releases <- tags %>% mutate(Station.name = RELEASE_LOCATION,
 
 # Bind the releases and the deployments together for the unique set of spatial locations
 actel_spatial <- actel_receivers %>% bind_rows(actel_tag_releases)
+~~~
+{: .language-r}
 
-# Now, for stations that are named the same, take an average location.
+Now, for longer data series, we may have similar stations that were deployed and redeployed at very slightly different locations. One way to deal with this issue is that for stations that are named the same, we assign an average location in `spatial`.
 
+Another way we might overcome this issue could be to increment station_names that are repeated and provide their distinct locations.
+
+~~~
+# group by station name and take the mean lat and lon of each station deployment history.
 actel_spatial_sum <- actel_spatial %>% group_by(Station.name, Type) %>%
                                        dplyr::summarize(Latitude = mean(Latitude),
                                                         Longitude = mean(Longitude),
@@ -123,10 +133,12 @@ Now you have everything you need to call `preload()`.
 # Specify the timezone that your timestamps are in.
 # OTN provides them in GMT.
 # FACT has both UTC/GMT and Eastern
+# GLATOS has
 
 tz <- "GMT0"
 
-# Then you can create the Actel project object.
+# You've collected every piece of data and metadata and formatted it properly.
+# Now you can create the Actel project object.
 actel_project <- preload(biometrics = actel_biometrics,
                          spatial = actel_spatial_sum,
                          deployments = actel_deployments,
@@ -135,13 +147,13 @@ actel_project <- preload(biometrics = actel_biometrics,
 ~~~
 {: .language-r}
 
-There will be some issues with the data that the Actel checkers find. Detections outside the deployment time bounds, receivers that aren't in your metadata. For the purposes of today, we will drop those rows from the final copy of the data, but you can take these prompts as cues to verify your input metadata is accurate and complete.
+There will very likely be some issues with the data that the Actel checkers find and warn us about. Detections outside the deployment time bounds, receivers that aren't in your metadata. For the purposes of today, we will drop those rows from the final copy of the data, but you can take these prompts as cues to verify your input metadata is accurate and complete. It is up to you in the end to determine whether there is a problem with the data, or an overzealous check that you can safely ignore.
 
+Once you have an Actel object, you can run `explore()` to generate your project's summary reports:
 ~~~
-# Once you have an Actel object, you can run things like explore to generate the summary reports you're about to see:
+# Get summary reports from our dataset:
 actel_explore_output <- explore(actel_project, tz=tz, report=TRUE, print.releases=FALSE)
 
 ~~~
 {: .language-r}
 
-See more on what you can do with this output coming up next!
