@@ -23,13 +23,13 @@ library(ggplot2) #tidyverse-style plotting, a very customizable plotting package
 
 
 # Assign plot to a variable
-lamprey_dets_plot <- ggplot(data = lamprey_dets, 
+lamprey_dets_plot <- ggplot(data = lamprey_dets,
                   mapping = aes(x = deploy_lat, y = deploy_long)) #can assign a base plot to data
 
-# Draw the plot 
-lamprey_dets_plot + 
-  geom_point(alpha=0.1, 
-             colour = "blue") 
+# Draw the plot
+lamprey_dets_plot +
+  geom_point(alpha=0.1,
+             colour = "blue")
 #layer whatever geom you want onto your plot template
 #very easy to explore diff geoms without re-typing
 #alpha is a transparency argument in case points overlap
@@ -51,7 +51,7 @@ lamprey_dets %>%
   ggplot(aes(deploy_lat, deploy_long, colour = animal_id)) + #colour by individual! specify in the aesthetic
   geom_point()
 
-#anything you specify in the aes() is applied to the actual data points/whole plot, 
+#anything you specify in the aes() is applied to the actual data points/whole plot,
 #anything specified in geom() is applied to that layer only (colour, size...). sometimes you have >1 geom layer so this makes more sense!
 
 
@@ -68,6 +68,12 @@ Try combining with `dplyr` functions in this challenge!
 ~~~
 {: .language-r}
 
-
-
-
+> ## Plotting and dplyr Challenge
+>
+> Combine dplyr functions to solve this challenge.
+>
+> Try making a scatterplot showing the lat/long for animal "A69-1601-1363", coloured by detection array.
+>
+>  What other geoms are there? Try typing 'geom_' into R and see what it suggests!
+>
+{: .challenge}
