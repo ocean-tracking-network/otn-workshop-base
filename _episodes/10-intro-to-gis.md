@@ -92,4 +92,6 @@ mapview(spdf %>% mutate(detection_timestamp_utc = ymd_hms(detection_timestamp_ut
 ~~~
 {: .language-r}
 
-All of these options let us map and plot our data in a spatially-aware way. 
+All of these options let us map and plot our data in a spatially-aware way.
+
+If you want to investigate these options further, mapview and spdplyr are both extensively documented, allowing you to fine-tune your plots to suit your needs. Mapview's documentation is available at [this page](https://r-spatial.github.io/mapview/index.html), and links to additional spdplyr references can be found [at its CRAN page.](https://cran.r-project.org/web/packages/spdplyr/index.html)
