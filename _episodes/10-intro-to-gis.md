@@ -3,19 +3,19 @@ title: Introduction to GLATOS and Spatial Mapping
 teaching: 30
 exercises: 0
 ---
-##Spatial Data
+## Spatial Data
 We can use GLATOS to make a variety of useful maps by combining our GLATOS data with another library, sp (spatial). This requires us to manipulate the data in some new ways, but gives us more options when it comes to plotting our data.
 
-First, we need to translate our GLATOS data into a spatially-aware dataframe. The sp library has some methods that can help us do this. However, we unfortunately can't run them directly on the GLATOS dataframe. GLATOS reads in data as a "glatos_detections" class (you can see this by running class(your-detections-dataframe)), and many R methods do not operate on this object. However, we can get around this with some straightforward manipulations.
+First, we need to translate our GLATOS data into a spatially-aware dataframe. The sp library has some methods that can help us do this. However, we unfortunately can't run them directly on the GLATOS dataframe. GLATOS stores data as a "glatos_detections" class (you can see this by running class(your-detections-dataframe)), and though it extends data.frame, some R methods do not operate on this object. However, we can get around this with some straightforward object type casting.
 
 First, we start by importing the libraries we will need to use.
 
 ~~~
-library(glatos) #Our main GLATOS library.
-library(mapview) #We'll use this for slippy map plotting
-library(sp) #Our spatial library
-library(spdplyr) #A version of dplyr that allows us to work with spatial data
-library(lubridate) #For manipulating dates later
+library(glatos) # Our main GLATOS library.
+library(mapview) # We'll use this for slippy map plotting
+library(sp) # Our spatial library
+library(spdplyr) # A version of dplyr that allows us to work with spatial data
+library(lubridate) # For manipulating dates later
 ~~~
 {: .language-r}
 
@@ -66,11 +66,11 @@ mapview(spdf)
 ~~~
 {: .language-r}
 
-This will open in a browser window, and will give you a slippy map that lets you very quickly visualize your data in an interactive setting. If, however, you want to plot it in the default glatos way to take advantage of the options there, that works too- the 'points' function will accept our spatially aware dataframe.
+This will open in a browser window, and will give you a slippy map that lets you very quickly visualize your data in an interactive setting. If, however, you want to plot it in the default way to take advantage of the options there, that works too- the 'points' function will accept our spatially aware dataframe.
 
 ~~~
 plot(greatLakesPoly, col = "grey")
-#greatLakesPoly is a shapefile included with the glatos library that models the Great Lakes.
+#greatLakesPoly is a shapefile included with the glatos library that outlines the Great Lakes.
 
 points(deploy_lat ~ deploy_long, data = spdf, pch = 20, col = "red",
        xlim = c(-66, -62))
