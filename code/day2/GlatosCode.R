@@ -149,6 +149,26 @@ attr(ATTdata, "CRS") <-proj
 coa <- VTrack::COA(ATTdata)
 View(coa)
 
+# Plot a COA
+coa153 <- coa %>% filter(Tag.ID == 153)
+
+data(greatLakesPoly) # Get spacial object from glatos package
+
+# plot the object and zoom in to lake Huron. Set colour of water to blue. Add labels to the axises
+plot(greatLakesPoly, xlim=c(-85, -82), ylim=c(43, 46), col='blue', xlab="Longitude", ylab="Latitude")
+
+# Create a palette
+color <- c(colorRampPalette(c('pink', 'red'))(max(coa153$Number.of.Detections)))
+
+#add the points
+points(coa153$Longitude.coa, coa153$Latitude.coa, pch=19, col=color[coa153$Number.of.Detections], 
+    cex=log(coa153$Number.of.Stations) + 0.5) # cex is for point size. natural log is for scaling purposes
+
+# add axises and title
+axis(1)
+axis(2)
+title("Centers of Activities for 153")
+
 
 # Dispersal information
 # ?dispersalSummary
@@ -180,12 +200,6 @@ abacus_plot(detections_filtered[detections_filtered$animal_id== "22",],
             location_col='station',
             main="Animal 22 Detections By Station")
 
-library(raster)
-library(sp)
-
-# USA <- getData('GADM', country="USA", level=1)
-# FL <- USA[USA$NAME_1=="Florida",]
-
 # Bubble Plots for Spatial Distribution of Fish ####
 # bubble variable gets the summary data that was created to make the plot
 detections_filtered
@@ -200,3 +214,13 @@ bubble_station
 bubble_array <- detection_bubble_plot(detections_filtered,
                                       out_file = 'walleye_bubbles_by_array.png')
 bubble_array
+
+
+# Challenge 1 ----
+# Create a bubble plot of the station in Lake Erie only. Set the bounding box using the provided nw + se cordinates and 
+# resize the points. As a bonus, add points for the other receivers in Lake Erie.
+# Hint: ?detection_bubble_plot will help a lot
+# Here's some code to get you started
+erie_arrays <-c("DRF", "DRL", "DRU", "MAU", "RAR", "SCL", "SCM", "TSR") 
+nw <- c(43, -83.75) 
+se <- c(41.25, -82) 

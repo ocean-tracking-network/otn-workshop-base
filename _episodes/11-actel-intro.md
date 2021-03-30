@@ -221,24 +221,27 @@ B -- F
 C -- E 
 ```
 
-> #### Challenge : DOT notation
->Using the DOT notation tutorial linked [here](https://graphs.grevian.org/example), discover the notation for a one-way connection and write the DOT notations for the systems shown here:
->![Actel spatial diagram challenge](../Resources/actel_spatial_challenge.png)
->> #### Solution:
->> **Left-hand diagram**:
->> ~~~
->> A -- B
->> A -- C
->> B -> C
->> ~~~
->> {: .source}
->> **Right-hand diagram**:
->> ~~~
->>A -- B
->>A -> C
->>B -> C
->> ~~~
->> {: .output}
+> ## Challenge : DOT notation
+>
+> Using the DOT notation tutorial linked [here](https://graphs.grevian.org/example), discover the notation for a one-way connection and write the DOT notations for the systems shown here:
+> ![Actel spatial diagram challenge](../Resources/actel_spatial_challenge.png)
+>
+> > ## Solution:
+> >
+> > **Left-hand diagram**:
+> > ~~~
+> > A -- B
+> > A -- C
+> > B -> C
+> > ~~~
+> > {: .source}
+> > **Right-hand diagram**:
+> > ~~~
+> >A -- B
+> >A -> C
+> >B -> C
+> > ~~~
+> > {: .output}
 >{: .solution}
 {: .challenge}
 
