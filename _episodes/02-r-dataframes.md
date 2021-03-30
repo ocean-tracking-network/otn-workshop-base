@@ -16,10 +16,10 @@ If you're unfamiliar with detection extracts formats from OTN-style database nod
 ~~~
 #imports file into R. paste the filepath to the unzipped file here!
 
-lamprey_dets <- read_csv("inst_extdata_lamprey_detections.csv", guess_max = 3102) 
+lamprey_dets <- read_csv("inst_extdata_lamprey_detections.csv", guess_max = 3102)
 
 #read_csv() is from tidyverse's readr package --> you can also use read.csv() from base R but it created a dataframe (not tibble) so loads slower
-#see https://link.medium.com/LtCV6ifpQbb 
+#see https://link.medium.com/LtCV6ifpQbb
 
 #the guess_max argument is helpful when there are many rows of NAs at the top. R will not assign a data type to that columns until it reaches the max guess.
 #I chose to use this here because I got the following warning from read_csv()
@@ -47,14 +47,16 @@ glimpse(lamprey_dets) #similar to str()
 #summary() is a base R function that will spit out some quick stats about a vector (column)
 #the $ syntax is the way base R selects columns from a data frame
 
-summary(lamprey_dets$release_latitude) 
-
-
-#Challenge 5: 
-#1. What is is the class of the station column in lamprey_dets?
-#2. How many rows and columns are in the lamprey_dets dataset?
+summary(lamprey_dets$release_latitude)
 ~~~
 {: .language-r}
+
+> ## Detection Extracts Challenge
+>
+> Question 1: What is the class of the station column in lamprey_dets?
+> Question 2: How many rows and columns are in the lamprey_dets dataset?
+>
+{: .challenge}
 
 ### Data Manipulation
 
@@ -62,23 +64,23 @@ What is `dplyr` and how can it be used to create summaries for me?
 ~~~
 library(dplyr) #can use tidyverse package dplyr to do exploration on dataframes in a nicer way
 
-# %>% is a "pipe" which allows you to join functions together in sequence. 
+# %>% is a "pipe" which allows you to join functions together in sequence.
 #it can be read as "and then". shortcut: ctrl + shift + m
 
 lamprey_dets %>% dplyr::select(6) #selects column 6
 
-# dplyr::select this syntax is to specify that we want the select function from the dplyr package. 
+# dplyr::select this syntax is to specify that we want the select function from the dplyr package.
 #often functions are named the same but do diff things
 
 lamprey_dets %>% slice(1:5) #selects rows 1 to 5 dplyr way
 
-lamprey_dets %>% 
-  distinct(glatos_array) %>% 
-  nrow #number of arrays that detected my fish in dplyr! first: find the distinct values, then count 
-  
-lamprey_dets %>% 
-  distinct(animal_id) %>% 
-  nrow #number of animals that were detected 
+lamprey_dets %>%
+  distinct(glatos_array) %>%
+  nrow #number of arrays that detected my fish in dplyr! first: find the distinct values, then count
+
+lamprey_dets %>%
+  distinct(animal_id) %>%
+  nrow #number of animals that were detected
 
 lamprey_dets %>% filter(animal_id=="A69-1601-1363") #filtering in dplyr!
 lamprey_dets %>% filter(detection_timestamp_utc >= '2012-06-01 00:00:00') #all dets on/after June 1 2012 - conditional filtering!
@@ -87,21 +89,22 @@ lamprey_dets %>% filter(detection_timestamp_utc >= '2012-06-01 00:00:00') #all d
 
 lamprey_dets %>%
   group_by(animal_id) %>%  #we want to find meanLat for each animal
-  summarise(MeanLat=mean(deploy_lat)) #uses pipes and dplyr functions to find mean latitude for each fish. 
+  summarise(MeanLat=mean(deploy_lat)) #uses pipes and dplyr functions to find mean latitude for each fish.
                                       #we named this new column "MeanLat" but you could name it anything
-
-#Challenge 6: 
-#1. find the max lat and max longitude for animal "A69-1601-1363"
-#2. find the min lat/long of each animal for detections occurring in July 2012
 ~~~
 {: .language-r}
 
-
+> ## Data Manipulation Challenge
+>
+> Question 1: Find the max lat and max long for animal "A69-1601-1363".
+> Question 2: Find the min lat/long of each animal for detections occurring in July 2012.
+>
+{: .challenge}
 
 ### Dealing with Datetimes
 Datetimes are special formats which are not numbers nor characters.
 ~~~
-library(lubridate) 
+library(lubridate)
 
 lamprey_dets %>% mutate(detection_timestamp_utc=ymd_hms(detection_timestamp_utc)) #Tells R to treat this column as a date, not number numbers
 
@@ -117,4 +120,3 @@ lamprey_dets %>% mutate(detection_timestamp_utc=ymd_hms(detection_timestamp_utc)
 
 ~~~
 {: .language-r}
-

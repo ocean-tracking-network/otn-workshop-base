@@ -24,7 +24,7 @@ R can access files on and save outputs to any folder on your computer. R knows w
 # once you install packages to your computer, you can "check them out" of your packages library each time you need them
 # make sure you check the "mask" messages that appear - sometimes packages have functions with the same names!
 
-library(tidyverse)# really neat collection of packages! https://www.tidyverse.org/ 
+library(tidyverse)# really neat collection of packages! https://www.tidyverse.org/
 library(lubridate)
 library(readxl)
 library(viridis)
@@ -34,10 +34,10 @@ library(ggmap)
 
 # Working Directory ####
 
-setwd('Your/Path/Here/2021-03-30-glatos-workshop/data/') #set folder you're going to work in
+setwd('C:/Users/ct991305/Documents/Workshop Material/2021-03-30-glatos-workshop/data/') #set folder you're going to work in
 getwd() #check working directory
 
-#you can also change it in the RStudio interface by navigating in the file browser where your working directory should be 
+#you can also change it in the RStudio interface by navigating in the file browser where your working directory should be
 #(if you can't see the folder you want, choose the three horizonal dots on the right side of the Home bar),
 #and clicking on the blue gear icon "More", and select "Set As Working Directory".
 ~~~
@@ -46,41 +46,46 @@ getwd() #check working directory
 
 ## Intro to R
 
-Learning about R
+Like most programming langauges, we can do basic mathematical operations with R. These, along with variable assignment, form the basis of everything for which we will use R.
 
 ### Operators
 ~~~
 3 + 5 #maths! including - , *, /
 
-weight_kg <- 55 #assignment operator! for objects/variables. shortcut: alt + - 
+weight_kg <- 55 #assignment operator! for objects/variables. shortcut: alt + -
 weight_kg
 
 weight_lb <- 2.2 * weight_kg #can assign output to an object. can use objects to do calculations
-
-# Challenge 1:
-# if we change the value of weight_kg to be 100, does the value of weight_lb also change automatically?
-# remember: you can check the contents of an object by simply typing out its name
-
 ~~~
 {: .language-r}
+
+> ## Variables Challenge
+>
+> If we change the value of weight_kg to be 100, does the value of weight_lb also change?
+> Remember: You can check the contents of an object by typing out its name and running the line in RStudio.
+>
+{: .challenge}
 
 ### Functions
 ~~~
 #functions take "arguments": you have to tell them what to run their script against
 
-ten <- sqrt(weight_kg) #contain calculations wrapped into one command to type. 
+ten <- sqrt(weight_kg) #contain calculations wrapped into one command to type.
 
 round(3.14159) #don't have to assign
 
 args(round) #the args() function will show you the required arguments of another function
 
-?round #will show you the full help page for a function, so you can see what it does, 
-
-
-#Challenge 2: can you round the value 3.14159 to two decimal places?
-# using args() should give a clue!
+?round #will show you the full help page for a function, so you can see what it does
 ~~~
 {: .language-r}
+
+> ## Functions Challenge
+>
+> Can you round the value 3.14159 to two decimal places?
+> Hint: Using args() on a function can give you a clue.
+>
+{: .challenge}
 
 ### Vectors and Data Types
 ~~~
@@ -90,15 +95,10 @@ length(weight_g) #explore vector
 class(weight_g) #a vector can only contain one data type
 str(weight_g) #find the structure of your object.
 
-#our vector is numeric. 
+#our vector is numeric.
 #other options include: character (words), logical (TRUE or FALSE), integer etc.
 
 animals <- c("mouse", "rat", "dog") #to create a character vector, use quotes
-
-
-#Challenge 3: what data type will this vector become? You can check using class()
-#challenge3 <- c(1, 2, 3, "4")
-
 
 # Note:
 #R will convert (force) all values in a vector to the same data type.
@@ -108,6 +108,16 @@ animals <- c("mouse", "rat", "dog") #to create a character vector, use quotes
 ~~~
 {: .language-r}
 
+> ## Vectors Challenge
+>
+> What data type will this vector become?
+> ~~~
+> challenge3 <- c(1, 2, 3, "4")
+> ~~~
+> {: .language-r}
+> Hint: You can check a vector's type with the class() function.
+{: .challenge}
+
 ### Subsetting
 ~~~
 animals #calling your object will print it out
@@ -116,7 +126,7 @@ animals[2] #square brackets = indexing. selects the 2nd value in your vector
 weight_g > 50 #conditional indexing: selects based on criteria
 weight_g[weight_g <=30 | weight_g == 55] #many new operators here!  
                                          #<= less than or equal to, | "or", == equal to
-weight_g[weight_g >= 30 & weight_g == 21] #  >=  greater than or equal to, & "and" 
+weight_g[weight_g >= 30 & weight_g == 21] #  >=  greater than or equal to, & "and"
                                           # this particular example give 0 results - why?
 ~~~
 {: .language-r}
@@ -129,18 +139,26 @@ mean(heights, na.rm = TRUE) #remove the NAs before calculating
 
 #other ways to get a dataset without NAs:
 
-heights[!is.na(heights)] #select for values where its NOT NA 
+heights[!is.na(heights)] #select for values where its NOT NA
 #[] square brackets are the base R way to select a subset of data --> called indexing
 #! is an operator that reverses the function
 
 na.omit(heights) #omit the NAs
 
 heights[complete.cases(heights)] #select only complete cases
-
-#Challenge 4: 
-#1. Using this vector of heights in inches, create a new vector, heights_no_na, with the NAs removed.
-  #heights <- c(63, 69, 60, 65, NA, 68, 61, 70, 61, 59, 64, 69, 63, 63, NA, 72, 65, 64, 70, 63, 65)
-#2. Use the function median() to calculate the median of the heights vector.
-#BONUS: Use R to figure out how many people in the set are taller than 67 inches.
 ~~~
 {: .language-r}
+
+> ## Missing Data Challenge
+>
+> Question 1: Using the following vector of heighs in inches, create a new vector, called heights_no_na, with the NAs removed.
+> ~~~
+> heights <- c(63, 69, 60, 65, NA, 68, 61, 70, 61, 59, 64, 69, 63, 63, NA, 72, 65, 64, 70, 63, 65)
+> ~~~
+> {: .language-r}
+>
+> Question 2: Use the function median() to calculate the median of the heights vector.
+>
+> Bonus question: Use R to figure out how many people in the set are taller than 67 inches.
+>
+{: .challenge}
