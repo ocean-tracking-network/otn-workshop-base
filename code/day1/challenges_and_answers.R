@@ -1,6 +1,6 @@
-# Intro to R for Telemetry Reporting: CHALLENGES ---------------------------------
-# FACT workshop 2020-12-16
-# Instructor: Caitlin Bate
+# Intro to R for Telemetry Summaries ---------------------------------
+# GLATOS workshop 2021-03-30
+# Instructors: Bruce Delo and Caitlin Bate
 
 
 # Challenge 1 ----
