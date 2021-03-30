@@ -52,10 +52,15 @@ devtools::install_github("rossdwyer/VTrack")
 
 # GLATOS - acoustic telemetry package that does filtering, vis, array simulation, etc.
 install.packages('remotes')
-library(remotes) 
+library(remotes)
 install_url("https://gitlab.oceantrack.org/GreatLakes/glatos/repository/master/archive.zip",
               build_opts = c("--no-resave-data", "--no-manual"))  
 
+#Additional packages for mapping.
+install.packages(stringr)
+install.packages(mapview)
+install.packages(spdplyr)
+install.packages(rgdal)
 
 # Lubridate - part of Tidyverse, improves the process of creating date objects
 install.packages('lubridate')
@@ -73,7 +78,7 @@ library(remotes)
 remotes::install_github("hugomflavio/actel", build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
 ```        
 
-# Dataset and Code 
+# Dataset and Code
 
 <b>Once the above packages are installed</b>, you can download the datasets and code for this workshop from <b>[this link](https://github.com/ocean-tracking-network/2021-03-30-glatos-workshop/)</b>
 
@@ -89,10 +94,3 @@ If you are familiar with Git and Github, feel free to clone this repository as y
 
 
 {% include links.md %}
-
-
-
-
-
-
-
