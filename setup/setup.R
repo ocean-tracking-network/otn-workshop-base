@@ -1,13 +1,13 @@
 ## Requirements------
 
-### R version: 3.6.x or newer (recommend 4.0.x) and RStudio. 
+### R version: 3.6.x or newer (recommend 4.0.x) and RStudio.
 ### Windows users: Please also download the Rtools version compatible with your R version https://cran.r-project.org/bin/windows/Rtools/history.html (not for MacOS)
 
-# For day 2 only: You must install also GDAL software, which can take a long time. See the extra setup document provided. 
+# For day 2 only: You must install also GDAL software, which can take a long time. See the extra setup document provided.
 
 # Once R/RStudio is installed: open RStudio and run this install script. Please run it line-by-line instead of all at once in case there are errors.
 
-#Note: When running through the installs, you may encounter a prompt asking you to upgrade dependent packages. 
+#Note: When running through the installs, you may encounter a prompt asking you to upgrade dependent packages.
       #Choosing Option `3: None`, works in most situations and will prevent upgrades of packages you weren't explicitly looking to upgrade.
 
 
@@ -44,7 +44,7 @@ devtools::install_github("rossdwyer/VTrack")
 install.packages('remotes')
 library(remotes)
 install_url("https://gitlab.oceantrack.org/GreatLakes/glatos/repository/master/archive.zip",
-              build_opts = c("--no-resave-data", "--no-manual"))  
+              build_opts = c("--no-resave-data", "--no-manual"))
 
 # Lubridate - part of Tidyverse, improves the process of creating date objects
 install.packages('lubridate')
@@ -56,9 +56,15 @@ install.packages('ggmap')
 install.packages('sp')
 install.packages('raster')
 
+#Additional packages for mapping.
+install.packages(stringr)
+install.packages(mapview)
+install.packages(spdplyr)
+install.packages(rgdal)
+
 # Install actel
 library(remotes)
-remotes::install_github("hugomflavio/actel", 
+remotes::install_github("hugomflavio/actel",
                         build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
 
 ### Dataset and Code -----
@@ -68,7 +74,6 @@ remotes::install_github("hugomflavio/actel",
 # 2) Unzip the folder and move to secure location on your computer (Documents, Desktop etc.)
 # 3) Copy the folder's path and use it to set your working directly in R using `setwd('<path-to-folder>')`.
 
-# If you are familiar with Git and Github, feel free to clone this repository as you normally would, 
-# by running `git clone https://github.com/ocean-tracking-network/2020-12-17-telemetry-packages-FACT.git` in a terminal program 
+# If you are familiar with Git and Github, feel free to clone this repository as you normally would,
+# by running `git clone https://github.com/ocean-tracking-network/2020-12-17-telemetry-packages-FACT.git` in a terminal program
 # and following from step 3 above.
-
