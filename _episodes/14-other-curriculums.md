@@ -8,7 +8,7 @@ questions:
 
 OTN has hosted other workshops in the past which contain different code sets that may be useful to explore after this workshop.
 
-- [General telemtry workflow](https://ocean-tracking-network.github.io/jb-acoustic-telemetry/index.html)
+- [General telemetry workflow](https://ocean-tracking-network.github.io/jb-acoustic-telemetry/index.html)
 
 - IdeasOTN Telemetry Workshop Series 2020: [code available here](https://github.com/kimwhoriskey/ideasOTNtws2020code) and [videos available on our YouTube here](https://www.youtube.com/playlist?list=PL_06zLsCWuDRnmIKaMHTBlg5KTKS76k6u)
 
