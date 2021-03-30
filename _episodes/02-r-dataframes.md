@@ -54,6 +54,7 @@ summary(lamprey_dets$release_latitude)
 > ## Detection Extracts Challenge
 >
 > Question 1: What is the class of the station column in lamprey_dets?
+>
 > Question 2: How many rows and columns are in the lamprey_dets dataset?
 >
 {: .challenge}
@@ -97,6 +98,7 @@ lamprey_dets %>%
 > ## Data Manipulation Challenge
 >
 > Question 1: Find the max lat and max long for animal "A69-1601-1363".
+>
 > Question 2: Find the min lat/long of each animal for detections occurring in July 2012.
 >
 {: .challenge}
