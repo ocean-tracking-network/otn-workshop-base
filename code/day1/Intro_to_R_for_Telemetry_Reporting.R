@@ -206,7 +206,7 @@ lamprey_dets_plot +
              colour = "blue") 
 #layer whatever geom you want onto your plot template
 #very easy to explore diff geoms without re-typing
-#alpha is a transparency argument in case points overlap
+#alpha is a transparency argument in case points overlap. try with alpha = 0.02 for fun!
 
 lamprey_dets %>%  
   ggplot(aes(deploy_lat, deploy_long)) + #aes = the aesthetic/mappings. x and y etc.
@@ -392,7 +392,7 @@ geo_styling <- list(
   fitbounds = "locations", visible = TRUE, #fits the bounds to your data!
   showland = TRUE,
   showlakes = TRUE,
-  lakecolor = toRGB("blue", alpha = 0.2), #make it transparent
+  lakecolor = toRGB("blue", alpha = 0.2), #make it transparent.
   showcountries = TRUE,
   landcolor = toRGB("gray95"),
   countrycolor = toRGB("gray85")
@@ -478,24 +478,24 @@ geo_styling <- list(
 )
 
 #decide what data you're going to use
-detctions_map_plotly <- plot_geo(all_dets, lat = ~deploy_lat, lon = ~deploy_long) 
+detections_map_plotly <- plot_geo(all_dets, lat = ~deploy_lat, lon = ~deploy_long) 
 
 #add your markers for the interactive map
-detctions_map_plotly <- detctions_map_plotly %>% add_markers(
+detections_map_plotly <- detections_map_plotly %>% add_markers(
   text = ~paste(animal_id, common_name_e, paste("Date detected:", detection_timestamp_utc), 
                 paste("Latitude:", deploy_lat), paste("Longitude",deploy_long), 
                 paste("Detected by:", glatos_array), paste("Station:", station), 
-                paste("Project:",glatos_project_receiver)),
+                paste("Project:",glatos_project_receiver), sep = "<br />"),
   symbol = I("square"), size = I(8), hoverinfo = "text" 
 )
 
 #Add layout (title + geo stying)
-detctions_map_plotly <- detctions_map_plotly %>% layout(
+detections_map_plotly <- detections_map_plotly %>% layout(
   title = 'Lamprey and Walleye Detections<br />(2012-2013)', geo = geo_styling
 )
 
 #View map
-detctions_map_plotly
+detections_map_plotly
 
 
 #7. Summary of tagged animals

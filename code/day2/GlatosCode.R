@@ -203,9 +203,6 @@ abacus_plot(detections_filtered[detections_filtered$animal_id== "22",],
 library(raster)
 library(sp)
 
-# USA <- getData('GADM', country="USA", level=1)
-# FL <- USA[USA$NAME_1=="Florida",]
-
 # Bubble Plots for Spatial Distribution of Fish ####
 # bubble variable gets the summary data that was created to make the plot
 detections_filtered

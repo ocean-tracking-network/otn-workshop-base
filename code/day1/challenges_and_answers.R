@@ -36,7 +36,8 @@ round(digits = 2, x = 3.14159) #when reordered you need to specify
 challenge3 <- c(1, 2, 3, "4")
 
 #Answer 3: R will force all of these to be characters, since the number 4 has quotes around it! 
-#Will always coerce data types following this struture: logical → numeric → character ← logical
+#Will always coerce data types following this structure: 
+#logical --> numeric -->character <-- logical
 class(challenge3)
 
 
@@ -90,11 +91,9 @@ lamprey_dets %>%
 
 #2. 
 lamprey_dets %>% 
-  filter(detection_timestamp_utc >= "2012-07-01 00:00:00" | detection_timestamp_utc < "2012-08-01 00:00:00" ) %>% 
+  filter(detection_timestamp_utc >= "2012-07-01 00:00:00" & detection_timestamp_utc < "2012-08-01 00:00:00" ) %>% 
   group_by(animal_id) %>% 
   summarise(MinLat=min(deploy_lat), MinLong=min(deploy_long))
-
-
 
 
 # Challenge 7 ----
