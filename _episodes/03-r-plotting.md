@@ -32,7 +32,7 @@ lamprey_dets_plot +
              colour = "blue")
 #layer whatever geom you want onto your plot template
 #very easy to explore diff geoms without re-typing
-#alpha is a transparency argument in case points overlap
+#alpha is a transparency argument in case points overlap. Try alpha = 0.02 to see how it works!
 
 
 ~~~
