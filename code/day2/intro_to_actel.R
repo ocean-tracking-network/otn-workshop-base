@@ -22,7 +22,7 @@ exp.results <- dataToList("actel_explore_results.RData")
 # If your analysis failed before you had a chance to save the results,
 # load the pre-compiled results, so you can keep up with the workshop.
 # Remember to change the path so R can find the RData file.
-exp.results <- dataToList("pre-compiled_results.RData")
+exp.results <- dataToList("path/to/workshop/folder/data/pre-compiled_results.RData")
 
 # What is inside the output?
 names(exp.results)
@@ -59,7 +59,7 @@ head(spatial)
 #
 # NOTE: Change the 'path' to the folder where you have the shape file.
 # ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-water <- loadShape(path = "replace/with/path/to/shapefile",
+water <- loadShape(path = "path/to/workshop/folder/data",
                    shape = "stora_shape_epsg32632.shp", size = 10,
                    coord.x = "x", coord.y = "y")
 
