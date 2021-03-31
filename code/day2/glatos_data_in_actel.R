@@ -143,7 +143,65 @@ actel_project <- preload(biometrics = actel_biometrics,
                          tz = tz)
 
 # Get summary reports from our dataset:
-actel_explore_output <- explore(actel_project, report=TRUE, print.releases=FALSE)
+actel_explore_output <- explore(actel_project, report=TRUE, print.releases=FALSE, tz=tz)
 
-?explore
+# Our analysis doesn't make a lot of sense, since...
+# actel assumed our study was linear, we didn't tell it otherwise!
+# Let's design a spatial.txt file for our detection data
+
+# Let's look at our study area, with a popup that tells us what project each deployment belongs to:
+
+library(mapview)
+library(spdplyr)
+library(leaflet)
+library(leafpop)
+
+
+## Exploration - Let's re-use mapview, since we're going to want to drill in and look at our stations
+
+our_receivers <- as.data.frame(actel_spatial_sum_lakes) %>%    
+  filter(Array %in% (actel_spatial_sum %>%   # Let's only look at the arrays already in our spatial file
+                              distinct(Array))$Array)
+
+mapview(our_receivers %>%    
+          select(Longitude, Latitude) %>%           # and get a SpatialPoints object to pass to mapview
+          SpatialPoints(CRS('+proj=longlat')), 
+                    popup = popupTable(our_receivers, 
+                                       zcol = c("Array",
+                                                "Station.name")))  # and make a tooltip we can explore
+
+# Can we design a spatial.txt file that fits our study area using 'glatos_array' 
+# as our divider?
+
+# not really, no. Too many interconnected arrays! 
+# Let's define a Lake Huron 'zone' instead and generalize 
+# a few river systems off of there.
+
+# We only need to do this in our spatial.csv file and nowhere else!
+
+huron_arrays <- c('WHT', 'LVD', 'OSC', 'STG', 'PRS', 'FMP', 
+                  'ORM', 'BMR', 'BBI', 'RND', 'IGN', 'SIC', 
+                  'GRS', 'LVU', 'TRN', 'BEI', 'MIS', 'TBA')
+
+
+# Bugged
+# Let's update our spatial to reflect the connectivity of the Huron arrays.
+actel_spatial_sum_lakes <- actel_spatial_sum %>% 
+    mutate(Array = if_else(Array %in% huron_arrays, 'Huron', #if any of the above, make it 'Huron'
+                                       Array)) # else leave it as its current value
+
+# spatial_txt_dot = 'path/to/the/workshop/data/glatos_spatial.txt'
+spatial_txt_dot = 'C:/Users/Jon/Google Drive/PycharmProjects/workshops/temp/2021-03-30-glatos-workshop/data/glatos_spatial.txt'
+
+actel_spatial_sum_lakes %>% group_by(Array) %>% select(Array) %>% unique()
+
+actel_project <- preload(biometrics = actel_biometrics,
+                         spatial = actel_spatial_sum_lakes,
+                         deployments = actel_deployments,
+                         detections = actel_dets,
+                         # dot = readr::read_file(spatial_txt_dot),
+                         tz = tz)
+
+actel_explore_output_lakes <- explore(actel_project, report=TRUE, print.releases=FALSE, tz=tz)
+
 
