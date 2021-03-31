@@ -32,7 +32,7 @@ head(detections)
 This should give us a glatos_detections dataframe including all our walleye data. To start the process of making a spatial object, we're going to extract the latitude and longitude columns using the 'select' function we've already covered.
 
 ```{r}
-lat_long <- detections %>% select(deploy_long, deploy_lat)
+lat_long <- detections %>% dplyr::select(deploy_long, deploy_lat)
 lat_long
 ```
 
@@ -41,7 +41,7 @@ Make sure to select the columns in the order longitude, latitude. This is how ma
 Now that we have an object containing just the latitude and longitude, we can use our Spatial library to convert these to a spatially-aware object.
 
 ```{r}
-transformed_latLong <- SpatialPoints(as.data.frame(lat_long), CRS("+init=epsg:4326"))
+transformed_latLong <- SpatialPoints(as.data.frame(lat_long), CRS("+proj=longlat"))
 # We cast lat_long to a dataframe because it is still a glatos_detections dataframe.
 # CRS is our coordinate reference system.
 transformed_latLong
