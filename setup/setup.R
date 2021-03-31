@@ -35,6 +35,9 @@ install.packages("viridis")
 
 
 ## DAY 2 WORKSHOP REQUIREMENTS ----
+# Tidyverse (data cleaning and arrangement)
+install.packages('tidyverse')
+
 # VTrack - Tools for Telemetry Analysis
 install.packages("devtools")
 library(devtools)
@@ -57,10 +60,10 @@ install.packages('sp')
 install.packages('raster')
 
 #Additional packages for mapping.
-install.packages(stringr)
-install.packages(mapview)
-install.packages(spdplyr)
-install.packages(rgdal)
+install.packages('stringr')
+install.packages('mapview')
+install.packages('spdplyr')
+install.packages('rgdal')
 
 # Install actel
 library(remotes)
@@ -68,12 +71,11 @@ remotes::install_github("hugomflavio/actel",
                         build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
 
 ### Dataset and Code -----
-# Once the packages are installed, you can download the datasets and code for this workshop from https://github.com/ocean-tracking-network/2020-12-17-telemetry-packages-FACT/.
-
+# Once the packages are installed, you can download the datasets and code for this workshop from https://github.com/ocean-tracking-network/2021-03-30-glatos-workshop.
 # 1) Select the GREEN "code" button at the top and choose "Download ZIP"
 # 2) Unzip the folder and move to secure location on your computer (Documents, Desktop etc.)
 # 3) Copy the folder's path and use it to set your working directly in R using `setwd('<path-to-folder>')`.
 
 # If you are familiar with Git and Github, feel free to clone this repository as you normally would,
-# by running `git clone https://github.com/ocean-tracking-network/2020-12-17-telemetry-packages-FACT.git` in a terminal program
+# by running `git clone https://github.com/ocean-tracking-network/2021-03-30-glatos-workshop.git` in a terminal program
 # and following from step 3 above.
