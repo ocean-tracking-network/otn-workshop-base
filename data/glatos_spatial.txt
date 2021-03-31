@@ -7,8 +7,6 @@ SGR -- CSR
 SGR -- SHR
 Huron -- BBW
 Huron -- MCK
-MCK -- BBW
-MCK -- Huron
 BBW -- MCK
 AGR -- SGR
 AGR -- RRF
@@ -23,15 +21,11 @@ CBR -- Huron
 CBR -- BBW
 OQR -- Huron
 TTB -- SHR
-SHR -- TTB
-SHR -- CSR
 THB -- Huron
 SHR -- FLT
 TTB -- CSR
 TTB -- SGR
 CSR -- SHR
-CSR -- SGR
-FLT -- BAD
 BAD -- FLT
 TRO -- SBI
 TRO -- SBO
