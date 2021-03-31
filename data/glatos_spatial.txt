@@ -30,3 +30,15 @@ BAD -- FLT
 TRO -- SBI
 TRO -- SBO
 THR -- Huron
+SIC -- GRS
+SIC -- TRN
+SIC -- LVD
+SIC -- LVU
+GRS -- LVD
+GRS -- LVU
+GRS -- TRN
+TRN -- BEI
+BEI -- LVD
+BEI -- LVU
+BEI -- GRS
+BEI -- Huron

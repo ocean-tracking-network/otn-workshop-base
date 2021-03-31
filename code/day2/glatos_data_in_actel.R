@@ -104,7 +104,9 @@ actel_tag_releases <- wb_metadata$animals %>% mutate(Station.name = release_loca
                                       Latitude = release_latitude,
                                       Longitude = release_longitude,
                                       Type='Release') %>%
-  mutate(Array = 'TTB') %>% # This value needs to be the nearest array to the release site
+  mutate(Array = case_when(Station.name == 'Maumee' ~ 'SIC', 
+                           Station.name == 'Tittabawassee' ~ 'TTB',
+                           Station.name == 'AuGres' ~ 'AGR')) %>% # This value needs to be the nearest array to the release site
   distinct(Station.name, Latitude, Longitude, Array, Type)
 
 # Combine Releases and Receivers ------
@@ -204,9 +206,9 @@ mapview(our_receivers %>%
 
 # We only need to do this in our spatial.csv file!
 
-huron_arrays <- c('WHT', 'LVD', 'OSC', 'STG', 'PRS', 'FMP', 
-                  'ORM', 'BMR', 'BBI', 'RND', 'IGN', 'SIC', 
-                  'GRS', 'LVU', 'TRN', 'BEI', 'MIS', 'TBA')
+huron_arrays <- c('WHT', 'OSC', 'STG', 'PRS', 'FMP', 
+                  'ORM', 'BMR', 'BBI', 'RND', 'IGN', 
+                  'MIS', 'TBA')
 
 
 # Update actel_spatial_sum to reflect the inter-connectivity of the Huron arrays.
