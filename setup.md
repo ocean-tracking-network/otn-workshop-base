@@ -57,10 +57,10 @@ install_url("https://gitlab.oceantrack.org/GreatLakes/glatos/repository/master/a
               build_opts = c("--no-resave-data", "--no-manual"))  
 
 #Additional packages for mapping.
-install.packages('stringr')
-install.packages('mapview')
-install.packages('spdplyr')
-install.packages('rgdal')
+install.packages(stringr)
+install.packages(mapview)
+install.packages(spdplyr)
+install.packages(rgdal)
 
 # Lubridate - part of Tidyverse, improves the process of creating date objects
 install.packages('lubridate')
@@ -72,10 +72,13 @@ install.packages('ggmap')
 install.packages('sp')
 install.packages('raster')
 
-
 # Install actel
 library(remotes)
 remotes::install_github("hugomflavio/actel", build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
+
+# Install packages for building/displaying R Markdown
+install.packages('rmarkdown')
+install.packages('knitr', dependencies = TRUE)
 ```        
 
 # Dataset and Code
