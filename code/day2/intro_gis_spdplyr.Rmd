@@ -6,9 +6,13 @@ output: html_notebook
 ## Spatial Data
 We can use GLATOS to make a variety of useful maps by combining our GLATOS data with another library, sp (spatial). This requires us to manipulate the data in some new ways, but gives us more options when it comes to plotting our data.
 
-First, we need to translate our GLATOS data into a spatially-aware dataframe. The sp library has some methods that can help us do this. However, we unfortunately can't run them directly on the GLATOS dataframe. GLATOS stores data as a "glatos_detections" class (you can see this by running class(your-detections-dataframe)), and though it extends data.frame, some R methods do not operate on this object. We can get around this with some straightforward object type casting.
+First, we need to set our working directory for our chunks. This will be important when we export maps at the end of the lesson. This is specific to R Markdown, so if you're running the code in the console or from a normal R script, you won't need to do this. However, R chunks in R Markdown files run in a different scope, and by default will use the directory in which the .rmd file is stored, not the working directory you've set for RStudio. There are several options for changing the chunks' working directory, but we will use the code snippet below. This will change the working directory for all subsequent chunks. You can investigate other options here: https://bookdown.org/yihui/rmarkdown-cookbook/working-directory.html. 
 
-First, we start by importing the libraries we will need to use.
+```{r, setup, include=FALSE}
+knitr::opts_knit$set(root.dir = "/Users/bruce/Work/2021-03-30-glatos-workshop/data")
+```
+
+Now, we can import the libraries we will need to use.
 
 ```{r}
 library(glatos) # Our main GLATOS library.
@@ -18,7 +22,15 @@ library(spdplyr) # A version of dplyr that allows us to work with spatial data
 library(lubridate) # For manipulating dates later
 ```
 
-Now we'll pull in our data. For the purposes of this workshop, we'll use the walleye test data included with GLATOS.
+Finally, we will need to install phantomJS, which will is also used in exporting maps at the end of the lesson. We can do this with webshot, which has already been installed by mapview. 
+
+```{r}
+webshot::install_phantomjs()
+```
+
+Now that we've done this setup, we are ready to translate our GLATOS data into a spatially-aware dataframe. The sp library has some methods that can help us do this. However, we unfortunately can't run them directly on the GLATOS dataframe. GLATOS stores data as a "glatos_detections" class (you can see this by running class(your-detections-dataframe)), and though it extends data.frame, some R methods do not operate on this object. We can get around this with some straightforward object type casting.
+
+Let's start by pulling in our data. For the purposes of this workshop, we'll use the walleye test data included with GLATOS.
 
 ```{r}
 det_file <- system.file("extdata", "walleye_detections.csv", package = "glatos")
@@ -78,12 +90,14 @@ df_for_map <- spdf %>% filter(animal_id == 153)
 mapview(df_for_map) # Plot only the points that correspond to the fish with the animal_id 153.
 ```
 
-We could also subset along time, returning to the lubridate function we’ve already covered.
+We could also subset along time, returning to the lubridate function we’ve already covered. At the end of this chunk, we will also use mapshot to export our map to a png file. The mapshot function can take a url, file, or both to export our map to a static image or to HTML. This lets us preserve and redistribute our maps outside of our R Markdown. 
 
 ```{r}
 spdf_time <- spdf %>% filter(detection_timestamp_utc > as.POSIXct("2012-05-01") & detection_timestamp_utc < as.POSIXct("2012-06-01")) #Filter out only those entries that were recorded between May 1st, 2012, and June 1st, 2012
 spdf_time <- spdf_time %>% mutate(detection_timestamp_utc = ymd_hms(detection_timestamp_utc)) #Properly format the detection timestamp as a datetime object with Lubridate.
-mapview(spdf_time) #Map our time-filtered, spatially-aware data. 
+time_map <- mapview(spdf_time) #Map our time-filtered, spatially-aware data. 
+
+mapshot(time_map, file = paste0(getwd(), "/time_map3.png"))
 ```
 
 
