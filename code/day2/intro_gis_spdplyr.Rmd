@@ -32,7 +32,7 @@ head(detections)
 This should give us a glatos_detections dataframe including all our walleye data. To start the process of making a spatial object, we're going to extract the latitude and longitude columns using the 'select' function we've already covered.
 
 ```{r}
-lat_long <- detections %>% select(deploy_long, deploy_lat)
+lat_long <- detections %>% dplyr::select(deploy_long, deploy_lat)
 lat_long
 ```
 
@@ -41,7 +41,7 @@ Make sure to select the columns in the order longitude, latitude. This is how ma
 Now that we have an object containing just the latitude and longitude, we can use our Spatial library to convert these to a spatially-aware object.
 
 ```{r}
-transformed_latLong <- SpatialPoints(as.data.frame(lat_long), CRS("+init=epsg:4326"))
+transformed_latLong <- SpatialPoints(as.data.frame(lat_long), CRS("+proj=longlat"))
 # We cast lat_long to a dataframe because it is still a glatos_detections dataframe.
 # CRS is our coordinate reference system.
 transformed_latLong
@@ -74,14 +74,16 @@ points(deploy_lat ~ deploy_long, data = spdf, pch = 20, col = "red",
 We can also use the spdplyr library to subset and slice our spatially-aware dataset, allowing us to pass only a subset- say, of a single animal- to mapview (or alternative plotting options).
 
 ```{r}
-mapview(spdf %>% filter(animal_id == 153)) # Plot only the points that correspond to the fish with the animal_id 153.
+df_for_map <- spdf %>% filter(animal_id == 153)
+mapview(df_for_map) # Plot only the points that correspond to the fish with the animal_id 153.
 ```
 
 We could also subset along time, returning to the lubridate function we’ve already covered.
 
 ```{r}
-mapview(spdf %>% mutate(detection_timestamp_utc = ymd_hms(detection_timestamp_utc)) %>%
-          filter(detection_timestamp_utc > as.POSIXct("2012-05-01") & detection_timestamp_utc < as.POSIXct("2012-06-01")))
+spdf_time <- spdf %>% filter(detection_timestamp_utc > as.POSIXct("2012-05-01") & detection_timestamp_utc < as.POSIXct("2012-06-01")) #Filter out only those entries that were recorded between May 1st, 2012, and June 1st, 2012
+spdf_time <- spdf_time %>% mutate(detection_timestamp_utc = ymd_hms(detection_timestamp_utc)) #Properly format the detection timestamp as a datetime object with Lubridate.
+mapview(spdf_time) #Map our time-filtered, spatially-aware data. 
 ```
 
 
