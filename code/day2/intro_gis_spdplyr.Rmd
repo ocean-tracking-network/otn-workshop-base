@@ -74,14 +74,16 @@ points(deploy_lat ~ deploy_long, data = spdf, pch = 20, col = "red",
 We can also use the spdplyr library to subset and slice our spatially-aware dataset, allowing us to pass only a subset- say, of a single animal- to mapview (or alternative plotting options).
 
 ```{r}
-mapview(spdf %>% filter(animal_id == 153)) # Plot only the points that correspond to the fish with the animal_id 153.
+df_for_map <- spdf %>% filter(animal_id == 153)
+mapview(df_for_map) # Plot only the points that correspond to the fish with the animal_id 153.
 ```
 
 We could also subset along time, returning to the lubridate function we’ve already covered.
 
 ```{r}
-mapview(spdf %>% mutate(detection_timestamp_utc = ymd_hms(detection_timestamp_utc)) %>%
-          filter(detection_timestamp_utc > as.POSIXct("2012-05-01") & detection_timestamp_utc < as.POSIXct("2012-06-01")))
+spdf_time <- spdf %>% filter(detection_timestamp_utc > as.POSIXct("2012-05-01") & detection_timestamp_utc < as.POSIXct("2012-06-01")) #Filter out only those entries that were recorded between May 1st, 2012, and June 1st, 2012
+spdf_time <- spdf_time %>% mutate(detection_timestamp_utc = ymd_hms(detection_timestamp_utc)) #Properly format the detection timestamp as a datetime object with Lubridate.
+mapview(spdf_time) #Map our time-filtered, spatially-aware data. 
 ```
 
 
