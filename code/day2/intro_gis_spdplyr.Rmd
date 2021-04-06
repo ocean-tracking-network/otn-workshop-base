@@ -22,7 +22,7 @@ library(spdplyr) # A version of dplyr that allows us to work with spatial data
 library(lubridate) # For manipulating dates later
 ```
 
-Finally, we will need to install phantomJS, which will is also used in exporting maps at the end of the lesson. We can do this with webshot, which has already been installed by mapview. 
+Finally, we will need to install phantomJS, which is also used in exporting maps at the end of the lesson. We can do this with webshot, which has already been installed by mapview. 
 
 ```{r}
 webshot::install_phantomjs()
