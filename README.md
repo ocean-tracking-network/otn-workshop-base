@@ -1,2 +1,2 @@
-# 2021-03-30-OTNxGLATOS-R-workshop
-Telemetry workshop materials for the GLATOS telemetry workshop occuring March 30th and 31st, 2021
+# 2021-03-30-OTNxACT-R-workshop
+Telemetry workshop materials for the ACT telemetry workshop occuring April 14 and 15, 2021
