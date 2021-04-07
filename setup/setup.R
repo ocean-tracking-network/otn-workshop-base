@@ -35,6 +35,11 @@ install.packages("viridis")
 
 
 ## DAY 2 WORKSHOP REQUIREMENTS ----
+#rgdal
+install.packages('rgdal')
+library(rgdal)
+rgdal::getGDALVersionInfo()
+
 # Tidyverse (data cleaning and arrangement)
 install.packages('tidyverse')
 
