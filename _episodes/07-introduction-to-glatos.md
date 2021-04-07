@@ -144,7 +144,7 @@ head(sum_animal_location)
 ~~~
 {: .language-r}
 
-Summerizing by both dimensions will create a row for each station and each animal pair, let's filter out the station where the animal wasn't detected.
+Summarising by both dimensions will create a row for each station and each animal pair, let's filter out the station where the animal wasn't detected.
 ~~~
 # Filter out stations where the animal was NOT detected.
 sum_animal_location <- sum_animal_location %>% filter(num_dets > 0)
