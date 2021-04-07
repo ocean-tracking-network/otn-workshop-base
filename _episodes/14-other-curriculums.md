@@ -18,7 +18,8 @@ OTN has hosted other workshops in the past which contain different code sets tha
 
 - [DFO workshop 2020](https://ocean-tracking-network.github.io/2020-03-11-DFOBIO-telemetry-workshop/)
 
-- [SPG workshop 2020](https://ocean-tracking-network.github.io/2020-07-16-OTNSPG-R-workshop/index.html). Videos will soon be posted on our YouTube.
+- [SPG workshop 2020](https://ocean-tracking-network.github.io/2020-07-16-OTNSPG-R-workshop/index.html). [Videos available on our YouTube here](https://youtube.com/playlist?list=PL_06zLsCWuDTeUyd5p2YWrullO5RmKLDAhttps://youtu.be/oWRLjXZZfYo) 
+
+- [FACT workshop 2020](https://ocean-tracking-network.github.io/2020-12-17-telemetry-packages-FACT/index.html)
 
 Many of our Intro to R workshops are based upon this curriculum from [The Carpentries](https://datacarpentry.org/R-ecology-lesson/)
-
