@@ -14,7 +14,7 @@ library(tidyverse) # really neat collection of packages! https://www.tidyverse.o
 
 #make sure to read all "mask" messages
 
-setwd('C:/Users/ct991305/Documents/Workshop Material/2021-03-30-glatos-workshop/data/') #set folder you're going to work in
+setwd('/Users/bruce/Work/2021-04-13-act-workshop') #set folder you're going to work in
 getwd() #check working directory
 
 #Everyone check to make sure all the files in the /data folder are UNZIPPED
@@ -101,34 +101,26 @@ heights[complete.cases(heights)] #select only complete cases
 ## Exploring Detection Extracts ---------------------------------
 # what is a detection extract? https://members.oceantrack.org/data/otn-detection-extract-documentation-matched-to-animals 
 
-lamprey_dets <- read_csv("inst_extdata_lamprey_detections.csv", guess_max = 3102) 
-
 #imports file into R. paste the filepath to the unzipped file here!
+
+proj58_matched_2016 <- read_csv("../ACT_2021_data/ACT Network workshop datasets/proj58_matched_detections_2016.csv")
+
 #read_csv() is from tidyverse's readr package --> you can also use read.csv() from base R but it created a dataframe (not tibble) so loads slower
 #see https://link.medium.com/LtCV6ifpQbb 
-#the guess_max argument is helpful when there are many rows of NAs at the top. R will not assign a data type to that columns until it reaches the max guess.
-#I chose to use this here because I got the following warning from read_csv()
-# Warning: 4497 parsing failures.
-#row                col           expected     actual                                  file
-#3102 sensor_value       1/0/T/F/TRUE/FALSE 66.000     'inst_extdata_lamprey_detections.csv'
-#3102 sensor_unit        1/0/T/F/TRUE/FALSE ADC        'inst_extdata_lamprey_detections.csv'
-##3102 glatos_caught_date 1/0/T/F/TRUE/FALSE 2012-07-04 'inst_extdata_lamprey_detections.csv'
-#3103 sensor_value       1/0/T/F/TRUE/FALSE 62.000     'inst_extdata_lamprey_detections.csv'
-#3103 sensor_unit        1/0/T/F/TRUE/FALSE ADC        'inst_extdata_lamprey_detections.csv'
 
-head(lamprey_dets) #first 6 rows
-View(lamprey_dets) #can also click on object in Environment window
-str(lamprey_dets) #can see the type of each column (vector)
-glimpse(lamprey_dets) #similar to str()
+#Note that the 'guess_max' argument can be useful if you have data that starts with a lot of null values.
 
-summary(lamprey_dets$release_latitude) #summary() is a base R function that will spit out some quick stats about a vector (column)
+head(proj58_matched_2016) #first 6 rows
+View(proj58_matched_2016) #can also click on object in Environment window
+str(proj58_matched_2016) #can see the type of each column (vector)
+glimpse(proj58_matched_2016) #similar to str()
+
+summary(proj58_matched_2016$latitude) #summary() is a base R function that will spit out some quick stats about a vector (column)
 #the $ syntax is the way base R selects columns from a data frame
 
 #Challenge 5: 
-#1. What is is the class of the station column in lamprey_dets?
-#2. How many rows and columns are in the lamprey_dets dataset?
-
-
+#1. What is is the class of the station column in proj58_matched_2016?
+#2. How many rows and columns are in the proj58_matched_2016 dataset?
 
 ## Data Manipulation with dplyr --------------------------------------
 
@@ -137,39 +129,49 @@ library(dplyr) #can use tidyverse package dplyr to do exploration on dataframes 
 # %>% is a "pipe" which allows you to join functions together in sequence. 
 #it can be read as "and then". shortcut: ctrl + shift + m
 
-lamprey_dets %>% dplyr::select(6) #selects column 6
+proj58_matched_2016 %>% dplyr::select(6) #selects column 6
 
 # dplyr::select this syntax is to specify that we want the select function from the dplyr package. 
 #often functions are named the same but do diff things
 
-lamprey_dets %>% slice(1:5) #selects rows 1 to 5 dplyr way
+proj58_matched_2016 %>% slice(1:5) #selects rows 1 to 5 dplyr way
 
-lamprey_dets %>% 
-  distinct(glatos_array) %>% 
-  nrow #number of arrays that detected my fish in dplyr! first: find the distinct values, then count 
+proj58_matched_2016 %>% 
+  distinct(detectedby) %>% nrow #number of arrays that detected my fish in dplyr!
 
-
-lamprey_dets %>% 
-  distinct(animal_id) %>% 
+proj58_matched_2016 %>% 
+  distinct(catalognumber) %>% 
   nrow #number of animals that were detected 
 
-lamprey_dets %>% filter(animal_id=="A69-1601-1363") #filtering in dplyr!
+proj58_matched_2016 %>% filter(catalognumber=="PROJ58-1170194-2014-06-18") #filtering in dplyr!
 
-lamprey_dets %>% filter(detection_timestamp_utc >= '2012-06-01 00:00:00') #all dets on/after June 1 2012 - conditional filtering!
-
+proj58_matched_2016 %>% filter(monthcollected >= 10) #all dets in/after October of 2016
 
 #get the mean value across a column using GroupBy and Summarize
 
-lamprey_dets %>%
-  group_by(animal_id) %>%  #we want to find meanLat for each animal
-  summarise(MeanLat=mean(deploy_lat)) #uses pipes and dplyr functions to find mean latitude for each fish. 
+proj58_matched_2016 %>%
+  group_by(catalognumber) %>%  #we want to find meanLat for each animal
+  summarise(MeanLat=mean(latitude)) #uses pipes and dplyr functions to find mean latitude for each fish. 
                                       #we named this new column "MeanLat" but you could name it anything
 
 #Challenge 6: 
-#1. find the max lat and max longitude for animal "A69-1601-1363"
-#2. find the min lat/long of each animal for detections occurring in July 2012
+#1. find the max lat and max longitude for animal "PROJ58-1170195-2014-05-31".
+#2. find the min lat/long of each animal for detections occurring after April 2016.
 
+## Joining Detection Extracts
 
+proj58_matched_2017 <- read_csv("../ACT_2021_data/ACT Network workshop datasets/proj58_matched_detections_2017.csv", guess_max = 41880)
+proj58_matched_full <- rbind(proj58_matched_2016, proj58_matched_2017) #join the two files
+
+#release records for animals often appear in >1 year, this will remove the duplicates
+
+proj58_matched_full <- proj58_matched_full %>% distinct() 
+
+View(proj58_matched_full) 
+
+proj58_matched_full <- proj58_matched_full %>% slice(1:10000) #subset our example data to help this workshop run smoother!
+
+############ Edited up to here --BD
 
 ## Dealing with Datetimes in lubridate ---------------------------------
 
