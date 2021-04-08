@@ -171,15 +171,13 @@ View(proj58_matched_full)
 
 proj58_matched_full <- proj58_matched_full %>% slice(1:10000) #subset our example data to help this workshop run smoother!
 
-############ Edited up to here --BD
-
 ## Dealing with Datetimes in lubridate ---------------------------------
 
 library(lubridate) 
 
-lamprey_dets %>% mutate(detection_timestamp_utc=ymd_hms(detection_timestamp_utc)) #Tells R to treat this column as a date, not number numbers
+proj58_matched_full %>% mutate(datecollected=ymd_hms(datecollected)) #Tells R to treat this column as a date, not number numbers
 
-#as.POSIXct(lamprey_dets$detection_timestamp_utc) #this is the base R way - if you ever see this function
+#as.POSIXct(proj58_matched_full$datecollected) #this is the base R way - if you ever see this function
 
 #lubridate is amazing if you have a dataset with multiple datetime formats / timezone
 #the function parse_date_time() can be used to specify multiple date formats if you have a dataset with mixed rows
@@ -188,6 +186,8 @@ lamprey_dets %>% mutate(detection_timestamp_utc=ymd_hms(detection_timestamp_utc)
 #example code to change timezone:
 #My_Data_Set %>% mutate(datetime = ymd_hms(datetime, tz = "America/Nassau")) #change your column to a datetime format, specifying TZ (eastern)
 #My_Data_Set %>% mutate(datetime_utc = with_tz(datetime, tzone = "UTC")) #make new column called datetime_utc which is datetime converted to UTC
+
+############ Edited up to here --BD
 
 
 ## Plotting with ggplot2 ---------------------------------
