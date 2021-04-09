@@ -4,14 +4,14 @@ teaching: 0
 exercises: 0
 questions:
     - "What is the Ocean Tracking Network?"
-    - "How does the GLATOS Network interact with OTN?"
+    - "How does the ACT Network interact with OTN?"
 ---
 
-The Ocean Tracking Network (OTN) supports global telemetry research by providing training, equipment, and data infrastructure to our large network of partners. The GLATOS Network continues to be an important OTN partner, now hosting a compatible Database Node and other cross-referencing tools. OTN supports GLATOS through the collaborative development of the glatos R package and training by means of annual workshops as part of the GLATOS Annual Coordination Meeting. 
+The Ocean Tracking Network (OTN) supports global telemetry research by providing training, equipment, and data infrastructure to our large network of partners. The ACT Network is an important OTN partner, hosting a partner Database Node and able to cross-referencing tag detections easily between the networks. OTN supports ACT through training and support of data managers, as well as training of researchers in workshops like this one. 
 
 Learn more about OTN and our partners here https://members.oceantrack.org/
 
-Learn more about GLATOS and their community here https://glatos.glos.us/
+Learn more about ACT and their online reporting tool MATOS here https://matos.asascience.com/
 
 This curriculum has been developed by several collaborators. If you have questions please reach out to otndc@dal.ca.
 
