@@ -7,7 +7,7 @@ title: Setup
 You will requre 1) all the correct programs, 2) all the listed R packages 3) the dataset and code. Instructions for all these are below.
 
 
-### Please see the attached document for program instructions: - [Program Install Instructions.docx](/Resources/GLATOS_2021_install_instructions.docx)
+### Please see the attached document for program instructions: - [Program Install Instructions.docx](/Resources/ACT_2021_install_instructions.docx)
 -  R version: 3.6.x or newer (recommend 4.0.x) and RStudio
 -  Rtools (Windows users only) and GDAL are only required for Workshop Day 2
 
@@ -42,6 +42,11 @@ install.packages("viridis")
 <b>Note:</b> When running through the installs, you may encounter a prompt asking you to upgrade dependent packages. Choosing Option `3: None`, works in most situations and will prevent upgrades of packages you weren't explicitly looking to upgrade.
 
 ```r
+#rgdal
+install.packages('rgdal')
+library(rgdal)
+rgdal::getGDALVersionInfo()
+
 # Tidyverse (data cleaning and arrangement)
 install.packages('tidyverse')
 
