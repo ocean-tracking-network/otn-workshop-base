@@ -1,5 +1,5 @@
 ---
-title: Preparing FACT/OTN/GLATOS Data for actel
+title: Preparing ACT/OTN/GLATOS Data for actel
 teaching: 45
 exercises: 0
 questions:
@@ -32,7 +32,7 @@ To achieve the minimum required data for `actel`'s ingestion, we'll want deploym
 
 ~~~
 # Load the GLATOS workbook and detections -------------
- 
+
 wb_file <-system.file("extdata", "walleye_workbook.xlsm", package="glatos")
 
 wb_metadata <- glatos::read_glatos_workbook(wb_file)  
@@ -42,21 +42,21 @@ det_file <- system.file("extdata", "walleye_detections.csv", package = "glatos")
 
 detections <- read_glatos_detections(det_file)
 
-# Let's say we didn't have tag metadata for the walleye. 
+# Let's say we didn't have tag metadata for the walleye.
 # Here's a way to reverse-engineer it from the walleye detections
 # Don't try this at home, just use the workbook reader
 
-tags <- detections %>% 
-  dplyr::group_by('animal_id') %>% 
-  dplyr::select('animal_id', 'transmitter_codespace', 
-         'transmitter_id', 'tag_type', 'tag_serial_number', 
-         'common_name_e', 'capture_location', 'length', 
-         'weight', 'sex', 'release_group', 'release_location', 
-         'release_latitude', 'release_longitude', 
-         'utc_release_date_time', 'glatos_project_transmitter', 
+tags <- detections %>%
+  dplyr::group_by('animal_id') %>%
+  dplyr::select('animal_id', 'transmitter_codespace',
+         'transmitter_id', 'tag_type', 'tag_serial_number',
+         'common_name_e', 'capture_location', 'length',
+         'weight', 'sex', 'release_group', 'release_location',
+         'release_latitude', 'release_longitude',
+         'utc_release_date_time', 'glatos_project_transmitter',
          'glatos_tag_recovered', 'glatos_caught_date') %>%
   unique()
-  
+
 # So now this is our animal tagging metadata
 wb_metadata$animals
 
@@ -93,7 +93,7 @@ actel_datefmt = '%Y-%m-%d %H:%M:%S'
 actel_biometrics <- wb_metadata$animals %>% dplyr::mutate(Release.date = format(utc_release_date_time, actel_datefmt),
                                     Signal=as.integer(tag_id_code),
                                     Release.site = release_location) %>%
-  # subset these tag releases to the animals we actually have 
+  # subset these tag releases to the animals we actually have
   # detections for in our demo dataset
   # Only doing this because the demo dataset is so cut-down, wouldn't make sense
   # to have 500 tags and only 3 of them with detections.
@@ -147,7 +147,7 @@ actel_tag_releases <- wb_metadata$animals %>% mutate(Station.name = release_loca
                                       Latitude = release_latitude,
                                       Longitude = release_longitude,
                                       Type='Release') %>%
-  mutate(Array = case_when(Station.name == 'Maumee' ~ 'SIC', 
+  mutate(Array = case_when(Station.name == 'Maumee' ~ 'SIC',
                            Station.name == 'Tittabawassee' ~ 'TTB',
                            Station.name == 'AuGres' ~ 'AGR')) %>% # This value needs to be the nearest array to the release site
   distinct(Station.name, Latitude, Longitude, Array, Type)
@@ -205,8 +205,8 @@ There will very likely be some issues with the data that the Actel checkers find
 Once you have an Actel object, you can run `explore()` to generate your project's summary reports:
 ~~~
 # Get summary reports from our dataset:
-actel_explore_output <- explore(datapack=actel_project, 
-                                report=TRUE, 
+actel_explore_output <- explore(datapack=actel_project,
+                                report=TRUE,
                                 print.releases=FALSE)
 
 ~~~
@@ -226,7 +226,7 @@ library(leaflet)
 library(leafpop)
 
 
-## Exploration - Let's use mapview, since we're going to want to move around, 
+## Exploration - Let's use mapview, since we're going to want to move around,
 #   drill in and look at our stations
 
 
@@ -238,8 +238,8 @@ our_receivers <- as.data.frame(actel_spatial_sum) %>%
 # and plot it using mapview. The popupTable() function lets us customize our tooltip
 mapview(our_receivers %>%    
           select(Longitude, Latitude) %>%           # and get a SpatialPoints object to pass to mapview
-          SpatialPoints(CRS('+proj=longlat')), 
-                    popup = popupTable(our_receivers, 
+          SpatialPoints(CRS('+proj=longlat')),
+                    popup = popupTable(our_receivers,
                                        zcol = c("Array",
                                                 "Station.name")))  # and make a tooltip we can explore
 ~~~
@@ -247,19 +247,19 @@ mapview(our_receivers %>%
 
 Can we design a graph and write it into spatial.txt that fits all these Arrays together? The glatos_array value we put in Array looks to be a bit too granular for our purposes. Maybe we can combine many arrays that are co-located in open water into a Lake Huron 'zone', preserving the complexity of the river systems but creating one basin to which we can connect.
 
-To do this, we only need to update the arrays in our spatial.csv file or spatial dataframe. 
+To do this, we only need to update the arrays in our spatial.csv file or spatial dataframe.
 
 
 ~~~
 # We only need to do this in our spatial.csv file!
 
-huron_arrays <- c('WHT', 'OSC', 'STG', 'PRS', 'FMP', 
-                  'ORM', 'BMR', 'BBI', 'RND', 'IGN', 
+huron_arrays <- c('WHT', 'OSC', 'STG', 'PRS', 'FMP',
+                  'ORM', 'BMR', 'BBI', 'RND', 'IGN',
                   'MIS', 'TBA')
 
 
 # Update actel_spatial_sum to reflect the inter-connectivity of the Huron arrays.
-actel_spatial_sum_lakes <- actel_spatial_sum %>% 
+actel_spatial_sum_lakes <- actel_spatial_sum %>%
     dplyr::mutate(Array = if_else(Array %in% huron_arrays, 'Huron', #if any of the above, make it 'Huron'
                                        Array)) # else leave it as its current value
 
@@ -291,8 +291,8 @@ actel_project <- preload(biometrics = actel_biometrics,
 now actel understands the connectivity between our arrays better!
 
 ~~~
-actel_explore_output_lakes <- explore(datapack=actel_project, 
-                                      report=TRUE, 
+actel_explore_output_lakes <- explore(datapack=actel_project,
+                                      report=TRUE,
                                       print.releases=FALSE)
 
 # We no longer get the error about movements skipping/jumping across arrays!

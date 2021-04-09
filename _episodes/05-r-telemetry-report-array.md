@@ -7,9 +7,9 @@ questions:
     - "How do I summarize and plot my detections?"
 ---
 
-### Mapping GLATOS stations - Static map
+### Mapping Receiver Stations - Static map
 
-This section will use the Receivers CSV for the entire GLATOS Network.
+This section will use a set of receiver metadata from the ACT Network.
 ~~~
 library(ggmap)
 
@@ -24,21 +24,21 @@ names(glatos_receivers)
 
 
 base <- get_stamenmap(
-  bbox = c(left = min(glatos_receivers$deploy_long), 
-           bottom = min(glatos_receivers$deploy_lat), 
-           right = max(glatos_receivers$deploy_long), 
+  bbox = c(left = min(glatos_receivers$deploy_long),
+           bottom = min(glatos_receivers$deploy_lat),
+           right = max(glatos_receivers$deploy_long),
            top = max(glatos_receivers$deploy_lat)),
-  maptype = "terrain-background", 
+  maptype = "terrain-background",
   crop = FALSE,
   zoom = 8)
 
 #filter for stations you want to plot - this is very customizable
-glatos_deploy_plot <- glatos_receivers %>% 
+glatos_deploy_plot <- glatos_receivers %>%
   mutate(deploy_date=ymd_hms(deploy_date_time)) %>% #make a datetime
   mutate(recover_date=ymd_hms(recover_date_time)) %>% #make a datetime
   filter(!is.na(deploy_date)) %>% #no null deploys
   filter(deploy_date > '2011-07-03' & recover_date < '2018-12-11') %>% #only looking at certain deployments, can add start/end dates here
-  group_by(station, glatos_array) %>% 
+  group_by(station, glatos_array) %>%
   summarise(MeanLat=mean(deploy_lat), MeanLong=mean(deploy_long)) #get the mean location per station, in case there is >1 deployment
 
 # you could choose to plot stations which are within a certain bounding box!
@@ -48,8 +48,8 @@ glatos_deploy_plot <- glatos_receivers %>%
 
 
 #add your stations onto your basemap
-glatos_map <- 
-  ggmap(base, extent='panel') + 
+glatos_map <-
+  ggmap(base, extent='panel') +
   ylab("Latitude") +
   xlab("Longitude") +
   geom_point(data = glatos_deploy_plot, #filtering for recent deployments
@@ -60,7 +60,7 @@ glatos_map <-
 glatos_map
 
 #save your receiver map into your working directory
-ggsave(plot = glatos_map, filename = "glatos_map.tiff", units="in", width=15, height=8) 
+ggsave(plot = glatos_map, filename = "glatos_map.tiff", units="in", width=15, height=8)
 #can specify location, file type and dimensions
 ~~~
 {: .language-r}
@@ -70,25 +70,25 @@ ggsave(plot = glatos_map, filename = "glatos_map.tiff", units="in", width=15, he
 This section will use the Deployment and Recovery metadata for our array, from our Workbook.
 ~~~
 base <- get_stamenmap(
-  bbox = c(left = min(walleye_recievers$DEPLOY_LONG), 
-           bottom = min(walleye_recievers$DEPLOY_LAT), 
-           right = max(walleye_recievers$DEPLOY_LONG), 
+  bbox = c(left = min(walleye_recievers$DEPLOY_LONG),
+           bottom = min(walleye_recievers$DEPLOY_LAT),
+           right = max(walleye_recievers$DEPLOY_LONG),
            top = max(walleye_recievers$DEPLOY_LAT)),
-  maptype = "terrain-background", 
+  maptype = "terrain-background",
   crop = FALSE,
   zoom = 8)
 
 #filter for stations you want to plot - this is very customizable
-walleye_deploy_plot <- walleye_recievers %>% 
+walleye_deploy_plot <- walleye_recievers %>%
   mutate(deploy_date=ymd_hms(GLATOS_DEPLOY_DATE_TIME)) %>% #make a datetime
   mutate(recover_date=ymd_hms(GLATOS_RECOVER_DATE_TIME)) %>% #make a datetime
   filter(!is.na(deploy_date)) %>% #no null deploys
   filter(deploy_date > '2011-07-03' & is.na(recover_date)) %>% #only looking at certain deployments, can add start/end dates here
-  group_by(STATION_NO, GLATOS_ARRAY) %>% 
+  group_by(STATION_NO, GLATOS_ARRAY) %>%
   summarise(MeanLat=mean(DEPLOY_LAT), MeanLong=mean(DEPLOY_LONG)) #get the mean location per station, in case there is >1 deployment
 
 #add your stations onto your basemap
-walleye_deploy_map <- 
+walleye_deploy_map <-
   ggmap(base, extent='panel') +
   ylab("Latitude") +
   xlab("Longitude") +
@@ -101,7 +101,7 @@ walleye_deploy_map <-
 walleye_deploy_map
 
 #save your receiver map into your working directory
-ggsave(plot = walleye_deploy_map, filename = "walleye_deploy_map.tiff", units="in", width=15, height=8) 
+ggsave(plot = walleye_deploy_map, filename = "walleye_deploy_map.tiff", units="in", width=15, height=8)
 #can specify location, file type and dimensions
 ~~~
 {: .language-r}
@@ -109,7 +109,7 @@ ggsave(plot = walleye_deploy_map, filename = "walleye_deploy_map.tiff", units="i
 ### Mapping my stations - Interactive map
 
 An interactive map can contain more information than a static map.
- 
+
 ~~~
 library(plotly)
 
@@ -133,7 +133,7 @@ glatos_map_plotly <- plot_geo(glatos_deploy_plot, lat = ~MeanLat, lon = ~MeanLon
 
 glatos_map_plotly <- glatos_map_plotly %>% add_markers(
   text = ~paste(station, MeanLat, MeanLong, sep = "<br />"),
-  symbol = I("square"), size = I(8), hoverinfo = "text" 
+  symbol = I("square"), size = I(8), hoverinfo = "text"
 )
 
 #Add layout (title + geo stying)
@@ -176,4 +176,3 @@ anim_summary #number of dets per month/year per station & species
 
 ~~~
 {: .language-r}
-

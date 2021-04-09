@@ -10,7 +10,7 @@ questions:
 
 ### Importing from csv
 
-`dplyr` takes advantage of tidyverse pipes and chains of data manipulation to create powerful exploratory summaries.\
+`dplyr` takes advantage of tidyverse pipes and chains of data manipulation to create powerful exploratory summaries.
 If you're unfamiliar with detection extracts formats from OTN-style database nodes, see the documentation [here](https://members.oceantrack.org/data/otn-detection-extract-documentation-matched-to-animals)
 
 ~~~
