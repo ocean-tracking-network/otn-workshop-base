@@ -7,15 +7,28 @@ library(glatos)
 library(tidyverse)
 library(VTrack)
 
-# Get file path to example walleye data
-det_file_name <- system.file("extdata", "walleye_detections.csv",
-                             package = "glatos")
+# First we need to create a one detections files from all our detection extracts.
+library(utils)
+
+unzip('ACT Network workshop datasets.zip', exdir = "act-data")
+
+for (zipfile in list.files('act-data', pattern = '\\.zip', full.names = TRUE)) {
+  unzip(zipfile, exdir = 'act-data/dets')
+  file.remove(zipfile)
+}
+
+all_dets <- tibble()
+for (detfile in list.files('act-data/dets', full.names = TRUE)) {
+  dets <- read.csv(detfile)
+  all_dets <- bind_rows(all_dets, dets)
+}  
+write.csv(all_dets, "act-data/all_dets.csv", append = FALSE)
 
 ## GLATOS help files are helpful!!
-?read_glatos_detections
+?read_otn_deployments
 
 # Save our detections file data into a dataframe called detections
-detections <- read_glatos_detections(det_file=det_file_name)
+detections <- read_otn_detections('act-data/all_dets.csv')
 
 
 # View first 2 rows of output
@@ -70,7 +83,7 @@ sum_animal_location
 
 # Create a custom vector of Animal IDs to pass to the summary function
 # look only for these ids when doing your summary
-tagged_fish <- c('22', '23')
+tagged_fish <- c('PROJ58-1218508-2015-10-13', 'PROJ58-1218510-2015-10-13')
 
 sum_animal_custom <- summarize_detections(det=detections_filtered,
                                           animals=tagged_fish,  # Supply the vector to the function
@@ -103,17 +116,23 @@ detections_w_events <- detection_events(detections_filtered,
 
 ?residence_index
 
+#Using all the events data will take too long, we will subset to just use a couple animals
+events %>% group_by(animal_id) %>% summarise(count=n()) %>% arrange(desc(count))
+
+subset_animals <- c('PROJ59-1191631-2014-07-09', 'PROJ59-1191628-2014-07-07', 'PROJ64-1218527-2016-06-07')
+events_subset <- events %>% filter(animal_id %in% subset_animals)
+
 # Calc residence index using the Kessel method
-rik_data <- residence_index(events, 
+rik_data <- residence_index(events_subset, 
                             calculation_method = 'kessel')
 rik_data
 
 # Calc residence index using the time interval method, interval set to 6 hours
-rit_data <- residence_index(events, 
+rit_data <- residence_index(events_subset, 
                             calculation_method = 'time_interval', 
                             time_interval_size = "6 hours")
 rit_data
-
+ 
 # Converting GLATOS/FACT/OTN-style dataframes to ATT format for use with VTrack ####
 
 ?convert_glatos_to_att
@@ -124,8 +143,8 @@ rec_file <- system.file("extdata",
 
 receivers <- read_glatos_receivers(rec_file)
 
-
-ATTdata <- convert_glatos_to_att(detections_filtered, receivers)
+tags <- prepare_tag_sheet('act-data/Tag_Metadata/Proj58_Metadata_cownoseray.xls',sheet = 2, start = 5)
+ATTdata <- convert_otn_to_att(detections_filtered, receivers)
 
 # ATT is split into 3 objects, we can view them like this
 ATTdata$Tag.Detections
