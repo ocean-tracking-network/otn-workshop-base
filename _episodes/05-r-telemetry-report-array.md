@@ -7,9 +7,9 @@ questions:
     - "How do I summarize and plot my detections?"
 ---
 
-### Mapping GLATOS stations - Static map
+### Mapping Receiver Stations - Static map
 
-This section will use the Receivers CSV for the entire ACT Network.
+This section will use a set of receiver metadata from the ACT Network.
 ~~~
 library(ggmap)
 

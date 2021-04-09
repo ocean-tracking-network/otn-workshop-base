@@ -1,9 +1,9 @@
 ---
-title: Introduction to GLATOS Data Processing
+title: Introduction to glatos Data Processing Package
 teaching: 30
 exercises: 0
 questions:
-    - "How do I load my data into GLATOS?"
+    - "How do I load my data into glatos?"
     - "How do I filter out false detections?"
     - "How can I consolidate my detections into detection events?"
     - "How do I summarize my data?"
@@ -47,13 +47,13 @@ det_file_name <- system.file("extdata", "walleye_detections.csv",
 Remember: you can always check a function's documentation by typing a question
 mark, followed by the name of the function.
 ~~~
-## GLATOS help files are helpful!! ####
+## glatos help files are helpful!! ####
 ?read_otn_detections
 ~~~
 {: .language-r}
 
 With our file path in hand, we'll want to use the read_otn_detections function
-to load our data into a dataframe. In this case, our data is formatted in the FACT
+to load our data into a dataframe. In this case, our data is formatted in the OTN
 style- if it were GLATOS-formatted, we would want to use read_glatos_detections()
 instead.
 
@@ -177,7 +177,7 @@ more amenable to plotting by reducing it from detections to detection events.
 Detection Events differ from detections in that they condense a lot of temporally and
 spatially clustered detections for a single animal into a single detection event. This is
 a powerful and useful way to clean up the data, and makes it easier to present and
-clearer to read. Fortunately, glatos lets us to this easily.
+clearer to read. Fortunately, glatos lets us do this easily.
 
 ~~~
 # Reduce Detections to Detection Events ####
