@@ -9,7 +9,6 @@
 #install.packages("plotly")
 #install.packages("tidyverse")  
 
-
 library(tidyverse) # really neat collection of packages! https://www.tidyverse.org/
 
 #make sure to read all "mask" messages
@@ -92,7 +91,7 @@ heights[complete.cases(heights)] #select only complete cases
 
 #Challenge 4: 
 #1. Using this vector of heights in inches, create a new vector, heights_no_na, with the NAs removed.
-  #heights <- c(63, 69, 60, 65, NA, 68, 61, 70, 61, 59, 64, 69, 63, 63, NA, 72, 65, 64, 70, 63, 65)
+#heights <- c(63, 69, 60, 65, NA, 68, 61, 70, 61, 59, 64, 69, 63, 63, NA, 72, 65, 64, 70, 63, 65)
 #2. Use the function median() to calculate the median of the heights vector.
 #BONUS: Use R to figure out how many people in the set are taller than 67 inches.
 
@@ -152,7 +151,7 @@ proj58_matched_2016 %>% filter(monthcollected >= 10) #all dets in/after October 
 proj58_matched_2016 %>%
   group_by(catalognumber) %>%  #we want to find meanLat for each animal
   summarise(MeanLat=mean(latitude)) #uses pipes and dplyr functions to find mean latitude for each fish. 
-                                      #we named this new column "MeanLat" but you could name it anything
+#we named this new column "MeanLat" but you could name it anything
 
 #Challenge 6: 
 #1. find the max lat and max longitude for animal "PROJ58-1170195-2014-05-31".
@@ -198,7 +197,7 @@ library(ggplot2) #tidyverse-style plotting, a very customizable plotting package
 
 # Assign plot to a variable
 proj58_matched_full_plot <- ggplot(data = proj58_matched_full, 
-                  mapping = aes(x = latitude, y = longitude)) #can assign a base plot to data
+                                   mapping = aes(x = latitude, y = longitude)) #can assign a base plot to data
 
 # Draw the plot 
 proj58_matched_full_plot + 
@@ -220,106 +219,73 @@ proj58_matched_full %>%
 #anything specified in geom() is applied to that layer only (colour, size...). sometimes you have >1 geom layer so this makes more sense!
 
 #Challenge 7: try making a scatterplot showing the lat/long for animal "A69-1601-1363", 
-            # coloured by detection array
+# coloured by detection array
 
 
 
 #Question: what other geoms are there? Try typing `geom_` into R to see what it suggests!
 
-############ Edited up to here --BD
-
 # Answering Qs for Reporting ---------------------------------
 
-View(lamprey_dets) #already have our Lamprey tag matches
+View(proj58_matched_full) #Check to make sure we already have our tag matches.
 
-walleye_dets <- read_csv("inst_extdata_walleye_detections.csv", guess_max = 9595) #remember guess_max from prev section!
+#Load in and join our array matches.
 
+proj61_qual_2016 <- read_csv("../ACT_2021_data/ACT Network workshop datasets/Qualified_detecions_2016_2017/proj61_qualified_detections_2016.csv")
+proj61_qual_2017 <- read_csv("../ACT_2021_data/ACT Network workshop datasets/Qualified_detecions_2016_2017/proj61_qualified_detections_2017.csv")
+proj61_qual_16_17_full <- rbind(proj61_qual_2016, proj61_qual_2017) 
 
-#Warning: 9595 parsing failures.
-#row          col           expected actual                                  file
-#3047 sensor_value 1/0/T/F/TRUE/FALSE    11  'inst_extdata_walleye_detections.csv'
-#3047 sensor_unit  1/0/T/F/TRUE/FALSE    ADC 'inst_extdata_walleye_detections.csv'
-#3048 sensor_value 1/0/T/F/TRUE/FALSE    11  'inst_extdata_walleye_detections.csv'
-#3048 sensor_unit  1/0/T/F/TRUE/FALSE    ADC 'inst_extdata_walleye_detections.csv'
-#3049 sensor_value 1/0/T/F/TRUE/FALSE    11  'inst_extdata_walleye_detections.csv'
+proj61_qual_16_17_full <- proj61_qual_16_17_full %>% slice(1:100000) #subset our example data for ease of analysis!
 
-#lets join them!
-all_dets <- rbind(lamprey_dets, walleye_dets)
-
-
-# lets import GLATOS receiver station data for the whole network
-glatos_receivers <- read_csv("inst_extdata_sample_receivers.csv")
-
-View(glatos_receivers)
-
-#Lets import our workbook now!
-
+#need Array metadata
+#These are saved as XLS/XLSX files, so we need a different library to read them in.
 library(readxl)
 
-walleye_deploy <- read_excel('inst_extdata_walleye_workbook.xlsm', sheet = 'Deployment') #pull in deploy
-View(walleye_deploy)
+proj61_deploy <- read_excel("../ACT_2021_data/ACT Network workshop datasets/Deploy_metadata_2016_2017/deploy_sercarray_proj61_2016_2017.xlsx", sheet = "Deployment", skip=3)
+View(proj61_deploy)
 
-walleye_recovery <- read_excel('inst_extdata_walleye_workbook.xlsm', sheet = 'Recovery') #pull in recovery
-View(walleye_recovery)
+#need Tag metadata
 
-#join them together
+proj58_tag <- read_excel("../ACT_2021_data/ACT Network workshop datasets/Tag_Metadata/Proj58_Metadata_cownoseray.xls", sheet = "Tag Metadata", skip=4) 
+View(proj58_tag)
 
-walleye_recovery <- walleye_recovery %>% rename(INS_SERIAL_NO = INS_SERIAL_NUMBER) #first, rename INS_SERIAL_NUMBER
+#Need to skip rows in both cases to get the correct header because of the way the file is formatted.
+#These numbers might be different for you depending on how many rows you need to skip. Check your files
+#To find out for sure.
 
-walleye_recievers = merge(walleye_deploy, walleye_recovery,
-                          by.x = c("GLATOS_PROJECT", "GLATOS_ARRAY", "STATION_NO",
-                                    "CONSECUTIVE_DEPLOY_NO", "INS_SERIAL_NO"), 
-                          by.y = c("GLATOS_PROJECT", "GLATOS_ARRAY", "STATION_NO", 
-                                    "CONSECUTIVE_DEPLOY_NO", "INS_SERIAL_NO"), 
-                          all.x=TRUE, all.y=TRUE) #keep all the info from each, merged using the above columns
-
-View(walleye_recievers)
-
-#need Tagging metadata too!
-
-walleye_tag <- read_excel('inst_extdata_walleye_workbook.xlsm', sheet = 'Tagging')
-View(walleye_tag)
-
-#remember: we learned how to switch timezone of datetime columns above, 
-# if that is something you need to do with your dataset!! 
-  #hint: check GLATOS_TIMEZONE column to see if its what you want!
-
-#the glatos R package (will be reviewed in the workshop tomorrow) can import your workbook in one step
-#will format all datetimes to UTC, check for conflicts, join the deploy/recovery tabs etc.
-
-library(glatos) #wont work unless you happen to have this installed - just an teaser today, will be covered tomorrow
-data <- read_glatos_workbook('inst_extdata_walleye_workbook.xlsm')
-receivers <- data$receivers
-animals <-  data$animals
-
+#remember: we learned how to switch timezone of datetime columns above, if that is something you need to do with your dataset!!
 
 ## Section 1: for Array Operators --------------------
 #1. map GLATOS locations
 
+#Load in ggmap to handle geographic mapping. 
 library(ggmap)
 
-#make a basemap for all of the stations, using the min/max deploy lat and longs as bounding box
+#We'll use the CSV below to tell where our stations and receivers are.
+full_receivers = read.csv('../ACT_2021_data/ACT Network workshop datasets/matos_FineToShare_stations_receivers_202104091205.csv')
+full_receivers
+
 #what are our columns called?
-names(glatos_receivers)
+names(full_receivers)
 
-
+#make a basemap for all of the stations, using the min/max deploy lat and longs as bounding box
 base <- get_stamenmap(
-  bbox = c(left = min(glatos_receivers$deploy_long), 
-           bottom = min(glatos_receivers$deploy_lat), 
-           right = max(glatos_receivers$deploy_long), 
-           top = max(glatos_receivers$deploy_lat)),
+  bbox = c(left = min(full_receivers$station_long), 
+           bottom = min(full_receivers$station_lat), 
+           right = max(full_receivers$station_long), 
+           top = max(full_receivers$station_lat)),
   maptype = "terrain-background", 
   crop = FALSE,
   zoom = 8)
 
 #filter for stations you want to plot - this is very customizable
-glatos_deploy_plot <- glatos_receivers %>% 
-  mutate(deploy_date=ymd_hms(deploy_date_time)) %>% #make a datetime
-  mutate(recover_date=ymd_hms(recover_date_time)) %>% #make a datetime
+full_receivers_plot <- full_receivers %>% 
+  mutate(deploy_date=ymd(deploy_date)) %>% #make a datetime
+  mutate(recovery_date=ymd(recovery_date)) %>% #make a datetime
   filter(!is.na(deploy_date)) %>% #no null deploys
-  filter(deploy_date > '2011-07-03' & recover_date < '2018-12-11') %>% #only looking at certain deployments, can add start/end dates here
-  group_by(station, glatos_array) %>% 
-  summarise(MeanLat=mean(deploy_lat), MeanLong=mean(deploy_long)) #get the mean location per station, in case there is >1 deployment
+  filter(deploy_date > '2011-07-03' & recovery_date < '2018-12-11') %>% #only looking at certain deployments, can add start/end dates here
+  group_by(station_name) %>% 
+  summarise(MeanLat=mean(station_lat), MeanLong=mean(station_long)) #get the mean location per station, in case there is >1 deployment
 
 # you could choose to plot stations which are within a certain bounding box!
 #to do this you would add another filter to the above data, before passing to the map
@@ -328,58 +294,66 @@ glatos_deploy_plot <- glatos_receivers %>%
 
 
 #add your stations onto your basemap
-glatos_map <- 
+full_receivers_map <- 
   ggmap(base, extent='panel') + 
   ylab("Latitude") +
   xlab("Longitude") +
-  geom_point(data = glatos_deploy_plot, #filtering for recent deployments
-             aes(x = MeanLong,y = MeanLat, colour = glatos_array), #specify the data
+  geom_point(data = full_receivers_plot, #filtering for recent deployments
+             aes(x = MeanLong,y = MeanLat, colour = station_name), #specify the data
              shape = 19, size = 2) #lots of aesthetic options here!
 
 #view your receiver map!
-glatos_map
+full_receivers_map
 
 #save your receiver map into your working directory
-ggsave(plot = glatos_map, filename = "glatos_map.tiff", units="in", width=15, height=8) 
+ggsave(plot = proj61_map, filename = "proj61_map.tiff", units="in", width=15, height=8) 
 #can specify location, file type and dimensions
 
 
 #2. map array locations
 # we can do the same exact thing with the deployment metadata from OUR project only!
 
+names(proj61_deploy)
+
+
 base <- get_stamenmap(
-  bbox = c(left = min(walleye_recievers$DEPLOY_LONG), 
-           bottom = min(walleye_recievers$DEPLOY_LAT), 
-           right = max(walleye_recievers$DEPLOY_LONG), 
-           top = max(walleye_recievers$DEPLOY_LAT)),
+  bbox = c(left = min(proj61_deploy$DEPLOY_LONG), 
+           bottom = min(proj61_deploy$DEPLOY_LAT), 
+           right = max(proj61_deploy$DEPLOY_LONG), 
+           top = max(proj61_deploy$DEPLOY_LAT)),
   maptype = "terrain-background", 
   crop = FALSE,
   zoom = 8)
 
 #filter for stations you want to plot - this is very customizable
-walleye_deploy_plot <- walleye_recievers %>% 
-  mutate(deploy_date=ymd_hms(GLATOS_DEPLOY_DATE_TIME)) %>% #make a datetime
-  mutate(recover_date=ymd_hms(GLATOS_RECOVER_DATE_TIME)) %>% #make a datetime
+proj61_deploy_plot <- proj61_deploy %>% 
+  mutate(deploy_date=ymd_hms(`DEPLOY_DATE_TIME   (yyyy-mm-ddThh:mm:ss)`)) %>% #make a datetime
+  mutate(recover_date=ymd_hms(`RECOVER_DATE_TIME (yyyy-mm-ddThh:mm:ss)`)) %>% #make a datetime
   filter(!is.na(deploy_date)) %>% #no null deploys
-  filter(deploy_date > '2011-07-03' & is.na(recover_date)) %>% #only looking at certain deployments, can add start/end dates here
-  group_by(STATION_NO, GLATOS_ARRAY) %>% 
+  filter(deploy_date > '2011-07-03' & recover_date < '2018-12-11') %>% #only looking at certain deployments, can add start/end dates here
+  group_by(STATION_NO) %>% 
   summarise(MeanLat=mean(DEPLOY_LAT), MeanLong=mean(DEPLOY_LONG)) #get the mean location per station, in case there is >1 deployment
 
+# you could choose to plot stations which are within a certain bounding box!
+#to do this you would add another filter to the above data, before passing to the map
+# ex: add this line after the mutate() clauses:
+# filter(latitude <= 0.5 & latitude >= 24.5 & longitude <= 0.6 & longitude >= 34.9)
+
+
 #add your stations onto your basemap
-walleye_deploy_map <- 
-  ggmap(base, extent='panel') +
+proj61_map <- 
+  ggmap(base, extent='panel') + 
   ylab("Latitude") +
   xlab("Longitude") +
-  geom_point(data = walleye_deploy_plot, #filtering for recent deployments
-             aes(x = MeanLong,y = MeanLat, colour = GLATOS_ARRAY), #specify the data
+  geom_point(data = proj61_deploy_plot, #filtering for recent deployments
+             aes(x = MeanLong,y = MeanLat, colour = STATION_NO), #specify the data
              shape = 19, size = 2) #lots of aesthetic options here!
 
-
 #view your receiver map!
-walleye_deploy_map
+proj61_map
 
 #save your receiver map into your working directory
-ggsave(plot = walleye_deploy_map, filename = "walleye_deploy_map.tiff", units="in", width=15, height=8) 
+ggsave(plot = proj61_map, filename = "proj61_map.tiff", units="in", width=15, height=8) 
 #can specify location, file type and dimensions
 
 
@@ -389,79 +363,86 @@ library(plotly)
 
 #set your basemap
 geo_styling <- list(
-  fitbounds = "locations", visible = TRUE, #fits the bounds to your data!
+  fitbounds = "locations", 
+  visible = TRUE, #fits the bounds to your data!
   showland = TRUE,
-  showlakes = TRUE,
-  lakecolor = toRGB("blue", alpha = 0.2), #make it transparent
-  showcountries = TRUE,
   landcolor = toRGB("gray95"),
+  subunitcolor = toRGB("gray85"),
   countrycolor = toRGB("gray85")
 )
 
 #decide what data you're going to use
-glatos_map_plotly <- plot_geo(glatos_deploy_plot, lat = ~MeanLat, lon = ~MeanLong)  
+proj61_map_plotly <- plot_geo(proj61_deploy_plot, lat = ~MeanLat, lon = ~MeanLong)  
 
 #add your markers for the interactive map
-glatos_map_plotly <- glatos_map_plotly %>% add_markers(
-  text = ~paste(station, MeanLat, MeanLong, sep = "<br />"),
+proj61_map_plotly <- proj61_map_plotly %>% add_markers(
+  text = ~paste(STATION_NO, MeanLat, MeanLong, sep = "<br />"),
   symbol = I("square"), size = I(8), hoverinfo = "text" 
 )
 
 #Add layout (title + geo stying)
-glatos_map_plotly <- glatos_map_plotly %>% layout(
-  title = 'GLATOS Deployments<br />(> 2011-07-03)', geo = geo_styling
+proj61_map_plotly <- proj61_map_plotly %>% layout(
+  title = 'Project 61 Deployments<br />(> 2011-07-03)', geo = geo_styling
 )
 
 #View map
-glatos_map_plotly
+proj61_map_plotly
+
+#You might see the following warning: it just means that the plotly package has some updating to do
+# Warning message:
+# `arrange_()` is deprecated as of dplyr 0.7.0.
+# Please use `arrange()` instead.
+# See vignette('programming') for more help
+# This warning is displayed once every 8 hours.
+# Call `lifecycle::last_warnings()` to see where this warning was generated.
 
 #4. How are my stations performing?
 
-det_summary  <- all_dets  %>%
-  filter(glatos_project_receiver == 'HECST') %>%  #choose to summarize by array, project etc!
-  mutate(detection_timestamp_utc=ymd_hms(detection_timestamp_utc))  %>%
-  group_by(station, year = year(detection_timestamp_utc), month = month(detection_timestamp_utc)) %>%
-  summarize(count =n())
+#How many of each animals did we detect from each collaborator, by station
 
-det_summary #number of dets per month/year per station
+proj61_qual_summary <- proj61_qual_16_17_full %>% 
+  filter(datecollected > '2010-06-01') %>% #select timeframe, stations etc.
+  group_by(trackercode, station, tag_contact_pi, tag_contact_poc) %>% 
+  summarize(count = n()) %>% 
+  select(trackercode, tag_contact_pi, tag_contact_poc, station, count)
 
-anim_summary  <- all_dets  %>%
-  filter(glatos_project_receiver == 'HECST') %>%  #choose to summarize by array, project etc!
-  mutate(detection_timestamp_utc=ymd_hms(detection_timestamp_utc))  %>%
-  group_by(station, year = year(detection_timestamp_utc), month = month(detection_timestamp_utc), common_name_e) %>%
-  summarize(count =n())
+#view our summary table
 
-anim_summary #number of dets per month/year per station & species
+proj61_qual_summary #remember, this is just the first 10,000 rows!
 
+#export our summary table
 
+write_csv(proj61_qual_summary, "data/proj61_summary.csv", col_names = TRUE)
 
 
-       
 ## Section 2: for Taggers --------------------
 
-#5. map detections and releases 
+#5. map detections
 
 base <- get_stamenmap(
-  bbox = c(left = min(all_dets$deploy_long),
-           bottom = min(all_dets$deploy_lat), 
-           right = max(all_dets$deploy_long), 
-           top = max(all_dets$deploy_lat)),
+  bbox = c(left = min(proj58_matched_full$longitude),
+           bottom = min(proj58_matched_full$latitude), 
+           right = max(proj58_matched_full$longitude), 
+           top = max(proj58_matched_full$latitude)),
   maptype = "terrain-background", 
   crop = FALSE,
   zoom = 8)
 
 
-#add your detections onto your basemap
-detections_map <- 
+#add your releases and detections onto your basemap
+
+proj58_map <- 
   ggmap(base, extent='panel') +
   ylab("Latitude") +
   xlab("Longitude") +
-  geom_point(data = all_dets,
-             aes(x = deploy_long,y = deploy_lat, colour = common_name_e), #specify the data
-             shape = 19, size = 2) #lots of aesthetic options here!
+  geom_point(data = proj58_matched_full, 
+             aes(x = longitude,y = latitude), #specify the data
+             colour = 'blue', shape = 19, size = 2) #lots of aesthetic options here!
 
 #view your tagging map!
-detections_map
+
+proj58_map
+
 
 
 #6. interactive map https://plotly.com/r/scatter-plots-on-maps/ 
@@ -478,20 +459,20 @@ geo_styling <- list(
 )
 
 #decide what data you're going to use
-detctions_map_plotly <- plot_geo(all_dets, lat = ~deploy_lat, lon = ~deploy_long) 
+detctions_map_plotly <- plot_geo(proj58_matched_full, lat = ~latitude, lon = ~longitude) 
 
 #add your markers for the interactive map
 detctions_map_plotly <- detctions_map_plotly %>% add_markers(
-  text = ~paste(animal_id, common_name_e, paste("Date detected:", detection_timestamp_utc), 
-                paste("Latitude:", deploy_lat), paste("Longitude",deploy_long), 
-                paste("Detected by:", glatos_array), paste("Station:", station), 
-                paste("Project:",glatos_project_receiver)),
+  text = ~paste(catalognumber, commonname, paste("Date detected:", datecollected), 
+                paste("Latitude:", latitude), paste("Longitude",longitude), 
+                paste("Detected by:", detectedby), paste("Station:", station), 
+                paste("Project:",collectioncode)),
   symbol = I("square"), size = I(8), hoverinfo = "text" 
 )
 
 #Add layout (title + geo stying)
 detctions_map_plotly <- detctions_map_plotly %>% layout(
-  title = 'Lamprey and Walleye Detections<br />(2012-2013)', geo = geo_styling
+  title = 'Project 58 Detections', geo = geo_styling
 )
 
 #View map
@@ -500,67 +481,99 @@ detctions_map_plotly
 
 #7. Summary of tagged animals
 
+normDate <- Vectorize(function(x) {
+  if (!is.na(suppressWarnings(as.numeric(x))))  # Win excel
+    as.Date(as.numeric(x), origin="1899-12-30")
+  else
+    as.Date(x, format="%y/%m/%d")
+})
+
+res <- as.Date(normDate(proj58_tag$UTC_RELEASE_DATE_TIME[0:52]), origin="1970-01-01")
 # summary of animals you've tagged
-walleye_tag_summary <- walleye_tag %>% 
-  mutate(GLATOS_RELEASE_DATE_TIME = ymd_hms(GLATOS_RELEASE_DATE_TIME)) %>% 
-  #filter(GLATOS_RELEASE_DATE_TIME > '2012-06-01') %>% #select timeframe, specific animals etc.
-  group_by(year = year(GLATOS_RELEASE_DATE_TIME), COMMON_NAME_E) %>% 
+
+full_dates = c(ymd_hms(res, truncated = 3), ymd_hms(proj58_tag$UTC_RELEASE_DATE_TIME[53:89]))
+View(full_dates)
+
+proj58_tag <- proj58_tag %>%
+  mutate(UTC_RELEASE_DATE_TIME = full_dates)
+
+proj58_tag_summary <- proj58_tag %>% 
+  #mutate(UTC_RELEASE_DATE_TIME = full_dates) %>% 
+  #filter(UTC_RELEASE_DATE_TIME > '2019-06-01') %>% #select timeframe, specific animals etc.
+  group_by(year = year(UTC_RELEASE_DATE_TIME), COMMON_NAME_E) %>% 
   summarize(count = n(), 
-            Meanlength = mean(LENGTH, na.rm=TRUE), 
-            minlength= min(LENGTH, na.rm=TRUE), 
-            maxlength = max(LENGTH, na.rm=TRUE), 
-            MeanWeight = mean(WEIGHT, na.rm = TRUE)) 
+            Meanlength = mean(`LENGTH (m)`, na.rm=TRUE), 
+            minlength= min(`LENGTH (m)`, na.rm=TRUE), 
+            maxlength = max(`LENGTH (m)`, na.rm=TRUE), 
+            MeanWeight = mean(`WEIGHT (kg)`, na.rm = TRUE)) 
 
 #view our summary table
-walleye_tag_summary
+
+proj58_tag_summary
 
 
 #8. detection attributes by year/month, per collector array or species
 
-#Average location of each animal!
-all_dets %>% 
-  group_by(animal_id) %>% 
+#Average location of each animal, without release records
+
+proj58_matched_full %>% 
+  group_by(catalognumber) %>% 
   summarize(NumberOfStations = n_distinct(station),
-            AvgLat = mean(deploy_lat),
-            AvgLong =mean(deploy_long))
+            AvgLat = mean(latitude),
+            AvgLong =mean(longitude))
 
+#Lets try to join to our tag metadata to get some more context!!
+#First we need to make a tagname column in the tag metadata, and figure out the enddate of the tag battery
+proj58_tag <- proj58_tag %>% 
+  mutate(enddatetime = (ymd_hms(UTC_RELEASE_DATE_TIME) + days(EST_TAG_LIFE))) %>% #adding enddate
+  mutate(tagname = paste(TAG_CODE_SPACE,TAG_ID_CODE, sep = '-')) #adding tagname column
 
-#Avg length per location
-all_dets_summary <- all_dets %>% 
-  mutate(detection_timestamp_utc = ymd_hms(detection_timestamp_utc)) %>% 
-  group_by(glatos_array, station, deploy_lat, deploy_long, common_name_e)  %>%  
-  summarise(AvgSize = mean(length, na.rm=TRUE))
+#Now we join by tagname, to the detections without the release information
 
-all_dets_summary
+tag_joined_dets <- left_join(x = proj58_matched_full, y = proj58_tag, by = "tagname")
 
-#export our summary table as CSV
-write_csv(all_dets_summary, "detections_summary.csv", col_names = TRUE)
+#make sure the redeployed tags have matched within their deployment period only
+
+tag_joined_dets <- tag_joined_dets %>% 
+  filter(datecollected >= UTC_RELEASE_DATE_TIME & datecollected <= enddatetime)
+
+View(tag_joined_dets)
+
+#Lets use this new dataframe to make summaries! Avg length per location
+
+proj58_tag_det_summary <- tag_joined_dets %>% 
+  group_by(detectedby, station, latitude, longitude)  %>%  
+  summarise(AvgSize = mean(`LENGTH (m)`, na.rm=TRUE))
+
+proj58_tag_det_summary
 
 # count detections per transmitter, per array
 
-all_dets %>% 
-  group_by(transmitter_id, glatos_array, common_name_e) %>% 
+proj58_matched_full %>% 
+  group_by(catalognumber, station, commonname) %>% 
   summarize(count = n()) %>% 
-  select(transmitter_id, common_name_e, glatos_array, count)
+  select(catalognumber, commonname, station, count)
 
+# list all receivers each fish was seen on, and a number_of_receivers column too
 
-# list all glatos arrays each fish was seen on, and a number_of_arrays column too
-
-all_dets %>% 
-  group_by(animal_id) %>% 
-  mutate(arrays =  (list(unique(glatos_array)))) %>% #create a column with a list of the arrays
-  dplyr::select(animal_id, arrays)  %>% #remove excess columns
+receivers <- proj58_matched_full %>% 
+  group_by(catalognumber) %>% 
+  mutate(receivers = (list(unique(station)))) %>% #create a column with a list of the stations
+  dplyr::select(catalognumber, receivers)  %>% #remove excess columns
   distinct_all() %>% #keep only one record of each
-  mutate(number_of_arrays = sapply(arrays,length)) %>% #sapply: applies a function across a List - in this case we are applying length()
-  as.data.frame()
+  mutate(number_of_receivers = sapply(receivers,length)) %>% #sapply: applies a function across a List - in this case we are applying length()
+  as.data.frame() 
+
+View(receivers)
 
 #9. total detection counts by year/month
 
-all_dets  %>% 
-  mutate(detection_timestamp_utc=ymd_hms(detection_timestamp_utc)) %>% #make datetime
-  mutate(year_month = floor_date(detection_timestamp_utc, "months")) %>% #round to month
- filter(common_name_e == 'walleye') %>% #can filter for specific stations, dates etc. doesn't have to be species!
-  group_by(year_month) %>% #can group by station, species et - doesn't have to be by date
+#try with tqcs_matched_10_11_full_no_release if you're feeling bold! takes ~30 secs
+
+proj58_matched_full  %>% 
+  mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
+  mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
+  group_by(year_month) %>% #can group by station, species etc.
   summarize(count =n()) %>% #how many dets per year_month
   ggplot(aes(x = (month(year_month) %>% as.factor()), 
              y = count, 
@@ -570,11 +583,8 @@ all_dets  %>%
   geom_bar(stat = "identity", position = "dodge2")+ 
   xlab("Month")+
   ylab("Total Detection Count")+
-  ggtitle('Walleye Detections by Month (2012-2013)')+ #title
+  ggtitle('Project 58 Detections by Month (2014-2017)')+ #title
   labs(fill = "Year") #legend title
-
-
-
 
 
 ## Other Example Plots -----------
@@ -587,8 +597,43 @@ all_dets  %>%
 #better represent your data, easier to read by those with colorblindness, and print well in grey scale.
 library(viridis)
 
+proj58_matched_full %>%
+  group_by(m=month(datecollected), catalognumber, scientificname) %>% #make our groups
+  summarise(mean=mean(latitude)) %>% #mean lat
+  ggplot(aes(m %>% factor, mean, colour=scientificname, fill=scientificname))+ #the data is supplied, but no info on how to show it!
+  geom_point(size=3, position="jitter")+   # draw data as points, and use jitter to help see all points instead of superimposition
+  #coord_flip()+   #flip x y, not needed here
+  scale_colour_manual(values = "blue")+ #change the colour to represent the species better!
+  scale_fill_manual(values = "grey")+ 
+  geom_boxplot()+ #another layer
+  geom_violin(colour="black") #and one more layer
+
+
+#There are other ways to present a summary of data like this that we might have chosen. 
+#geom_density2d() will give us a KDE for our data points and give us some contours across our chosen plot axes.
+
+proj58_matched_full %>% #doesnt work on the subsetted data, back to original dataset for this one
+  group_by(month=month(datecollected), catalognumber, scientificname) %>%
+  summarise(meanlat=mean(latitude)) %>%
+  ggplot(aes(month, meanlat, colour=scientificname, fill=scientificname))+
+  geom_point(size=3, position="jitter")+
+  scale_colour_manual(values = "blue")+
+  scale_fill_manual(values = "grey")+
+  geom_density2d(size=7, lty=1) #this is the only difference from the plot above 
+
+#anything you specify in the aes() is applied to the actual data points/whole plot, 
+#anything specified in geom() is applied to that layer only (colour, size...)
+
+# per-individual density contours - lots of plots: called facets!
+proj58_matched_full %>%
+  ggplot(aes(longitude, latitude))+
+  facet_wrap(~catalognumber)+ #make one plot per individual
+  geom_violin()
+#Warnings going on above.
+
+View(proj58_matched_full)
 abacus_animals <- 
-  ggplot(data = all_dets, aes(x = detection_timestamp_utc, y = animal_id, col = glatos_array)) +
+  ggplot(data = proj58_matched_full, aes(x = datecollected, y = tagname, col = detectedby)) +
   geom_point() +
   ggtitle("Detections by animal") +
   theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
@@ -597,7 +642,7 @@ abacus_animals <-
 abacus_animals
 
 abacus_stations <- 
-  ggplot(data = all_dets,  aes(x = detection_timestamp_utc, y = station, col = animal_id)) +
+  ggplot(data = proj58_matched_full,  aes(x = datecollected, y = station, col = tagname)) +
   geom_point() +
   ggtitle("Detections by station") +
   theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
@@ -607,14 +652,15 @@ abacus_stations #might be better with just a subet, huh??
 
 #track movement using geom_path!!
 
+#### Having trouble getting this working.
 movMap <- 
   ggmap(base, extent = 'panel') + #use the BASE we set up before
   ylab("Latitude") +
   xlab("Longitude") +
-  geom_path(data = all_dets, aes(x = deploy_long, y = deploy_lat, col = common_name_e)) + #connect the dots with lines
-  geom_point(data = all_dets, aes(x = deploy_long, y = deploy_lat, col = common_name_e)) + #layer the stations back on
+  geom_path(data = proj58_matched_full, aes(x = longitude, y = latitude, col = commonname)) + #connect the dots with lines
+  geom_point(data = proj58_matched_full, aes(x = longitude, y = latitude, col = commonname)) + #layer the stations back on
   scale_colour_manual(values = c("red", "blue"), name = "Species")+ #
-  facet_wrap(~animal_id, ncol = 6, nrow=1)+
+  facet_wrap(~tagname, ncol = 6, nrow=1)+
   ggtitle("Inferred Animal Paths")
 
 #to size the dots by number of detections you could do something like: size = (log(length(animal)id))?
@@ -624,10 +670,10 @@ movMap
 
 # monthly latitudinal distribution of your animals (works best w >1 species)
 
-all_dets %>%
-  group_by(month=month(detection_timestamp_utc), animal_id, common_name_e) %>% #make our groups
-  summarise(meanlat=mean(deploy_lat)) %>% #mean lat
-  ggplot(aes(month %>% factor, meanlat, colour=common_name_e, fill=common_name_e))+ #the data is supplied, but no info on how to show it!
+proj58_matched_full %>%
+  group_by(month=month(datecollected), tagname, commonname) %>% #make our groups
+  summarise(meanlat=mean(latitude)) %>% #mean lat
+  ggplot(aes(month %>% factor, meanlat, colour=commonname, fill=commonname))+ #the data is supplied, but no info on how to show it!
   geom_point(size=3, position="jitter")+   # draw data as points, and use jitter to help see all points instead of superimposition
   #coord_flip()+   #flip x y, not needed here
   scale_colour_manual(values = c("brown", "green"))+ #change the colour to represent the species better!
@@ -637,9 +683,9 @@ all_dets %>%
 
 
 # per-individual contours - lots of plots: called facets!
-all_dets %>%
-  ggplot(aes(deploy_long, deploy_lat))+
-  facet_wrap(~animal_id)+ #make one plot per individual
+proj58_matched_full %>%
+  ggplot(aes(longitude, latitude))+
+  facet_wrap(~tagname)+ #make one plot per individual
   geom_violin()
 
 
