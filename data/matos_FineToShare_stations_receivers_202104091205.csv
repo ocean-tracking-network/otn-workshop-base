@@ -1,4 +1,4 @@
-collectioncode,seriescode,ocean,station_name,station_type,stn_lat,stn_long,stationstatus,locality,model,type,deploy_date,last_download,recovery_date,downloads,off_set
+collectioncode,seriescode,ocean,station_name,station_type,stn_lat,stn_long,stationstatus,locality,model,instrumenttype,deploy_date,last_download,recovery_date,downloads,off_set
 PROJ56,ACT,MID ATLANTIC,AN,Acoustic,38.9631,-76.4475,active,,VR2W,Acoustic,2014-03-28,,2014-06-05,,0
 PROJ56,ACT,MID ATLANTIC,AN,Acoustic,38.9631,-76.4475,active,,VR2W,Acoustic,2016-04-27,,2016-07-16,,0
 PROJ56,ACT,MID ATLANTIC,AN,Acoustic,38.9631,-76.4475,active,,VR2W,Acoustic,2016-07-29,,2016-12-05,,0
