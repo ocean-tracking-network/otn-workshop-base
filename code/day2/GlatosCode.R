@@ -144,6 +144,8 @@ rec_file <- system.file("extdata",
 receivers <- read_glatos_receivers(rec_file)
 
 tags <- prepare_tag_sheet('act-data/Tag_Metadata/Proj58_Metadata_cownoseray.xls',sheet = 2, start = 5)
+tags <- prepare_tag_sheet("/home/ryan/Downloads/Proj58_Metadata_cownoseray.xls", sheet=2, start = 5)
+
 deploys <- read_otn_deployments('act-data/matos_FineToShare_stations_receivers_202104091205.csv')
 ATTdata <- convert_otn_to_att(detections_filtered, tags, deploymentObj = deploys)
 ?read_otn_deployments
