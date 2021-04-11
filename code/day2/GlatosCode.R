@@ -144,8 +144,9 @@ rec_file <- system.file("extdata",
 receivers <- read_glatos_receivers(rec_file)
 
 tags <- prepare_tag_sheet('act-data/Tag_Metadata/Proj58_Metadata_cownoseray.xls',sheet = 2, start = 5)
-ATTdata <- convert_otn_to_att(detections_filtered, receivers)
-
+deploys <- read_otn_deployments('act-data/matos_FineToShare_stations_receivers_202104091205.csv')
+ATTdata <- convert_otn_to_att(detections_filtered, tags, deploymentObj = deploys)
+?read_otn_deployments
 # ATT is split into 3 objects, we can view them like this
 ATTdata$Tag.Detections
 ATTdata$Tag.Metadata
