@@ -233,11 +233,6 @@ proj58_matched_full %>%
 #Challenge 7: try making a scatterplot showing the lat/long for animal "PROJ58-1218515-2015-10-13", 
 # coloured by detection array
 
-proj58_matched_full %>%  
-  filter(catalognumber=="PROJ58-1218515-2015-10-13") %>% 
-  ggplot(aes(latitude, longitude, colour = receiver_group)) + 
-  geom_point()
-
 #Question: what other geoms are there? Try typing `geom_` into R to see what it suggests!
 
 # Answering Qs for Reporting ---------------------------------
@@ -277,7 +272,7 @@ View(proj58_tag)
 library(ggmap)
 
 #We'll use the CSV below to tell where our stations and receivers are.
-full_receivers = read.csv('../ACT_2021_data/ACT Network workshop datasets/matos_FineToShare_stations_receivers_202104091205.csv')
+full_receivers = read.csv('/matos_FineToShare_stations_receivers_202104091205.csv')
 full_receivers
 
 #what are our columns called?
