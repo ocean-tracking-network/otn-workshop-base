@@ -58,7 +58,7 @@ proj58_matched_full %>%
 > ### Challenge
 >
 > Try combining with `dplyr` functions in this challenge!
-> Try making a scatterplot showing the lat/long for animal "A69-1601-1363", coloured by detection array
+> Try making a scatterplot showing the lat/long for animal "PROJ58-1218515-2015-10-13", coloured by detection array
 > What other geoms are there? Try typing `geom_` into R to see what it suggests!
 
 {: .challenge}

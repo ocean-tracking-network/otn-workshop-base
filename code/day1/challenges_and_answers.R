@@ -67,44 +67,41 @@ length(heights_above_67)
 
 
 # Challenge 5 ----
-#1. What is is the class of the station column in lamprey_dets?
-#2. How many rows and columns are in the lamprey_dets dataset?
+#1. What is is the class of the station column in proj58_matched_2016?
+#2. How many rows and columns are in the proj58_matched_2016 dataset?
 
-#Answer 5: The column is a character, and there are 5,923 rows with 30 columns
-str(lamprey_dets)
+#Answer 5: The column is a character, and there are 7,693 rows with 36 columns
+str(proj58_matched_2016)
 # or
-glimpse(lamprey_dets)
-
-
+glimpse(proj58_matched_2016)
 
 
 # Challenge 6 ----
-#1. find the max lat and max longitude for animal "A69-1601-1363"
-#2. find the min lat/long of each animal for detections occurring in July
+#1. find the max lat and max longitude for animal "PROJ58-1170195-2014-05-31"
+#2. find the min lat/long of each animal for detections occurring after April 2016.
 
 #Answer 6:
 #1. 
-lamprey_dets %>% 
-  filter(animal_id=="A69-1601-1363") %>% 
-  summarise(MaxLat=max(deploy_lat), MaxLong=max(deploy_long))
+proj58_matched_2016 %>% 
+  filter(catalognumber=="PROJ58-1170195-2014-05-31") %>% 
+  summarise(MaxLat=max(latitude), MaxLong=max(longitude))
 
 #2. 
-lamprey_dets %>% 
-  filter(detection_timestamp_utc >= "2012-07-01 00:00:00" | detection_timestamp_utc < "2012-08-01 00:00:00" ) %>% 
-  group_by(animal_id) %>% 
-  summarise(MinLat=min(deploy_lat), MinLong=min(deploy_long))
+proj58_matched_2016 %>% 
+  filter(datecollected >= "2016-04-01 00:00:00" ) %>% 
+  group_by(catalognumber) %>% 
+  summarise(MinLat=min(latitude), MinLong=min(longitude))
 
 
 
 
-# Challenge 7 ----
-# try making a scatterplot showing the lat/long for animal "A69-1601-1363", 
+
+#Challenge 7: try making a scatterplot showing the lat/long for animal "PROJ58-1218515-2015-10-13", 
 # coloured by detection array
 
-#Answer 7: 
-lamprey_dets %>%  
-  filter(animal_id=="A69-1601-1363") %>% 
-  ggplot(aes(deploy_lat, deploy_long, colour = glatos_array)) + 
+proj58_matched_full %>%  
+  filter(catalognumber=="PROJ58-1218515-2015-10-13") %>% 
+  ggplot(aes(latitude, longitude, colour = receiver_group)) + 
   geom_point()
 
 #Question: what other geoms are there? Try typing `geom_` into R to see what it suggests!
