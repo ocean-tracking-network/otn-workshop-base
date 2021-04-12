@@ -15,7 +15,7 @@ library(ggmap)
 
 
 #We'll use the CSV below to tell where our stations and receivers are.
-full_receivers = read.csv('../ACT_2021_data/ACT Network workshop datasets/matos_FineToShare_stations_receivers_202104091205.csv')
+full_receivers = read.csv('matos_FineToShare_stations_receivers_202104091205.csv')
 full_receivers
 
 #what are our columns called?

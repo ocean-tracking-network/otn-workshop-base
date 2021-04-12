@@ -113,7 +113,7 @@ heights[complete.cases(heights)] #select only complete cases
 
 #imports file into R. paste the filepath to the unzipped file here!
 
-proj58_matched_2016 <- read_csv("../ACT_2021_data/ACT Network workshop datasets/proj58_matched_detections_2016.csv")
+proj58_matched_2016 <- read_csv("proj58_matched_detections_2016.csv")
 
 #read_csv() is from tidyverse's readr package --> you can also use read.csv() from base R but it created a dataframe (not tibble) so loads slower
 #see https://link.medium.com/LtCV6ifpQbb 
@@ -131,6 +131,7 @@ summary(proj58_matched_2016$latitude) #summary() is a base R function that will 
 #Challenge 5: 
 #1. What is is the class of the station column in proj58_matched_2016?
 #2. How many rows and columns are in the proj58_matched_2016 dataset?
+
 
 ## Data Manipulation with dplyr --------------------------------------
 
@@ -170,7 +171,7 @@ proj58_matched_2016 %>%
 
 ## Joining Detection Extracts
 
-proj58_matched_2017 <- read_csv("../ACT_2021_data/ACT Network workshop datasets/proj58_matched_detections_2017.csv", guess_max = 41880)
+proj58_matched_2017 <- read_csv("proj58_matched_detections_2017.csv", guess_max = 41880)
 proj58_matched_full <- rbind(proj58_matched_2016, proj58_matched_2017) #join the two files
 
 #release records for animals often appear in >1 year, this will remove the duplicates
@@ -229,10 +230,13 @@ proj58_matched_full %>%
 #anything you specify in the aes() is applied to the actual data points/whole plot, 
 #anything specified in geom() is applied to that layer only (colour, size...). sometimes you have >1 geom layer so this makes more sense!
 
-#Challenge 7: try making a scatterplot showing the lat/long for animal "A69-1601-1363", 
+#Challenge 7: try making a scatterplot showing the lat/long for animal "PROJ58-1218515-2015-10-13", 
 # coloured by detection array
 
-
+proj58_matched_full %>%  
+  filter(catalognumber=="PROJ58-1218515-2015-10-13") %>% 
+  ggplot(aes(latitude, longitude, colour = receiver_group)) + 
+  geom_point()
 
 #Question: what other geoms are there? Try typing `geom_` into R to see what it suggests!
 
@@ -242,8 +246,8 @@ View(proj58_matched_full) #Check to make sure we already have our tag matches.
 
 #Load in and join our array matches.
 
-proj61_qual_2016 <- read_csv("../ACT_2021_data/ACT Network workshop datasets/Qualified_detecions_2016_2017/proj61_qualified_detections_2016.csv")
-proj61_qual_2017 <- read_csv("../ACT_2021_data/ACT Network workshop datasets/Qualified_detecions_2016_2017/proj61_qualified_detections_2017.csv")
+proj61_qual_2016 <- read_csv("Qualified_detecions_2016_2017/proj61_qualified_detections_2016.csv")
+proj61_qual_2017 <- read_csv("Qualified_detecions_2016_2017/proj61_qualified_detections_2017.csv")
 proj61_qual_16_17_full <- rbind(proj61_qual_2016, proj61_qual_2017) 
 
 proj61_qual_16_17_full <- proj61_qual_16_17_full %>% slice(1:100000) #subset our example data for ease of analysis!
@@ -252,12 +256,12 @@ proj61_qual_16_17_full <- proj61_qual_16_17_full %>% slice(1:100000) #subset our
 #These are saved as XLS/XLSX files, so we need a different library to read them in.
 library(readxl)
 
-proj61_deploy <- read_excel("../ACT_2021_data/ACT Network workshop datasets/Deploy_metadata_2016_2017/deploy_sercarray_proj61_2016_2017.xlsx", sheet = "Deployment", skip=3)
+proj61_deploy <- read_excel("Deploy_metadata_2016_2017/deploy_sercarray_proj61_2016_2017.xlsx", sheet = "Deployment", skip=3)
 View(proj61_deploy)
 
 #need Tag metadata
 
-proj58_tag <- read_excel("../ACT_2021_data/ACT Network workshop datasets/Tag_Metadata/Proj58_Metadata_cownoseray.xls", sheet = "Tag Metadata", skip=4) 
+proj58_tag <- read_excel("Tag_Metadata/Proj58_Metadata_cownoseray.xls", sheet = "Tag Metadata", skip=4) 
 View(proj58_tag)
 
 #Need to skip rows in both cases to get the correct header because of the way the file is formatted.

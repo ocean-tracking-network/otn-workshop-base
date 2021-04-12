@@ -16,7 +16,7 @@ If you're unfamiliar with detection extracts formats from OTN-style database nod
 ~~~
 #imports file into R. paste the filepath to the unzipped file here!
 
-proj58_matched_2016 <- read_csv("../ACT_2021_data/ACT Network workshop datasets/proj58_matched_detections_2016.csv")
+proj58_matched_2016 <- read_csv("proj58_matched_detections_2016.csv")
 
 #read_csv() is from tidyverse's readr package --> you can also use read.csv() from base R but it created a dataframe (not tibble) so loads slower
 #see https://link.medium.com/LtCV6ifpQbb
@@ -98,7 +98,7 @@ proj58_matched_2016 %>%
 ## Joining Detection Extracts
 Release records for animals often appear in >1 year, this will remove the duplicates
 ~~~
-proj58_matched_2017 <- read_csv("../ACT_2021_data/ACT Network workshop datasets/proj58_matched_detections_2017.csv", guess_max = 41880)
+proj58_matched_2017 <- read_csv("proj58_matched_detections_2017.csv", guess_max = 41880)
 proj58_matched_full <- rbind(proj58_matched_2016, proj58_matched_2017) #join the two files
 
 proj58_matched_full <- proj58_matched_full %>% distinct() 
