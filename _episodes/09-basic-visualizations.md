@@ -20,11 +20,7 @@ against the appropriate stations.
 
 abacus_plot(detections_w_events, 
             location_col='station', 
-            main='Walleye Detection by Station') # can use plot() variables here, they get passed thru to plot()
-
-abacus_plot(detections_w_events, 
-            location_col='glatos_array', 
-            main='Walleye Detection by Array') 
+            main='ACT Detections by Station') # can use plot() variables here, they get passed thru to plot()
 
 ~~~
 {: .language-r}
@@ -33,10 +29,9 @@ This is good, but cluttered. We can also filter out a single animal ID and plot
 only the abacus plot for that.
 ~~~
 # pick a single fish to plot
-# pick a single fish to plot
-abacus_plot(detections_filtered[detections_filtered$animal_id== "22",],
+abacus_plot(detections_filtered[detections_filtered$animal_id== "PROJ58-1218508-2015-10-13",],
             location_col='station',
-            main="Animal 22 Detections By Station")
+            main="PROJ58-1218508-2015-10-13 Detections By Station")
 ~~~
 {: .language-r}
 
@@ -45,7 +40,7 @@ abacus_plot(detections_filtered[detections_filtered$animal_id== "22",],
 
 If we want to see actual physical distribution, a bubble plot will serve us better.
 
-The glatos package provides a raster of the Great Lakes to the bubble plot, we will just use that.
+We'll use the Maryland raster `MD` from last lesson.
 ~~~
 # Bubble Plots for Spatial Distribution of Fish ####
 # bubble variable gets the summary data that was created to make the plot
@@ -53,13 +48,19 @@ detections_filtered
 
 ?detection_bubble_plot
 
-bubble_station <- detection_bubble_plot(detections_filtered, 
-                                location_col = 'station',
-                                out_file = 'walleye_bubbles_by_stations.png')
+bubble_station <- detection_bubble_plot(detections_filtered,
+                                        background_ylim = c(38, 40),
+                                        background_xlim = c(-77, -76),
+                                        map = MD,
+                                        location_col = 'station',
+                                        out_file = 'act_bubbles_by_stations.png')
 bubble_station
 
 bubble_array <- detection_bubble_plot(detections_filtered,
-                                      out_file = 'walleye_bubbles_by_array.png')
+                                      background_ylim = c(38, 40),
+                                      background_xlim = c(-77, -76),
+                                      map = MD,
+                                      out_file = 'act_bubbles_by_array.png')
 bubble_array
 ~~~
 {: .language-r}
