@@ -36,7 +36,7 @@ round(digits = 2, x = 3.14159) #when reordered you need to specify
 challenge3 <- c(1, 2, 3, "4")
 
 #Answer 3: R will force all of these to be characters, since the number 4 has quotes around it! 
-#Will always coerce data types following this struture: logical → numeric → character ← logical
+#Will always coerce data types following this structure: logical → numeric → character ← logical
 class(challenge3)
 
 

@@ -55,20 +55,19 @@ proj58_matched_full %>%
 ~~~
 {: .language-r}
 
-> ### Challenge
+> ## Plotting and dplyr Challenge
 >
 > Try combining with `dplyr` functions in this challenge!
 > Try making a scatterplot showing the lat/long for animal "PROJ58-1218515-2015-10-13", coloured by detection array
+> > ## Solution
+> > ~~~
+> > proj58_matched_full %>%  
+> >  filter(catalognumber=="PROJ58-1218515-2015-10-13") %>% 
+> >  ggplot(aes(latitude, longitude, colour = receiver_group)) + 
+> >  geom_point()
+> > ~~~
+> > {: .language-r}
+> {: .solution}
+>
 > What other geoms are there? Try typing `geom_` into R to see what it suggests!
-
-{: .challenge}
-
-> ## Plotting and dplyr Challenge
->
-> Combine dplyr functions to solve this challenge.
->
-> Try making a scatterplot showing the lat/long for animal "A69-1601-1363", coloured by detection array.
->
->  What other geoms are there? Try typing 'geom_' into R and see what it suggests!
->
 {: .challenge}

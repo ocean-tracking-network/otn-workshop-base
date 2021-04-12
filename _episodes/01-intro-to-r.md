@@ -65,6 +65,19 @@ weight_lb <- 2.2 * weight_kg #can assign output to an object. can use objects to
 > If we change the value of weight_kg to be 100, does the value of weight_lb also change?
 > Remember: You can check the contents of an object by typing out its name and running the line in RStudio.
 >
+>
+> > ## Solution
+> >No! you have to re-assign 2.2*weight_kg to the object weight_lb for it to update.
+> >The order you run your operations is very important, if you change something you may need to re-run everything!
+> >~~~
+> >weight_kg <- 100
+> >
+> >weight_lb #didnt change!
+> >
+> >weight_lb <- 2.2 * weight_kg #now its updated
+> > ~~~
+> > {: .language-r}
+> {: .solution}
 {: .challenge}
 
 ### Functions
@@ -84,8 +97,17 @@ args(round) #the args() function will show you the required arguments of another
 > ## Functions Challenge
 >
 > Can you round the value 3.14159 to two decimal places?
+>
 > Hint: Using args() on a function can give you a clue.
 >
+> > ## Solution
+> > ~~~
+> > round(3.14159, 2) #the round function's second argument is the number of digits you want in the result
+> > round(3.14159, digits = 2) #same as above
+> > round(digits = 2, x = 3.14159) #when reordered you need to specify
+> > ~~~
+> > {: .language-r}
+> {: .solution}
 {: .challenge}
 
 ### Vectors and Data Types
@@ -117,6 +139,11 @@ animals <- c("mouse", "rat", "dog") #to create a character vector, use quotes
 > ~~~
 > {: .language-r}
 > Hint: You can check a vector's type with the class() function.
+> > ## Solution
+> > R will force all of these to be characters, since the number 4 has quotes around it! 
+> > #Will always coerce data types following this structure: logical → numeric → character ← logical
+> > class(challenge3)
+> {: .solution}
 {: .challenge}
 
 ### Subsetting
@@ -157,9 +184,32 @@ heights[complete.cases(heights)] #select only complete cases
 > heights <- c(63, 69, 60, 65, NA, 68, 61, 70, 61, 59, 64, 69, 63, 63, NA, 72, 65, 64, 70, 63, 65)
 > ~~~
 > {: .language-r}
+> > ## Solution
+> > R will force all of these to be characters, since the number 4 has quotes around it! 
+> > #Will always coerce data types following this structure: logical → numeric → character ← logical
+> > class(challenge3)
+> {: .solution}
 >
 > Question 2: Use the function median() to calculate the median of the heights vector.
 >
+> > ## Solution
+> > ~~~
+> > heights_no_na <- heights[!is.na(heights)] 
+> > # or
+> > heights_no_na <- na.omit(heights)
+> > # or
+> > heights_no_na <- heights[complete.cases(heights)]
+> > ~~~
+> > {: .language-r}
+> {: .solution}
+>
 > Bonus question: Use R to figure out how many people in the set are taller than 67 inches.
 >
+> > ## Solution
+> > ~~~
+> > heights_above_67 <- heights_no_na[heights_no_na > 67]
+> > length(heights_above_67)
+> > ~~~
+> > {: .language-r}
+> {: .solution}
 {: .challenge}
