@@ -18,11 +18,7 @@ OTN has hosted other workshops in the past which contain different code sets tha
 
 - [DFO workshop 2020](https://ocean-tracking-network.github.io/2020-03-11-DFOBIO-telemetry-workshop/)
 
-<<<<<<< HEAD:_episodes/13-other-curriculums.md
 - [SPG workshop 2020](https://ocean-tracking-network.github.io/2020-07-16-OTNSPG-R-workshop/index.html). [Videos available on our YouTube here](https://youtube.com/playlist?list=PL_06zLsCWuDTeUyd5p2YWrullO5RmKLDA) 
-=======
-- [SPG workshop 2020](https://ocean-tracking-network.github.io/2020-07-16-OTNSPG-R-workshop/index.html). [Videos available on our YouTube here](https://youtube.com/playlist?list=PL_06zLsCWuDTeUyd5p2YWrullO5RmKLDAhttps://youtu.be/oWRLjXZZfYo)
->>>>>>> lesson_updates:_episodes/12-other-curriculums.md
 
 - [FACT workshop 2020](https://ocean-tracking-network.github.io/2020-12-17-telemetry-packages-FACT/index.html)
 

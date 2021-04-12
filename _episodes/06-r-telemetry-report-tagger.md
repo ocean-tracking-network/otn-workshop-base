@@ -267,7 +267,7 @@ abacus_stations <-
   theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
   scale_color_viridis(discrete = TRUE)
 
-abacus_stations #might be better with just a subet, huh??
+abacus_stations #might be better with just a subset, huh??
 
 #track movement using geom_path!!
 
