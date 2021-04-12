@@ -1,6 +1,6 @@
 # Intro to R for Telemetry Summaries ---------------------------------
 # GLATOS workshop 2021-03-30
-# Instructors: Bruce Delo and Caitlin Bate
+# Instructors: Naomi Tress and  Bruce Delo
 
 #install.packages("readxl")
 #install.packages("viridis")
@@ -13,7 +13,7 @@ library(tidyverse) # really neat collection of packages! https://www.tidyverse.o
 
 #make sure to read all "mask" messages
 
-setwd('/Users/bruce/Work/2021-04-13-act-workshop') #set folder you're going to work in
+setwd('C:/Users/tress_n/2021-04-13-act-workshop/data') #set folder you're going to work in
 getwd() #check working directory
 
 #Everyone check to make sure all the files in the /data folder are UNZIPPED
@@ -73,6 +73,18 @@ animals <- c("mouse", "rat", "dog") #to create a character vector, use quotes
 #a data table / data frame is just multiple vectors (columns)
 #this is helpful to remember when setting up your field sheets!
 
+## Subsetting ------------------------------------------
+
+animals #calling your object will print it out
+animals[2] #square brackets = indexing. selects the 2nd value in your vector
+
+weight_g > 50 #conditional indexing: selects based on criteria
+weight_g[weight_g <=30 | weight_g == 55] #many new operators here!  
+#<= less than or equal to, | "or", == equal to
+weight_g[weight_g >= 30 & weight_g == 21] #  >=  greater than or equal to, & "and"
+# this particular example give 0 results - why?
+
+
 ## Missing Data ---------------------------------
 
 heights <- c(2, 4, 4, NA, 6)
@@ -94,7 +106,6 @@ heights[complete.cases(heights)] #select only complete cases
 #heights <- c(63, 69, 60, 65, NA, 68, 61, 70, 61, 59, 64, 69, 63, 63, NA, 72, 65, 64, 70, 63, 65)
 #2. Use the function median() to calculate the median of the heights vector.
 #BONUS: Use R to figure out how many people in the set are taller than 67 inches.
-
 
 
 ## Exploring Detection Extracts ---------------------------------
@@ -197,7 +208,7 @@ library(ggplot2) #tidyverse-style plotting, a very customizable plotting package
 
 # Assign plot to a variable
 proj58_matched_full_plot <- ggplot(data = proj58_matched_full, 
-                                   mapping = aes(x = latitude, y = longitude)) #can assign a base plot to data
+                                     mapping = aes(x = latitude, y = longitude)) #can assign a base plot to data
 
 # Draw the plot 
 proj58_matched_full_plot + 
@@ -256,7 +267,7 @@ View(proj58_tag)
 #remember: we learned how to switch timezone of datetime columns above, if that is something you need to do with your dataset!!
 
 ## Section 1: for Array Operators --------------------
-#1. map GLATOS locations
+#1. map receiver locations
 
 #Load in ggmap to handle geographic mapping. 
 library(ggmap)
@@ -548,6 +559,9 @@ proj58_tag_det_summary <- tag_joined_dets %>%
 
 proj58_tag_det_summary
 
+#export our summary table as CSV
+write_csv(proj58_tag_det_summary, "detections_summary.csv", col_names = TRUE)
+
 # count detections per transmitter, per array
 
 proj58_matched_full %>% 
@@ -569,7 +583,7 @@ View(receivers)
 
 #9. total detection counts by year/month
 
-#try with tqcs_matched_10_11_full_no_release if you're feeling bold! takes ~30 secs
+#try with the complete data set if you're feeling bold! takes ~30 secs
 
 proj58_matched_full  %>% 
   mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime

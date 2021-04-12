@@ -34,6 +34,7 @@ library(ggmap)
 
 # Working Directory ####
 
+
 setwd('C:/Users/tress_n/2021-04-13-act-workshop/data') #set folder you're going to work in
 getwd() #check working directory
 
