@@ -671,7 +671,7 @@ proj58_subset <- proj58_matched_full %>% dplyr::filter(tagname %in% c('A69-1601-
 
 View(proj58_subset)
 library(gridExtra)
-#### Having trouble getting this working.
+
 movMap <- 
   ggmap(base, extent = 'panel') + #use the BASE we set up before
   ylab("Latitude") +
@@ -685,7 +685,6 @@ movMap <-
 #to size the dots by number of detections you could do something like: size = (log(length(animal)id))?
 
 movMap
-
 
 # monthly latitudinal distribution of your animals (works best w >1 species)
 
