@@ -94,7 +94,7 @@ install.packages('knitr', dependencies = TRUE)
 2. Unzip the folder and move to secure location on your computer (Documents, Desktop etc.)
 3. Copy the folder's path and use it to set your working directly in R using `setwd('<path-to-folder>')`.
 
-If you are familiar with Git and Github, feel free to clone this repository as you normally would, by running `git clone https://github.com/ocean-tracking-network/2021-04-13-act-workshop` in a terminal program and following from step `3` above.
+If you are familiar with Git and Github, feel free to clone this repository as you normally would, by running `git clone https://github.com/ocean-tracking-network/2021-04-13-act-workshop.git` in a terminal program and following from step `3` above.
 
 
 

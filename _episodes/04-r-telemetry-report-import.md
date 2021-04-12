@@ -27,12 +27,12 @@ proj61_qual_16_17_full <- proj61_qual_16_17_full %>% slice(1:100000) #subset our
 #These are saved as XLS/XLSX files, so we need a different library to read them in.
 library(readxl)
 
-proj61_deploy <- read_excel("deploy_sercarray_proj61_2016_2017.xlsx", sheet = "Deployment", skip=3)
+proj61_deploy <- read_excel("/Deploy_metadata_2016_2017/deploy_sercarray_proj61_2016_2017.xlsx", sheet = "Deployment", skip=3)
 View(proj61_deploy)
 
 #need Tag metadata
 
-proj58_tag <- read_excel("Proj58_Metadata_cownoseray.xls", sheet = "Tag Metadata", skip=4) 
+proj58_tag <- read_excel("/Tag_Metadata/Proj58_Metadata_cownoseray.xls", sheet = "Tag Metadata", skip=4) 
 View(proj58_tag)
 
 #remember: we learned how to switch timezone of datetime columns above, 
