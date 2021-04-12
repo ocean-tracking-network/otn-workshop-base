@@ -670,13 +670,12 @@ abacus_stations #might be better with just a subet, huh??
 proj58_subset <- proj58_matched_full %>% dplyr::filter(tagname %in% c('A69-1601-17557', 'A69-1601-17561', 'A69-1601-17567', 'A69-9001-21846'))
 
 View(proj58_subset)
-library(gridExtra)
-#### Having trouble getting this working.
+
 movMap <- 
   ggmap(base, extent = 'panel') + #use the BASE we set up before
   ylab("Latitude") +
   xlab("Longitude") +
-  geom_path(data = proj58_subset, aes(x = longitude, y = latitude, col = commonname, group = 4)) + #connect the dots with lines
+  geom_path(data = proj58_subset, aes(x = longitude, y = latitude, col = commonname)) + #connect the dots with lines
   geom_point(data = proj58_subset, aes(x = longitude, y = latitude, col = commonname)) + #layer the stations back on
   scale_colour_manual(values = c("red", "blue"), name = "Species")+ #
   facet_wrap(~tagname, nrow=2, ncol=2)+
@@ -685,7 +684,6 @@ movMap <-
 #to size the dots by number of detections you could do something like: size = (log(length(animal)id))?
 
 movMap
-
 
 # monthly latitudinal distribution of your animals (works best w >1 species)
 
@@ -706,7 +704,3 @@ proj58_matched_full %>%
   ggplot(aes(x = longitude, y = latitude))+
   facet_wrap(~tagname)+ #make one plot per individual
   geom_violin()
-
-View(proj58_matched_full)
-
-
