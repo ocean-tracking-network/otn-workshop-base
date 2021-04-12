@@ -19,4 +19,5 @@ keypoints:
 
 (Speaker: Dr. Charles Bangley, Charles.Bangley@dal.ca)
 
-- [Powerpoint](../Resources/Bangley FACT BRT Analysis.pptx)
+- [Powerpoint](../Resources/Bangley ACT BRT Analysis.pptx)
+- [PDF](../Resources/Bangley ACT BRT Analysis.pdf)
