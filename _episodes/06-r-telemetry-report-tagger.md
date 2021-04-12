@@ -270,16 +270,18 @@ abacus_stations <-
 abacus_stations #might be better with just a subset, huh??
 
 #track movement using geom_path!!
+proj58_subset <- proj58_matched_full %>% dplyr::filter(tagname %in% c('A69-1601-17557', 'A69-1601-17561', 'A69-1601-17567', 'A69-9001-21846'))
 
-#### Having trouble getting this working.
+View(proj58_subset)
+
 movMap <- 
   ggmap(base, extent = 'panel') + #use the BASE we set up before
   ylab("Latitude") +
   xlab("Longitude") +
-  geom_path(data = proj58_matched_full, aes(x = longitude, y = latitude, col = commonname)) + #connect the dots with lines
-  geom_point(data = proj58_matched_full, aes(x = longitude, y = latitude, col = commonname)) + #layer the stations back on
+  geom_path(data = proj58_subset, aes(x = longitude, y = latitude, col = commonname)) + #connect the dots with lines
+  geom_point(data = proj58_subset, aes(x = longitude, y = latitude, col = commonname)) + #layer the stations back on
   scale_colour_manual(values = c("red", "blue"), name = "Species")+ #
-  facet_wrap(~tagname, ncol = 6, nrow=1)+
+  facet_wrap(~tagname, nrow=2, ncol=2)+
   ggtitle("Inferred Animal Paths")
 
 #to size the dots by number of detections you could do something like: size = (log(length(animal)id))?
@@ -303,7 +305,7 @@ proj58_matched_full %>%
 
 # per-individual contours - lots of plots: called facets!
 proj58_matched_full %>%
-  ggplot(aes(longitude, latitude))+
+  ggplot(aes(x = longitude, y = latitude))+
   facet_wrap(~tagname)+ #make one plot per individual
   geom_violin()
 
