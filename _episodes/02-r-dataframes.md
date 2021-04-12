@@ -44,10 +44,16 @@ summary(proj58_matched_2016$latitude)
 
 > ## Detection Extracts Challenge
 >
-> Question 1: What is the class of the station column in proj58_matched_2016?
->
-> Question 2: How many rows and columns are in the proj58_matched_2016 dataset?
->
+> Question 1: What is the class of the **station** column in proj58_matched_2016, and how many rows and columns are in the proj58_matched_2016 dataset??
+> > ## Solution
+> > The column is a character, and there are 7,693 rows with 36 columns
+> > ~~~
+> > str(proj58_matched_2016)
+> > # or
+> > glimpse(proj58_matched_2016)
+> > ~~~
+> > {: .language-r}
+> {: .solution}
 {: .challenge}
 
 ### Data Manipulation
@@ -90,9 +96,24 @@ proj58_matched_2016 %>%
 > ## Data Manipulation Challenge
 >
 > Question 1: Find the max lat and max longitude for animal "PROJ58-1170195-2014-05-31".
->
+> > ## Solution
+> > ~~~
+> > proj58_matched_2016 %>% 
+> >  filter(catalognumber=="PROJ58-1170195-2014-05-31") %>% 
+> >  summarise(MaxLat=max(latitude), MaxLong=max(longitude))
+> > ~~~
+> > {: .language-r}
+> {: .solution}
 > Question 2: Find the min lat/long of each animal for detections occurring after April 2016.
->
+> > ## Solution
+> > ~~~
+> > proj58_matched_2016 %>% 
+> >   filter(datecollected >= "2016-04-01 00:00:00" ) %>% 
+> >   group_by(catalognumber) %>% 
+> >   summarise(MinLat=min(latitude), MinLong=min(longitude))
+> > ~~~
+> > {: .language-r}
+> {: .solution}
 {: .challenge}
 
 ## Joining Detection Extracts
