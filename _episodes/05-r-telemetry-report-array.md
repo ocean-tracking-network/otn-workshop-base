@@ -132,6 +132,7 @@ library(plotly)
 #set your basemap
 
 geo_styling <- list(
+  scope = 'usa',
   fitbounds = "locations", visible = TRUE, #fits the bounds to your data!
   showland = TRUE,
   showlakes = TRUE,
