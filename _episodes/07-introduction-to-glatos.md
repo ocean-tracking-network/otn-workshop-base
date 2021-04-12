@@ -1,15 +1,15 @@
 ---
-title: Introduction to GLATOS Data Processing
+title: Introduction to glatos Data Processing Package
 teaching: 30
 exercises: 0
 questions:
-    - "How do I load my data into GLATOS?"
+    - "How do I load my data into glatos?"
     - "How do I filter out false detections?"
     - "How can I consolidate my detections into detection events?"
     - "How do I summarize my data?"
 ---
 
-GLATOS is a powerful toolkit that provides a wide range of functionality for loading,
+The glatos package is a powerful toolkit that provides a wide range of functionality for loading,
 processing, and visualizing your data. With it, you can gain valuable insights
 with quick and easy commands that condense high volumes of base R into straightforward
 functions, with enough versatility to meet a variety of needs.
@@ -29,6 +29,7 @@ library(utils)
 
 Your code may not be in the 'code/glatos' folder, so use the appropriate file path for
 your data.
+
 
 Next, we will create paths to our detections and receiver files. GLATOS can
 function with both GLATOS and OTN Node-formatted data, but the functions are different
@@ -70,9 +71,8 @@ write_csv(detections, 'all_dets.csv', append = FALSE)
 {:.language-r}
 
 
-
 With our new file in hand, we'll want to use the read_otn_detections function
-to load our data into a dataframe. In this case, our data is formatted in the FACT
+to load our data into a dataframe. In this case, our data is formatted in the ACT
 style- if it were GLATOS formatted, we would want to use read_glatos_detections()
 instead.
 
@@ -97,7 +97,7 @@ head(detections, 2)
 {: .language-r}
 
 With our data loaded, we next want to apply a false filtering algorithm to reduce
-the number of false detections in our dataset. GLATOS uses the Pincock algorithm
+the number of false detections in our dataset. glatos uses the Pincock algorithm
 to filter probable false detections based on the time lag between detections- tightly
 clustered detections are weighted as more likely to be true, while detections spaced
 out temporally will be marked as false.
@@ -128,7 +128,7 @@ nrow(detections_filtered) # Smaller than before
 {: .language-r}
 
 With our data properly filtered, we can begin investigating it and developing some
-insights. GLATOS provides a range of tools for summarizing our data so that we can
+insights. glatos provides a range of tools for summarizing our data so that we can
 better see what our receivers are telling us.
 
 We can begin with a summary by animal, which will group our data by the unique animals we've
@@ -182,7 +182,7 @@ head(sum_animal_location)
 ~~~
 {: .language-r}
 
-Summerizing by both dimensions will create a row for each station and each animal pair, let's filter out the station where the animal wasn't detected.
+Summarising by both dimensions will create a row for each station and each animal pair, let's filter out the station where the animal wasn't detected.
 ~~~
 # Filter out stations where the animal was NOT detected.
 sum_animal_location <- sum_animal_location %>% filter(num_dets > 0)
@@ -215,7 +215,7 @@ more amenable to plotting by reducing it from detections to detection events.
 Detection Events differ from detections in that they condense a lot of temporally and
 spatially clustered detections for a single animal into a single detection event. This is
 a powerful and useful way to clean up the data, and makes it easier to present and
-clearer to read. Fortunately, GLATOS lets us to this easily.
+clearer to read. Fortunately, glatos lets us do this easily.
 
 ~~~
 # Reduce Detections to Detection Events ####

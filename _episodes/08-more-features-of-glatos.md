@@ -6,11 +6,13 @@ questions:
     - "What other features does GLATOS offer?"
 ---
 
-GLATOS has some more advanced analystic tools beyond filtering and creating events.
+glatos has some more advanced analytic tools beyond filtering and creating events.
 
-GLATOS can be used to get the residence index of your animals at all the different stations.
-GLATOS offers 5 different methods for calculating Residence Index, here we will showcase 2 of those.
+
+glatos can be used to get the residence index of your animals at all the different stations.
+glatos offers 5 different methods for calculating Residence Index, here we will showcase 2 of those.
 residence_index requires an events objects to create a residence_index, we will use a subset the one
+
 from the last lesson.
 
 First we will figure out which animals to subset. We will use `group_by` on the events object to find some good candidates.
@@ -30,6 +32,7 @@ Now with the subsetted events objects, lets look at the functions.
 
 ~~~
 # Calc residence index using the Kessel method
+
 rik_data <- residence_index(events_subset, 
                             calculation_method = 'kessel')
 rik_data
@@ -39,15 +42,17 @@ rik_data
 rit_data <- residence_index(events_subset, 
                             calculation_method = 'time_interval', 
                             time_interval_size = "6 hours")
+
 rit_data
 ~~~
 {: .language-r}
 
-Both of these methods are similar and will almost always give different results, you can 
+Both of these methods are similar and will almost always give different results, you can
 explore them all to see what method works best for your data.
 
 
-GLATOS strives to be interoperable with other scientific R packages. Currently, we can 
+
+glatos strives to be interoperable with other scientific R packages. Currently, we can 
 crosswalk GLATOS data over to the package [VTrack](https://github.com/RossDwyer/VTrack). 
 We'll use the same dataset as before, but we'll also pull in some other metadata and filter
 out all non-proj58 detections.
@@ -55,8 +60,10 @@ out all non-proj58 detections.
 First, lets get the tagging metadata. Some of the release timestamps are formated wrong
 so we will fix that just like in the earlier lessons
 
+
 ~~~
 tags <- prepare_tag_sheet('Tag_Metadata/Proj58_Metadata_cownoseray.xls',sheet = 2, start = 5)
+
 
 #To fix the datetimes, we will use the code Bruce showed yesterday
 normDate <- Vectorize(function(x) {
@@ -151,15 +158,17 @@ plot(MD, xlim=c(-76, -77), ylim=c(38, 40), col='green', xlab="Longitude", ylab="
 color <- c(colorRampPalette(c('pink', 'red'))(max(coa_single$Number.of.Detections)))
 
 #add the points
+
 points(coa_single$Longitude.coa, coa_single$Latitude.coa, pch=19, col=color[coa_single$Number.of.Detections], 
     cex=log(coa_single$Number.of.Stations) + 0.5) # cex is for point size. natural log is for scaling purposes
+
 
 # add axises and title
 axis(1)
 axis(2)
 title("Centers of Activities for PROJ58-1218518-2015-09-16")
 ~~~
-{: .languege-r}
+{: .language-r}
 
 Here's an example of a VTrack function for getting metrics of dispersal.
 ~~~
@@ -176,6 +185,5 @@ dispSum %>% filter(Consecutive.Dispersal > 0) %>%  View
 
 VTrack has some more analysis functions like creating activity space models.
 
-GLATOS also includes tools for planning receiver arrays, simulating fish moving in an array, 
+glatos also includes tools for planning receiver arrays, simulating fish moving in an array, 
 and some nice visualizations (which we will cover in the next episode).
-

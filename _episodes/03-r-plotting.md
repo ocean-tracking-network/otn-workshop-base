@@ -23,51 +23,51 @@ library(ggplot2) #tidyverse-style plotting, a very customizable plotting package
 
 
 # Assign plot to a variable
-lamprey_dets_plot <- ggplot(data = lamprey_dets, 
-                  mapping = aes(x = deploy_lat, y = deploy_long)) #can assign a base plot to data
+proj58_matched_full_plot <- ggplot(data = proj58_matched_full, 
+                  mapping = aes(x = latitude, y = longitude)) #can assign a base plot to data
 
-# Draw the plot 
-lamprey_dets_plot + 
+# Draw the plot
+proj58_matched_full_plot + 
   geom_point(alpha=0.1, 
              colour = "blue") 
 #layer whatever geom you want onto your plot template
 #very easy to explore diff geoms without re-typing
-#alpha is a transparency argument in case points overlap
-
-
+#alpha is a transparency argument in case points overlap. Try alpha = 0.02 to see how it works!
 ~~~
 {: .language-r}
 
 ### Basic plots
 
-You can build your plots iteratively, without assigning to a variale as well.
+You can build your plots iteratively, without assigning to a variable as well.
 ~~~
-
-lamprey_dets %>%  
-  ggplot(aes(deploy_lat, deploy_long)) + #aes = the aesthetic/mappings. x and y etc.
+proj58_matched_full %>%  
+  ggplot(aes(latitude, longitude)) + #aes = the aesthetic/mappings. x and y etc.
   geom_point() #geom = the type of plot
 
-lamprey_dets %>%  
-  ggplot(aes(deploy_lat, deploy_long, colour = animal_id)) + #colour by individual! specify in the aesthetic
+proj58_matched_full %>%  
+  ggplot(aes(latitude, longitude, colour = receiver_group)) + #colour by receiver group! specify in the aesthetic
   geom_point()
 
-#anything you specify in the aes() is applied to the actual data points/whole plot, 
+
+#anything you specify in the aes() is applied to the actual data points/whole plot,
 #anything specified in geom() is applied to that layer only (colour, size...). sometimes you have >1 geom layer so this makes more sense!
 
-
 ~~~
 {: .language-r}
 
-### Challenge
-
-Try combining with `dplyr` functions in this challenge!
-~~~
-#Challenge 7: try making a scatterplot showing the lat/long for animal "A69-1601-1363", coloured by detection array
-
-#Question: what other geoms are there? Try typing `geom_` into R to see what it suggests!
-~~~
-{: .language-r}
-
-
-
-
+> ## Plotting and dplyr Challenge
+>
+> Try combining with `dplyr` functions in this challenge!
+> Try making a scatterplot showing the lat/long for animal "PROJ58-1218515-2015-10-13", coloured by detection array
+> > ## Solution
+> > ~~~
+> > proj58_matched_full %>%  
+> >  filter(catalognumber=="PROJ58-1218515-2015-10-13") %>% 
+> >  ggplot(aes(latitude, longitude, colour = receiver_group)) + 
+> >  geom_point()
+> > ~~~
+> > {: .language-r}
+> {: .solution}
+>
+> What other geoms are there? Try typing `geom_` into R to see what it suggests!
+{: .challenge}

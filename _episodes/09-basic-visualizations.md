@@ -7,7 +7,7 @@ questions:
     - "What kinds of plots can I make with my data?"
 ---
 
-We can use GLATOS to quickly and effectively visualize our data, now that we've
+We can use glatos to quickly and effectively visualize our data, now that we've
 cleaned it up.
 
 One of the simplest ways is to use an abacus plot to display animal detections
@@ -18,9 +18,11 @@ against the appropriate stations.
 # ?glatos::abacus_plot
 # customizable version of the standard VUE-derived abacus plots
 
+
 abacus_plot(detections_w_events, 
             location_col='station', 
             main='ACT Detections by Station') # can use plot() variables here, they get passed thru to plot()
+
 
 ~~~
 {: .language-r}
@@ -49,6 +51,7 @@ detections_filtered
 ?detection_bubble_plot
 
 bubble_station <- detection_bubble_plot(detections_filtered,
+
                                         background_ylim = c(38, 40),
                                         background_xlim = c(-77, -76),
                                         map = MD,
@@ -67,7 +70,7 @@ bubble_array
 
 > ## Glatos Challenge
 >
-> Create a bubble plot of the station in Lake Erie only. Set the bounding box using the provided nw + se cordinates and 
+> Create a bubble plot of the station in Lake Erie only. Set the bounding box using the provided nw + se cordinates and
 > resize the points. As a bonus, add points for the other receivers in Lake Erie.
 > Hint: `?detection_bubble_plot` will help a lot.
 > Here's some code to get you started:
@@ -87,7 +90,7 @@ bubble_array
 > > erie_detections <- detections_filtered %>% filter(glatos_array %in% erie_arrays)
 > > erie_rcvrs <- receivers %>% filter(glatos_array %in% erie_arrays) # For bonus
 > >
-> > erie_bubble <- detection_bubble_plot(erie_detections, 
+> > erie_bubble <- detection_bubble_plot(erie_detections,
 > >                                      receiver_locs = erie_rcvrs, # For bonus
 > >                                      location_col = 'station',
 > >                                      background_ylim = c(se[1], nw[1]),

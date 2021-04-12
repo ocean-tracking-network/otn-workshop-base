@@ -11,68 +11,32 @@ questions:
 Now that we have an idea of what an exploratory workflow might look like with Tidyverse libraries like `dplyr` and `ggplot2`, let's look at how we might implement a common telemetry workflow using these tools.
 
 ~~~
-View(lamprey_dets) #already have our Lamprey tag matches
+View(proj58_matched_full) #Check to make sure we already have our tag matches.
 
+#Load in and join our array matches.
 
-#import walleye dets
-walleye_dets <- read_csv("inst_extdata_walleye_detections.csv", guess_max = 9595) #remember guess_max from prev section!
+proj61_qual_2016 <- read_csv("Qualified_detecions_2016_2017/proj61_qualified_detections_2016.csv")
+proj61_qual_2017 <- read_csv("Qualified_detecions_2016_2017/proj61_qualified_detections_2017.csv")
+proj61_qual_16_17_full <- rbind(proj61_qual_2016, proj61_qual_2017) 
 
-#Warning: 9595 parsing failures.
-#row          col           expected actual                                  file
-#3047 sensor_value 1/0/T/F/TRUE/FALSE    11  'inst_extdata_walleye_detections.csv'
-#3047 sensor_unit  1/0/T/F/TRUE/FALSE    ADC 'inst_extdata_walleye_detections.csv'
-#3048 sensor_value 1/0/T/F/TRUE/FALSE    11  'inst_extdata_walleye_detections.csv'
-#3048 sensor_unit  1/0/T/F/TRUE/FALSE    ADC 'inst_extdata_walleye_detections.csv'
-#3049 sensor_value 1/0/T/F/TRUE/FALSE    11  'inst_extdata_walleye_detections.csv'
+proj61_qual_16_17_full <- proj61_qual_16_17_full %>% slice(1:100000) #subset our example data for ease of analysis!
 
-#lets join these two detection files together!
-all_dets <- rbind(lamprey_dets, walleye_dets)
+# lets import receiver station data from the network
 
-
-# lets import GLATOS receiver station data for the whole network
-
-glatos_receivers <- read_csv("inst_extdata_sample_receivers.csv")
-View(glatos_receivers)
-
-#Lets import our workbook now!
-
+#need Array metadata
+#These are saved as XLS/XLSX files, so we need a different library to read them in.
 library(readxl)
 
-walleye_deploy <- read_excel('inst_extdata_walleye_workbook.xlsm', sheet = 'Deployment') #pull in deploy
-View(walleye_deploy)
+proj61_deploy <- read_excel("/Deploy_metadata_2016_2017/deploy_sercarray_proj61_2016_2017.xlsx", sheet = "Deployment", skip=3)
+View(proj61_deploy)
 
-walleye_recovery <- read_excel('inst_extdata_walleye_workbook.xlsm', sheet = 'Recovery') #pull in recovery
-View(walleye_recovery)
+#need Tag metadata
 
-#join the deploy and recovery sheets together
-
-walleye_recovery <- walleye_recovery %>% rename(INS_SERIAL_NO = INS_SERIAL_NUMBER) #first, rename INS_SERIAL_NUMBER
-
-walleye_recievers = merge(walleye_deploy, walleye_recovery,
-                          by.x = c("GLATOS_PROJECT", "GLATOS_ARRAY", "STATION_NO",
-                                    "CONSECUTIVE_DEPLOY_NO", "INS_SERIAL_NO"), 
-                          by.y = c("GLATOS_PROJECT", "GLATOS_ARRAY", "STATION_NO", 
-                                    "CONSECUTIVE_DEPLOY_NO", "INS_SERIAL_NO"), 
-                          all.x=TRUE, all.y=TRUE) #keep all the info from each, merged using the above columns
-
-View(walleye_recievers)
-
-#need Tagging metadata too!
-
-walleye_tag <- read_excel('inst_extdata_walleye_workbook.xlsm', sheet = 'Tagging')
-View(walleye_tag)
+proj58_tag <- read_excel("/Tag_Metadata/Proj58_Metadata_cownoseray.xls", sheet = "Tag Metadata", skip=4) 
+View(proj58_tag)
 
 #remember: we learned how to switch timezone of datetime columns above, 
 # if that is something you need to do with your dataset!! 
-  #hint: check GLATOS_TIMEZONE column to see if its what you want!
-
-#the glatos R package (will be reviewed in the workshop tomorrow) can import your workbook in one step
-#will format all datetimes to UTC, check for conflicts, join the deploy/recovery tabs etc.
-
-library(glatos) #this won't work unless you happen to have this installed - just an teaser today, will be covered tomorrow
-data <- read_glatos_workbook('inst_extdata_walleye_workbook.xlsm')
-receivers <- data$receivers
-animals <-  data$animals
 ~~~
 {: .language-r}
 

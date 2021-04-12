@@ -84,12 +84,15 @@ head(sum_location)
 
 # You can make your own column and use that as the location_col
 # For example we will create a uniq_station column for if you have duplicate station names across projects
+
 detections_filtered_special <- detections_filtered %>% 
   mutate(station_uniq = paste(glatos_array, station, sep=':'))
+
 
 sum_location_special <- summarize_detections(detections_filtered_special, location_col = 'station_uniq', summ_type='location')
 
 head(sum_location_special)
+
 
 # By both dimensions
 sum_animal_location <- summarize_detections(det = detections_filtered,
@@ -154,6 +157,7 @@ rik_data
 
 # Calc residence index using the time interval method, interval set to 6 hours
 # "Kessel" method is a special case of "time_interval" where time_interval_size = "1 day"
+
 rit_data <- residence_index(events_subset, 
                             calculation_method = 'time_interval', 
                             time_interval_size = "6 hours")

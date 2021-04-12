@@ -1,11 +1,12 @@
-# 2021-03-30 GLATOS Virtual Workshops
-Telemetry workshop materials for the virtual GLATOS Network Workshops of March 2021
+# 2021-04-14 ACT Virtual Workshops
+Telemetry workshop materials for the virtual ACT Network Workshops of April 2021
 
 ## Maintainer(s)
 
 Current maintainers of this lesson are 
 
-* Caitlin Bate
+* Caitlin Bate 
+* Naomi Tress
 * Bruce Delo
 * Ryan Gosse
 * Jon Pye
