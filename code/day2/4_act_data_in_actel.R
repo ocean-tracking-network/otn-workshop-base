@@ -48,17 +48,25 @@ proj_dets %>% count(detectedby)
 proj_dets %>% filter(receiver != 'release') %>% count(tagname)
 
 # OK most of those who have more than an isolated detection are in our deploy metadata.
+# just one OTN project to add.
 
 # For OTN projects, we would be able to add in any deployments of OTN receivers from the OTN GeoServer:
 
-# add V2LGMXSNAP receivers to our deployment metadata:
+# if we wanted to grab and add V2LGMXSNAP receivers to our deployment metadata
+# using OTN's public station history records on GeoServer:
 # otn_geoserver_stations_url = 'https://members.oceantrack.org/geoserver/otn/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=otn:stations_receivers&outputFormat=csv&cql_filter=collectioncode=%27V2LGMXSNAP%27'
+## TODO: Actel needs serial numbers for receivers, so OTN 
+#  will add serial numbers to this layer, and then we can just
+#  urlencode the CQL-query for which projects you want, 
+#  so you can write your list in 'plaintext' and embed it in the url
 
-## TODO: urlencode the CQL-query so you can write it in 'plaintext' and embed it in the url
-
+# For today, we've made an extract for V2LGMXSNAP and included it in the data folder:
 otn_deploy_metadata <- readr::read_csv('otn_moorings_receivers_202104130938.csv') %>%
                                   mutate(rcvrgroup = collectioncode)
 
+# Tack OTN stations to the end of the MATOS extract.
+# These are in the exact same format because OTN and MATOS's databases are the
+# same format, so we can easily coordinate our output formats.
 all_stations <- bind_rows(deploy_metadata, otn_deploy_metadata)
 
 # For ACT/FACT projects - we could use GeoServer to share this information, and could even add
