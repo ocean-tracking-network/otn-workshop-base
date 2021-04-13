@@ -1,4 +1,4 @@
-# 07 - Introduction to GLATOS ####
+# 07 - Introduction to glatos ####
 
 ## Set your working directory
 
@@ -6,6 +6,7 @@ setwd("./data/")
 library(glatos)
 library(tidyverse)
 library(VTrack)
+library(lubridate)
 
 # First we need to create one detections file from all our detection extracts.
 library(utils)
@@ -39,11 +40,12 @@ for (detfile in list.files('.', full.names = TRUE, pattern = "proj.*\\.zip")) {
 write_csv(detections, 'all_dets.csv', append = FALSE)
 
 
-## GLATOS help files are helpful!!
+## glatos help files are helpful!!
 ?read_otn_deployments
 
 # Save our detections file data into a dataframe called detections
 detections <- read_otn_detections('all_dets.csv')
+
 
 # View first 2 rows of output
 head(detections, 2)
@@ -80,24 +82,18 @@ sum_location <- summarize_detections(detections_filtered, location_col = 'statio
 
 head(sum_location)
 
-# You can make your own column and use that as the location_col
-# For example we will create a uniq_station column for if you have duplicate station names across projects
-
-detections_filtered_special <- detections_filtered %>% 
-    mutate(station_uniq = paste(glatos_array, station, sep=':'))
-
-sum_location_special <- summarize_detections(detections_filtered_special, location_col = 'station_uniq', summ_type='location')
-
-head(sum_location_special)
 
 # You can make your own column and use that as the location_col
 # For example we will create a uniq_station column for if you have duplicate station names across projects
+
 detections_filtered_special <- detections_filtered %>% 
   mutate(station_uniq = paste(glatos_array, station, sep=':'))
 
+
 sum_location_special <- summarize_detections(detections_filtered_special, location_col = 'station_uniq', summ_type='location')
 
 head(sum_location_special)
+
 
 # By both dimensions
 sum_animal_location <- summarize_detections(det = detections_filtered,
@@ -167,8 +163,8 @@ rit_data <- residence_index(events_subset,
                             calculation_method = 'time_interval', 
                             time_interval_size = "6 hours")
 rit_data
-
-# Converting GLATOS/FACT/OTN-style dataframes to ATT format for use with VTrack ####
+ 
+# Converting glatos/FACT/OTN-style dataframes to ATT format for use with VTrack ####
 
 ?convert_otn_to_att
 
@@ -240,7 +236,7 @@ color <- c(colorRampPalette(c('pink', 'red'))(max(coa_single$Number.of.Detection
 
 #add the points
 points(coa_single$Longitude.coa, coa_single$Latitude.coa, pch=19, col=color[coa_single$Number.of.Detections], 
-       cex=log(coa_single$Number.of.Stations) + 0.5) # cex is for point size. natural log is for scaling purposes
+    cex=log(coa_single$Number.of.Stations) + 0.5) # cex is for point size. natural log is for scaling purposes
 
 # add axises and title
 axis(1)
