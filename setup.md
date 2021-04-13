@@ -57,8 +57,8 @@ devtools::install_github("rossdwyer/VTrack")
 
 # GLATOS - acoustic telemetry package that does filtering, vis, array simulation, etc.
 install.packages('remotes')
-library(remotes)
-install_url("https://gitlab.oceantrack.org/GreatLakes/glatos/repository/master/archive.zip",
+library(remotes) 
+install_url("https://gitlab.oceantrack.org/GreatLakes/glatos/-/raw/act-workshop-2021/glatos_0.4.2.1.tar.gz",
               build_opts = c("--no-resave-data", "--no-manual"))  
 
 #Additional packages for mapping.
