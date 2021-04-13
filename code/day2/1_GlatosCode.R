@@ -226,10 +226,10 @@ USA <- getData('GADM', country="USA", level=1)
 MD <- USA[USA$NAME_1=="Maryland",]
 
 # plot the object and zoom in to lake Huron. Set colour of ground to green Add labels to the axises
-plot(MD, xlim=c(-76, -77), ylim=c(38, 40), col='green', xlab="Longitude", ylab="Latitude")
+plot(MD, xlim=c(-77, -76), ylim=c(38, 40), col='green', xlab="Longitude", ylab="Latitude")
 
 # For much more zoomed in plot
-# plot(MD, xlim=c(-76.25, -76.75), ylim=c(38.75, 39), col='green', xlab="Longitude", ylab="Latitude")
+# plot(MD, xlim=c(-76.75, -76.25), ylim=c(38.75, 39), col='green', xlab="Longitude", ylab="Latitude")
 
 # Create a palette
 color <- c(colorRampPalette(c('pink', 'red'))(max(coa_single$Number.of.Detections)))
@@ -294,10 +294,10 @@ bubble_array
 
 
 # Challenge 1 ----
-# Create a bubble plot of the station in Lake Erie only. Set the bounding box using the provided nw + se cordinates and 
-# resize the points. As a bonus, add points for the other receivers in Lake Erie.
+# Create a bubble plot of that bay we zoomed in earlier. Set the bounding box using the provided nw + se cordinates, change the colour scale and 
+# resize the points to be smaller. As a bonus, add points for the other receivers that don't have any detections.
 # Hint: ?detection_bubble_plot will help a lot
 # Here's some code to get you started
-erie_arrays <-c("DRF", "DRL", "DRU", "MAU", "RAR", "SCL", "SCM", "TSR") 
-nw <- c(43, -83.75) 
-se <- c(41.25, -82) 
+
+nw <- c(38.75, -76.75) 
+se <- c(39, -76.25) 

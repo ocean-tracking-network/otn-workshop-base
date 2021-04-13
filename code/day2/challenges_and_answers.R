@@ -1,28 +1,28 @@
 # Basic Visualization and Plotting: CHALLENGES ---------------------------------
-# GLATOS workshop 2021-03-31
+# GLATOS workshop 2021-04-15
 # Instructor: Ryan Gosse
 
 
+
 # Challenge 1 ----
-# Create a bubble plot of the station in Lake Erie only. Set the bounding box using the provided nw + se cordinates and 
-# resize the points. As a bonus, add points for the other receivers in Lake Erie.
+# Create a bubble plot of that bay we zoomed in earlier. Set the bounding box using the provided nw + se cordinates, change the colour scale and 
+# resize the points to be smaller. As a bonus, add points for the other receivers that don't have any detections.
 # Hint: ?detection_bubble_plot will help a lot
+# Here's some code to get you started
 
+nw <- c(38.75, -76.75) # given
+se <- c(39, -76.25) # given
 
-erie_arrays <-c("DRF", "DRL", "DRU", "MAU", "RAR", "SCL", "SCM", "TSR") # Given
-nw <- c(43, -83.75) # Given
-se <- c(41.25, -82) # Given
+deploys <- read_otn_deployments('matos_FineToShare_stations_receivers_202104091205.csv') # For bonus
 
-
-erie_detections <- detections_filtered %>% filter(glatos_array %in% erie_arrays)
-erie_rcvrs <- receivers %>% filter(glatos_array %in% erie_arrays) # For bonus
-
-erie_bubble <- detection_bubble_plot(erie_detections, 
-                                     receiver_locs = erie_rcvrs, # For bonus
+bubble_challenge <- detection_bubble_plot(detections_filtered,
+                                      background_ylim = c(nw[1], se[1]),
+                                      background_xlim = c(nw[2], se[2]),
+                                      map = MD,
+                                      symbol_radius = 0.75,
                                       location_col = 'station',
-                                     background_ylim = c(se[1], nw[1]),
-                                     background_xlim = c(nw[2], se[2]),
-                                     symbol_radius = 0.75,
-                                      out_file = 'erie_bubbles_by_stations.png')
+                                      col_grad = c('white', 'green'),
+                                      receiver_locs = deploys, # For bonus
+                                      out_file = 'act_bubbles_challenge.png')
 
 
