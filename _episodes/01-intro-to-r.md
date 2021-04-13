@@ -67,7 +67,8 @@ weight_lb <- 2.2 * weight_kg #can assign output to an object. can use objects to
 >
 >
 > > ## Solution
-> >No! you have to re-assign 2.2*weight_kg to the object weight_lb for it to update.
+> >No! You have to re-assign 2.2*weight_kg to the object weight_lb for it to update.
+> >
 > >The order you run your operations is very important, if you change something you may need to re-run everything!
 > >~~~
 > >weight_kg <- 100
@@ -141,8 +142,11 @@ animals <- c("mouse", "rat", "dog") #to create a character vector, use quotes
 > Hint: You can check a vector's type with the class() function.
 > > ## Solution
 > > R will force all of these to be characters, since the number 4 has quotes around it! 
-> > #Will always coerce data types following this structure: logical → numeric → character ← logical
+> > Will always coerce data types following this structure: logical → numeric → character ← logical
+> > ~~~
 > > class(challenge3)
+> > ~~~
+> > {: .language-r}
 > {: .solution}
 {: .challenge}
 
@@ -185,14 +189,6 @@ heights[complete.cases(heights)] #select only complete cases
 > ~~~
 > {: .language-r}
 > > ## Solution
-> > R will force all of these to be characters, since the number 4 has quotes around it! 
-> > #Will always coerce data types following this structure: logical → numeric → character ← logical
-> > class(challenge3)
-> {: .solution}
->
-> Question 2: Use the function median() to calculate the median of the heights vector.
->
-> > ## Solution
 > > ~~~
 > > heights_no_na <- heights[!is.na(heights)] 
 > > # or
@@ -201,6 +197,15 @@ heights[complete.cases(heights)] #select only complete cases
 > > heights_no_na <- heights[complete.cases(heights)]
 > > ~~~
 > > {: .language-r}
+> {: .solution}
+>
+> Question 2: Use the function median() to calculate the median of the heights vector.
+>
+> > ## Solution
+> > ~~~
+> > median(heights, na.rm = TRUE)
+> > ~~~
+> >  {: .language-r}
 > {: .solution}
 >
 > Bonus question: Use R to figure out how many people in the set are taller than 67 inches.
