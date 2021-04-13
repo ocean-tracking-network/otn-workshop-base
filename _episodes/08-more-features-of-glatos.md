@@ -148,10 +148,10 @@ USA <- getData('GADM', country="USA", level=1)
 MD <- USA[USA$NAME_1=="Maryland",]
 
 # plot the object and zoom in to lake Huron. Set colour of ground to green Add labels to the axises
-plot(MD, xlim=c(-76, -77), ylim=c(38, 40), col='green', xlab="Longitude", ylab="Latitude")
+plot(MD, xlim=c(-77, -76), ylim=c(38, 40), col='green', xlab="Longitude", ylab="Latitude")
 
 # For much more zoomed in plot
-# plot(MD, xlim=c(-76.25, -76.75), ylim=c(38.75, 39), col='green', xlab="Longitude", ylab="Latitude")
+# plot(MD, xlim=c(-76.75, -76.25), ylim=c(38.75, 39), col='green', xlab="Longitude", ylab="Latitude")
 
 # Create a palette
 color <- c(colorRampPalette(c('pink', 'red'))(max(coa_single$Number.of.Detections)))
