@@ -99,6 +99,6 @@ bubble_array
 > >                                      out_file = 'act_bubbles_challenge.png')
 > > ~~~
 > > {: .language-r}
-> > ![Bubble plot for detections on Lake Erie Stations](../Resources/ErieBubblePlot.png)
+> > ![Bubble plot for detections on Lake Erie Stations](../Resources/act_bubbles_challenge.png)
 > {: .solution}
 {: .challenge}
