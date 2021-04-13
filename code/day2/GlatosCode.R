@@ -1,4 +1,4 @@
-# 07 - Introduction to GLATOS ####
+# 07 - Introduction to glatos ####
 
 ## Set your working directory
 
@@ -6,6 +6,7 @@ setwd("./data/")
 library(glatos)
 library(tidyverse)
 library(VTrack)
+library(lubridate)
 
 # First we need to create one detections file from all our detection extracts.
 library(utils)
@@ -39,7 +40,7 @@ for (detfile in list.files('.', full.names = TRUE, pattern = "proj.*\\.zip")) {
 write_csv(detections, 'all_dets.csv', append = FALSE)
 
 
-## GLATOS help files are helpful!!
+## glatos help files are helpful!!
 ?read_otn_deployments
 
 # Save our detections file data into a dataframe called detections
@@ -163,7 +164,7 @@ rit_data <- residence_index(events_subset,
                             time_interval_size = "6 hours")
 rit_data
  
-# Converting GLATOS/FACT/OTN-style dataframes to ATT format for use with VTrack ####
+# Converting glatos/FACT/OTN-style dataframes to ATT format for use with VTrack ####
 
 ?convert_otn_to_att
 

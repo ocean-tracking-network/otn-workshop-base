@@ -3,7 +3,7 @@ title: Basic Visualization and Plotting
 teaching: 30
 exercises: 0
 questions:
-    - "How can I use GLATOS to plot my data?"
+    - "How can I use glatos to plot my data?"
     - "What kinds of plots can I make with my data?"
 ---
 

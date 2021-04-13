@@ -24,6 +24,7 @@ library(glatos)
 library(tidyverse)
 library(VTrack)
 library(utils)
+library(lubridate)
 ~~~
 {: .language-r}
 
@@ -31,8 +32,8 @@ Your code may not be in the 'code/glatos' folder, so use the appropriate file pa
 your data.
 
 
-Next, we will create paths to our detections and receiver files. GLATOS can
-function with both GLATOS and OTN Node-formatted data, but the functions are different
+Next, we will create paths to our detections and receiver files. glatos can
+function with both glatos and OTN Node-formatted data, but the functions are different
 for each. Both, however, provide a marked performance boost over base R, and Both
 ensure that the resulting data set will be compatible with the rest of the glatos
 framework.
@@ -73,13 +74,13 @@ write_csv(detections, 'all_dets.csv', append = FALSE)
 
 With our new file in hand, we'll want to use the read_otn_detections function
 to load our data into a dataframe. In this case, our data is formatted in the ACT
-style- if it were GLATOS formatted, we would want to use read_glatos_detections()
+style- if it were glatos formatted, we would want to use read_glatos_detections()
 instead.
 
 Remember: you can always check a function's documentation by typing a question
 mark, followed by the name of the function.
 ~~~
-## GLATOS help files are helpful!! ####
+## glatos help files are helpful!! ####
 ?read_otn_detections
 
 # Save our detections file data into a dataframe called detections

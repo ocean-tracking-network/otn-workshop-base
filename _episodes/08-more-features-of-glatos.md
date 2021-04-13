@@ -1,9 +1,9 @@
 ---
-title: More Features of GLATOS
+title: More Features of glatos
 teaching: 15
 exercises: 0
 questions:
-    - "What other features does GLATOS offer?"
+    - "What other features does glatos offer?"
 ---
 
 glatos has some more advanced analytic tools beyond filtering and creating events.
@@ -53,7 +53,7 @@ explore them all to see what method works best for your data.
 
 
 glatos strives to be interoperable with other scientific R packages. Currently, we can 
-crosswalk GLATOS data over to the package [VTrack](https://github.com/RossDwyer/VTrack). 
+crosswalk glatos data over to the package [VTrack](https://github.com/RossDwyer/VTrack). 
 We'll use the same dataset as before, but we'll also pull in some other metadata and filter
 out all non-proj58 detections.
 
@@ -107,8 +107,7 @@ ATTdata$Station.Information
 ~~~
 {: .language-r}
 
-And then you can use your data with the VTrack package. You'll notice that not all the detections made it into the ATT object. That's because the conversion function only keeps detections that it has station metadata for. Tags with no detections will also be thrown out by the function. This is to prevent issues
-with VTrack.
+And then you can use your data with the VTrack package. You'll notice that not all the detections made it into the ATT object. That's because the conversion function only keeps detections that it has station metadata for. Tags with no detections will also be thrown out by the function. This is to prevent issues with VTrack.
 
 You can call its abacusPlot function to generate an abacus plot:
 ~~~
