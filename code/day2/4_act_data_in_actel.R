@@ -11,7 +11,7 @@ library(readxl)
 # Our project's detections file - I'll use readr to read everything from proj59 in at once:
 
 proj_dets <- list.files(pattern="proj59_matched_detections*") %>% 
-            map_df(~readr::read_csv(.)) 
+            map_df(~readr::read_csv(.))
 # note: readr::read_csv will read in csvs inside zip files no problem.
 
 
@@ -34,11 +34,13 @@ deploy_metadata <- read_csv('act_matos_moorings_receivers_202104130939.csv') %>%
                       # mutate(rcvrgroup = paste(collectioncode, stringr::str_replace_all(station_name, "[:digit:]", ""), sep='_'))
 
 # Let's review the groups quickly to see if we under or over-shot what our receiver groups should be.
+# nb. hiding the legend because there are too many categories.
+deploy_metadata %>% ggplot(aes(deploy_lat, deploy_long, colour=rcvrgroup)) + 
+                                geom_point() + 
+                                theme(legend.position="none")
 
-# TODO: map of the deploy_metadata by group
-
-
-deploy_metadata %>% ggplot(aes(deploy_lat, deploy_long, colour=rcvrgroup)) + geom_point()
+# Maybe this is a bit of an overshoot, but it should work out. proj61 has receivers all over the place, 
+# so our spatial analysis is not going to be very accurate.
 
 
 # And let's look at what the other projects were that detected us.
@@ -117,12 +119,14 @@ actel_deployments <- full_receiver_meta %>% dplyr::filter(!is.na(recovery_date))
 # Actel Detections -------------------
 
 # Renaming some columns in the Detection extract files   
-actel_dets <- proj_dets %>% dplyr::mutate(Transmitter = tagname,
+actel_dets <- proj_dets %>% dplyr::filter(receiver != 'release') %>%
+                            dplyr::mutate(Transmitter = tagname,
                                     Receiver = as.integer(receiver),
                                     Timestamp = format(datecollected, actel_datefmt),
                                     CodeSpace = extractCodeSpaces(tagname),
-                                    Signal = extractSignals(tagname))  %>%
-                            dplyr::filter(Receiver != 'Release')
+                                    Signal = extractSignals(tagname), 
+                                    Sensor.Value = sensorvalue,
+                                    Sensor.Unit = sensorunit)
                       
 # We don't have any environmental data in our detection extract here, but Actel 
 # will also find and plot temperature or other sensor values if you have those
@@ -146,13 +150,18 @@ actel_tag_releases <- tag_metadata %>% mutate(Station.name = RELEASE_LOCATION,
                                       Latitude = RELEASE_LATITUDE,
                                       Longitude = RELEASE_LONGITUDE,
                                       Type='Release') %>%
-# TODO: get a sense of which array is closest to the animal releases and auto-assign them
-  mutate(Array = 'PROJ61JUGNO_2A') %>% # Set this to the closest array to your release locations
+# It's helpful to associate release locations with their nearest Array.
+# Could set all release locations to the same Array:
+#  mutate(Array = 'PROJ61JUGNO_2A') %>% # Set this to the closest array to your release locations
 # if this is different for multiple release groups, can do things like this to subset case-by-case:
   # here Station.name is the release location 'station' name, and the value after ~ will be assigned to all.
-#  mutate(Array = case_when(Station.name == 'Maumee' ~ 'SIC', 
-#                           Station.name == 'Tittabawassee' ~ 'TTB',
-#                           Station.name == 'AuGres' ~ 'AGR')) %>% # This value needs to be the nearest array to the release site
+  mutate(Array = case_when(Station.name %in% c('Red Banks', 'Eldorado', 'Williamsburg') ~ 'PROJ61UTEAST', 
+                           Station.name == 'Woodrow Wilson Bridge' ~ 'PROJ56',
+                           Station.name == 'Adjacent to Lyons Creek' ~ 'PROJ61JUGNO_5',
+                           Station.name == 'Merkle Wildlife Sanctuary' ~ 'PROJ61JUGNO_2A',
+                           Station.name == 'Nottingham' ~ 'PROJ61NOTTIN',
+                           Station.name == 'Sneaking Point' ~ 'PROJ61MAGRUD',
+                           Station.name == 'Jug Bay Dock' ~ 'PROJ61JUGDCK')) %>% # This value needs to be the nearest array to the release site
   distinct(Station.name, Latitude, Longitude, Array, Type)
 
 # Combine Releases and Receivers ------
@@ -202,7 +211,7 @@ e # discard all detections at unknown receivers - this is almost never
 
 # Get summary reports from our dataset:
 actel_explore_output <- explore(datapack=actel_project, 
-                                report=TRUE, 
+                                report=TRUE, GUI='never',
                                 print.releases=FALSE)
 
 n  # don't render any movements invalid - repeat for each tag, because:
