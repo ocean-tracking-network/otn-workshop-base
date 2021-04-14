@@ -62,10 +62,10 @@ install_url("https://gitlab.oceantrack.org/GreatLakes/glatos/repository/master/a
               build_opts = c("--no-resave-data", "--no-manual"))  
 
 #Additional packages for mapping.
-install.packages(stringr)
-install.packages(mapview)
-install.packages(spdplyr)
-install.packages(rgdal)
+install.packages('stringr')
+install.packages('mapview')
+install.packages('spdplyr')
+install.packages('rgdal')
 
 # Lubridate - part of Tidyverse, improves the process of creating date objects
 install.packages('lubridate')
