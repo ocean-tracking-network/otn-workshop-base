@@ -295,48 +295,6 @@ mapview(rcvr_spatial, popup = popupTable(our_receivers,
 ~~~
 {: .language-r}
 
-Can we design a graph and write it into spatial.txt that fits all these Arrays together? The glatos_array value we put in Array looks to be a bit too granular for our purposes. Maybe we can combine many arrays that are co-located in open water into a singular 'zone', preserving the complexity of the river systems but creating a large basin to which we can connect the furthest downstream of those river arrays.
+Can we design a graph and write it into spatial.txt that fits all these Arrays together? The station value we put in Array for our PROJ61 and PROJ60 projects looks to be a bit too granular for our purposes. Maybe we can combine many arrays that are co-located in open water into a singular 'zone', preserving the complexity of the river systems but creating a large basin to which we can connect the furthest downstream of those river arrays.
 
-To do this, we only need to update the arrays in our spatial.csv file or spatial dataframe.
-
-
-~~~
-# We only need to do this in our spatial.csv file!
-
-huron_arrays <- c('WHT', 'OSC', 'STG', 'PRS', 'FMP',
-                  'ORM', 'BMR', 'BBI', 'RND', 'IGN',
-                  'MIS', 'TBA')
-
-
-# Update actel_spatial_sum to reflect the inter-connectivity of the Huron arrays.
-actel_spatial_sum_basin <- actel_spatial_sum %>%
-    dplyr::mutate(Array = if_else(Array %in% huron_arrays, 'Huron', #if any of the above, make it 'Huron'
-                                       Array)) # else leave it as its current value
-
-# Notice we haven't changed any of our data or metadata, just the spatial table
-# Example: how to check how many unique spatial Arrays we still have, now that we've combined
-# so many into one basin?
-
-actel_spatial_sum_basin %>% dplyr::group_by(Array) %>% dplyr::select(Array) %>% unique()
-
-# OK. let's make a spatial.txt file and then re-analyze this dataset with our reduced spatial complexity
-
-actel_project <- preload(biometrics = actel_biometrics,
-                         spatial = actel_spatial_sum_basin,
-                         deployments = actel_deployments,
-                         detections = actel_dets,
-                         dot = readLines(spatial_txt_dot),
-                         tz = tz)
-~~~
-{: .language-r}
-
-now actel understands the connectivity between our arrays better!
-
-~~~
-actel_explore_output_lakes <- explore(datapack=actel_project,
-                                      report=TRUE,
-                                      print.releases=FALSE)
-
-# We no longer get the error about movements skipping/jumping across arrays!
-~~~
-{: .language-r}
+To do this, we only need to update the arrays in our spatial.csv file or actel_spatial dataframe. We don't need to edit our source metadata! We will have to define a spatial.txt file and how these newly defined Arrays interconnect. While there won't be time to do that for this example dataset and its large and very complicated region, this approach is definitely suitable for small river systems and even perhaps for multiple river systems feeding a bay and onward to the open water. If you'd like to apply Actel to your data and want to define a custom spatial.txt file, there are some code examples included in code/day2/5_actel_custom_spatial.R that might be helpful to get you started.
