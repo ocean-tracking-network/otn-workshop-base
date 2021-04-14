@@ -7,9 +7,9 @@ questions:
 	  - "What are the advantages of boosted regression trees when working with telemetry data?"
 
 objectives:
-	- "Briefly review how boosted regression trees work."
-	- "Demonstrate how to set up a boosted regression tree analysis with acoustic telemetry data."
-	- "Introduce the gbm.auto package and demonstrate its use with a case study on dusky sharks off the US Mid-Atlantic region."
+    - "Briefly review how boosted regression trees work."
+	  - "Demonstrate how to set up a boosted regression tree analysis with acoustic telemetry data."
+	  - "Introduce the gbm.auto package and demonstrate its use with a case study on dusky sharks off the US Mid-Atlantic region."
 keypoints:
 ---
 
