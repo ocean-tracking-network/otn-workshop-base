@@ -4,7 +4,7 @@ teaching: 45
 exercises: 0
 questions:
     - "How is boosted regression tree modeling used in telemetry analysis?"
-	- "What are the advantages of boosted regression trees when working with telemetry data?"
+	  - "What are the advantages of boosted regression trees when working with telemetry data?"
 
 objectives:
 	- "Briefly review how boosted regression trees work."

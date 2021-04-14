@@ -2,8 +2,9 @@
 title: Introduction to actel
 teaching: 45
 exercises: 0
-questions: What does the actel package do?
-		   When should I consider using Actel to analyze my acoustic telemetry data?
+questions: 
+    - "What does the actel package do?"
+    - "When should I consider using Actel to analyze my acoustic telemetry data?"
 
 objectives:
 
