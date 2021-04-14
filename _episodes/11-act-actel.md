@@ -3,7 +3,7 @@ title: Preparing ACT/OTN/GLATOS Data for actel
 teaching: 30
 exercises: 0
 questions:
-    - "How do I take my `glatos` data and format for actel?"
+    - "How do I take my ACT detection extracts and metadata and format them for use in `actel`?"
 ---
 ### Preparing our data to use in Actel
 
@@ -112,7 +112,7 @@ all_stations <- bind_rows(deploy_metadata, otn_deploy_metadata)
 
 # Mutate metadata into Actel format ----
 
-# Create a station entry from the glatos array and station number.
+# Create a station entry from the projectcode and station number.
 # --- add station to receiver metadata ----
 full_receiver_meta <- all_stations %>%
   dplyr::mutate(
@@ -225,7 +225,7 @@ Now you have everything you need to call `preload()`.
 # Specify the timezone that your timestamps are in.
 # OTN provides them in UTC/GMT.
 # FACT has both UTC/GMT and Eastern
-# GLATOS provides them in UTC/GMT
+# ACT provides them in UTC/GMT and Eastern
 # If you got the detections from someone else,
 #    they will have to tell you what TZ they're in!
 #    and you will have to convert them before importing to Actel!
