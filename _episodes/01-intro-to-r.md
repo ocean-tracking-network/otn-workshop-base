@@ -15,7 +15,7 @@ RStudio is divided into 4 "Panes": the Source for your scripts and documents (to
 
 The R Script in the top pane can be saved and edited, while code typed directly into the Console below will disappear after closing the R session.
 
-R can access files on and save outputs to any folder on your computer. R knows where to look for and save files based on the current working directory. This is one of the first things you should set up: a folder you'd like to contain all your data, scripts and outputs. The working directory path will be different for everyone.
+R can access files on and save outputs to any folder on your computer. R knows where to look for and save files based on the current working directory. This is one of the first things you should set up: a folder you'd like to contain all your data, scripts and outputs. The working directory path will be different for everyone. For the workshop, we've included the path one of our instructors uses, but you should use your computer's file explorer to find the correct path for your data.
 
 
 ### Setting up R
