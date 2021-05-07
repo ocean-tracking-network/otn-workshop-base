@@ -51,7 +51,8 @@ Like most programming langauges, we can do basic mathematical operations with R.
 
 ### Operators
 
-Operators in R include standard mathematical operators (+, -, *, /) as well as an assignment operator, <- (a left-facing pointy bracket followed by a hyphen). This may look unfamiliar if you're used to other programming languages, but it fulfills the same function as the '=' operator in most other langauges. The assignment operator is used to associate a value with a variable name (or, to 'assign' the value to the operator). This lets us refer to that value later, by the name we've given to it. 
+Operators in R include standard mathematical operators (+, -, *, /) as well as an assignment operator, <- (a less-than sign followed by a hyphen). The assignment operator is used to associate a value with a variable name (or, to 'assign' the value a name). This lets us refer to that value later, by the name we've given to it. This may look unfamiliar, but it fulfils the same function as the '=' operator in most other languages.
+
 ~~~
 3 + 5 #maths! including - , *, /
 
@@ -85,9 +86,9 @@ weight_lb <- 2.2 * weight_kg #can assign output to an object. can use objects to
 
 ### Functions
 
-While we can write code as we have in the section above- line by line, executed one line at a time- it is often more efficient to run multiple lines of code at once. By using functions, we can even compress those multiple lines down to just one!
+While we can write code as we have in the section above - line by line, executed one line at a time - it is often more efficient to run multiple lines of code at once. By using functions, we can even compress complex calculations into just one line!
 
-Functions use a single name to refer to blocks of code that execute a specific function. They consist of two pieces: the name of the function, which is usually indicative of the function's purpose; and the functions arguments- the variables or values on which it should execute. 
+Functions use a single name to refer to underlying blocks of code that execute a specific calculation. To run a function you need two things: the name of the function, which is usually indicative of the function's purpose; and the function's arguments- the variables or values on which the function should execute.
 
 ~~~
 #functions take "arguments": you have to tell them what to run their script against
@@ -99,7 +100,7 @@ round(3.14159) #... but doesn't have to be.
 ~~~
 {: .language-r}
 
-Since there are hundreds of functions and often their functionality can be nuanced, we have several ways to get more information on a given function. First, we can use 'args()', itself a function that take the name of another function as an argument, which will tell us the required arguments of the function againt which we run it. 
+Since there are hundreds of functions and often their functionality can be nuanced, we have several ways to get more information on a given function. First, we can use 'args()', itself a function that takes the name of another function as an argument, which will tell us the required arguments of the function against which we run it.
 
 Second, we can use the '?' operator. Typing a question mark followed by the name of a function will open a Help window in RStudio's bottom-right panel. This will contain the most complete documentation available for the function in question. 
 
@@ -139,10 +140,10 @@ str(weight_g) #find the structure of your object.
 ~~~
 {: .language-r}
 
-Above, we mentioned 'data type'. This refers to the kind of data represented by a value, or stored by the appropriate variable. Data types include character (words or letters), logical (boolean TRUE or FALSE values), or numeric data. Crucially, vetors can only contain one type of data, and will force all data in the vector to conform to that type (i.e, data in the vector will all be treated as the same data type, regardless of whether or not it was of that type when the vector was created.) We can always check the data type of a variable or vector by using the 'class()' function, which takes the variable name as an argument. 
+Above, we mentioned 'data type'. This refers to the kind of data represented by a value, or stored by the appropriate variable. Data types include character (words or letters), logical (boolean TRUE or FALSE values), or numeric data. Crucially, vectors can only contain one type of data, and will force all data in the vector to conform to that type (i.e, data in the vector will all be treated as the same data type, regardless of whether or not it was of that type when the vector was created.) We can always check the data type of a variable or vector by using the 'class()' function, which takes the variable name as an argument. 
 
 ~~~
-#our firs vector is numeric.
+#our first vector is numeric.
 #other options include: character (words), logical (TRUE or FALSE), integer etc.
 
 animals <- c("mouse", "rat", "dog") #to create a character vector, use quotes
@@ -208,7 +209,7 @@ mean(heights, na.rm = TRUE) #remove the NAs before calculating
 ~~~
 {: .language-r}
 
-This works for the function, but we may want to produce a dataset that duplicates our data, but not our NA values. Below, we'll explore a few ways to do that.
+This can be done within an individual function as above, but for our entire analysis we may want to produce a copy of our dataset without the NA values included. Below, we'll explore a few ways to do that.
 
 ~~~
 heights[!is.na(heights)] #select for values where its NOT NA
