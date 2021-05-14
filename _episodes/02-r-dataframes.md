@@ -12,7 +12,7 @@ questions:
 
 In this lesson, we're going to introduce a package called `dplyr`. dplyr takes advantage of an operator called a pipe to create chains of data manipulation that produce powerful exploratory summaries. It also provides a suite of further functionality for manipulating dataframes: tabular sets of data that are common in data analysis. If you've imported the `tidyverse` library, as we did during setup and in the last episode, then congratulations: you already have dplyr (along with a host of other useful packages).
 
-You may not be familiar with dataframes by name, but you may recognize the structure. Dataframes are arranged into rows and columns, not unlike tables in SQL databases. In R, they are represented as vectors of vectors: that is, a vector wherein each index contains another vector. If you are familiar with matrices, or two-dimensional arrays in other languages, the structure of a dataframe will be clear to you. 
+You may not be familiar with dataframes by name, but you may recognize the structure. Dataframes are arranged into rows and columns, not unlike tables in typical spreadsheet format (ex: Excel). In R, they are represented as vectors of vectors: that is, a vector wherein each column is itself a vector. If you are familiar with matrices, or two-dimensional arrays in other languages, the structure of a dataframe will be clear to you. 
 
 However, dataframes are not merely vectors- they are a specific type of object with their own functionality, which we will cover in this lesson. 
 
@@ -20,7 +20,7 @@ We are going to use OTN-style detection extracts for this lesson. If you're unfa
 
 ###Importing from CSVs
 
-Before we can start analyzing our data, we need to import it into our code space. Fortunately, we have a function for this. `read_csv` is a function from the `readr` package, also included with the tidyverse library. This function can read data from a .csv file into a dataframe. ".csv" is an extension that denotes a Comma-Separated Value file, or a file wherein data is arranged into rows, and entries within rows are delimited by commas. They're common in data analysis.
+Before we can start analyzing our data, we need to import it into R. Fortunately, we have a function for this. `read_csv` is a function from the `readr` package, also included with the tidyverse library. This function can read data from a .csv file into a dataframe. ".csv" is an extension that denotes a Comma-Separated Value file, or a file wherein data is arranged into rows, and entries within rows are delimited by commas. They're common in data analysis.
 
 For the purposes of this lesson, we will only cover read_csv; however, there is another function, `read_excel`, which you can use to import excel files. It's from a different library (`readxl`) and is outside the scope of this lesson, but worth investigating if you need it. 
 
@@ -83,7 +83,7 @@ Using what you now know about summary functions, try to answer the challenge bel
 
 Now that we've learned how to import and summarize our data, we can learn how to use `dplyr` to manipulate it. The name 'dplyr' may seem esoteric- the 'd' is short for 'dataframe', and 'plyr' is meant to evoke pliers, and thereby cutting, twisting, and shaping. This is an elegant summation of the `dplyr` library's functionality. 
 
-We are going to introduce a new operator in this section, called the "dplyr pipe". Not to be confused with `|`, which is also called a pipe in some other languages, the dplyr pipe is rendered as `%>%`. A pipe takes the output of the function or contents of the variable on the left and passes them to the function on the right. It is often read as "and then." 
+We are going to introduce a new operator in this section, called the "dplyr pipe". Not to be confused with `|`, which is also called a pipe in some other languages, the dplyr pipe is rendered as `%>%`. A pipe takes the output of the function or contents of the variable on the left and passes them to the function on the right. It is often read as "and then." If you want to quickly add a pipe, the keybord shortcut `CTRL + SHIFT + M` will do so. 
 
 ~~~
 library(dplyr) #can use tidyverse package dplyr to do exploration on dataframes in a nicer way
@@ -125,13 +125,13 @@ proj58_matched_2016 %>% filter(monthcollected >= 10) #all dets in/after October 
 ~~~
 {: .language-r}
 
-These are all ways to extract a specific subset of our data, but `dplyr` can also be used to manipulate dataframes to give you even greater insights. We're now going to use two new functions: `group_by`, which allows us to group our data by the values of a single column, and `summarise` (not to be confused with `summary` above!), which will take the dataframe output of group_by and condense it to fewer rows, trimming out some of the repeated data. Summarise also lets us create new columns based on the data in the dataframe. These functions can be difficult to grasp, so don't forget to use `?group_by` and `?summarise` if you get lost. 
+These are all ways to extract a specific subset of our data, but `dplyr` can also be used to manipulate dataframes to give you even greater insights. We're now going to use two new functions: `group_by`, which allows us to group our data by the values of a single column, and `summarise` (not to be confused with `summary` above!), which can be used to calculate summary statistics across your grouped variables, and produces a new dataframe containing these values as the output. These functions can be difficult to grasp, so don't forget to use `?group_by` and `?summarise` if you get lost. 
 
 ~~~
 #get the mean value across a column using GroupBy and Summarize
 
 proj58_matched_2016 %>% #Take proj_58_matched_2016, AND THEN...
-  group_by(catalognumber) %>%  #Group the data by catalognumber- that is. create a group within the dataframe where each group contains all the rows related to a specific catalognumber. AND THEN...
+  group_by(catalognumber) %>%  #Group the data by catalognumber- that is, create a group within the dataframe where each group contains all the rows related to a specific catalognumber. AND THEN...
   summarise(MeanLat=mean(latitude)) #use summarise to add a new column containing the mean latitude of each group. We named this new column "MeanLat" but you could name it anything
 
 ~~~
@@ -163,7 +163,7 @@ With just a few lines of code, we've created a dataframe that contains each of o
 {: .challenge}
 
 ## Joining Detection Extracts
-We're now going to briefly touch on a few useful dataframe use cases that aren't directly related to `dplyr`, but with which `dplyr` can help us. 
+We're now going to briefly touch on a few useful dataframe use-cases that aren't directly related to `dplyr`, but with which `dplyr` can help us. 
 
 One function that we'll need to know is `rbind`, a base R function which lets us combine two R objects together. Since release records for animals often appear in multiple years, this functionality will let us merge the dataframes together. We'll also use `distinct`, a `dplyr` function that lets us trim out duplicate data.
 
@@ -197,6 +197,6 @@ proj58_matched_full %>% mutate(datecollected=ymd_hms(datecollected)) #Use the lu
 ~~~
 {. :language-r}
 
-We've just used a single function, `ymd_hms`, but with it we've been able to completely reformat the entire datecollected column. `ymd_hms` is short for Year, Month, Day, Hours, Minutes, and Seconds. For example, at time of writing, it's 2021-05-14 2:21:40. Other format functions exist too, like `dmy_hms`, which specifies the day first and year third (i.e, 14-05-2021 2:21:40). Investigate the documentation to find which is right for you. 
+We've just used a single function, `ymd_hms`, but with it we've been able to completely reformat the entire datecollected column. `ymd_hms` is short for Year, Month, Day, Hours, Minutes, and Seconds. For example, at time of writing, it's 2021-05-14 14:21:40. Other format functions exist too, like `dmy_hms`, which specifies the day first and year third (i.e, 14-05-2021 14:21:40). Investigate the documentation to find which is right for you. 
 
-There are too many useful lubridate functions to cover in the scope of this lesson. These include `parse_date_time` can be used to read in date data in multiple formats, which is useful if you have a column contianing heterogenous date data; as well as `with_tz`, which lets you make your data sensitive to timezones (including automatic daylight savings time awareness). Dates are a tricky subject, so be sure to investigate `lubridate` to make sure you find the functions you need. 
+There are too many useful lubridate functions to cover in the scope of this lesson. These include `parse_date_time`, which can be used to read in date data in multiple formats, which is useful if you have a column contianing heterogenous date data; as well as `with_tz`, which lets you make your data sensitive to timezones (including automatic daylight savings time awareness). Dates are a tricky subject, so be sure to investigate `lubridate` to make sure you find the functions you need. 
