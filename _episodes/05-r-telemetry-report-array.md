@@ -7,15 +7,21 @@ questions:
     - "How do I summarize and plot my detections?"
 ---
 
+**Note to instructors: please choose the relevant Network below when teaching**
+
+## ACT Node
+
 ### Mapping Receiver Stations - Static map
 
-This section will use a set of receiver metadata from the ACT Network.
+This section will use a set of receiver metadata from the ACT Network, showing stations which may not be included in our Array. We will make a static map of all the receiver stations in three steps, using the package `ggmap`. 
+
+First, we set a basemap using the aesthetics and bounding box we desire. Then, we will filter our stations dataset for those which we would like to plot on the map. Next, we add the stations onto the basemap and look at our creation! If we are happy with the product, we can export the map as a `.tiff` file using the `ggsave` function, to use outside of R.
 ~~~
 library(ggmap)
 
 
 #We'll use the CSV below to tell where our stations and receivers are.
-full_receivers = read.csv('matos_FineToShare_stations_receivers_202104091205.csv')
+full_receivers <- read.csv('matos_FineToShare_stations_receivers_202104091205.csv')
 full_receivers
 
 #what are our columns called?
@@ -23,7 +29,6 @@ names(full_receivers)
 
 
 #make a basemap for all of the stations, using the min/max deploy lat and longs as bounding box
-
 
 
 base <- get_stamenmap(
@@ -46,7 +51,7 @@ full_receivers_plot <- full_receivers %>%
   summarise(MeanLat=mean(station_lat), MeanLong=mean(station_long)) #get the mean location per station, in case there is >1 deployment
 
 # you could choose to plot stations which are within a certain bounding box!
-#to do this you would add another filter to the above data, before passing to the map
+# to do this you would add another filter to the above data, before passing to the map
 # ex: add this line after the mutate() clauses:
 # filter(latitude <= 0.5 & latitude >= 24.5 & longitude <= 0.6 & longitude >= 34.9)
 
@@ -67,7 +72,7 @@ full_receivers_map
 #save your receiver map into your working directory
 
 ggsave(plot = proj61_map, filename = "proj61_map.tiff", units="in", width=15, height=8) 
-#can specify location, file type and dimensions
+#can specify file location, file type and dimensions
 ~~~
 {: .language-r}
 
@@ -76,7 +81,6 @@ ggsave(plot = proj61_map, filename = "proj61_map.tiff", units="in", width=15, he
 We can do the same exact thing with the deployment metadata from OUR project only!
 
 ~~~
-
 names(proj61_deploy)
 
 
@@ -97,7 +101,6 @@ proj61_deploy_plot <- proj61_deploy %>%
   filter(!is.na(deploy_date)) %>% #no null deploys
   filter(deploy_date > '2011-07-03' & recover_date < '2018-12-11') %>% #only looking at certain deployments, can add start/end dates here
   group_by(STATION_NO) %>% 
-
   summarise(MeanLat=mean(DEPLOY_LAT), MeanLong=mean(DEPLOY_LONG)) #get the mean location per station, in case there is >1 deployment
 
 
@@ -124,7 +127,9 @@ ggsave(plot = proj61_map, filename = "proj61_map.tiff", units="in", width=15, he
 
 ### Mapping my stations - Interactive map
 
-An interactive map can contain more information than a static map.
+An interactive map can contain more information than a static map. Here we will explore the package `plotly` to create interactive "slippery" maps. These allow you to explore your map in different ways by clicking and scrolling through the output.
+
+First, we will set our basemap's aesthetics and bounding box and assign this information (as a list) to a geo_styling variable. Then, we choose which Deployment Metadata dataset we wish to use and identify the columns containing Latitude and Longitude, using the `plot_geo` function. Next, we use the `add_markers` function to write out what information we would like to have displayed when we hover our mouse over a station in our interactive map. In this case, we chose to use `paste` to join together the Station Name and its lat/long. Finally, we add all this information together, along with a title, using the `layout` function, and now we can explore our interactive map!
 
 ~~~
 library(plotly)
@@ -142,7 +147,7 @@ geo_styling <- list(
   countrycolor = toRGB("gray85")
 )
 
-#decide what data you're going to use
+#decide what data you're going to use. Let's use proj61_deploy_plot, which we created above for our static map.
 
 proj61_map_plotly <- plot_geo(proj61_deploy_plot, lat = ~MeanLat, lon = ~MeanLong)  
 
@@ -154,20 +159,23 @@ proj61_map_plotly <- proj61_map_plotly %>% add_markers(
 )
 
 #Add layout (title + geo stying)
+
 proj61_map_plotly <- proj61_map_plotly %>% layout(
   title = 'Project 61 Deployments<br />(> 2011-07-03)', geo = geo_styling
 )
 
 #View map
+
 proj61_map_plotly
 ~~~
 {: .language-r}
 
-### How are my stations performing?
+### Summary of Animals Detected
 
-Let's find out more about the animals detected by our array!
+Let's find out more about the animals detected by our array! These summary statistics, created using `dplyr` functions, could be used to help determine the how successful each of your stations has been at detecting tagged animals. We will also learn how to export our results using `write_csv`.
+
 ~~~
-#How many detections of my tags does each station have?
+# How many of each animals did we detect from each collaborator, by species
 
 proj61_qual_summary <- proj61_qual_16_17_full %>% 
   filter(datecollected > '2010-06-01') %>% #select timeframe, stations etc.
@@ -182,5 +190,418 @@ proj61_qual_summary #remember, this is just the first 10,000 rows!
 #export our summary table
 
 write_csv(proj61_qual_summary, "data/proj61_summary.csv", col_names = TRUE)
+~~~
+{: .language-r}
+
+### Summary of Detections
+
+**TODO: TEST AND FIX THIS**
+
+These `dplyr` summaries can suggest array performance, hotspot stations, and be used as a metric for funders.
+
+~~~
+# number of detections per month/year per station 
+
+proj61_det_summary  <- proj61_qual_16_17_full  %>% 
+  mutate(datecollected=ymd_hms(datecollected))  %>% 
+  group_by(station, year = year(datecollected), month = month(datecollected)) %>% 
+  summarize(count =n())
+
+proj61_det_summary #remember: this is a subset!
+
+~~~
+{: .language-r}
+
+### Plot of Detections 
+ **TODO: TEST AND FIX THIS**
+
+Lets make an informative plot using `ggplot` showing the number of matched detections, per year and month. Remember: we can combine `dplyr` data manipulation and plotting into one step, using pipes!
+
+~~~
+
+proj61_qual_16_17_full %>% 
+  mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
+  mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
+  group_by(year_month) %>% #can group by station, species etc.
+  summarize(count =n()) %>% #how many dets per year_month
+  ggplot(aes(x = (month(year_month) %>% as.factor()), 
+             y = count, 
+             fill = (year(year_month) %>% as.factor())
+             )
+         )+ 
+  geom_bar(stat = "identity", position = "dodge2")+ 
+  xlab("Month")+
+  ylab("Total Detection Count")+
+  ggtitle('Proj61 Animal Detections by Month')+ #title
+  labs(fill = "Year") #legend title
+
+~~~
+{: .language-r}
+
+
+
+## FACT Node
+
+### Mapping my stations - Static map
+
+Since we have already imported and joined our datasets, we can jump in. This section will use the Deployment metadata for your array. We will make a static map of all the receiver stations in three steps, using the package `ggmap`. 
+
+First, we set a basemap using the aesthetics and bounding box we desire. Then, we will filter our stations dataset for those which we would like to plot on the map. Next, we add the stations onto the basemap and look at our creation! If we are happy with the product, we can export the map as a `.tiff` file using the `ggsave` function, to use outside of R.
+~~~
+library(ggmap)
+
+
+#first, what are our columns called?
+names(teq_deploy)
+
+
+#make a basemap for your stations, using the min/max deploy lat and longs as bounding box
+
+base <- get_stamenmap(
+  bbox = c(left = min(teq_deploy$DEPLOY_LONG), 
+           bottom = min(teq_deploy$DEPLOY_LAT), 
+           right = max(teq_deploy$DEPLOY_LONG), 
+           top = max(teq_deploy$DEPLOY_LAT)),
+  maptype = "terrain-background", 
+  crop = FALSE,
+  zoom = 8)
+
+#filter for stations you want to plot
+
+teq_deploy_plot <- teq_deploy %>% 
+  mutate(deploy_date=ymd_hms(DEPLOY_DATE_TIME....yyyy.mm.ddThh.mm.ss.)) %>% #make a datetime
+  mutate(recover_date=ymd_hms(RECOVER_DATE_TIME..yyyy.mm.ddThh.mm.ss.)) %>% #make a datetime
+  filter(!is.na(deploy_date)) %>% #no null deploys
+  filter(deploy_date > 2010-07-03) %>% #only looking at certain deployments!
+  group_by(STATION_NO) %>% 
+  summarise(MeanLat=mean(DEPLOY_LAT), MeanLong=mean(DEPLOY_LONG)) #get the mean location per station
+  
+# you could choose to plot stations which are within a certain bounding box!
+# to do this you would add another filter to the above data, before passing to the map
+# ex: add this line after the mutate() clauses:
+	# filter(latitude >= 0.5 & latitude <= 24.5 & longitude >= 0.6 & longitude <= 34.9)
+
+
+#add your stations onto your basemap
+
+teq_map <- 
+  ggmap(base, extent='panel') +
+  ylab("Latitude") +
+  xlab("Longitude") +
+  geom_point(data = teq_deploy_plot, #filtering for recent deployments
+             aes(x = MeanLong,y = MeanLat), #specify the data
+             colour = 'blue', shape = 19, size = 2) #lots of aesthetic options here!
+
+#view your receiver map!
+
+teq_map
+
+#save your receiver map into your working directory
+
+ggsave(plot = teq_map, file = "code/day1/teq_map.tiff", units="in", width=15, height=8)
+~~~
+{: .language-r}
+
+### Mapping my stations - Interactive map
+
+An interactive map can contain more information than a static map. Here we will explore the package `plotly` to create interactive "slippery" maps. These allow you to explore your map in different ways by clicking and scrolling through the output.
+
+First, we will set our basemap's aesthetics and bounding box and assign this information (as a list) to a geo_styling variable. Then, we choose which Deployment Metadata dataset we wish to use and identify the columns containing Latitude and Longitude, using the `plot_geo` function. Next, we use the `add_markers` function to write out what information we would like to have displayed when we hover our mouse over a station in our interactive map. In this case, we chose to use `paste` to join together the Station Name and its lat/long. Finally, we add all this information together, along with a title, using the `layout` function, and now we can explore our interactive map!
+ 
+~~~
+library(plotly)
+
+#set your basemap
+
+geo_styling <- list(
+  scope = 'usa',
+  fitbounds = "locations", visible = TRUE, #fits the bounds to your data!
+  showland = TRUE,
+  showlakes = TRUE,
+  lakecolor = toRGB("blue", alpha = 0.2), #make it transparent
+  showcountries = TRUE,
+  landcolor = toRGB("gray95"),
+  countrycolor = toRGB("gray85")
+)
+
+#decide what data you're going to use. Let's use teq_deploy_plot, which we created above for our static map.
+
+teq_map_plotly <- plot_geo(teq_deploy_plot, lat = ~MeanLat, lon = ~MeanLong)  
+
+#add your markers for the interactive map
+
+teq_map_plotly <- teq_map_plotly %>% add_markers(
+  text = ~paste(STATION_NO, MeanLat, MeanLong, sep = "<br />"),
+  symbol = I("square"), size = I(8), hoverinfo = "text" 
+)
+
+#Add layout (title + geo stying)
+
+teq_map_plotly <- teq_map_plotly %>% layout(
+  title = 'TEQ Deployments<br />(> 2010-07-03)', geo = geo_styling
+)
+
+#View map
+
+teq_map_plotly
+
+~~~
+{: .language-r}
+
+### Summary of Animals Detected
+
+Let's find out more about the animals detected by our array! These summary statistics, created using `dplyr` functions, could be used to help determine the how successful each of your stations has been at detecting tagged animals. We will also learn how to export our results using `write_csv`.
+~~~
+# How many of each animals did we detect from each collaborator, by species
+
+teq_qual_summary <- teq_qual_10_11 %>% 
+  filter(datecollected > '2010-06-01') %>% #select timeframe, stations etc.
+  group_by(trackercode, scientificname, tag_contact_pi, tag_contact_poc) %>% 
+  summarize(count = n()) %>% 
+  select(trackercode, tag_contact_pi, tag_contact_poc, scientificname, count)
+
+#view our summary table
+
+teq_qual_summary #remember, this is just the first 10,000 rows! We subsetted the dataset upon import!
+
+#export our summary table
+
+write_csv(teq_qual_summary, "code/day1/teq_detection_summary_June2010_to_Dec2011.csv", col_names = TRUE)
+
+~~~
+{: .language-r}
+
+### Summary of Detections
+
+These `dplyr` summaries can suggest array performance, hotspot stations, and be used as a metric for funders.
+
+~~~
+# number of detections per month/year per station 
+
+teq_det_summary  <- teq_qual_10_11  %>% 
+  mutate(datecollected=ymd_hms(datecollected))  %>% 
+  group_by(station, year = year(datecollected), month = month(datecollected)) %>% 
+  summarize(count =n())
+
+teq_det_summary #remember: this is a subset!
+
+# number of detections per month/year per station & species
+
+teq_anim_summary  <- teq_qual_10_11  %>% 
+  mutate(datecollected=ymd_hms(datecollected))  %>% 
+  group_by(station, year = year(datecollected), month = month(datecollected), scientificname) %>% 
+  summarize(count =n())
+
+teq_anim_summary # remember: this is a subset!
+
+~~~
+{: .language-r}
+
+### Plot of Detections
+
+Lets make an informative plot using `ggplot` showing the number of matched detections, per year and month. Remember: we can combine `dplyr` data manipulation and plotting into one step, using pipes!
+
+~~~
+#try with teq_qual_10_11_full if you're feeling bold! takes about 1 min to run on a fast machine
+
+teq_qual_10_11 %>% 
+  mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
+  mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
+  group_by(year_month) %>% #can group by station, species etc.
+  summarize(count =n()) %>% #how many dets per year_month
+  ggplot(aes(x = (month(year_month) %>% as.factor()), 
+             y = count, 
+             fill = (year(year_month) %>% as.factor())
+             )
+         )+ 
+  geom_bar(stat = "identity", position = "dodge2")+ 
+  xlab("Month")+
+  ylab("Total Detection Count")+
+  ggtitle('TEQ Animal Detections by Month')+ #title
+  labs(fill = "Year") #legend title
+
+~~~
+{: .language-r}
+
+
+## GLATOS Network
+
+### Mapping GLATOS stations - Static map
+
+This section will use a set of receiver metadata from the GLATOS Network, showing stations which may not be included in our Project. We will make a static map of all the receiver stations in three steps, using the package `ggmap`. 
+
+First, we set a basemap using the aesthetics and bounding box we desire. Then, we will filter our stations dataset for those which we would like to plot on the map. Next, we add the stations onto the basemap and look at our creation! If we are happy with the product, we can export the map as a `.tiff` file using the `ggsave` function, to use outside of R.
+~~~
+library(ggmap)
+
+
+#first, what are our columns called?
+names(glatos_receivers)
+
+
+#make a basemap for all of the stations, using the min/max deploy lat and longs as bounding box
+
+base <- get_stamenmap(
+  bbox = c(left = min(glatos_receivers$deploy_long), 
+           bottom = min(glatos_receivers$deploy_lat), 
+           right = max(glatos_receivers$deploy_long), 
+           top = max(glatos_receivers$deploy_lat)),
+  maptype = "terrain-background", 
+  crop = FALSE,
+  zoom = 8)
+
+#filter for stations you want to plot - this is very customizable
+
+glatos_deploy_plot <- glatos_receivers %>% 
+  mutate(deploy_date=ymd_hms(deploy_date_time)) %>% #make a datetime
+  mutate(recover_date=ymd_hms(recover_date_time)) %>% #make a datetime
+  filter(!is.na(deploy_date)) %>% #no null deploys
+  filter(deploy_date > '2011-07-03' & recover_date < '2018-12-11') %>% #only looking at certain deployments, can add start/end dates here
+  group_by(station, glatos_array) %>% 
+  summarise(MeanLat=mean(deploy_lat), MeanLong=mean(deploy_long)) #get the mean location per station, in case there is >1 deployment
+
+# you could choose to plot stations which are within a certain bounding box!
+#to do this you would add another filter to the above data, before passing to the map
+# ex: add this line after the mutate() clauses:
+# filter(latitude <= 0.5 & latitude >= 24.5 & longitude <= 0.6 & longitude >= 34.9)
+
+
+#add your stations onto your basemap
+
+glatos_map <- 
+  ggmap(base, extent='panel') + 
+  ylab("Latitude") +
+  xlab("Longitude") +
+  geom_point(data = glatos_deploy_plot, #filtering for recent deployments
+             aes(x = MeanLong,y = MeanLat, colour = glatos_array), #specify the data
+             shape = 19, size = 2) #lots of aesthetic options here!
+
+#view your receiver map!
+
+glatos_map
+
+#save your receiver map into your working directory
+
+ggsave(plot = glatos_map, filename = "glatos_map.tiff", units="in", width=15, height=8) 
+#can specify location, file type and dimensions
+~~~
+{: .language-r}
+
+### Mapping our stations - Static map
+
+We can do the same exact thing with the deployment metadata from OUR project only! This will use metadata imported from our Workbook.
+
+~~~
+base <- get_stamenmap(
+  bbox = c(left = min(walleye_recievers$DEPLOY_LONG), 
+           bottom = min(walleye_recievers$DEPLOY_LAT), 
+           right = max(walleye_recievers$DEPLOY_LONG), 
+           top = max(walleye_recievers$DEPLOY_LAT)),
+  maptype = "terrain-background", 
+  crop = FALSE,
+  zoom = 8)
+
+#filter for stations you want to plot - this is very customizable
+
+walleye_deploy_plot <- walleye_recievers %>% 
+  mutate(deploy_date=ymd_hms(GLATOS_DEPLOY_DATE_TIME)) %>% #make a datetime
+  mutate(recover_date=ymd_hms(GLATOS_RECOVER_DATE_TIME)) %>% #make a datetime
+  filter(!is.na(deploy_date)) %>% #no null deploys
+  filter(deploy_date > '2011-07-03' & is.na(recover_date)) %>% #only looking at certain deployments, can add start/end dates here
+  group_by(STATION_NO, GLATOS_ARRAY) %>% 
+  summarise(MeanLat=mean(DEPLOY_LAT), MeanLong=mean(DEPLOY_LONG)) #get the mean location per station, in case there is >1 deployment
+
+#add your stations onto your basemap
+
+walleye_deploy_map <- 
+  ggmap(base, extent='panel') +
+  ylab("Latitude") +
+  xlab("Longitude") +
+  geom_point(data = walleye_deploy_plot, #filtering for recent deployments
+             aes(x = MeanLong,y = MeanLat, colour = GLATOS_ARRAY), #specify the data
+             shape = 19, size = 2) #lots of aesthetic options here!
+
+
+#view your receiver map!
+
+walleye_deploy_map
+
+#save your receiver map into your working directory
+
+ggsave(plot = walleye_deploy_map, filename = "walleye_deploy_map.tiff", units="in", width=15, height=8) 
+#can specify location, file type and dimensions
+~~~
+{: .language-r}
+
+### Mapping my stations - Interactive map
+
+An interactive map can contain more information than a static map. Here we will explore the package `plotly` to create interactive "slippery" maps. These allow you to explore your map in different ways by clicking and scrolling through the output.
+
+First, we will set our basemap's aesthetics and bounding box and assign this information (as a list) to a geo_styling variable. Then, we choose which Deployment Metadata dataset we wish to use and identify the columns containing Latitude and Longitude, using the `plot_geo` function. Next, we use the `add_markers` function to write out what information we would like to have displayed when we hover our mouse over a station in our interactive map. In this case, we chose to use `paste` to join together the Station Name and its lat/long. Finally, we add all this information together, along with a title, using the `layout` function, and now we can explore our interactive map!
+  
+~~~
+library(plotly)
+
+#set your basemap
+
+geo_styling <- list(
+  fitbounds = "locations", visible = TRUE, #fits the bounds to your data!
+  showland = TRUE,
+  showlakes = TRUE,
+  lakecolor = toRGB("blue", alpha = 0.2), #make it transparent
+  showcountries = TRUE,
+  landcolor = toRGB("gray95"),
+  countrycolor = toRGB("gray85")
+)
+
+#decide what data you're going to use
+
+glatos_map_plotly <- plot_geo(glatos_deploy_plot, lat = ~MeanLat, lon = ~MeanLong)  
+
+#add your markers for the interactive map
+
+glatos_map_plotly <- glatos_map_plotly %>% add_markers(
+  text = ~paste(station, MeanLat, MeanLong, sep = "<br />"),
+  symbol = I("square"), size = I(8), hoverinfo = "text" 
+)
+
+#Add layout (title + geo stying)
+
+glatos_map_plotly <- glatos_map_plotly %>% layout(
+  title = 'GLATOS Deployments<br />(> 2011-07-03)', geo = geo_styling
+)
+
+#View map
+
+glatos_map_plotly
+~~~
+{: .language-r}
+
+### How are my stations performing?
+
+Let's find out more about the animals detected by our array! These summary statistics, created using `dplyr` functions, could be used to help determine the how successful each of your stations has been at detecting your tagged animals. We will also learn how to export our results using `write_csv`.
+
+~~~
+#How many detections of my tags does each station have?
+
+det_summary  <- all_dets  %>%
+  filter(glatos_project_receiver == 'HECST') %>%  #choose to summarize by array, project etc!
+  mutate(detection_timestamp_utc=ymd_hms(detection_timestamp_utc))  %>%
+  group_by(station, year = year(detection_timestamp_utc), month = month(detection_timestamp_utc)) %>%
+  summarize(count =n())
+
+det_summary #number of dets per month/year per station
+
+
+#How many detections of my tags does each station have? Per species
+
+anim_summary  <- all_dets  %>%
+  filter(glatos_project_receiver == 'HECST') %>%  #choose to summarize by array, project etc!
+  mutate(detection_timestamp_utc=ymd_hms(detection_timestamp_utc))  %>%
+  group_by(station, year = year(detection_timestamp_utc), month = month(detection_timestamp_utc), common_name_e) %>%
+  summarize(count =n())
+
+anim_summary #number of dets per month/year per station & species
+
 ~~~
 {: .language-r}
