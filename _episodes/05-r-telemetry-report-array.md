@@ -32,13 +32,13 @@ names(full_receivers)
 
 
 base <- get_stamenmap(
-  bbox = c(left = min(full_receivers$station_long), 
-           bottom = min(full_receivers$station_lat), 
-           right = max(full_receivers$station_long), 
-           top = max(full_receivers$station_lat)),
+  bbox = c(left = min(full_receivers$stn_long), 
+           bottom = min(full_receivers$stn_lat), 
+           right = max(full_receivers$stn_long), 
+           top = max(full_receivers$stn_lat)),
   maptype = "terrain-background", 
   crop = FALSE,
-  zoom = 8)
+  zoom = 4)
 
 #filter for stations you want to plot - this is very customizable
 
@@ -48,7 +48,7 @@ full_receivers_plot <- full_receivers %>%
   filter(!is.na(deploy_date)) %>% #no null deploys
   filter(deploy_date > '2011-07-03' & recovery_date < '2018-12-11') %>% #only looking at certain deployments, can add start/end dates here
   group_by(station_name) %>% 
-  summarise(MeanLat=mean(station_lat), MeanLong=mean(station_long)) #get the mean location per station, in case there is >1 deployment
+  summarise(MeanLat=mean(stn_lat), MeanLong=mean(stn_long)) #get the mean location per station, in case there is >1 deployment
 
 # you could choose to plot stations which are within a certain bounding box!
 # to do this you would add another filter to the above data, before passing to the map
@@ -63,7 +63,7 @@ full_receivers_map <-
   ylab("Latitude") +
   xlab("Longitude") +
   geom_point(data = full_receivers_plot, #filtering for recent deployments
-             aes(x = MeanLong,y = MeanLat, colour = station_name), #specify the data
+             aes(x = MeanLong, y = MeanLat), #specify the data
              shape = 19, size = 2) #lots of aesthetic options here!
 
 #view your receiver map!
@@ -71,7 +71,7 @@ full_receivers_map
 
 #save your receiver map into your working directory
 
-ggsave(plot = proj61_map, filename = "proj61_map.tiff", units="in", width=15, height=8) 
+ggsave(plot = full_receivers_map, filename = "full_receivers_map.tiff", units="in", width=15, height=8) 
 #can specify file location, file type and dimensions
 ~~~
 {: .language-r}
@@ -91,7 +91,7 @@ base <- get_stamenmap(
            top = max(proj61_deploy$DEPLOY_LAT)),
   maptype = "terrain-background", 
   crop = FALSE,
-  zoom = 8)
+  zoom = 5)
 
 #filter for stations you want to plot - this is very customizable
 
@@ -178,7 +178,7 @@ Let's find out more about the animals detected by our array! These summary stati
 # How many of each animals did we detect from each collaborator, by species
 
 proj61_qual_summary <- proj61_qual_16_17_full %>% 
-  filter(datecollected > '2010-06-01') %>% #select timeframe, stations etc.
+  filter(datecollected > '2016-06-01') %>% #select timeframe, stations etc.
   group_by(trackercode, station, tag_contact_pi, tag_contact_poc) %>% 
   summarize(count = n()) %>% 
   select(trackercode, tag_contact_pi, tag_contact_poc, station, count)
@@ -194,8 +194,6 @@ write_csv(proj61_qual_summary, "data/proj61_summary.csv", col_names = TRUE)
 {: .language-r}
 
 ### Summary of Detections
-
-**TODO: TEST AND FIX THIS**
 
 These `dplyr` summaries can suggest array performance, hotspot stations, and be used as a metric for funders.
 
@@ -213,13 +211,12 @@ proj61_det_summary #remember: this is a subset!
 {: .language-r}
 
 ### Plot of Detections 
- **TODO: TEST AND FIX THIS**
 
 Lets make an informative plot using `ggplot` showing the number of matched detections, per year and month. Remember: we can combine `dplyr` data manipulation and plotting into one step, using pipes!
 
 ~~~
 
-proj61_qual_16_17_full %>% 
+proj61_qual_16_17_full %>%  #remember: this is a subset!
   mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
   mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
   group_by(year_month) %>% #can group by station, species etc.
@@ -227,8 +224,8 @@ proj61_qual_16_17_full %>%
   ggplot(aes(x = (month(year_month) %>% as.factor()), 
              y = count, 
              fill = (year(year_month) %>% as.factor())
-             )
-         )+ 
+  )
+  )+ 
   geom_bar(stat = "identity", position = "dodge2")+ 
   xlab("Month")+
   ylab("Total Detection Count")+
@@ -533,7 +530,7 @@ ggsave(plot = walleye_deploy_map, filename = "walleye_deploy_map.tiff", units="i
 ~~~
 {: .language-r}
 
-### Mapping my stations - Interactive map
+### Mapping all GLATOS Stations - Interactive map
 
 An interactive map can contain more information than a static map. Here we will explore the package `plotly` to create interactive "slippery" maps. These allow you to explore your map in different ways by clicking and scrolling through the output.
 
@@ -554,7 +551,7 @@ geo_styling <- list(
   countrycolor = toRGB("gray85")
 )
 
-#decide what data you're going to use
+#decide what data you're going to use. We have chosen glatos_deploy_plot which we created earlier.
 
 glatos_map_plotly <- plot_geo(glatos_deploy_plot, lat = ~MeanLat, lon = ~MeanLong)  
 
