@@ -27,7 +27,7 @@ View(proj58_matched_full) #Check to make sure we already have our tag matches, f
 # if you do not have the variable created from a previous lesson, you can use the following code to re-create it:
 
 proj58_matched_2016 <- read_csv("proj58_matched_detections_2016.csv") #Import 2016 detections
-proj58_matched_2017 <- read_csv("proj58_matched_detections_2017.csv", guess_max = 41880) # Import 2017 detections
+proj58_matched_2017 <- read_csv("proj58_matched_detections_2017.csv") # Import 2017 detections
 proj58_matched_full <- rbind(proj58_matched_2016, proj58_matched_2017) #Now join the two dataframes
 # release records for animals often appear in >1 year, this will remove the duplicates
 proj58_matched_full <- proj58_matched_full %>% distinct() # Use distinct to remove duplicates. 
@@ -35,12 +35,13 @@ proj58_matched_full <- proj58_matched_full %>% distinct() # Use distinct to remo
 {: .language-r}
 
 
-Next, we will load in and join our Array matches.
+Next, we will load in and join our Array matches. Ensure you replace the filepath to show the files as they appear in your working directory.
 ~~~
 
-proj61_qual_2016 <- read_csv("Qualified_detecions_2016_2017/proj61_qualified_detections_2016.csv")
-proj61_qual_2017 <- read_csv("Qualified_detecions_2016_2017/proj61_qualified_detections_2017.csv")
+proj61_qual_2016 <- read_csv("proj61_qualified_detections_2016_fixed.csv")
+proj61_qual_2017 <- read_csv("proj61_qualified_detections_2017_fixed.csv", guess_max = 25309)
 proj61_qual_16_17_full <- rbind(proj61_qual_2016, proj61_qual_2017) 
+
 
 proj61_qual_16_17_full <- proj61_qual_16_17_full %>% slice(1:100000) #subset our example data for ease of analysis!
 ~~~
@@ -48,15 +49,15 @@ proj61_qual_16_17_full <- proj61_qual_16_17_full %>% slice(1:100000) #subset our
 
 To give meaning to these detections we should import our Instrument Deployment Metadata and Tagging Metadata as well. These are in the standard OTN-style templates which can be found [here](https://members.oceantrack.org/data/data-collection).
 ~~~
-#These are saved as XLS/XLSX files, so we need a different library to read them in.
+#These are saved as XLS/XLSX files, so we need a different library to read them in. 
 library(readxl)
 
 # Deployment Metadata
-proj61_deploy <- read_excel("/Deploy_metadata_2016_2017/deploy_sercarray_proj61_2016_2017.xlsx", sheet = "Deployment", skip=3)
+proj61_deploy <- read_excel("Deploy_metadata_2016_2017/deploy_sercarray_proj61_2016_2017.xlsx", sheet = "Deployment", skip=3)
 View(proj61_deploy)
 
 # Tag metadata
-proj58_tag <- read_excel("/Tag_Metadata/Proj58_Metadata_cownoseray.xls", sheet = "Tag Metadata", skip=4) 
+proj58_tag <- read_excel("Tag_Metadata/Proj58_Metadata_cownoseray.xlsx", sheet = "Tag Metadata", skip=4) 
 View(proj58_tag)
 
 #remember: we learned how to switch timezone of datetime columns above, 
@@ -78,8 +79,8 @@ View(tqcs_matched_10_11) #already have our Tag matches, from a previous lesson.
 
 # if you do not have the variable created from a previous lesson, you can use the following code to re-create it:
 
-tqcs_matched_2010 <- read_csv("data/tqcs_matched_detections_2010.csv", guess_max = 117172) #Import 2010 detections
-tqcs_matched_2011 <- read_csv("data/tqcs_matched_detections_2011.csv", guess_max = 41880) #Import 2011 detections
+tqcs_matched_2010 <- read_csv("tqcs_matched_detections_2010.csv", guess_max = 117172) #Import 2010 detections
+tqcs_matched_2011 <- read_csv("tqcs_matched_detections_2011.csv", guess_max = 41880) #Import 2011 detections
 tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #Now join the two dataframes
 # release records for animals often appear in >1 year, this will remove the duplicates
 tqcs_matched_10_11_full <- tqcs_matched_10_11_full %>% distinct() # Use distinct to remove duplicates. 
@@ -90,8 +91,8 @@ tqcs_matched_10_11 <- tqcs_matched_10_11_full %>% slice(1:100000) # subset our e
 Next, we will load in and join our Array matches.
 
 ~~~
-teq_qual_2010 <- read_csv("data/teq_qualified_detections_2010_ish.csv")
-teq_qual_2011 <- read_csv("data/teq_qualified_detections_2011_ish.csv")
+teq_qual_2010 <- read_csv("teq_qualified_detections_2010_ish.csv")
+teq_qual_2011 <- read_csv("teq_qualified_detections_2011_ish.csv")
 teq_qual_10_11_full <- rbind(teq_qual_2010, teq_qual_2011) 
 
 teq_qual_10_11 <- teq_qual_10_11_full %>% slice(1:100000) #subset our example data for ease of analysis!
@@ -103,12 +104,12 @@ To give meaning to these detections we should import our Instrument Deployment M
 ~~~
 # Array metadata
 
-teq_deploy <- read.csv("data/TEQ_Deployments_201001_201201.csv")
+teq_deploy <- read.csv("TEQ_Deployments_201001_201201.csv")
 View(teq_deploy)
 
 # Tag metadata
 
-tqcs_tag <- read.csv("data/TQCS_metadata_tagging.csv") 
+tqcs_tag <- read.csv("TQCS_metadata_tagging.csv") 
 View(tqcs_tag)
 
 #remember: we learned how to switch timezone of datetime columns above, if that is something you need to do with your dataset!!
