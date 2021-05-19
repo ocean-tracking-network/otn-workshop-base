@@ -38,7 +38,7 @@ base <- get_stamenmap(
            top = max(proj58_matched_full_no_release$latitude)),
   maptype = "terrain-background", 
   crop = FALSE,
-  zoom = 8)
+  zoom = 5)
 
 
 #add your releases and detections onto your basemap
@@ -86,7 +86,7 @@ detections_map_plotly <- detections_map_plotly %>% add_markers(
   text = ~paste(catalognumber, commonname, paste("Date detected:", datecollected), 
                 paste("Latitude:", latitude), paste("Longitude",longitude), 
                 paste("Detected by:", detectedby), paste("Station:", station), 
-                paste("Project:",collectioncode)),
+                paste("Project:",collectioncode), sep = "<br />"),
   symbol = I("square"), size = I(8), hoverinfo = "text" 
 )
 
@@ -104,35 +104,18 @@ detections_map_plotly
 ### Summary of tagged animals
 
 This section will use your Tagging Metadata to create `dplyr` summaries of your tagged animals.
-**TODO: what is happening here to set the datetime.. and why?**
-**BRUCE: datetimes in proj58_tag were all messy, lets fix the dataset so we dont need this hack**
 ~~~
 # summary of animals you've tagged
-normDate <- Vectorize(function(x) {
-  if (!is.na(suppressWarnings(as.numeric(x))))  # Win excel
-    as.Date(as.numeric(x), origin="1899-12-30")
-  else
-    as.Date(x, format="%y/%m/%d")
-})
-
-res <- as.Date(normDate(proj58_tag$UTC_RELEASE_DATE_TIME[0:52]), origin="1970-01-01")
-# summary of animals you've tagged
-
-full_dates = c(ymd_hms(res, truncated = 3), ymd_hms(proj58_tag$UTC_RELEASE_DATE_TIME[53:89]))
-View(full_dates)
-
-proj58_tag <- proj58_tag %>%
-  mutate(UTC_RELEASE_DATE_TIME = full_dates)
 
 proj58_tag_summary <- proj58_tag %>% 
-  #mutate(UTC_RELEASE_DATE_TIME = full_dates) %>% 
-  #filter(UTC_RELEASE_DATE_TIME > '2019-06-01') %>% #select timeframe, specific animals etc.
+  mutate(UTC_RELEASE_DATE_TIME = ymd_hms(UTC_RELEASE_DATE_TIME)) %>% 
+  #filter(UTC_RELEASE_DATE_TIME > '2016-06-01') %>% #select timeframe, specific animals etc.
   group_by(year = year(UTC_RELEASE_DATE_TIME), COMMON_NAME_E) %>% 
   summarize(count = n(), 
             Meanlength = mean(`LENGTH (m)`, na.rm=TRUE), 
             minlength= min(`LENGTH (m)`, na.rm=TRUE), 
             maxlength = max(`LENGTH (m)`, na.rm=TRUE), 
-            MeanWeight = mean(`WEIGHT (kg)`, na.rm = TRUE)) 
+            MeanWeight = mean(`WEIGHT (kg)`, na.rm = TRUE))
 
 #view our summary table
 
@@ -194,19 +177,19 @@ write_csv(proj58_tag_det_summary, "detections_summary.csv", col_names = TRUE)
 # count detections per transmitter, per array
 
 proj58_matched_full_no_release %>% 
-  group_by(catalognumber, station, commonname) %>% 
+  group_by(catalognumber, station, detectedby, commonname) %>% 
   summarize(count = n()) %>% 
-  select(catalognumber, commonname, station, count)
+  select(catalognumber, commonname, detectedby, station, count)
 
 # list all receivers each fish was seen on, and a number_of_receivers column too
 
 receivers <- proj58_matched_full_no_release %>% 
   group_by(catalognumber) %>% 
-  mutate(receivers = (list(unique(station)))) %>% #create a column with a list of the stations
-  dplyr::select(catalognumber, receivers)  %>% #remove excess columns
+  mutate(stations = (list(unique(station)))) %>% #create a column with a list of the stations
+  dplyr::select(catalognumber, stations)  %>% #remove excess columns
   distinct_all() %>% #keep only one record of each
-  mutate(number_of_receivers = sapply(receivers, length)) %>% #sapply: applies a function across a List - in this case we are applying length()
-  as.data.frame() 
+  mutate(number_of_stations = sapply(stations, length)) %>% #sapply: applies a function across a List - in this case we are applying length()
+  as.data.frame()  
 
 View(receivers)
 ~~~
@@ -230,7 +213,7 @@ proj58_matched_full_no_release  %>%
   geom_bar(stat = "identity", position = "dodge2")+ 
   xlab("Month")+
   ylab("Total Detection Count")+
-  ggtitle('Project 58 Detections by Month (2014-2017)')+ #title
+  ggtitle('Project 58 Detections by Month (2016-2017)')+ #title
   labs(fill = "Year") #legend title
 
 ~~~
@@ -283,7 +266,7 @@ proj58_matched_full %>%
 # an easy abacus plot!
 
 abacus_animals <- 
-  ggplot(data = proj58_matched_full, aes(x = datecollected, y = tagname, col = detectedby)) +
+  ggplot(data = proj58_matched_full, aes(x = datecollected, y = catalognumber, col = detectedby)) +
   geom_point() +
   ggtitle("Detections by animal") +
   theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
@@ -292,9 +275,9 @@ abacus_animals <-
 abacus_animals
 
 abacus_stations <- 
-  ggplot(data = proj58_matched_full,  aes(x = datecollected, y = station, col = tagname)) +
+  ggplot(data = proj58_matched_full,  aes(x = datecollected, y = detectedby, col = catalognumber)) +
   geom_point() +
-  ggtitle("Detections by station") +
+  ggtitle("Detections by Array") +
   theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
   scale_color_viridis(discrete = TRUE)
 
@@ -302,7 +285,9 @@ abacus_stations #might be better with just a subset, huh??
 
 # track movement using geom_path!!
 
-proj58_subset <- proj58_matched_full %>% dplyr::filter(tagname %in% c('A69-1601-17557', 'A69-1601-17561', 'A69-1601-17567', 'A69-9001-21846'))
+proj58_subset <- proj58_matched_full %>%
+  dplyr::filter(catalognumber %in% c('PROJ58-1191602-2014-07-24', 'PROJ58-1191606-2014-07-24', 
+                               'PROJ58-1191612-2014-08-21', 'PROJ58-1218518-2015-09-16'))
 
 View(proj58_subset)
 
@@ -313,39 +298,13 @@ movMap <-
   geom_path(data = proj58_subset, aes(x = longitude, y = latitude, col = commonname)) + #connect the dots with lines
   geom_point(data = proj58_subset, aes(x = longitude, y = latitude, col = commonname)) + #layer the stations back on
   scale_colour_manual(values = c("red", "blue"), name = "Species")+ #
-  facet_wrap(~tagname, nrow=2, ncol=2)+
+  facet_wrap(~catalognumber, nrow=2, ncol=2)+
   ggtitle("Inferred Animal Paths")
 
 #to size the dots by number of detections you could do something like: size = (log(length(animal)id))?
 
 movMap
 ~~~
-{: .language-r}
- **TODO: determine if the below are duplicates of examples above**
-~~~
-
-# monthly latitudinal distribution of your animals (works best w >1 species)
-
-proj58_matched_full %>%
-  group_by(month=month(datecollected), tagname, commonname) %>% #make our groups
-  summarise(meanlat=mean(latitude)) %>% #mean lat
-  ggplot(aes(month %>% factor, meanlat, colour=commonname, fill=commonname))+ #the data is supplied, but no info on how to show it!
-  geom_point(size=3, position="jitter")+   # draw data as points, and use jitter to help see all points instead of superimposition
-  #coord_flip()+   #flip x y, not needed here
-  scale_colour_manual(values = c("brown", "green"))+ #change the colour to represent the species better!
-  scale_fill_manual(values = c("brown", "green"))+  #colour of the boxplot
-  geom_boxplot()+ #another layer
-  geom_violin(colour="black") #and one more layer
-
-
-# per-individual contours - lots of plots: called facets!
-proj58_matched_full %>%
-  ggplot(aes(x = longitude, y = latitude))+
-  facet_wrap(~tagname)+ #make one plot per individual
-  geom_violin()
-
-~~~
-{: .language-r}
 
 ## FACT Node
 
@@ -484,7 +443,7 @@ tqcs_matched_10_11_no_release %>%
 
 Now lets try to join our metadata and detection extracts.
 ~~~
-#First we need to make a tagname column in the tag metadata, and figure out the enddate of the tag battery
+#First we need to make a tagname column in the tag metadata (to match the Detection Extract), and figure out the enddate of the tag battery.
 
 tqcs_tag <- tqcs_tag %>% 
   mutate(enddatetime = (ymd_hms(UTC_RELEASE_DATE_TIME) + days(EST_TAG_LIFE))) %>% #adding enddate
@@ -512,26 +471,22 @@ tqcs_tag_det_summary <- tag_joined_dets %>%
   summarise(AvgSize = mean(LENGTH..m., na.rm=TRUE))
 
 tqcs_tag_det_summary
-~~~
-{: .language-r}
 
-**TODO: alter the below to work with FACT data**
-~~~
 # count detections per transmitter, per array
 
-proj58_matched_full_no_release %>% 
-  group_by(catalognumber, station, commonname) %>% 
+tqcs_matched_10_11_no_release %>% 
+  group_by(catalognumber, detectedby, commonname) %>% 
   summarize(count = n()) %>% 
-  select(catalognumber, commonname, station, count)
+  select(catalognumber, commonname, detectedby, count)
 
 # list all receivers each fish was seen on, and a number_of_receivers column too
 
-receivers <- proj58_matched_full_no_release %>% 
+receivers <- tqcs_matched_10_11_no_release %>% 
   group_by(catalognumber) %>% 
-  mutate(receivers = (list(unique(station)))) %>% #create a column with a list of the stations
-  dplyr::select(catalognumber, receivers)  %>% #remove excess columns
+  mutate(stations = (list(unique(station)))) %>% #create a column with a list of the stations
+  dplyr::select(catalognumber, stations)  %>% #remove excess columns
   distinct_all() %>% #keep only one record of each
-  mutate(number_of_receivers = sapply(receivers, length)) %>% #sapply: applies a function across a List - in this case we are applying length()
+  mutate(number_of_stations = sapply(stations, length)) %>% #sapply: applies a function across a List - in this case we are applying length()
   as.data.frame() 
 
 View(receivers)
@@ -568,6 +523,10 @@ tqcs_matched_10_11_no_release  %>%
 
 Some examples of complex plotting options. The most useful of these may include abacus plotting (an example with 'animal' and 'station' on the y-axis) as well as an example using `ggmap` and `geom_path` to create an example map showing animal movement.
 ~~~
+#Use the color scales in this package to make plots that are pretty, 
+#better represent your data, easier to read by those with colorblindness, and print well in grey scale.
+library(viridis)
+
 # monthly latitudinal distribution of your animals (works best w >1 species)
 
 tqcs_matched_10_11 %>%
@@ -602,16 +561,11 @@ tqcs_matched_10_11 %>%
   ggplot(aes(longitude, latitude))+
   facet_wrap(~catalognumber)+ #make one plot per individual
   geom_violin()
-  
-~~~
-{: .language-r}
 
- **TODO: fix/edit the below to work with FACT data**
-~~~
 # an easy abacus plot!
 
 abacus_animals <- 
-  ggplot(data = proj58_matched_full, aes(x = datecollected, y = tagname, col = detectedby)) +
+  ggplot(data = tqcs_matched_10_11_no_release, aes(x = datecollected, y = catalognumber, col = detectedby)) +
   geom_point() +
   ggtitle("Detections by animal") +
   theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
@@ -620,28 +574,30 @@ abacus_animals <-
 abacus_animals
 
 abacus_stations <- 
-  ggplot(data = proj58_matched_full,  aes(x = datecollected, y = station, col = tagname)) +
+  ggplot(data = tqcs_matched_10_11_no_release,  aes(x = datecollected, y = station, col = catalognumber)) +
   geom_point() +
   ggtitle("Detections by station") +
   theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
   scale_color_viridis(discrete = TRUE)
 
-abacus_stations #might be better with just a subset, huh??
+abacus_stations 
 
 # track movement using geom_path!!
 
-proj58_subset <- proj58_matched_full %>% dplyr::filter(tagname %in% c('A69-1601-17557', 'A69-1601-17561', 'A69-1601-17567', 'A69-9001-21846'))
+tqcs_subset <- tqcs_matched_10_11_no_release %>%
+  dplyr::filter(catalognumber %in% 
+                  c('TQCS-1049282-2008-02-28', 'TQCS-1049281-2008-02-28'))
 
-View(proj58_subset)
+View(tqcs_subset)
 
 movMap <- 
   ggmap(base, extent = 'panel') + #use the BASE we set up before
   ylab("Latitude") +
   xlab("Longitude") +
-  geom_path(data = proj58_subset, aes(x = longitude, y = latitude, col = commonname)) + #connect the dots with lines
-  geom_point(data = proj58_subset, aes(x = longitude, y = latitude, col = commonname)) + #layer the stations back on
+  geom_path(data = tqcs_subset, aes(x = longitude, y = latitude, col = commonname)) + #connect the dots with lines
+  geom_point(data = tqcs_subset, aes(x = longitude, y = latitude, col = commonname)) + #layer the stations back on
   scale_colour_manual(values = c("red", "blue"), name = "Species")+ #
-  facet_wrap(~tagname, nrow=2, ncol=2)+
+  facet_wrap(~catalognumber)+
   ggtitle("Inferred Animal Paths")
 
 #to size the dots by number of detections you could do something like: size = (log(length(animal)id))?
