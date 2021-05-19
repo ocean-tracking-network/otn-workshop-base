@@ -3,7 +3,7 @@ title: Other OTN Telemetry Curriculums
 teaching: 0
 exercises: 0
 questions:
-- "How can I keep expanding my learning?"
+- "How can I expand my learning?"
 ---
 
 OTN has hosted other workshops in the past which contain different code sets that may be useful to explore after this workshop.
@@ -22,4 +22,8 @@ OTN has hosted other workshops in the past which contain different code sets tha
 
 - [FACT workshop 2020](https://ocean-tracking-network.github.io/2020-12-17-telemetry-packages-FACT/index.html)
 
-Many of our Intro to R workshops are based upon this curriculum from [The Carpentries](https://datacarpentry.org/R-ecology-lesson/)
+- [GLATOS workshop 2021](https://ocean-tracking-network.github.io/2021-03-30-glatos-workshop/)
+
+- [ACT/MATOS workshop 2021](https://ocean-tracking-network.github.io/2021-04-13-act-workshop/)
+
+Many of our Intro to R workshops are based upon this curriculum from [The Carpentries](https://datacarpentry.org/R-ecology-lesson/).
