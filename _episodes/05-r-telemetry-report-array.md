@@ -15,7 +15,7 @@ questions:
 
 This section will use a set of receiver metadata from the ACT Network, showing stations which may not be included in our Array. We will make a static map of all the receiver stations in three steps, using the package `ggmap`. 
 
-First, we set a basemap using the aesthetics and bounding box we desire. Then, we will filter our stations dataset for those which we would like to plot on the map. Next, we add the stations onto the basemap and look at our creation! If we are happy with the product, we can export the map as a `.tiff` file using the `ggsave` function, to use outside of R.
+First, we set a basemap using the aesthetics and bounding box we desire. Then, we will filter our stations dataset for those which we would like to plot on the map. Next, we add the stations onto the basemap and look at our creation! If we are happy with the product, we can export the map as a `.tiff` file using the `ggsave` function, to use outside of R. Other possible export formats include: `.png`, `.jpeg`, `.pdf` and more.
 ~~~
 library(ggmap)
 
@@ -127,9 +127,11 @@ ggsave(plot = proj61_map, filename = "proj61_map.tiff", units="in", width=15, he
 
 ### Mapping my stations - Interactive map
 
-An interactive map can contain more information than a static map. Here we will explore the package `plotly` to create interactive "slippery" maps. These allow you to explore your map in different ways by clicking and scrolling through the output.
+An interactive map can contain more information than a static map. Here we will explore the package `plotly` to create interactive "slippy" maps. These allow you to explore your map in different ways by clicking and scrolling through the output.
 
 First, we will set our basemap's aesthetics and bounding box and assign this information (as a list) to a geo_styling variable. Then, we choose which Deployment Metadata dataset we wish to use and identify the columns containing Latitude and Longitude, using the `plot_geo` function. Next, we use the `add_markers` function to write out what information we would like to have displayed when we hover our mouse over a station in our interactive map. In this case, we chose to use `paste` to join together the Station Name and its lat/long. Finally, we add all this information together, along with a title, using the `layout` function, and now we can explore our interactive map!
+
+To save this interactive map as an `.html` file, you can explore the function htmlwidgets::saveWidget(), which is beyond the scope of this lesson.
 
 ~~~
 library(plotly)
@@ -243,7 +245,7 @@ proj61_qual_16_17_full %>%  #remember: this is a subset!
 
 Since we have already imported and joined our datasets, we can jump in. This section will use the Deployment metadata for your array. We will make a static map of all the receiver stations in three steps, using the package `ggmap`. 
 
-First, we set a basemap using the aesthetics and bounding box we desire. Then, we will filter our stations dataset for those which we would like to plot on the map. Next, we add the stations onto the basemap and look at our creation! If we are happy with the product, we can export the map as a `.tiff` file using the `ggsave` function, to use outside of R.
+First, we set a basemap using the aesthetics and bounding box we desire. Then, we will filter our stations dataset for those which we would like to plot on the map. Next, we add the stations onto the basemap and look at our creation! If we are happy with the product, we can export the map as a `.tiff` file using the `ggsave` function, to use outside of R. Other possible export formats include: `.png`, `.jpeg`, `.pdf` and more.
 ~~~
 library(ggmap)
 
@@ -301,9 +303,11 @@ ggsave(plot = teq_map, file = "code/day1/teq_map.tiff", units="in", width=15, he
 
 ### Mapping my stations - Interactive map
 
-An interactive map can contain more information than a static map. Here we will explore the package `plotly` to create interactive "slippery" maps. These allow you to explore your map in different ways by clicking and scrolling through the output.
+An interactive map can contain more information than a static map. Here we will explore the package `plotly` to create interactive "slippy" maps. These allow you to explore your map in different ways by clicking and scrolling through the output.
 
 First, we will set our basemap's aesthetics and bounding box and assign this information (as a list) to a geo_styling variable. Then, we choose which Deployment Metadata dataset we wish to use and identify the columns containing Latitude and Longitude, using the `plot_geo` function. Next, we use the `add_markers` function to write out what information we would like to have displayed when we hover our mouse over a station in our interactive map. In this case, we chose to use `paste` to join together the Station Name and its lat/long. Finally, we add all this information together, along with a title, using the `layout` function, and now we can explore our interactive map!
+
+To save this interactive map as an `.html` file, you can explore the function htmlwidgets::saveWidget(), which is beyond the scope of this lesson.
  
 ~~~
 library(plotly)
@@ -427,7 +431,7 @@ teq_qual_10_11 %>%
 
 This section will use a set of receiver metadata from the GLATOS Network, showing stations which may not be included in our Project. We will make a static map of all the receiver stations in three steps, using the package `ggmap`. 
 
-First, we set a basemap using the aesthetics and bounding box we desire. Then, we will filter our stations dataset for those which we would like to plot on the map. Next, we add the stations onto the basemap and look at our creation! If we are happy with the product, we can export the map as a `.tiff` file using the `ggsave` function, to use outside of R.
+First, we set a basemap using the aesthetics and bounding box we desire. Then, we will filter our stations dataset for those which we would like to plot on the map. Next, we add the stations onto the basemap and look at our creation! If we are happy with the product, we can export the map as a `.tiff` file using the `ggsave` function, to use outside of R. Other possible export formats include: `.png`, `.jpeg`, `.pdf` and more.
 ~~~
 library(ggmap)
 
@@ -532,9 +536,11 @@ ggsave(plot = walleye_deploy_map, filename = "walleye_deploy_map.tiff", units="i
 
 ### Mapping all GLATOS Stations - Interactive map
 
-An interactive map can contain more information than a static map. Here we will explore the package `plotly` to create interactive "slippery" maps. These allow you to explore your map in different ways by clicking and scrolling through the output.
+An interactive map can contain more information than a static map. Here we will explore the package `plotly` to create interactive "slippy" maps. These allow you to explore your map in different ways by clicking and scrolling through the output.
 
 First, we will set our basemap's aesthetics and bounding box and assign this information (as a list) to a geo_styling variable. Then, we choose which Deployment Metadata dataset we wish to use and identify the columns containing Latitude and Longitude, using the `plot_geo` function. Next, we use the `add_markers` function to write out what information we would like to have displayed when we hover our mouse over a station in our interactive map. In this case, we chose to use `paste` to join together the Station Name and its lat/long. Finally, we add all this information together, along with a title, using the `layout` function, and now we can explore our interactive map!
+
+To save this interactive map as an `.html` file, you can explore the function htmlwidgets::saveWidget(), which is beyond the scope of this lesson.
   
 ~~~
 library(plotly)
