@@ -50,6 +50,9 @@ getwd() #check working directory
 Like most programming langauges, we can do basic mathematical operations with R. These, along with variable assignment, form the basis of everything for which we will use R.
 
 ### Operators
+
+Operators in R include standard mathematical operators (+, -, *, /) as well as an assignment operator, <- (a less-than sign followed by a hyphen). The assignment operator is used to associate a value with a variable name (or, to 'assign' the value a name). This lets us refer to that value later, by the name we've given to it. This may look unfamiliar, but it fulfils the same function as the '=' operator in most other languages.
+
 ~~~
 3 + 5 #maths! including - , *, /
 
@@ -82,13 +85,26 @@ weight_lb <- 2.2 * weight_kg #can assign output to an object. can use objects to
 {: .challenge}
 
 ### Functions
+
+While we can write code as we have in the section above - line by line, executed one line at a time - it is often more efficient to run multiple lines of code at once. By using functions, we can even compress complex calculations into just one line!
+
+Functions use a single name to refer to underlying blocks of code that execute a specific calculation. To run a function you need two things: the name of the function, which is usually indicative of the function's purpose; and the function's arguments- the variables or values on which the function should execute.
+
 ~~~
 #functions take "arguments": you have to tell them what to run their script against
 
 ten <- sqrt(weight_kg) #contain calculations wrapped into one command to type.
+#Output of the function can be assigned directly to a variable...
 
-round(3.14159) #don't have to assign
+round(3.14159) #... but doesn't have to be.
+~~~
+{: .language-r}
 
+Since there are hundreds of functions and often their functionality can be nuanced, we have several ways to get more information on a given function. First, we can use 'args()', itself a function that takes the name of another function as an argument, which will tell us the required arguments of the function against which we run it.
+
+Second, we can use the '?' operator. Typing a question mark followed by the name of a function will open a Help window in RStudio's bottom-right panel. This will contain the most complete documentation available for the function in question. 
+
+~~~
 args(round) #the args() function will show you the required arguments of another function
 
 ?round #will show you the full help page for a function, so you can see what it does
@@ -112,17 +128,28 @@ args(round) #the args() function will show you the required arguments of another
 {: .challenge}
 
 ### Vectors and Data Types
+
+While variables can hold a single value, sometimes we want to store multiple values in the same variable name. For this, we can use an R data structure called a 'vector.' Vectors contain one or more variables of the same data type, and can be assigned to a single variable name, as below.
+
 ~~~
 weight_g <- c(21, 34, 39, 54, 55) #use the combine function to join values into a vector object
 
 length(weight_g) #explore vector
 class(weight_g) #a vector can only contain one data type
 str(weight_g) #find the structure of your object.
+~~~
+{: .language-r}
 
-#our vector is numeric.
+Above, we mentioned 'data type'. This refers to the kind of data represented by a value, or stored by the appropriate variable. Data types include character (words or letters), logical (boolean TRUE or FALSE values), or numeric data. Crucially, vectors can only contain one type of data, and will force all data in the vector to conform to that type (i.e, data in the vector will all be treated as the same data type, regardless of whether or not it was of that type when the vector was created.) We can always check the data type of a variable or vector by using the 'class()' function, which takes the variable name as an argument. 
+
+~~~
+#our first vector is numeric.
 #other options include: character (words), logical (TRUE or FALSE), integer etc.
 
 animals <- c("mouse", "rat", "dog") #to create a character vector, use quotes
+
+class(weight_g)
+class(animals)
 
 # Note:
 #R will convert (force) all values in a vector to the same data type.
@@ -150,27 +177,41 @@ animals <- c("mouse", "rat", "dog") #to create a character vector, use quotes
 > {: .solution}
 {: .challenge}
 
-### Subsetting
+### Indexing and Subsetting
+
+We can use subsetting to select only a portion of a vector. For this, we use square brackets after the name of a vector. If we supply a single numeric value, as below, we will retrieve only the value from that index of the vector. Note: vectors in R are indexed with 1 representing the first index- other languages use 0 for the start of their array, so if you are coming from a language like Python, this can be disorienting. 
+
 ~~~
 animals #calling your object will print it out
 animals[2] #square brackets = indexing. selects the 2nd value in your vector
+~~~
+{: .language-r}
 
+We can select a specific value, as above, but we can also select one or more entries based on conditions. By supplying one or more criteria to our indexing syntax, we can retrieve the elements of the array that match that criteria. 
+
+~~~
 weight_g > 50 #conditional indexing: selects based on criteria
 weight_g[weight_g <=30 | weight_g == 55] #many new operators here!  
-                                         #<= less than or equal to, | "or", == equal to
+                                         #<= less than or equal to; | "or"; == equal to. Also available are >=, greater than or equal to; < and > for less than or greater than (no equals); and & for "and". 
 weight_g[weight_g >= 30 & weight_g == 21] #  >=  greater than or equal to, & "and"
                                           # this particular example give 0 results - why?
 ~~~
 {: .language-r}
 
 ### Missing Data
+
+In practical data analysis, our data is often incomplete. It is therefore useful to cover some methods of dealing with NA values. NA is R's shorthand for a null value; or a value where there is no data. Certain functions cannot process NA data, and therefore provide arguments that allow NA values to be removed before the function execution.
+
 ~~~
 heights <- c(2, 4, 4, NA, 6)
 mean(heights) #some functions cant handle NAs
 mean(heights, na.rm = TRUE) #remove the NAs before calculating
+~~~
+{: .language-r}
 
-#other ways to get a dataset without NAs:
+This can be done within an individual function as above, but for our entire analysis we may want to produce a copy of our dataset without the NA values included. Below, we'll explore a few ways to do that.
 
+~~~
 heights[!is.na(heights)] #select for values where its NOT NA
 #[] square brackets are the base R way to select a subset of data --> called indexing
 #! is an operator that reverses the function
