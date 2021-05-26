@@ -60,7 +60,7 @@ proj58_map
 
 ### Mapping my Detections and Releases - interactive map
 
-An interactive map can contain more information than a static map. Here we will explore the package `plotly` to create interactive "slippery" maps. These allow you to explore your map in different ways by clicking and scrolling through the output.
+An interactive map can contain more information than a static map. Here we will explore the package `plotly` to create interactive "slippy" maps. These allow you to explore your map in different ways by clicking and scrolling through the output.
 
 First, we will set our basemap's aesthetics and bounding box and assign this information (as a list) to a geo_styling variable. Then, we choose which detections we wish to use and identify the columns containing Latitude and Longitude, using the `plot_geo` function. Next, we use the `add_markers` function to write out what information we would like to have displayed when we hover our mouse over a station in our interactive map. In this case, we chose to use `paste` to join together the Station Name and its lat/long. Finally, we add all this information together, along with a title, using the `layout` function, and now we can explore our interactive map!
 
@@ -361,7 +361,7 @@ tqcs_map
 
 ### Mapping my Detections and Releases - interactive map
 
-An interactive map can contain more information than a static map. Here we will explore the package `plotly` to create interactive "slippery" maps. These allow you to explore your map in different ways by clicking and scrolling through the output.
+An interactive map can contain more information than a static map. Here we will explore the package `plotly` to create interactive "slippy" maps. These allow you to explore your map in different ways by clicking and scrolling through the output.
 
 First, we will set our basemap's aesthetics and bounding box and assign this information (as a list) to a geo_styling variable. Then, we choose which detections we wish to use and identify the columns containing Latitude and Longitude, using the `plot_geo` function. Next, we use the `add_markers` function to write out what information we would like to have displayed when we hover our mouse over a station in our interactive map. In this case, we chose to use `paste` to join together the Station Name and its lat/long. Finally, we add all this information together, along with a title, using the `layout` function, and now we can explore our interactive map!
 
@@ -643,7 +643,7 @@ detections_map
 
 ### Mapping my Detections and Releases - interactive map
 
-An interactive map can contain more information than a static map. Here we will explore the package `plotly` to create interactive "slippery" maps. These allow you to explore your map in different ways by clicking and scrolling through the output.
+An interactive map can contain more information than a static map. Here we will explore the package `plotly` to create interactive "slippy" maps. These allow you to explore your map in different ways by clicking and scrolling through the output.
 
 First, we will set our basemap's aesthetics and bounding box and assign this information (as a list) to a geo_styling variable. Then, we choose which detections we wish to use and identify the columns containing Latitude and Longitude, using the `plot_geo` function. Next, we use the `add_markers` function to write out what information we would like to have displayed when we hover our mouse over a station in our interactive map. In this case, we chose to use `paste` to join together the Station Name and its lat/long. Finally, we add all this information together, along with a title, using the `layout` function, and now we can explore our interactive map!
 
