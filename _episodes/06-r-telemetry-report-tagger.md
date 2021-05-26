@@ -192,6 +192,16 @@ receivers <- proj58_matched_full_no_release %>%
   as.data.frame()  
 
 View(receivers)
+
+animal_id_summary <- proj58_matched_full_no_release %>% 
+  group_by(catalognumber) %>%
+  summarise(dets = length(catalognumber),
+            stations = length(unique(station)),
+            min = min(datecollected), 
+            max = max(datecollected), 
+            tracklength = max(datecollected)-min(datecollected))
+
+View(animal_id_summary)
 ~~~
 {: .language-r}
 
@@ -490,6 +500,18 @@ receivers <- tqcs_matched_10_11_no_release %>%
   as.data.frame() 
 
 View(receivers)
+
+animal_id_summary <- tqcs_matched_10_11_no_release %>% 
+  group_by(catalognumber) %>%
+  summarise(dets = length(catalognumber),
+            stations = length(unique(station)),
+            min = min(datecollected), 
+            max = max(datecollected), 
+            tracklength = max(datecollected)-min(datecollected))
+
+View(animal_id_summary)
+
+
 ~~~
 {: .language-r}
 
@@ -751,6 +773,17 @@ all_dets %>%
   distinct_all() %>% #keep only one record of each
   mutate(number_of_arrays = sapply(arrays,length)) %>% #sapply: applies a function across a List - in this case we are applying length()
   as.data.frame() 
+  
+#Full summary of each animal's track
+animal_id_summary <- all_dets %>% 
+  group_by(animal_id) %>%
+  summarise(dets = length(animal_id),
+            stations = length(unique(station)),
+            min = min(detection_timestamp_utc), 
+            max = max(detection_timestamp_utc), 
+            tracklength = max(detection_timestamp_utc)-min(detection_timestamp_utc))
+
+View(animal_id_summary)
 
 ~~~
 {: .language-r}
