@@ -209,6 +209,16 @@ proj61_det_summary  <- proj61_qual_16_17_full  %>%
 
 proj61_det_summary #remember: this is a subset!
 
+# Create a new data product, det_days, that give you the unique dates that an animal was seen by a station
+stationsum <- proj61_qual_16_17_full %>% 
+  group_by(station) %>%
+  summarise(num_detections = length(datecollected),
+            start = min(datecollected),
+            end = max(datecollected),
+            uniqueIDs = length(unique(fieldnumber)), 
+            det_days=length(unique(as.Date(datecollected))))
+View(stationsum)
+
 ~~~
 {: .language-r}
 
@@ -394,6 +404,17 @@ teq_anim_summary  <- teq_qual_10_11  %>%
   summarize(count =n())
 
 teq_anim_summary # remember: this is a subset!
+
+# Create a new data product, det_days, that give you the unique dates that an animal was seen by a station
+stationsum <- teq_qual_10_11 %>% 
+  group_by(station) %>%
+  summarise(num_detections = length(datecollected),
+            start = min(datecollected),
+            end = max(datecollected),
+            species = length(unique(scientificname)),
+            uniqueIDs = length(unique(fieldnumber)), 
+            det_days=length(unique(as.Date(datecollected))))
+View(stationsum)
 
 ~~~
 {: .language-r}
@@ -605,6 +626,16 @@ anim_summary  <- all_dets  %>%
   summarize(count =n())
 
 anim_summary #number of dets per month/year per station & species
+
+# Create a new data product, det_days, that give you the unique dates that an animal was seen by a station
+stationsum <- all_dets %>% 
+  group_by(station) %>%
+  summarise(num_detections = length(animal_id),
+            start = min(detection_timestamp_utc),
+            end = max(detection_timestamp_utc),
+            uniqueIDs = length(unique(animal_id)), 
+            det_days=length(unique(as.Date(detection_timestamp_utc))))
+View(stationsum)
 
 ~~~
 {: .language-r}
