@@ -47,6 +47,8 @@ proj61_qual_16_17_full <- proj61_qual_16_17_full %>% slice(1:100000) #subset our
 ~~~
 {: .language-r}
 
+You may have noticed that our call to `read_csv` has a second argument this time: guess_max. This is a useful argument when some of our columns begin with a lot of NULL values. When determining what data type to assign to a column, rather than checking every single entry, R will check the first few and make a guess based on that. If the first few values are null, R will get confused and throw an error when it actually finds data further down in the column. `guess_max` lets us tell R exactly how many columns to read before trying to make a guess. This way, we know it will read enough entries in each column to actually find data, which it will prioritize over the NULL values when assigning a type to the column. This parameter isn't always necessary, but it can be vital depending on your dataset. 
+
 To give meaning to these detections we should import our Instrument Deployment Metadata and Tagging Metadata as well. These are in the standard OTN-style templates which can be found [here](https://members.oceantrack.org/data/data-collection).
 ~~~
 #These are saved as XLS/XLSX files, so we need a different library to read them in. 
