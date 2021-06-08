@@ -25,7 +25,7 @@ ggplot(data = <DATA>, mapping = aes(<MAPPINGS>)) + <GEOM_FUNCTION>
 ~~~
 {: .language-r}
 
-In the above example, there are three important parts: <DATA>, <MAAPINGS>, and <GEOM_FUNCTION>. 
+In the above example, there are three important parts: <DATA>, <MAPPINGS>, and <GEOM_FUNCTION>. 
 
 <DATA> refers to the data that we'll be plotting. In general, this will be held in a dataframe like the one we prepared in the previous lessons.
 
@@ -61,14 +61,14 @@ With just the above code, we've added our geom to our aesthetic and made our plo
 
 ### Basic plots
 
-As a minor syntactic note, you can build your plots iteratively, without assigning them to a variable inbetween. For this, we make use of tidyverse pipes. 
+As a minor syntactic note, you can build your plots iteratively, without assigning them to a variable in-between. For this, we make use of `tidyverse` pipes. 
 ~~~
 proj58_matched_full %>%  
   ggplot(aes(latitude, longitude)) +
   geom_point() #geom = the type of plot
 
 proj58_matched_full %>%  
-  ggplot(aes(latitude, longitude, colour = receiver_group)) + 
+  ggplot(aes(latitude, longitude, colour = detectedby)) + 
   geom_point()
 
 
@@ -78,9 +78,9 @@ proj58_matched_full %>%
 ~~~
 {: .language-r}
 
-You can see that all we need to do to make this work is omit the 'data' parameter, since that's being passed in by the pipe. Note also that we've added `colour = receiver_group` to the second plot's aesthetic, meaning that the output will be coloured based on which receiver group they're a part of.
+You can see that all we need to do to make this work is omit the 'data' parameter, since that's being passed in by the pipe. Note also that we've added `colour = detectedby` to the second plot's aesthetic, meaning that the output will be coloured based on which receiver detected the animal.
 
-Remembering which of the aes or the geom controls which variable can be difficult, but here's a handy rule of thumb: anything specified in `aes()` will apply to the data points themselves, or the whole plot. They are broad statements about how the plot is to be displayed. Anything in the `geom_` function will apply only to that `geom_` layer. Keep this in mind, since it's possible for your plot to have more than one `geom_`!
+Remembering which of the `aes` or the `geom` controls which variable can be difficult, but here's a handy rule of thumb: anything specified in `aes()` will apply to the data points themselves, or the whole plot. They are broad statements about how the plot is to be displayed. Anything in the `geom_` function will apply only to that `geom_` layer. Keep this in mind, since it's possible for your plot to have more than one `geom_`!
 
 > ## Plotting and dplyr Challenge
 >
