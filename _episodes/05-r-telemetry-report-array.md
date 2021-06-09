@@ -129,10 +129,7 @@ ggsave(plot = proj61_map, filename = "proj61_map.tiff", units="in", width=15, he
 
 An interactive map can contain more information than a static map. Here we will explore the package `plotly` to create interactive "slippy" maps. These allow you to explore your map in different ways by clicking and scrolling through the output.
 
-First, we will set our basemap's aesthetics and bounding box and assign this information (as a list) to a geo_styling variable. Then, we choose which Deployment Metadata dataset we wish to use and identify the columns containing Latitude and Longitude, using the `plot_geo` function. Next, we use the `add_markers` function to write out what information we would like to have displayed when we hover our mouse over a station in our interactive map. In this case, we chose to use `paste` to join together the Station Name and its lat/long. Finally, we add all this information together, along with a title, using the `layout` function, and now we can explore our interactive map!
-
-To save this interactive map as an `.html` file, you can explore the function htmlwidgets::saveWidget(), which is beyond the scope of this lesson.
-
+First, we will set our basemap's aesthetics and bounding box and assign this information (as a list) to a geo_styling variable.
 ~~~
 library(plotly)
 
@@ -148,18 +145,31 @@ geo_styling <- list(
   landcolor = toRGB("gray95"),
   countrycolor = toRGB("gray85")
 )
+~~~
+{: .language-r}
 
+Then, we choose which Deployment Metadata dataset we wish to use and identify the columns containing Latitude and Longitude, using the `plot_geo` function. 
+
+~~~
 #decide what data you're going to use. Let's use proj61_deploy_plot, which we created above for our static map.
 
 proj61_map_plotly <- plot_geo(proj61_deploy_plot, lat = ~MeanLat, lon = ~MeanLong)  
+~~~
+{: .language-r}
 
+Next, we use the `add_markers` function to write out what information we would like to have displayed when we hover our mouse over a station in our interactive map. In this case, we chose to use `paste` to join together the Station Name and its lat/long.
+~~~
 #add your markers for the interactive map
 
 proj61_map_plotly <- proj61_map_plotly %>% add_markers(
   text = ~paste(STATION_NO, MeanLat, MeanLong, sep = "<br />"),
   symbol = I("square"), size = I(8), hoverinfo = "text" 
 )
+~~~
+{: .language-r}
 
+Finally, we add all this information together, along with a title, using the `layout` function, and now we can explore our interactive map!
+~~~
 #Add layout (title + geo stying)
 
 proj61_map_plotly <- proj61_map_plotly %>% layout(
@@ -172,12 +182,14 @@ proj61_map_plotly
 ~~~
 {: .language-r}
 
+To save this interactive map as an `.html` file, you can explore the function htmlwidgets::saveWidget(), which is beyond the scope of this lesson.
+
 ### Summary of Animals Detected
 
 Let's find out more about the animals detected by our array! These summary statistics, created using `dplyr` functions, could be used to help determine the how successful each of your stations has been at detecting tagged animals. We will also learn how to export our results using `write_csv`.
 
 ~~~
-# How many of each animals did we detect from each collaborator, by species, per station
+# How many of each animal did we detect from each collaborator, by species, per station
 
 proj61_qual_summary <- proj61_qual_16_17_full %>% 
   filter(datecollected > '2016-06-01') %>% #select timeframe, stations etc.
@@ -315,10 +327,8 @@ ggsave(plot = teq_map, file = "code/day1/teq_map.tiff", units="in", width=15, he
 
 An interactive map can contain more information than a static map. Here we will explore the package `plotly` to create interactive "slippy" maps. These allow you to explore your map in different ways by clicking and scrolling through the output.
 
-First, we will set our basemap's aesthetics and bounding box and assign this information (as a list) to a geo_styling variable. Then, we choose which Deployment Metadata dataset we wish to use and identify the columns containing Latitude and Longitude, using the `plot_geo` function. Next, we use the `add_markers` function to write out what information we would like to have displayed when we hover our mouse over a station in our interactive map. In this case, we chose to use `paste` to join together the Station Name and its lat/long. Finally, we add all this information together, along with a title, using the `layout` function, and now we can explore our interactive map!
+First, we will set our basemap's aesthetics and bounding box and assign this information (as a list) to a geo_styling variable.
 
-To save this interactive map as an `.html` file, you can explore the function htmlwidgets::saveWidget(), which is beyond the scope of this lesson.
- 
 ~~~
 library(plotly)
 
@@ -335,17 +345,30 @@ geo_styling <- list(
   countrycolor = toRGB("gray85")
 )
 
+~~~
+{: .language-r}
+
+Then, we choose which Deployment Metadata dataset we wish to use and identify the columns containing Latitude and Longitude, using the `plot_geo` function.
+~~~
 #decide what data you're going to use. Let's use teq_deploy_plot, which we created above for our static map.
 
 teq_map_plotly <- plot_geo(teq_deploy_plot, lat = ~MeanLat, lon = ~MeanLong)  
+~~~
+{: .language-r}
 
+Next, we use the `add_markers` function to write out what information we would like to have displayed when we hover our mouse over a station in our interactive map. In this case, we chose to use `paste` to join together the Station Name and its lat/long. 
+~~~
 #add your markers for the interactive map
 
 teq_map_plotly <- teq_map_plotly %>% add_markers(
   text = ~paste(STATION_NO, MeanLat, MeanLong, sep = "<br />"),
   symbol = I("square"), size = I(8), hoverinfo = "text" 
 )
+~~~
+{: .language-r}
 
+Finally, we add all this information together, along with a title, using the `layout` function, and now we can explore our interactive map!
+~~~
 #Add layout (title + geo stying)
 
 teq_map_plotly <- teq_map_plotly %>% layout(
@@ -359,11 +382,13 @@ teq_map_plotly
 ~~~
 {: .language-r}
 
+To save this interactive map as an `.html` file, you can explore the function htmlwidgets::saveWidget(), which is beyond the scope of this lesson.
+ 
 ### Summary of Animals Detected
 
 Let's find out more about the animals detected by our array! These summary statistics, created using `dplyr` functions, could be used to help determine the how successful each of your stations has been at detecting tagged animals. We will also learn how to export our results using `write_csv`.
 ~~~
-# How many of each animals did we detect from each collaborator, by species
+# How many of each animal did we detect from each collaborator, by species
 
 teq_qual_summary <- teq_qual_10_11 %>% 
   filter(datecollected > '2010-06-01') %>% #select timeframe, stations etc.
@@ -561,10 +586,8 @@ ggsave(plot = walleye_deploy_map, filename = "walleye_deploy_map.tiff", units="i
 
 An interactive map can contain more information than a static map. Here we will explore the package `plotly` to create interactive "slippy" maps. These allow you to explore your map in different ways by clicking and scrolling through the output.
 
-First, we will set our basemap's aesthetics and bounding box and assign this information (as a list) to a geo_styling variable. Then, we choose which Deployment Metadata dataset we wish to use and identify the columns containing Latitude and Longitude, using the `plot_geo` function. Next, we use the `add_markers` function to write out what information we would like to have displayed when we hover our mouse over a station in our interactive map. In this case, we chose to use `paste` to join together the Station Name and its lat/long. Finally, we add all this information together, along with a title, using the `layout` function, and now we can explore our interactive map!
+First, we will set our basemap's aesthetics and bounding box and assign this information (as a list) to a geo_styling variable.  
 
-To save this interactive map as an `.html` file, you can explore the function htmlwidgets::saveWidget(), which is beyond the scope of this lesson.
-  
 ~~~
 library(plotly)
 
@@ -579,18 +602,30 @@ geo_styling <- list(
   landcolor = toRGB("gray95"),
   countrycolor = toRGB("gray85")
 )
+~~~
+{: .language-r}
 
+Then, we choose which Deployment Metadata dataset we wish to use and identify the columns containing Latitude and Longitude, using the `plot_geo` function.
+~~~
 #decide what data you're going to use. We have chosen glatos_deploy_plot which we created earlier.
 
 glatos_map_plotly <- plot_geo(glatos_deploy_plot, lat = ~MeanLat, lon = ~MeanLong)  
+~~~
+{: .language-r}
 
+Next, we use the `add_markers` function to write out what information we would like to have displayed when we hover our mouse over a station in our interactive map. In this case, we chose to use `paste` to join together the Station Name and its lat/long.
+~~~
 #add your markers for the interactive map
 
 glatos_map_plotly <- glatos_map_plotly %>% add_markers(
   text = ~paste(station, MeanLat, MeanLong, sep = "<br />"),
   symbol = I("square"), size = I(8), hoverinfo = "text" 
 )
+~~~
+{: .language-r}
 
+Finally, we add all this information together, along with a title, using the `layout` function, and now we can explore our interactive map!
+~~~
 #Add layout (title + geo stying)
 
 glatos_map_plotly <- glatos_map_plotly %>% layout(
@@ -602,6 +637,8 @@ glatos_map_plotly <- glatos_map_plotly %>% layout(
 glatos_map_plotly
 ~~~
 {: .language-r}
+
+To save this interactive map as an `.html` file, you can explore the function htmlwidgets::saveWidget(), which is beyond the scope of this lesson.
 
 ### How are my stations performing?
 
