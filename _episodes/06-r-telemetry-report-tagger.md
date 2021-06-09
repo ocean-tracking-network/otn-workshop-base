@@ -760,19 +760,21 @@ write_csv(all_dets_summary, "detections_summary.csv", col_names = TRUE)
 # count detections per transmitter, per array
 
 all_dets %>% 
-  group_by(transmitter_id, glatos_array, common_name_e) %>% 
+  group_by(animal_id, glatos_array, common_name_e) %>% 
   summarize(count = n()) %>% 
-  select(transmitter_id, common_name_e, glatos_array, count)
+  select(animal_id, common_name_e, glatos_array, count)
   
 # list all GLATOS arrays each fish was seen on, and a number_of_arrays column too
 
-all_dets %>% 
+arrays <- all_dets %>% 
   group_by(animal_id) %>% 
   mutate(arrays =  (list(unique(glatos_array)))) %>% #create a column with a list of the arrays
   dplyr::select(animal_id, arrays)  %>% #remove excess columns
   distinct_all() %>% #keep only one record of each
   mutate(number_of_arrays = sapply(arrays,length)) %>% #sapply: applies a function across a List - in this case we are applying length()
   as.data.frame() 
+  
+View(arrays)
   
 #Full summary of each animal's track
 animal_id_summary <- all_dets %>% 
