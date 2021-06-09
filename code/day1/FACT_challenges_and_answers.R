@@ -1,7 +1,5 @@
 # Intro to R for Telemetry Summaries ---------------------------------
-# GLATOS workshop 2021-03-30
-# Instructors: Bruce Delo and Caitlin Bate
-
+# Challenges and Answers
 
 # Challenge 1 ----
 # if we change the value of weight_kg to be 100, does the value of weight_lb also change automatically?
@@ -64,46 +62,42 @@ median(heights, na.rm = TRUE)
 heights_above_67 <- heights_no_na[heights_no_na > 67]
 length(heights_above_67)
 
-
-
-
 # Challenge 5 ----
-#1. What is is the class of the station column in lamprey_dets?
-#2. How many rows and columns are in the lamprey_dets dataset?
+#1. What is is the class of the station column in proj58_matched_2016?
+#2. How many rows and columns are in the proj58_matched_2016 dataset?
 
-#Answer 5: The column is a character, and there are 5,923 rows with 30 columns
-str(lamprey_dets)
+#Answer 5: The column is a character, and there are 1,737,597 rows with 36 columns
+str(tqcs_matched_2010)
 # or
-glimpse(lamprey_dets)
-
+glimpse(tqcs_matched_2010)
 
 
 
 # Challenge 6 ----
-#1. find the max lat and max longitude for animal "A69-1601-1363"
-#2. find the min lat/long of each animal for detections occurring in July
+#1. Find the max lat and max longitude for animal "TQCS-1049258-2008-02-14".
+#2. Find the min lat/long of each animal for detections occurring in July..
 
 #Answer 6:
 #1. 
-lamprey_dets %>% 
-  filter(animal_id=="A69-1601-1363") %>% 
-  summarise(MaxLat=max(deploy_lat), MaxLong=max(deploy_long))
+tqcs_matched_2010 %>% 
+  filter(catalognumber=="TQCS-1049258-2008-02-14") %>% 
+  summarise(MaxLat=max(latitude), MaxLong=max(longitude))
 
-#2. 
-lamprey_dets %>% 
-  filter(detection_timestamp_utc >= "2012-07-01 00:00:00" & detection_timestamp_utc < "2012-08-01 00:00:00" ) %>% 
-  group_by(animal_id) %>% 
-  summarise(MinLat=min(deploy_lat), MinLong=min(deploy_long))
+#2.
+tqcs_matched_2010 %>% 
+  filter(monthcollected == 7) %>% 
+  group_by(catalognumber) %>% 
+  summarise(MinLat=min(latitude), MinLong=min(longitude))
+
 
 
 # Challenge 7 ----
-# try making a scatterplot showing the lat/long for animal "A69-1601-1363", 
+# try making a scatterplot showing the lat/long for animal "TQCS-1049258-2008-02-14", 
 # coloured by detection array
 
-#Answer 7: 
-lamprey_dets %>%  
-  filter(animal_id=="A69-1601-1363") %>% 
-  ggplot(aes(deploy_lat, deploy_long, colour = glatos_array)) + 
-  geom_point()
 
-#Question: what other geoms are there? Try typing `geom_` into R to see what it suggests!
+#Answer 7:
+tqcs_matched_10_11  %>%  
+  filter(catalognumber=="TQCS-1049258-2008-02-14") %>% 
+  ggplot(aes(longitude, latitude, colour = detectedby)) + 
+  geom_point()
