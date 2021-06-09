@@ -126,22 +126,14 @@ For the GLATOS Network you will receive Detection Extracts which include all the
 First, we will comfirm we have our Tag Matches stored in a dataframe.
 
 ~~~
-View(lamprey_dets) #already have our Lamprey tag matches
+View(all_dets) #already have our tag matches
 
 # if you do not have the variable created from a previous lesson, you can use the following code to re-create it:
 
-lamprey_dets <- read_csv("inst_extdata_lamprey_detections.csv", guess_max = 3102)
-~~~
-{: .language-r}
-
-Next, we will load in and join our Walleye matches.
-
-~~~
-walleye_dets <- read_csv("inst_extdata_walleye_detections.csv", guess_max = 9595) #remember guess_max from prev section!
-
+#lamprey_dets <- read_csv("inst_extdata_lamprey_detections.csv", guess_max = 3102)
+#walleye_dets <- read_csv("inst_extdata_walleye_detections.csv", guess_max = 9595) 
 # lets join these two detection files together!
-
-all_dets <- rbind(lamprey_dets, walleye_dets)
+#all_dets <- rbind(lamprey_dets, walleye_dets)
 ~~~
 {: .language-r}
 
