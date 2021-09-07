@@ -14,7 +14,7 @@ processing, and visualizing your data. With it, you can gain valuable insights
 with quick and easy commands that condense high volumes of base R into straightforward
 functions, with enough versatility to meet a variety of needs.
 
-This package was originally created to meet the needs of the Great Lakes Acoustic Telemetry Observation System (GLATOS) and use their specific data formats. However, over time, the functionality has been expanded to allow operations on OTN-formatted data as well, broadening the range of possible applications for the software. As a point of clarification, "GLATOS" (all caps acronym) refers to the organization, while `glatos` refers to the package. 
+This package was originally created to meet the needs of the Great Lakes Acoustic Telemetry Observation System (GLATOS) and use their specific data formats. However, over time, the functionality has been expanded to allow operations on OTN-formatted data as well, broadening the range of possible applications for the software. As a point of clarification, "GLATOS" (all caps acronym) refers to the organization, while `glatos` refers to the package.
 
 Our first step is setting our working directory and importing the relevant libraries.
 
@@ -30,9 +30,9 @@ library(lubridate)
 ~~~
 {: .language-r}
 
-If you are following along with the workshop in the workshop repository, 'data/glatos' should be where all of the GLATOS-format data for this lesson is stored. `glatos` can function with both GLATOS and OTN Node-formatted data, but the functions are different for each. Both, however, provide a marked performance boost over base R, and both ensure that the resulting data set will be compatible with the rest of the `glatos` framework.
+If you are following along with the workshop in the workshop repository, there should be a folder in 'data/' containing data corresponding to your node (at time of writing, FACT, ACT, or GLATOS). `glatos` can function with both GLATOS and OTN Node-formatted data, but the functions are different for each. Both, however, provide a marked performance boost over base R, and both ensure that the resulting data set will be compatible with the rest of the `glatos` framework.
 
-We'll start by combining our several data files into one master detection file, which `glatos` will be able to read. 
+We'll start by combining our several data files into one master detection file, which `glatos` will be able to read.
 
 ~~~
 format <- cols( # Heres a col spec to use when reading in the files
@@ -68,7 +68,7 @@ write_csv(detections, 'all_dets.csv', append = FALSE)
 {:.language-r}
 
 With our new file in hand, we'll want to use the read_otn_detections function
-to load our data into a dataframe. In this case, our data is formatted in the ACT (OTN) style- if it were glatos formatted, we would want to use read_glatos_detections() instead.
+to load our data into a dataframe. In this case, our data is formatted in the ACT (OTN) style- if it were GLATOS formatted, we would want to use read_glatos_detections() instead.
 
 Remember: you can always check a function's documentation by typing a question
 mark, followed by the name of the function.
@@ -92,7 +92,7 @@ head(detections, 2)
 
 With our data loaded, we next want to apply a false filtering algorithm to reduce
 the number of false detections in our dataset. glatos uses the Pincock algorithm
-to filter probable false detections based on the time lag between detections- tightly clustered detections are weighted as more likely to be true, while detections spaced out temporally will be marked as false.
+to filter probable false detections based on the time lag between detections- tightly clustered detections are weighted as more likely to be true, while detections spaced out temporally will be marked as false. We can also pass the time-lag threshold as a variable to the false_detections function. This lets us fine-tune our filtering to allow for greater or lesser temporal space between detections before they're flagged as false.
 
 ~~~
 ## Filtering False Detections ####
@@ -149,14 +149,14 @@ head(sum_location)
 ~~~
 {: .language-r}
 
-`summarize_detections` will return different summaries depending on the summ_type parameter. It can take either "animal", "location", or "both". More information on what these summaries return and how they are structured can be found in the help files (?summarize_detections). 
+`summarize_detections` will return different summaries depending on the summ_type parameter. It can take either "animal", "location", or "both". More information on what these summaries return and how they are structured can be found in the help files (?summarize_detections).
 
-If you had some other location-like column you'd prefer to group by, you can specify that. In the example below, we will create a new column and use that as the location.
+If you had another column that describes the location of a detection, and you would prefer to use that, you can specify it in the function with the `location_col` parameter. In the example below, we will create a new column and use that as the location.
 
 ~~~
 # You can make your own column and use that as the location_col
 # For example we will create a uniq_station column for if you have duplicate station names across projects
-detections_filtered_special <- detections_filtered %>% 
+detections_filtered_special <- detections_filtered %>%
   mutate(station_uniq = paste(glatos_array, station, sep=':'))
 
 sum_location_special <- summarize_detections(detections_filtered_special, location_col = 'station_uniq', summ_type='location')
@@ -165,7 +165,7 @@ head(sum_location_special)
 ~~~
 {: .language-r}
 
-For the next example, we'll summarise along both animal and location, as outlined above. 
+For the next example, we'll summarise along both animal and location, as outlined above.
 ~~~
 # By both dimensions
 sum_animal_location <- summarize_detections(det = detections_filtered,
@@ -176,7 +176,7 @@ head(sum_animal_location)
 ~~~
 {: .language-r}
 
-Summarising by both dimensions will create a row for each station and each animal pair. This can be a bit cluttered, so let's use a filter to remove every row where the animal was not detected on the corresponding station. 
+Summarising by both dimensions will create a row for each station and each animal pair. This can be a bit cluttered, so let's use a filter to remove every row where the animal was not detected on the corresponding station.
 ~~~
 # Filter out stations where the animal was NOT detected.
 sum_animal_location <- sum_animal_location %>% filter(num_dets > 0)
@@ -209,7 +209,7 @@ more amenable to plotting by reducing it from detections to detection events.
 Detection Events differ from detections in that they condense a lot of temporally and
 spatially clustered detections for a single animal into a single detection event. This is
 a powerful and useful way to clean up the data, and makes it easier to present and
-clearer to read. Fortunately,this is easy to do with `glatos`. 
+clearer to read. Fortunately,this is easy to do with `glatos`.
 
 ~~~
 # Reduce Detections to Detection Events ####
@@ -218,14 +218,14 @@ clearer to read. Fortunately,this is easy to do with `glatos`.
 # you specify how long an animal must be absent before starting a fresh event
 
 events <- detection_events(detections_filtered,
-                           location_col = 'station', 
+                           location_col = 'station',
                            time_sep=3600)
 
 head(events)
 ~~~
 {: .language-r}
 
-`location_col` tells the function what to use as the locations by which to group the data, while `time_sep` tells it how much time has to elapse between sequential detections before the detection belongs to a new event (in this case, 3600 seconds, or an hour). The threshold for your data may be different depending on the purpose of your project. 
+`location_col` tells the function what to use as the locations by which to group the data, while `time_sep` tells it how much time has to elapse between sequential detections before the detection belongs to a new event (in this case, 3600 seconds, or an hour). The threshold for your data may be different depending on the purpose of your project.
 
 We can also keep the full extent of our detections, but add a group column so that we can see how they
 would have been condensed.
