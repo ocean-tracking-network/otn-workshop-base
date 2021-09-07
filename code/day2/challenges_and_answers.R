@@ -1,5 +1,5 @@
 # Basic Visualization and Plotting: CHALLENGES ---------------------------------
-# GLATOS workshop 2021-03-31
+# GLATOS workshop 2021-04-15
 # Instructor: Ryan Gosse
 
 
