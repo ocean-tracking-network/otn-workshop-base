@@ -46,7 +46,7 @@ library(ggplot2)
 proj58_matched_full_plot <- ggplot(data = proj58_matched_full,
                   mapping = aes(x = longitude, y = latitude)) #can assign a base
 ~~~
-{:. language-r}
+{: .language-r}
 
 With a couple of lines of code, we've already mostly completed a simple scatter plot of our data. The 'data' parameter takes our dataframe, and the mapping parameter takes the output of the `aes()` function, which itself takes a mapping of our data onto the axes of the graph. That can be a bit confusing, so let's briefly break this down. `aes()` is short for 'aesthetics'- the function constructs the aesthetic mappings of our data, which describe how variables in the data are mapped to visual properties of the plot. For example, above, we are setting the 'x' attribute to 'longitude', and the 'y' attribute to latitude. This means that the X axis of our plot will represent longitude, and the Y axis will represent latitude. Depending on the type of plot you're making, you may want different values there, and different types of geom functions can require different aesthetic mappings (colour, for example, is another common one). You can always type `?aes()` at the console if you want more information.
 
@@ -136,7 +136,7 @@ library(ggplot2)
 tqcs_10_11_plot <- ggplot(data = tqcs_matched_10_11,
                           mapping = aes(x = longitude, y = latitude)) #can assign a base
 ~~~
-{:. language-r}
+{: .language-r}
 
 With a couple of lines of code, we've already mostly completed a simple scatter plot of our data. The 'data' parameter takes our dataframe, and the mapping parameter takes the output of the `aes()` function, which itself takes a mapping of our data onto the axes of the graph. That can be a bit confusing, so let's briefly break this down. `aes()` is short for 'aesthetics'- the function constructs the aesthetic mappings of our data, which describe how variables in the data are mapped to visual properties of the plot. For example, above, we are setting the 'x' attribute to 'longitude', and the 'y' attribute to latitude. This means that the X axis of our plot will represent longitude, and the Y axis will represent latitude. Depending on the type of plot you're making, you may want different values there, and different types of geom functions can require different aesthetic mappings (colour, for example, is another common one). You can always type `?aes()` at the console if you want more information.
 
@@ -226,7 +226,7 @@ lamprey_dets_plot <- ggplot(data = lamprey_dets,
                                    mapping = aes(x = deploy_long, y = deploy_lat)) #can assign a base
 
 ~~~
-{:. language-r}
+{: .language-r}
 
 With a couple of lines of code, we've already mostly completed a simple scatter plot of our data. The 'data' parameter takes our dataframe, and the mapping parameter takes the output of the `aes()` function, which itself takes a mapping of our data onto the axes of the graph. That can be a bit confusing, so let's briefly break this down. `aes()` is short for 'aesthetics'- the function constructs the aesthetic mappings of our data, which describe how variables in the data are mapped to visual properties of the plot. For example, above, we are setting the 'x' attribute to 'deploy_long', and the 'y' attribute to 'deploy_lat'. This means that the X axis of our plot will represent longitude, and the Y axis will represent latitude. Depending on the type of plot you're making, you may want different values there, and different types of geom functions can require different aesthetic mappings (colour, for example, is another common one). You can always type `?aes()` at the console if you want more information.
 
