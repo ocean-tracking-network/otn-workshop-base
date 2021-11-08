@@ -11,7 +11,7 @@ questions:
 `glatos` can be used to get the residence index of your animals at all the different stations.
 In fact, `glatos` offers five different methods for calculating Residence Index. For this lesson, we will showcase two of them, but more information on the others can be found in the `glatos` documentation.
 
-The `residence_index()` function requires an events objects to create a residence index. We will start by creating a subset like we did in the last lesson. This will save us some time, since running the residence index on the full set is prohibitively long for the scope of this workshop.
+The `residence_index()` function requires an events object to create a residence index. We will start by creating a subset like we did in the last lesson. This will save us some time, since running the residence index on the full set is prohibitively long for the scope of this workshop.
 
 First we will decide which animals to base our subset on. To help us with this, we can use `group_by` on the events object to make it easier to identify good candidates.
 
@@ -34,10 +34,10 @@ Now that we have a subset of our events object, we can apply the `residence_inde
 
 rik_data <- residence_index(events_subset,
                             calculation_method = 'kessel')
+# "Kessel" method is a special case of "time_interval" where time_interval_size = "1 day"
 rik_data
 
 # Calc residence index using the time interval method, interval set to 6 hours
-# "Kessel" method is a special case of "time_interval" where time_interval_size = "1 day"
 rit_data <- residence_index(events_subset,
                             calculation_method = 'time_interval',
                             time_interval_size = "6 hours")
@@ -50,11 +50,9 @@ Although the code we've written for each method of calculating the residence ind
 
 
 One of the development goals of the `glatos` package is interoperability with other scientific R packages. Currently, we can
-'crosswalk' data from `glatos` data to the package [VTrack](https://github.com/RossDwyer/VTrack). By 'crosswalk', we mean that we can take data that has been manipulated and formatted by `glatos`, and make it usable by another package, in this case, VTrack. We'll use the same dataset as before, but we'll also add some related metadata from a different file and filter
-out all the detectons that aren't from proj58. Again, we are making subsets of our data both to demonstrate how and to save ourselves some processing time.
+'crosswalk' data from `glatos` data to the package [VTrack](https://github.com/RossDwyer/VTrack). By 'crosswalk', we mean that we can take data that has been manipulated and formatted by `glatos`, and make it usable by another package, in this case, VTrack. We'll use the same dataset as before, but we'll also add some related metadata from a different file and filter out all the detections that aren't from proj58. Again, we are making subsets of our data both to demonstrate how and to save ourselves some processing time.
 
-First, lets get the tagging metadata. Note that some of the release timestamps in this dataset are in the wrong format. We will start by fixing that using our custom normDate function.
-
+First, let's get the tagging metadata. Note that some of the release timestamps in this dataset are in the wrong format. We will start by fixing that using our custom normDate function.
 
 ~~~
 tags <- prepare_tag_sheet('Tag_Metadata/Proj58_Metadata_cownoseray.xls',sheet = 2, start = 5)
@@ -103,9 +101,10 @@ ATTdata$Station.Information
 ~~~
 {: .language-r}
 
-With this done, you can use your data with the VTrack package. You'll notice that not all the detections made it into the ATT object. That's because the conversion function only keeps detections that it has station metadata for. Tags with no detections will also be thrown out by the function. This is to prevent issues with VTrack.
+With this done, you can use your data with the VTrack package. You'll notice that not all the detections made it into the ATT object. That's because the conversion function only keeps detections which occur on receivers for which we have deployment metadata. Detections with no deployment metadata are excluded. This is to prevent issues with VTrack.
 
 Now that our data is in a format that VTrack can understand, we can apply VTrack's functions to it. For example, we can call VTrack's abacusPlot function to generate an abacus plot of our data:
+
 ~~~
 # Now that we have an ATT dataframe, we can use it in VTrack functions:
 
@@ -181,6 +180,6 @@ dispSum %>% filter(Consecutive.Dispersal > 0) %>%  View
 ~~~
 {: .language-r}
 
-This is only the beginning of what you can do with VTrack and it's powerful suite of analysis functions, but a full lesson on VTrack is outside the scope of this workshop. We encourage you to look at the VTrack documentation to see what potential applications it might have to your data.
+This is only the beginning of what you can do with VTrack and its powerful suite of analysis functions, but a full lesson on VTrack is outside the scope of this workshop. We encourage you to look at the VTrack documentation to see what potential applications it might have to your data.
 
-We will, however, continue with `glatos` for one more lesson, in which we will cover some basic, but very versatile visualization functions provided by the package. 
+We will, however, continue with `glatos` for one more lesson, in which we will cover some basic, but very versatile visualization functions provided by the package.
