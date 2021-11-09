@@ -52,27 +52,10 @@ Although the code we've written for each method of calculating the residence ind
 One of the development goals of the `glatos` package is interoperability with other scientific R packages. Currently, we can
 'crosswalk' data from `glatos` data to the package [VTrack](https://github.com/RossDwyer/VTrack). By 'crosswalk', we mean that we can take data that has been manipulated and formatted by `glatos`, and make it usable by another package, in this case, VTrack. We'll use the same dataset as before, but we'll also add some related metadata from a different file and filter out all the detections that aren't from proj58. Again, we are making subsets of our data both to demonstrate how and to save ourselves some processing time.
 
-First, let's get the tagging metadata. Note that some of the release timestamps in this dataset are in the wrong format. We will start by fixing that using our custom normDate function.
+First, let's get the tagging metadata.
 
 ~~~
-tags <- prepare_tag_sheet('Tag_Metadata/Proj58_Metadata_cownoseray.xls',sheet = 2, start = 5)
-
-
-#To fix the datetimes, we will use the code Bruce showed yesterday
-normDate <- Vectorize(function(x) {
-  if (!is.na(suppressWarnings(as.numeric(x))))  # Win excel
-    as.Date(as.numeric(x), origin="1899-12-30")
-  else
-    as.Date(x, format="%y/%m/%d")
-})
-
-res <- as.Date(normDate(tags$time[0:52]), origin="1970-01-01")
-
-full_dates = c(ymd_hms(res, truncated = 3), ymd_hms(tags$time[53:89]))
-View(full_dates)
-
-tags <- tags %>%
-  mutate(time = full_dates)
+tags <- prepare_tag_sheet('Tag_Metadata/Proj58_Metadata_cownoseray.xlsx',sheet = 2, start = 5)
 ~~~
 {: .language-r}
 
