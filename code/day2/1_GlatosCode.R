@@ -2,7 +2,7 @@
 
 ## Set your working directory
 
-setwd("./data/")  
+setwd("./data/")
 library(glatos)
 library(tidyverse)
 library(VTrack)
@@ -86,7 +86,7 @@ head(sum_location)
 # You can make your own column and use that as the location_col
 # For example we will create a uniq_station column for if you have duplicate station names across projects
 
-detections_filtered_special <- detections_filtered %>% 
+detections_filtered_special <- detections_filtered %>%
   mutate(station_uniq = paste(glatos_array, station, sep=':'))
 
 
@@ -128,7 +128,7 @@ sum_animal_custom
 # you specify how long an animal must be absent before starting a fresh event
 
 events <- detection_events(detections_filtered,
-                           location_col = 'station', 
+                           location_col = 'station',
                            time_sep=3600)
 
 head(events)
@@ -136,7 +136,7 @@ head(events)
 
 # keep detections, but add a 'group' column for each event group
 detections_w_events <- detection_events(detections_filtered,
-                                        location_col = 'station', 
+                                        location_col = 'station',
                                         time_sep=3600, condense=FALSE)
 
 # 08 - More Features of glatos ####
@@ -152,36 +152,23 @@ events_subset <- events %>% filter(animal_id %in% subset_animals)
 
 events_subset
 # Calc residence index using the Kessel method
-rik_data <- residence_index(events_subset, 
+rik_data <- residence_index(events_subset,
                             calculation_method = 'kessel')
 rik_data
 
 # Calc residence index using the time interval method, interval set to 6 hours
 # "Kessel" method is a special case of "time_interval" where time_interval_size = "1 day"
 
-rit_data <- residence_index(events_subset, 
-                            calculation_method = 'time_interval', 
+rit_data <- residence_index(events_subset,
+                            calculation_method = 'time_interval',
                             time_interval_size = "6 hours")
 rit_data
- 
+
 # Converting glatos/FACT/OTN-style dataframes to ATT format for use with VTrack ####
 
 ?convert_otn_to_att
 
 tags <- prepare_tag_sheet('Tag_Metadata/Proj58_Metadata_cownoseray.xls',sheet = 2, start = 5)
-
-#To fix the datetimes, we will use the code Bruce showed yesterday
-normDate <- Vectorize(function(x) {
-  if (!is.na(suppressWarnings(as.numeric(x))))  # Win excel
-    as.Date(as.numeric(x), origin="1899-12-30")
-  else
-    as.Date(x, format="%y/%m/%d")
-})
-
-res <- as.Date(normDate(tags$time[0:52]), origin="1970-01-01")
-
-full_dates = c(ymd_hms(res, truncated = 3), ymd_hms(tags$time[53:89]))
-View(full_dates)
 
 tags <- tags %>%
   mutate(time = full_dates)
@@ -235,7 +222,7 @@ plot(MD, xlim=c(-77, -76), ylim=c(38, 40), col='green', xlab="Longitude", ylab="
 color <- c(colorRampPalette(c('pink', 'red'))(max(coa_single$Number.of.Detections)))
 
 #add the points
-points(coa_single$Longitude.coa, coa_single$Latitude.coa, pch=19, col=color[coa_single$Number.of.Detections], 
+points(coa_single$Longitude.coa, coa_single$Latitude.coa, pch=19, col=color[coa_single$Number.of.Detections],
     cex=log(coa_single$Number.of.Stations) + 0.5) # cex is for point size. natural log is for scaling purposes
 
 # add axises and title
@@ -254,7 +241,7 @@ View(dispSum)
 
 dispSum %>% filter(Consecutive.Dispersal > 0) %>%  View
 
-# BREAK 
+# BREAK
 
 # 9 - Basic Visualization and Plotting
 
@@ -262,8 +249,8 @@ dispSum %>% filter(Consecutive.Dispersal > 0) %>%  View
 # ?glatos::abacus_plot
 # customizable version of the standard VUE-derived abacus plots
 
-abacus_plot(detections_w_events, 
-            location_col='station', 
+abacus_plot(detections_w_events,
+            location_col='station',
             main='ACT Detections by Station') # can use plot() variables here, they get passed thru to plot()
 
 # pick a single fish to plot
@@ -294,10 +281,10 @@ bubble_array
 
 
 # Challenge 1 ----
-# Create a bubble plot of that bay we zoomed in earlier. Set the bounding box using the provided nw + se cordinates, change the colour scale and 
+# Create a bubble plot of that bay we zoomed in earlier. Set the bounding box using the provided nw + se cordinates, change the colour scale and
 # resize the points to be smaller. As a bonus, add points for the other receivers that don't have any detections.
 # Hint: ?detection_bubble_plot will help a lot
 # Here's some code to get you started
 
-nw <- c(38.75, -76.75) 
-se <- c(39, -76.25) 
+nw <- c(38.75, -76.75)
+se <- c(39, -76.25)
