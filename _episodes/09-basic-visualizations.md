@@ -7,7 +7,7 @@ questions:
     - "What kinds of plots can I make with my data?"
 ---
 
-Now that we've cleaned and processed our data, we can use `glatos`' built-in plotting tools to make quick and effective visualizations out of it. One of the simplest visualizations is an abacus plot to display animal detections against the appropriate stations. To this end, `glatos` supplies a built-in, customizable `abacus_plot` function. This is a wrapper for functions from another R library called `ggplot`, which allow you to forgo some of the parameters and settings to focus more on how you want your plots to look.
+Now that we've cleaned and processed our data, we can use `glatos`' built-in plotting tools to make quick and effective visualizations out of it. One of the simplest visualizations is an abacus plot to display animal detections against the appropriate stations. To this end, `glatos` supplies a built-in, customizable `abacus_plot` function.
 
 ~~~
 # Visualizing Data - Abacus Plots ####
