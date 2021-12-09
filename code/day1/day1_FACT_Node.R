@@ -89,7 +89,7 @@ heights[complete.cases(heights)] #select only complete cases
 
 #imports file into R. paste the filepath to the unzipped file here!
 
-tqcs_matched_2010 <- read_csv("tqcs_matched_detections_2010.csv", guess_max = 117172) #Import 2010 detections
+tqcs_matched_2010 <- read_csv("tqcs_matched_detections_2010.zip", guess_max = 117172) #Import 2010 detections
 
 ## Exploring Detection Extracts ----
 
@@ -142,7 +142,7 @@ tqcs_matched_2010 %>% #Take tqcs_matched_2010, AND THEN...
 
 ## Joining Detection Extracts ----
 
-tqcs_matched_2011 <- read_csv("tqcs_matched_detections_2011.csv", guess_max = 41880) #Import 2011 detections
+tqcs_matched_2011 <- read_csv("tqcs_matched_detections_2011.zip", guess_max = 41880) #Import 2011 detections
 
 tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #Now join the two dataframes
 
