@@ -393,7 +393,7 @@ tqcs_matched_10_11 %>% mutate(datecollected=ymd_hms(datecollected)) #Use the lub
 
 #as.POSIXct(tqcs_matched_10_11$datecollected) #this is the base R way - if you ever see this function 
 ~~~
-{. .language-r}
+{: .language-r}
 
 
 We've just used a single function, `ymd_hms`, but with it we've been able to completely reformat the entire datecollected column. `ymd_hms` is short for Year, Month, Day, Hours, Minutes, and Seconds. For example, at time of writing, it's 2021-05-14 14:21:40. Other format functions exist too, like `dmy_hms`, which specifies the day first and year third (i.e, 14-05-2021 14:21:40). Investigate the documentation to find which is right for you.
@@ -584,7 +584,7 @@ lamprey_dets %>% mutate(detection_timestamp_utc=ymd_hms(detection_timestamp_utc)
 
 #as.POSIXct(lamprey_dets$detection_timestamp_utc) #this is the base R way - if you ever see this function 
 ~~~
-{. .language-r}
+{: .language-r}
 
 
 We've just used a single function, `ymd_hms`, but with it we've been able to completely reformat the entire detection_timestamp_utc column. `ymd_hms` is short for Year, Month, Day, Hours, Minutes, and Seconds. For example, at time of writing, it's 2021-05-14 14:21:40. Other format functions exist too, like `dmy_hms`, which specifies the day first and year third (i.e, 14-05-2021 14:21:40). Investigate the documentation to find which is right for you.
