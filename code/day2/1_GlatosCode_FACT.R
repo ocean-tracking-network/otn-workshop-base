@@ -220,18 +220,19 @@ library(raster)
 USA <- getData('GADM', country="USA", level=1)
 MD <- USA[USA$NAME_1=="Maryland",]
 
+#Alternative method of getting the polygon. 
 library(raster)
 f <-  'http://biogeo.ucdavis.edu/data/gadm3.6/Rsp/gadm36_USA_1_sp.rds'
 b <- basename(f)
 download.file(f, b, mode="wb", method="curl")
-USA <- readRDS('/Users/bruce/Downloads/gadm36_USA_1_sp.rds')
+USA <- readRDS('gadm36_USA_1_sp.rds')
 FL <- USA[USA$NAME_1=="Florida",]
 
 # plot the object and zoom in to lake Huron. Set colour of ground to green Add labels to the axises
-plot(MD, xlim=c(-77, -76), ylim=c(38, 40), col='green', xlab="Longitude", ylab="Latitude")
+plot(FL, xlim=c(-80.75, -80), ylim=c(27, 27.5), col='green', xlab="Longitude", ylab="Latitude")
 
 # For much more zoomed in plot
-# plot(MD, xlim=c(-76.75, -76.25), ylim=c(38.75, 39), col='green', xlab="Longitude", ylab="Latitude")
+# plot(FL, xlim=c(-80.4, -80.0), ylim=c(27, 27.3), col='green', xlab="Longitude", ylab="Latitude")
 
 # Create a palette
 color <- c(colorRampPalette(c('pink', 'red'))(max(coa_single$Number.of.Detections)))
