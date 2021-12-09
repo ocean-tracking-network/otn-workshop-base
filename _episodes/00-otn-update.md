@@ -1,6 +1,6 @@
 ---
-title: Introduction to Acoustic Telemetry Data Analysis
-teaching: 0
+title: Background
+teaching: 5
 exercises: 0
 questions:
     - "What is the Ocean Tracking Network?"

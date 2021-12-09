@@ -232,6 +232,7 @@ proj58_matched_full_no_release  %>%
 ### Other Example Plots
 
 Some examples of complex plotting options. The most useful of these may include abacus plotting (an example with 'animal' and 'station' on the y-axis) as well as an example using `ggmap` and `geom_path` to create an example map showing animal movement.
+
 ~~~
 
 #Use the color scales in this package to make plots that are pretty, 
@@ -315,6 +316,7 @@ movMap <-
 
 movMap
 ~~~
+{: .language-r}
 
 ## FACT Node
 
