@@ -293,22 +293,30 @@ coa
 ~~~
 {: .language-r}
 
-To see what this brings us, let's take a look at a plot of the COAs from VTrack. We'll use animal 'PROJ58-1218518-2015-09-16 for this.
+To see what this brings us, let's take a look at a plot of the COAs from VTrack. We'll use animal 'TQCS-1049273-2008-02-28' for this.
+
+We also need to get a shapefile for the Florida coastline so that we have something onto which we plot our data. At the time of this workshop, we've had some problems connecting to the GADM service from which we get this shapefile. We encourage you to try it as presented in the code. If that doesn't work, however, you can still get the shapefile this way:
+
+- Go to `http://biogeo.ucdavis.edu/data/gadm3.6/Rsp/gadm36_USA_1_sp.rds`. Your browser should download a file called `gadm36_USA_1_sp.rds`.
+- Navigate to the file in your file explorer and get the path.
+- In RStudio, navigate to the console and run the command `USA <- readRDS('/file/path/to/gadm36_USA_1_sp.rds')`
+
+You should now be able to continue the code from the line `FL <- USA[USA$NAME_1=="Florida",]`.
 
 ~~~
 # Plot a COA
-coa_single <- coa %>% filter(Tag.ID == 'PROJ58-1218518-2015-09-16')
+coa_single <- coa %>% filter(Tag.ID == 'TQCS-1049273-2008-02-28')
 
 # We'll use raster to get the polygon
 library(raster)
 USA <- getData('GADM', country="USA", level=1)
-MD <- USA[USA$NAME_1=="Maryland",]
+FL <- USA[USA$NAME_1=="Florida",]
 
-# plot the object and zoom in to lake Huron. Set colour of ground to green Add labels to the axises
-plot(MD, xlim=c(-77, -76), ylim=c(38, 40), col='green', xlab="Longitude", ylab="Latitude")
+# plot the object and zoom in to the St. Lucie River and Jupiter Inlet. Set colour of ground to green Add labels to the axises
+plot(FL, xlim=c(-80.75, -80), ylim=c(27, 27.5), col='green', xlab="Longitude", ylab="Latitude")
 
 # For much more zoomed in plot
-# plot(MD, xlim=c(-76.75, -76.25), ylim=c(38.75, 39), col='green', xlab="Longitude", ylab="Latitude")
+# plot(FL, xlim=c(-80.4, -80.0), ylim=c(27, 27.3), col='green', xlab="Longitude", ylab="Latitude")
 
 # Create a palette
 color <- c(colorRampPalette(c('pink', 'red'))(max(coa_single$Number.of.Detections)))
@@ -322,7 +330,7 @@ points(coa_single$Longitude.coa, coa_single$Latitude.coa, pch=19, col=color[coa_
 # add axises and title
 axis(1)
 axis(2)
-title("Centers of Activities for PROJ58-1218518-2015-09-16")
+title("Centers of Activities for TQCS-1049273-2008-02-28")
 ~~~
 {: .language-r}
 
