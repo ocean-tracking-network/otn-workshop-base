@@ -218,7 +218,7 @@ view(coa_single)
 # We'll use raster to get the polygon
 library(raster)
 USA <- getData('GADM', country="USA", level=1)
-MD <- USA[USA$NAME_1=="Maryland",]
+FL <- USA[USA$NAME_1=="Florida",]
 
 #Alternative method of getting the polygon. 
 library(raster)
@@ -292,7 +292,7 @@ bubble_station
 
 
 # Challenge 1 ----
-# Create a bubble plot of that bay we zoomed in earlier. Set the bounding box using the provided nw + se cordinates, change the colour scale and
+# Create a bubble plot of the area on which we zoomed in earlier. Set the bounding box using the provided nw + se cordinates, change the colour scale and
 # resize the points to be smaller. As a bonus, add points for the other receivers that don't have any detections.
 # Hint: ?detection_bubble_plot will help a lot
 # Here's some code to get you started
