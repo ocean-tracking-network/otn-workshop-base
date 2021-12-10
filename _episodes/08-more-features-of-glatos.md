@@ -270,7 +270,7 @@ VTrack::abacusPlot(ATTdata)
 ~~~
 {: .language-r}
 
-This is not especially exciting, since we've done plenty of abacus plots already. However, VTrack has its own set of unique features, just like `glatos`. To use the spacial features of VTrack, however, we have to give the ATT object a coordinate system to use.
+This may not be especially exciting. However, VTrack has its own set of unique features, just like `glatos`. To use the spacial features of VTrack, however, we have to give the ATT object a coordinate system to use.
 
 ~~~
 # If you're going to do spatial things in ATT:
@@ -309,6 +309,8 @@ coa_single <- coa %>% filter(Tag.ID == 'TQCS-1049273-2008-02-28')
 
 # We'll use raster to get the polygon
 library(raster)
+
+#The line below might fail. If it does, refer to the steps above.
 USA <- getData('GADM', country="USA", level=1)
 FL <- USA[USA$NAME_1=="Florida",]
 
@@ -327,7 +329,7 @@ points(coa_single$Longitude.coa, coa_single$Latitude.coa, pch=19, col=color[coa_
     cex=log(coa_single$Number.of.Stations) + 0.5) # cex is for point size. natural log is for scaling purposes
 
 
-# add axises and title
+# add axes and title
 axis(1)
 axis(2)
 title("Centers of Activities for TQCS-1049273-2008-02-28")
