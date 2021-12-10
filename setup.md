@@ -7,7 +7,7 @@ title: Setup
 You will requre 1) all the correct programs, 2) all the listed R packages 3) the dataset and code. Instructions for all these are below.
 
 
-### Please see the attached document for program instructions: - [Program Install Instructions.docx](/Resources/ACT_2021_install_instructions.docx)
+### Please see the attached document for program instructions: - [Program Install Instructions.docx](/Resources/install_instructions.docx)
 -  R version: 3.6.x or newer (recommend 4.0.x) and RStudio
 -  Rtools (Windows users only) and GDAL are only required for Workshop Day 2
 
@@ -15,7 +15,7 @@ Once all of the programs are installed, open RStudio and run the below package i
 
 <b>Note:</b> When running through the installs, you may encounter a prompt asking you to upgrade dependent packages. Choosing Option `3: None`, works in most situations and will prevent upgrades of packages you weren't explicitly looking to upgrade.
 
-### Day 1 Workshop Requirements
+### Beginning R Workshop Requirements
 
 ```r
 
@@ -38,7 +38,7 @@ install.packages("readxl")
 install.packages("viridis")
 ```
 
-### Day 2 Workshop Requirements
+### `glatos` Workshop Requirements
 <b>Note:</b> When running through the installs, you may encounter a prompt asking you to upgrade dependent packages. Choosing Option `3: None`, works in most situations and will prevent upgrades of packages you weren't explicitly looking to upgrade.
 
 ```r
@@ -58,9 +58,7 @@ devtools::install_github("rossdwyer/VTrack")
 # glatos - acoustic telemetry package that does filtering, vis, array simulation, etc.
 install.packages('remotes')
 library(remotes) 
-install_url("https://gitlab.oceantrack.org/GreatLakes/glatos/-/raw/act-workshop-2021/glatos_0.4.2.1.tar.gz",
-              build_opts = c("--no-resave-data", "--no-manual"))  
-
+remotes::install_github('ocean-tracking-network/glatos')
 #Additional packages for mapping.
 install.packages('stringr')
 install.packages('mapview')
@@ -78,8 +76,8 @@ install.packages('sp')
 install.packages('raster')
 
 # Install actel
-library(remotes)
-remotes::install_github("hugomflavio/actel", build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
+#library(remotes)
+#remotes::install_github("hugomflavio/actel", build_opts = c("--no-resave-data", #"--no-manual"), build_vignettes = TRUE)
 
 # Install packages for building/displaying R Markdown
 install.packages('rmarkdown')
@@ -88,13 +86,13 @@ install.packages('knitr', dependencies = TRUE)
 
 # Dataset and Code
 
-<b>Once the above packages are installed</b>, you can download the datasets and code for this workshop from <b>[this link](https://github.com/ocean-tracking-network/2021-04-13-act-workshop)</b>
+<b>Once the above packages are installed</b>, you can download the datasets and code for this workshop from <b>[this link]([workshop-git-URL])</b>
 
 1. Select the GREEN "Code" button at the top and choose "Download ZIP"
 2. Unzip the folder and move to secure location on your computer (Documents, Desktop etc.)
 3. Copy the folder's path and use it to set your working directly in R using `setwd('<path-to-folder>')`.
 
-If you are familiar with Git and Github, feel free to clone this repository as you normally would, by running `git clone https://github.com/ocean-tracking-network/2021-04-13-act-workshop.git` in a terminal program and following from step `3` above.
+If you are familiar with Git and Github, feel free to clone this repository as you normally would, by running `git clone [workshop-git-URL].git` in a terminal program and following from step `3` above.
 
 
 
