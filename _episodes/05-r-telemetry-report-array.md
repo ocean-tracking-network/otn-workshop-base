@@ -387,6 +387,7 @@ To save this interactive map as an `.html` file, you can explore the function ht
 ### Summary of Animals Detected
 
 Let's find out more about the animals detected by our array! These summary statistics, created using `dplyr` functions, could be used to help determine the how successful each of your stations has been at detecting tagged animals. We will also learn how to export our results using `write_csv`.
+
 ~~~
 # How many of each animal did we detect from each collaborator, by species
 
@@ -405,9 +406,10 @@ teq_qual_summary #remember, this is just the first 10,000 rows! We subsetted the
 write_csv(teq_qual_summary, "code/day1/teq_detection_summary_June2010_to_Dec2011.csv", col_names = TRUE)
 
 ~~~
+{: .language-r}
+
 You may notice in your summary table above that some rows have a value of `NA` for 'scientificname'. This is because this example dataset has detections of animals tagged by researchers who are not a part of the FACT Network, and therefore have not agreed to share their species information with array-operators automatically. To obtain this information you would have to reach out to the researcher directly. For more information on the FACT Data Policy and how it differs from other collaborating OTN Networks, please reach out to Data@theFACTnetwork.org.
 
-{: .language-r}
 
 ### Summary of Detections
 

@@ -1,11 +1,11 @@
 ---
-title: Introduction to Acoustic Telemetry Data Analysis
-teaching: 0
+title: Background
+teaching: 5
 exercises: 0
 questions:
     - "What is the Ocean Tracking Network?"
     - "How does your local telemetry network interact with OTN?"
-	- "What methods of data analysis will be covered?"
+    - "What methods of data analysis will be covered?"
 ---
 ## Intro to OTN
 
