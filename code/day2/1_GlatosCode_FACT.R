@@ -166,7 +166,7 @@ rit_data <- residence_index(events_subset,
                             time_interval_size = "6 hours")
 rit_data
 
-# Converting glatos/FACT/OTN-style dataframes to ATT format for use with VTrack ####
+# Converting GLATOS/FACT/OTN-style dataframes to ATT format for use with VTrack ####
 
 ?prepare_deploy_sheet
 
@@ -228,7 +228,7 @@ download.file(f, b, mode="wb", method="curl")
 USA <- readRDS('gadm36_USA_1_sp.rds')
 FL <- USA[USA$NAME_1=="Florida",]
 
-# plot the object and zoom in to lake Huron. Set colour of ground to green Add labels to the axises
+# plot the object and zoom in to St. Lucie River and Jupiter Inlet. Set colour of ground to green Add labels to the axises
 plot(FL, xlim=c(-80.75, -80), ylim=c(27, 27.5), col='green', xlab="Longitude", ylab="Latitude")
 
 # For much more zoomed in plot
@@ -242,7 +242,7 @@ plot.new()
 points(coa_single$Longitude.coa, coa_single$Latitude.coa, pch=19, col=color[coa_single$Number.of.Detections],
     cex=log(coa_single$Number.of.Stations) + 0.5) # cex is for point size. natural log is for scaling purposes
 
-# add axises and title
+# add axes and title
 axis(1)
 axis(2)
 title("Centers of Activities for TQCS-1049273-2008-02-28")
