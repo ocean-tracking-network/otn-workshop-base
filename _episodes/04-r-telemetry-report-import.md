@@ -84,8 +84,8 @@ View(tqcs_matched_10_11) #already have our Tag matches, from a previous lesson.
 
 # if you do not have the variable created from a previous lesson, you can use the following code to re-create it:
 
-tqcs_matched_2010 <- read_csv("tqcs_matched_detections_2010.csv", guess_max = 117172) #Import 2010 detections
-tqcs_matched_2011 <- read_csv("tqcs_matched_detections_2011.csv", guess_max = 41880) #Import 2011 detections
+tqcs_matched_2010 <- read_csv("tqcs_matched_detections.zip", guess_max = 117172) #Import 2010 detections
+tqcs_matched_2011 <- read_csv("tqcs_matched_detections.zip", guess_max = 41880) #Import 2011 detections
 tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #Now join the two dataframes
 # release records for animals often appear in >1 year, this will remove the duplicates
 tqcs_matched_10_11_full <- tqcs_matched_10_11_full %>% distinct() # Use distinct to remove duplicates. 

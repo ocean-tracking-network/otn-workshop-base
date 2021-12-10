@@ -226,8 +226,9 @@ To import your data from your CSV file, we just need to pass the file path to re
 
 ~~~
 #imports file into R. paste the filepath to the unzipped file here!
+#read_csv can take both csv and zip files, as long as the zip file contains a csv.
 
-tqcs_matched_2010 <- read_csv("tqcs_matched_detections_2010.csv", guess_max = 117172) #Import 2010 detections
+tqcs_matched_2010 <- read_csv("tqcs_matched_detections_2010.zip", guess_max = 117172) #Import 2010 detections
 
 ~~~
 {: .language-r}
@@ -369,7 +370,7 @@ We're now going to briefly touch on a few useful dataframe use-cases that aren't
 One function that we'll need to know is `rbind`, a base R function which lets us combine two R objects together. Since detections for animals tagged during a study often appear in multiple years, this functionality will let us merge the dataframes together. We'll also use `distinct`, a `dplyr` function that lets us trim out duplicate release records for each animal, since these are listed in each detection extract.
 
 ~~~
-tqcs_matched_2011 <- read_csv("tqcs_matched_detections_2011.csv", guess_max = 41880) #Import 2011 detections
+tqcs_matched_2011 <- read_csv("tqcs_matched_detections_2011.zip", guess_max = 41880) #Import 2011 detections
 
 tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #Now join the two dataframes
 
