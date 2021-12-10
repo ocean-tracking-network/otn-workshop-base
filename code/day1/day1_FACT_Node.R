@@ -89,7 +89,7 @@ heights[complete.cases(heights)] #select only complete cases
 
 #imports file into R. paste the filepath to the unzipped file here!
 
-tqcs_matched_2010 <- read_csv("tqcs_matched_detections_2010.csv", guess_max = 117172) #Import 2010 detections
+tqcs_matched_2010 <- read_csv("tqcs_matched_detections_2010.zip", guess_max = 117172) #Import 2010 detections
 
 ## Exploring Detection Extracts ----
 
@@ -142,7 +142,7 @@ tqcs_matched_2010 %>% #Take tqcs_matched_2010, AND THEN...
 
 ## Joining Detection Extracts ----
 
-tqcs_matched_2011 <- read_csv("tqcs_matched_detections_2011.csv", guess_max = 41880) #Import 2011 detections
+tqcs_matched_2011 <- read_csv("tqcs_matched_detections_2011.zip", guess_max = 41880) #Import 2011 detections
 
 tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #Now join the two dataframes
 
@@ -219,8 +219,8 @@ View(tqcs_matched_10_11) #already have our Tag matches, from a previous lesson.
 #tqcs_matched_10_11 <- tqcs_matched_10_11_full %>% slice(1:100000) # subset our example data to help this workshop run smoother!
 
 ## Array Matches ----
-teq_qual_2010 <- read_csv("teq_qualified_detections_2010_ish.csv")
-teq_qual_2011 <- read_csv("teq_qualified_detections_2011_ish.csv")
+teq_qual_2010 <- read_csv("teq_qualified_detections_2010.zip")
+teq_qual_2011 <- read_csv("teq_qualified_detections_2011.zip")
 teq_qual_10_11_full <- rbind(teq_qual_2010, teq_qual_2011) 
 
 teq_qual_10_11 <- teq_qual_10_11_full %>% slice(1:100000) #subset our example data for ease of analysis!
@@ -342,6 +342,7 @@ teq_qual_summary <- teq_qual_10_11 %>%
 #view our summary table
 
 teq_qual_summary #remember, this is just the first 10,000 rows! We subsetted the dataset upon import!
+view(teq_qual_summary)
 
 #export our summary table
 
