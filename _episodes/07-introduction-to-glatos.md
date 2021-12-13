@@ -81,9 +81,12 @@ mark, followed by the name of the function.
 
 # Save our detections file data into a dataframe called detections
 detections <- read_otn_detections(det_file='all_dets.csv')
+
+detections <- detections %>% slice(1:100000) # subset our example data to help this workshop run
 ~~~
 {: .language-r}
 
+Making a 100,000 row subset of our data is not a necessary step, but it will make our code run more smoothly for this workshop, since later functions can struggle with large datasets.
 
 Remember that we can use head() to inspect a few lines of our data to ensure it was loaded properly.
 
@@ -315,9 +318,12 @@ mark, followed by the name of the function.
 
 # Save our detections file data into a dataframe called detections
 detections <- read_otn_detections(det_file='all_dets.csv')
+
+detections <- detections %>% slice(1:100000) # subset our example data to help this workshop run
 ~~~
 {: .language-r}
 
+Making a 100,000 row subset of our data is not a necessary step, but it will make our code run more smoothly for this workshop, since later functions can struggle with large datasets.
 
 Remember that we can use head() to inspect a few lines of our data to ensure it was loaded properly.
 
