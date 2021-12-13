@@ -24,7 +24,7 @@ Our first step is setting our working directory and importing the relevant libra
 ~~~
 ## Set your working directory ####
 
-setwd("./data/glatos")
+setwd("./data/act")
 library(glatos)
 library(tidyverse)
 library(VTrack)
