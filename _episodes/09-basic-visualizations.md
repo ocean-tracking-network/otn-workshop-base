@@ -114,7 +114,7 @@ Now that we've cleaned and processed our data, we can use `glatos`' built-in plo
 
 abacus_plot(detections_w_events,
             location_col='station',
-            main='TQCS Detections by Station') # can use plot() variables here, they get passed thru to plot()
+            main='Project 58 Detections by Station') # can use plot() variables here, they get passed thru to plot()
 
 
 ~~~
