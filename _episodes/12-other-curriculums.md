@@ -26,4 +26,8 @@ OTN has hosted other workshops in the past which contain different code sets tha
 
 - [ACT/MATOS workshop 2021](https://ocean-tracking-network.github.io/2021-04-13-act-workshop/)
 
+- [FACT workshop 2021](https://ocean-tracking-network.github.io/2021-12-15-fact-workshop/)
+
+- [MigraMar workshop 2022](https://ocean-tracking-network.github.io/migramar-student-workshop-2022/index.html)
+
 Many of our Intro to R workshops are based upon this curriculum from [The Carpentries](https://datacarpentry.org/R-ecology-lesson/).
