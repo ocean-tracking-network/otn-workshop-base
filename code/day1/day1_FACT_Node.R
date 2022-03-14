@@ -11,6 +11,9 @@ library(ggmap)
 setwd('C:/Users/ct991305/Documents/Workshop Material/one true workshop - WIP/FACT_data') #set folder you're going to work in
 getwd() #check working directory
 
+# For a range of cheatsheets that can help with some of the libraries in this lesson, RStudio maintains a repository
+# of cheatsheets for popular libraries here: https://www.rstudio.com/resources/cheatsheets/
+
 # Intro to R --------
 
 ## Operators ----
@@ -63,9 +66,9 @@ animals #calling your object will print it out
 animals[2] #square brackets = indexing. selects the 2nd value in your vector
 
 weight_g > 50 #conditional indexing: selects based on criteria
-weight_g[weight_g <=30 | weight_g == 55] #many new operators here!  
+weight_g[weight_g <=30 | weight_g == 55] #many new operators here!
 
-# <= less than or equal to; | "or"; == equal to. Also available are >=, greater than or equal to; < and > for less than or greater than (no equals); and & for "and". 
+# <= less than or equal to; | "or"; == equal to. Also available are >=, greater than or equal to; < and > for less than or greater than (no equals); and & for "and".
 
 weight_g[weight_g >= 30 & weight_g == 21] #  >=  greater than or equal to, & "and"
 # this particular example give 0 results - why?
@@ -117,22 +120,22 @@ tqcs_matched_2010 %>% slice(1:5) #selects rows 1 to 5 in the dplyr way
 # Take tqcs_matched_2010 AND THEN slice rows 1 through 5.
 
 #We can also use multiple pipes.
-tqcs_matched_2010 %>% 
+tqcs_matched_2010 %>%
   distinct(detectedby) %>% nrow #number of arrays that detected my fish in dplyr!
 # Take tqcs_matched_2010 AND THEN select only the unique entries in the detectedby column AND THEN count them with nrow.
 
 #We can do the same as above with other columns too.
-tqcs_matched_2010 %>% 
-  distinct(catalognumber) %>% 
-  nrow #number of animals that were detected 
+tqcs_matched_2010 %>%
+  distinct(catalognumber) %>%
+  nrow #number of animals that were detected
 # Take tqcs_matched_2010 AND THEN select only the unique entries in the catalognumber column AND THEN count them with nrow.
 
 #We can use filtering to conditionally select rows as well.
-tqcs_matched_2010 %>% filter(catalognumber=="TQCS-1049258-2008-02-14") 
+tqcs_matched_2010 %>% filter(catalognumber=="TQCS-1049258-2008-02-14")
 # Take tqcs_matched_2010 AND THEN select only those rows where catalognumber is equal to the above value.
 
 tqcs_matched_2010 %>% filter(monthcollected >= 10) #all dets in/after October of 2016
-# Take tqcs_matched_2010 AND THEN select only those rows where monthcollected is greater than or equal to 10. 
+# Take tqcs_matched_2010 AND THEN select only those rows where monthcollected is greater than or equal to 10.
 
 #get the mean value across a column using GroupBy and Summarize
 
@@ -147,13 +150,13 @@ tqcs_matched_2011 <- read_csv("tqcs_matched_detections_2011.zip", guess_max = 41
 tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #Now join the two dataframes
 
 #release records for animals often appear in >1 year, this will remove the duplicates
-tqcs_matched_10_11_full <- tqcs_matched_10_11_full %>% distinct() # Use distinct to remove duplicates. 
+tqcs_matched_10_11_full <- tqcs_matched_10_11_full %>% distinct() # Use distinct to remove duplicates.
 
 tqcs_matched_10_11 <- tqcs_matched_10_11_full %>% slice(1:100000) # subset our example data to help this workshop run smoother!
 
 ## Dealing with Datetimes ----
 
-library(lubridate) #Import our Lubridate library. 
+library(lubridate) #Import our Lubridate library.
 
 tqcs_matched_10_11 %>% mutate(datecollected=ymd_hms(datecollected)) #Use the lubridate function ymd_hms to change the format of the date.
 
@@ -166,43 +169,45 @@ tqcs_matched_10_11 %>% mutate(datecollected=ymd_hms(datecollected)) #Use the lub
 #While `ggplot2` function calls can look daunting at first, they follow a single formula, detailed below.
 
 
-#Anything within <> braces will be replaced in an actual function call. 
+#Anything within <> braces will be replaced in an actual function call.
 #ggplot(data = <DATA>, mapping = aes(<MAPPINGS>)) + <GEOM_FUNCTION>
 
-#<DATA> refers to the data that we'll be plotting. 
+#<DATA> refers to the data that we'll be plotting.
 
-#<MAPPINGS> refers to the aesthetic mappings for the data- 
-#that is, which columns in the data will be used to determine which attributes of the graph. 
-#For example, if you have columns for latitude and longitude, you may want to map these onto the X and Y axes of the graph. 
+#<MAPPINGS> refers to the aesthetic mappings for the data-
+#that is, which columns in the data will be used to determine which attributes of the graph.
+#For example, if you have columns for latitude and longitude, you may want to map these onto the X and Y axes of the graph.
 
 #<GEOM_FUNCTION> refers to the style of the plot: what type of plot are we going to make.
 
 library(ggplot2)
 
-tqcs_10_11_plot <- ggplot(data = tqcs_matched_10_11, 
+tqcs_10_11_plot <- ggplot(data = tqcs_matched_10_11,
                           mapping = aes(x = longitude, y = latitude)) #can assign a base
 
-tqcs_10_11_plot + 
-  geom_point(alpha=0.1, 
-             colour = "blue") 
-#This will layer our chosen geom onto our plot template. 
+tqcs_10_11_plot +
+  geom_point(alpha=0.1,
+             colour = "blue")
+#This will layer our chosen geom onto our plot template.
 #alpha is a transparency argument in case points overlap. Try alpha = 0.02 to see how it works!
 
 ## Basic Plots ----
 
 #you can combine with dplyr pipes
 
-tqcs_matched_10_11 %>%  
+tqcs_matched_10_11 %>%
   ggplot(aes(longitude, latitude)) +
   geom_point() #geom = the type of plot
 
 
-tqcs_matched_10_11 %>%  
-  ggplot(aes(longitude, latitude, colour = commonname)) + 
+tqcs_matched_10_11 %>%
+  ggplot(aes(longitude, latitude, colour = commonname)) +
   geom_point()
 #anything you specify in the aes() is applied to the actual data points/whole plot,
 #anything specified in geom() is applied to that layer only (colour, size...). sometimes you have >1 geom layer so this makes more sense!
 
+# For more detailed information on common ggplot features, see the ggplot2 cheatsheet by Clara Granell here:
+# https://github.com/claragranell/ggplot2/blob/main/ggplot_theme_system_cheatsheet.pdf
 
 # Creating Summary Reports: Importing --------
 
@@ -215,13 +220,13 @@ View(tqcs_matched_10_11) #already have our Tag matches, from a previous lesson.
 #tqcs_matched_2011 <- read_csv("tqcs_matched_detections_2011.csv", guess_max = 41880) #Import 2011 detections
 #tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #Now join the two dataframes
 # release records for animals often appear in >1 year, this will remove the duplicates
-#tqcs_matched_10_11_full <- tqcs_matched_10_11_full %>% distinct() # Use distinct to remove duplicates. 
+#tqcs_matched_10_11_full <- tqcs_matched_10_11_full %>% distinct() # Use distinct to remove duplicates.
 #tqcs_matched_10_11 <- tqcs_matched_10_11_full %>% slice(1:100000) # subset our example data to help this workshop run smoother!
 
 ## Array Matches ----
 teq_qual_2010 <- read_csv("teq_qualified_detections_2010.zip")
 teq_qual_2011 <- read_csv("teq_qualified_detections_2011.zip")
-teq_qual_10_11_full <- rbind(teq_qual_2010, teq_qual_2011) 
+teq_qual_10_11_full <- rbind(teq_qual_2010, teq_qual_2011)
 
 teq_qual_10_11 <- teq_qual_10_11_full %>% slice(1:100000) #subset our example data for ease of analysis!
 
@@ -233,7 +238,7 @@ View(teq_deploy)
 
 # Tag metadata
 
-tqcs_tag <- read.csv("TQCS_metadata_tagging.csv") 
+tqcs_tag <- read.csv("TQCS_metadata_tagging.csv")
 View(tqcs_tag)
 
 #keep in mind the timezone of the columns
@@ -251,22 +256,22 @@ names(teq_deploy)
 #make a basemap for your stations, using the min/max deploy lat and longs as bounding box
 
 base <- get_stamenmap(
-  bbox = c(left = min(teq_deploy$DEPLOY_LONG), 
-           bottom = min(teq_deploy$DEPLOY_LAT), 
-           right = max(teq_deploy$DEPLOY_LONG), 
+  bbox = c(left = min(teq_deploy$DEPLOY_LONG),
+           bottom = min(teq_deploy$DEPLOY_LAT),
+           right = max(teq_deploy$DEPLOY_LONG),
            top = max(teq_deploy$DEPLOY_LAT)),
-  maptype = "terrain-background", 
+  maptype = "terrain-background",
   crop = FALSE,
   zoom = 8)
 
 #filter for stations you want to plot
 
-teq_deploy_plot <- teq_deploy %>% 
+teq_deploy_plot <- teq_deploy %>%
   mutate(deploy_date=ymd_hms(DEPLOY_DATE_TIME....yyyy.mm.ddThh.mm.ss.)) %>% #make a datetime
   mutate(recover_date=ymd_hms(RECOVER_DATE_TIME..yyyy.mm.ddThh.mm.ss.)) %>% #make a datetime
   filter(!is.na(deploy_date)) %>% #no null deploys
   filter(deploy_date > 2010-07-03) %>% #only looking at certain deployments!
-  group_by(STATION_NO) %>% 
+  group_by(STATION_NO) %>%
   summarise(MeanLat=mean(DEPLOY_LAT), MeanLong=mean(DEPLOY_LONG)) #get the mean location per station
 
 # you could choose to plot stations which are within a certain bounding box!
@@ -277,7 +282,7 @@ teq_deploy_plot <- teq_deploy %>%
 
 #add your stations onto your basemap
 
-teq_map <- 
+teq_map <-
   ggmap(base, extent='panel') +
   ylab("Latitude") +
   xlab("Longitude") +
@@ -311,13 +316,13 @@ geo_styling <- list(
 
 #decide what data you're going to use. Let's use teq_deploy_plot, which we created above for our static map.
 
-teq_map_plotly <- plot_geo(teq_deploy_plot, lat = ~MeanLat, lon = ~MeanLong)  
+teq_map_plotly <- plot_geo(teq_deploy_plot, lat = ~MeanLat, lon = ~MeanLong)
 
 #add your markers for the interactive map
 
 teq_map_plotly <- teq_map_plotly %>% add_markers(
   text = ~paste(STATION_NO, MeanLat, MeanLong, sep = "<br />"),
-  symbol = I("square"), size = I(8), hoverinfo = "text" 
+  symbol = I("square"), size = I(8), hoverinfo = "text"
 )
 
 #Add layout (title + geo stying)
@@ -333,10 +338,10 @@ teq_map_plotly
 ## Summary of Animals Detected ----
 # How many of each animals did we detect from each collaborator, by species
 
-teq_qual_summary <- teq_qual_10_11 %>% 
+teq_qual_summary <- teq_qual_10_11 %>%
   filter(datecollected > '2010-06-01') %>% #select timeframe, stations etc.
-  group_by(trackercode, scientificname, tag_contact_pi, tag_contact_poc) %>% 
-  summarize(count = n()) %>% 
+  group_by(trackercode, scientificname, tag_contact_pi, tag_contact_poc) %>%
+  summarize(count = n()) %>%
   select(trackercode, tag_contact_pi, tag_contact_poc, scientificname, count)
 
 #view our summary table
@@ -349,33 +354,33 @@ view(teq_qual_summary)
 write_csv(teq_qual_summary, "teq_detection_summary_June2010_to_Dec2011.csv", col_names = TRUE)
 
 ## Summary of Detections ----
-# number of detections per month/year per station 
+# number of detections per month/year per station
 
-teq_det_summary  <- teq_qual_10_11  %>% 
-  mutate(datecollected=ymd_hms(datecollected))  %>% 
-  group_by(station, year = year(datecollected), month = month(datecollected)) %>% 
+teq_det_summary  <- teq_qual_10_11  %>%
+  mutate(datecollected=ymd_hms(datecollected))  %>%
+  group_by(station, year = year(datecollected), month = month(datecollected)) %>%
   summarize(count =n())
 
 teq_det_summary #remember: this is a subset!
 
 # number of detections per month/year per station & species
 
-teq_anim_summary  <- teq_qual_10_11  %>% 
-  mutate(datecollected=ymd_hms(datecollected))  %>% 
-  group_by(station, year = year(datecollected), month = month(datecollected), scientificname) %>% 
+teq_anim_summary  <- teq_qual_10_11  %>%
+  mutate(datecollected=ymd_hms(datecollected))  %>%
+  group_by(station, year = year(datecollected), month = month(datecollected), scientificname) %>%
   summarize(count =n())
 
 teq_anim_summary # remember: this is a subset!
 
 
 # Create a new data product, det_days, that give you the unique dates that an animal was seen by a station
-stationsum <- teq_qual_10_11 %>% 
+stationsum <- teq_qual_10_11 %>%
   group_by(station) %>%
   summarise(num_detections = length(datecollected),
             start = min(datecollected),
             end = max(datecollected),
             species = length(unique(scientificname)),
-            uniqueIDs = length(unique(fieldnumber)), 
+            uniqueIDs = length(unique(fieldnumber)),
             det_days=length(unique(as.Date(datecollected))))
 View(stationsum)
 
@@ -384,17 +389,17 @@ View(stationsum)
 
 #try with teq_qual_10_11_full if you're feeling bold! takes about 1 min to run on a fast machine
 
-teq_qual_10_11 %>% 
+teq_qual_10_11 %>%
   mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
   mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
   group_by(year_month) %>% #can group by station, species etc.
   summarize(count =n()) %>% #how many dets per year_month
-  ggplot(aes(x = (month(year_month) %>% as.factor()), 
-             y = count, 
+  ggplot(aes(x = (month(year_month) %>% as.factor()),
+             y = count,
              fill = (year(year_month) %>% as.factor())
   )
-  )+ 
-  geom_bar(stat = "identity", position = "dodge2")+ 
+  )+
+  geom_bar(stat = "identity", position = "dodge2")+
   xlab("Month")+
   ylab("Total Detection Count")+
   ggtitle('TEQ Animal Detections by Month')+ #title
@@ -404,32 +409,32 @@ teq_qual_10_11 %>%
 ## New Dataframes ----
 #optional subsetted dataset to use: detections with releases filtered out!
 
-tqcs_matched_10_11_no_release <- tqcs_matched_10_11 %>% 
+tqcs_matched_10_11_no_release <- tqcs_matched_10_11 %>%
   filter(receiver != "release")
 
 #optional full dataset to use: detections with releases filtered out!
 
-tqcs_matched_10_11_full_no_release <- tqcs_matched_10_11_full %>% 
+tqcs_matched_10_11_full_no_release <- tqcs_matched_10_11_full %>%
   filter(receiver != "release")
 
 ## Detection/Release Map - Static ----
 base <- get_stamenmap(
   bbox = c(left = min(tqcs_matched_10_11$longitude),
-           bottom = min(tqcs_matched_10_11$latitude), 
-           right = max(tqcs_matched_10_11$longitude), 
+           bottom = min(tqcs_matched_10_11$latitude),
+           right = max(tqcs_matched_10_11$longitude),
            top = max(tqcs_matched_10_11$latitude)),
-  maptype = "terrain-background", 
+  maptype = "terrain-background",
   crop = FALSE,
   zoom = 8)
 
 
 #add your releases and detections onto your basemap
 
-tqcs_map <- 
+tqcs_map <-
   ggmap(base, extent='panel') +
   ylab("Latitude") +
   xlab("Longitude") +
-  geom_point(data = tqcs_matched_10_11, 
+  geom_point(data = tqcs_matched_10_11,
              aes(x = longitude,y = latitude), #specify the data
              colour = 'blue', shape = 19, size = 2) #lots of aesthetic options here!
 
@@ -450,16 +455,16 @@ geo_styling <- list(
 
 #decide what data you're going to use
 
-tqcs_map_plotly <- plot_geo(tqcs_matched_10_11, lat = ~latitude, lon = ~longitude) 
+tqcs_map_plotly <- plot_geo(tqcs_matched_10_11, lat = ~latitude, lon = ~longitude)
 
 #add your markers for the interactive map
 
 tqcs_map_plotly <- tqcs_map_plotly %>% add_markers(
-  text = ~paste(catalognumber, scientificname, paste("Date detected:", datecollected), 
-                paste("Latitude:", latitude), paste("Longitude",longitude), 
-                paste("Detected by:", detectedby), paste("Station:", station), 
+  text = ~paste(catalognumber, scientificname, paste("Date detected:", datecollected),
+                paste("Latitude:", latitude), paste("Longitude",longitude),
+                paste("Detected by:", detectedby), paste("Station:", station),
                 paste("Contact:", contact_poc, contact_pi), sep = "<br />"),
-  symbol = I("square"), size = I(8), hoverinfo = "text" 
+  symbol = I("square"), size = I(8), hoverinfo = "text"
 )
 
 #Add layout (title + geo stying)
@@ -475,15 +480,15 @@ tqcs_map_plotly
 ## Summary of Tagged Animals ----
 # summary of animals you've tagged
 
-tqcs_tag_summary <- tqcs_tag %>% 
-  mutate(UTC_RELEASE_DATE_TIME = ymd_hms(UTC_RELEASE_DATE_TIME)) %>% 
+tqcs_tag_summary <- tqcs_tag %>%
+  mutate(UTC_RELEASE_DATE_TIME = ymd_hms(UTC_RELEASE_DATE_TIME)) %>%
   #filter(UTC_RELEASE_DATE_TIME > '2019-06-01') %>% #select timeframe, specific animals etc.
-  group_by(year = year(UTC_RELEASE_DATE_TIME), COMMON_NAME_E) %>% 
-  summarize(count = n(), 
-            Meanlength = mean(LENGTH..m., na.rm=TRUE), 
-            minlength= min(LENGTH..m., na.rm=TRUE), 
-            maxlength = max(LENGTH..m., na.rm=TRUE), 
-            MeanWeight = mean(WEIGHT..kg., na.rm = TRUE)) 
+  group_by(year = year(UTC_RELEASE_DATE_TIME), COMMON_NAME_E) %>%
+  summarize(count = n(),
+            Meanlength = mean(LENGTH..m., na.rm=TRUE),
+            minlength= min(LENGTH..m., na.rm=TRUE),
+            maxlength = max(LENGTH..m., na.rm=TRUE),
+            MeanWeight = mean(WEIGHT..kg., na.rm = TRUE))
 
 #view our summary table
 
@@ -495,8 +500,8 @@ tqcs_tag_summary
 
 #Average location of each animal, without release records
 
-tqcs_matched_10_11_no_release %>% 
-  group_by(catalognumber) %>% 
+tqcs_matched_10_11_no_release %>%
+  group_by(catalognumber) %>%
   summarize(NumberOfStations = n_distinct(station),
             AvgLat = mean(latitude),
             AvgLong = mean(longitude))
@@ -504,7 +509,7 @@ tqcs_matched_10_11_no_release %>%
 #Now lets try to join our metadata and detection extracts.
 #First we need to make a tagname column in the tag metadata, and figure out the enddate of the tag battery
 
-tqcs_tag <- tqcs_tag %>% 
+tqcs_tag <- tqcs_tag %>%
   mutate(enddatetime = (ymd_hms(UTC_RELEASE_DATE_TIME) + days(EST_TAG_LIFE))) %>% #adding enddate
   mutate(tagname = paste(TAG_CODE_SPACE,TAG_ID_CODE, sep = '-')) #adding tagname column
 
@@ -514,7 +519,7 @@ tag_joined_dets <-  left_join(x = tqcs_matched_10_11_no_release, y = tqcs_tag, b
 
 #make sure the redeployed tags have matched within their deployment period only
 
-tag_joined_dets <- tag_joined_dets %>% 
+tag_joined_dets <- tag_joined_dets %>%
   filter(datecollected >= UTC_RELEASE_DATE_TIME & datecollected <= enddatetime)
 
 View(tag_joined_dets)
@@ -523,38 +528,38 @@ View(tag_joined_dets)
 
 # Avg length per location
 
-tqcs_tag_det_summary <- tag_joined_dets %>% 
-  group_by(detectedby, station, latitude, longitude)  %>%  
+tqcs_tag_det_summary <- tag_joined_dets %>%
+  group_by(detectedby, station, latitude, longitude)  %>%
   summarise(AvgSize = mean(LENGTH..m., na.rm=TRUE))
 
 tqcs_tag_det_summary
 
 # count detections per transmitter, per array
 
-tqcs_matched_10_11_no_release %>% 
-  group_by(catalognumber, detectedby, commonname) %>% 
-  summarize(count = n()) %>% 
+tqcs_matched_10_11_no_release %>%
+  group_by(catalognumber, detectedby, commonname) %>%
+  summarize(count = n()) %>%
   select(catalognumber, commonname, detectedby, count)
 
 # list all receivers each fish was seen on, and a number_of_stations column too
 
-receivers <- tqcs_matched_10_11_no_release %>% 
-  group_by(catalognumber) %>% 
+receivers <- tqcs_matched_10_11_no_release %>%
+  group_by(catalognumber) %>%
   mutate(stations = (list(unique(station)))) %>% #create a column with a list of the stations
   dplyr::select(catalognumber, stations)  %>% #remove excess columns
   distinct_all() %>% #keep only one record of each
   mutate(number_of_stations = sapply(stations, length)) %>% #sapply: applies a function across a List - in this case we are applying length()
-  as.data.frame() 
+  as.data.frame()
 
 View(receivers)
 
 #Full summary of each animal's track
-animal_id_summary <- tqcs_matched_10_11_no_release %>% 
+animal_id_summary <- tqcs_matched_10_11_no_release %>%
   group_by(catalognumber) %>%
   summarise(dets = length(catalognumber),
             stations = length(unique(station)),
-            min = min(datecollected), 
-            max = max(datecollected), 
+            min = min(datecollected),
+            max = max(datecollected),
             tracklength = max(datecollected)-min(datecollected))
 
 View(animal_id_summary)
@@ -562,17 +567,17 @@ View(animal_id_summary)
 ## Plot of Detection Counts ----
 #try with tqcs_matched_10_11_full_no_release if you're feeling bold! takes ~30 secs
 
-tqcs_matched_10_11_no_release  %>% 
+tqcs_matched_10_11_no_release  %>%
   mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
   mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
   group_by(year_month) %>% #can group by station, species etc.
   summarize(count =n()) %>% #how many dets per year_month
-  ggplot(aes(x = (month(year_month) %>% as.factor()), 
-             y = count, 
+  ggplot(aes(x = (month(year_month) %>% as.factor()),
+             y = count,
              fill = (year(year_month) %>% as.factor())
   )
-  )+ 
-  geom_bar(stat = "identity", position = "dodge2")+ 
+  )+
+  geom_bar(stat = "identity", position = "dodge2")+
   xlab("Month")+
   ylab("Total Detection Count")+
   ggtitle('TQCS Detections by Month (2010-2011)')+ #title
@@ -580,7 +585,7 @@ tqcs_matched_10_11_no_release  %>%
 
 # Other Example Plots --------
 
-#Use the color scales in this package to make plots that are pretty, 
+#Use the color scales in this package to make plots that are pretty,
 #better represent your data, easier to read by those with colorblindness, and print well in grey scale.
 library(viridis)
 
@@ -593,12 +598,12 @@ tqcs_matched_10_11 %>%
   geom_point(size=3, position="jitter")+   # draw data as points, and use jitter to help see all points instead of superimposition
   #coord_flip()+   #flip x y, not needed here
   scale_colour_manual(values = "blue")+ #change the colour to represent the species better!
-  scale_fill_manual(values = "grey")+ 
+  scale_fill_manual(values = "grey")+
   geom_boxplot()+ #another layer
   geom_violin(colour="black") #and one more layer
 
 
-#There are other ways to present a summary of data like this that we might have chosen. 
+#There are other ways to present a summary of data like this that we might have chosen.
 #geom_density2d() will give us a KDE for our data points and give us some contours across our chosen plot axes.
 
 tqcs_matched_10_11 %>% #doesnt work on the subsetted data, back to original dataset for this one
@@ -608,9 +613,9 @@ tqcs_matched_10_11 %>% #doesnt work on the subsetted data, back to original data
   geom_point(size=3, position="jitter")+
   scale_colour_manual(values = "blue")+
   scale_fill_manual(values = "grey")+
-  geom_density2d(size=7, lty=1) #this is the only difference from the plot above 
+  geom_density2d(size=7, lty=1) #this is the only difference from the plot above
 
-#anything you specify in the aes() is applied to the actual data points/whole plot, 
+#anything you specify in the aes() is applied to the actual data points/whole plot,
 #anything specified in geom() is applied to that layer only (colour, size...)
 
 # per-individual density contours - lots of plots: called facets!
@@ -621,7 +626,7 @@ tqcs_matched_10_11 %>%
 
 # an easy abacus plot!
 
-abacus_animals <- 
+abacus_animals <-
   ggplot(data = tqcs_matched_10_11_no_release, aes(x = datecollected, y = catalognumber, col = detectedby)) +
   geom_point() +
   ggtitle("Detections by animal") +
@@ -630,24 +635,24 @@ abacus_animals <-
 
 abacus_animals
 
-abacus_stations <- 
+abacus_stations <-
   ggplot(data = tqcs_matched_10_11_no_release,  aes(x = datecollected, y = station, col = catalognumber)) +
   geom_point() +
   ggtitle("Detections by station") +
   theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
   scale_color_viridis(discrete = TRUE)
 
-abacus_stations 
+abacus_stations
 
 # track movement using geom_path!!
 
 tqcs_subset <- tqcs_matched_10_11_no_release %>%
-  dplyr::filter(catalognumber %in% 
+  dplyr::filter(catalognumber %in%
                   c('TQCS-1049282-2008-02-28', 'TQCS-1049281-2008-02-28'))
 
 View(tqcs_subset)
 
-movMap <- 
+movMap <-
   ggmap(base, extent = 'panel') + #use the BASE we set up before
   ylab("Latitude") +
   xlab("Longitude") +
