@@ -44,6 +44,7 @@ getwd() #check working directory
 ~~~
 {: .language-r}
 
+Before we begin the lesson proper, a note on finding additional help. R Libraries, like those included above, are broad and contain many functions. Though most include documentation that can help if you know what to look for, sometimes more general help is necessary. To that end, RStudio maintains cheatsheets for several of the most popular libraries, which can be found here: [https://www.rstudio.com/resources/cheatsheets/](https://www.rstudio.com/resources/cheatsheets/). As a start, the page includes an RStudio IDE cheatsheet that you may find useful while learning to navigate your workspace. With that in mind, let's start learning R. 
 
 ## Intro to R
 

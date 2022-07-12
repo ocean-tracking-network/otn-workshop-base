@@ -17,7 +17,7 @@ In this lesson, we're going to introduce a package called `dplyr`. dplyr takes a
 
 You may not be familiar with dataframes by name, but you may recognize the structure. Dataframes are arranged into rows and columns, not unlike tables in typical spreadsheet format (ex: Excel). In R, they are represented as vectors of vectors: that is, a vector wherein each column is itself a vector. If you are familiar with matrices, or two-dimensional arrays in other languages, the structure of a dataframe will be clear to you.
 
-However, dataframes are not merely vectors- they are a specific type of object with their own functionality, which we will cover in this lesson.
+However, dataframes are not merely vectors- they are a specific type of object with their own functionality, which we will cover in this lesson. As an aside, the [cheat sheets](https://www.rstudio.com/resources/cheatsheets/) for `dplyr` and `readr` may be useful when reviewing this lesson.
 
 We are going to use OTN-style detection extracts for this lesson. If you're unfamiliar with detection extracts formats from OTN-style database nodes, see the documentation [here](https://members.oceantrack.org/data/otn-detection-extract-documentation-matched-to-animals)
 
@@ -185,7 +185,7 @@ View(proj58_matched_full)
 
 ### Dealing with Datetimes
 
-Datetime data is in a special format which is neither numeric nor character. It can be tricky to deal with, too, since Excel frequently reformats dates in any file it opens. We also have to concern ourselves with practical matters of time, like time zone and date formatting. Fortunately, the `lubridate` library gives us a whole host of functionality to manage datetime data.
+Datetime data is in a special format which is neither numeric nor character. It can be tricky to deal with, too, since Excel frequently reformats dates in any file it opens. We also have to concern ourselves with practical matters of time, like time zone and date formatting. Fortunately, the `lubridate` library gives us a whole host of functionality to manage datetime data. For additional help, the [cheat sheet](https://www.rstudio.com/resources/cheatsheets/) for `lubridate` may prove a useful resource.
 
 We'll also use a `dplyr` function called `mutate`, which lets us add new columns or change existing ones, while preserving the existing data in the table. Be careful not to confuse this with its sister function `transmute`, which adds or manipulates columns while *dropping* existing data. If you're ever in doubt as to which is which, remember: `?mutate` and `?transmute` will bring up the help files.
 
@@ -212,7 +212,7 @@ In this lesson, we're going to introduce a package called `dplyr`. dplyr takes a
 
 You may not be familiar with dataframes by name, but you may recognize the structure. Dataframes are arranged into rows and columns, not unlike tables in typical spreadsheet format (ex: Excel). In R, they are represented as vectors of vectors: that is, a vector wherein each column is itself a vector. If you are familiar with matrices, or two-dimensional arrays in other languages, the structure of a dataframe will be clear to you.
 
-However, dataframes are not merely vectors- they are a specific type of object with their own functionality, which we will cover in this lesson.
+However, dataframes are not merely vectors- they are a specific type of object with their own functionality, which we will cover in this lesson. As an aside, the [cheat sheets](https://www.rstudio.com/resources/cheatsheets/) for `dplyr` and `readr` may be useful when reviewing this lesson.
 
 We are going to use OTN-style detection extracts for this lesson. If you're unfamiliar with detection extracts formats from OTN-style database nodes, see the documentation [here](https://members.oceantrack.org/data/otn-detection-extract-documentation-matched-to-animals)
 
@@ -383,7 +383,7 @@ tqcs_matched_10_11 <- tqcs_matched_10_11_full %>% slice(1:100000) # subset our e
 
 ### Dealing with Datetimes
 
-Datetime data is in a special format which is neither numeric nor character. It can be tricky to deal with, too, since Excel frequently reformats dates in any file it opens. We also have to concern ourselves with practical matters of time, like time zone and date formatting. Fortunately, the `lubridate` library gives us a whole host of functionality to manage datetime data.
+Datetime data is in a special format which is neither numeric nor character. It can be tricky to deal with, too, since Excel frequently reformats dates in any file it opens. We also have to concern ourselves with practical matters of time, like time zone and date formatting. Fortunately, the `lubridate` library gives us a whole host of functionality to manage datetime data.  For additional help, the [cheat sheet](https://www.rstudio.com/resources/cheatsheets/) for `lubridate` may prove a useful resource.
 
 We'll also use a `dplyr` function called `mutate`, which lets us add new columns or change existing ones, while preserving the existing data in the table. Be careful not to confuse this with its sister function `transmute`, which adds or manipulates columns while *dropping* existing data. If you're ever in doubt as to which is which, remember: `?mutate` and `?transmute` will bring up the help files.
 
@@ -407,9 +407,7 @@ There are too many useful lubridate functions to cover in the scope of this less
 
 In this lesson, we're going to introduce a package called `dplyr`. dplyr takes advantage of an operator called a pipe to create chains of data manipulation that produce powerful exploratory summaries. It also provides a suite of further functionality for manipulating dataframes: tabular sets of data that are common in data analysis. If you've imported the `tidyverse` library, as we did during setup and in the last episode, then congratulations: you already have dplyr (along with a host of other useful packages).
 
-You may not be familiar with dataframes by name, but you may recognize the structure. Dataframes are arranged into rows and columns, not unlike tables in typical spreadsheet format (ex: Excel). In R, they are represented as vectors of vectors: that is, a vector wherein each column is itself a vector. If you are familiar with matrices, or two-dimensional arrays in other languages, the structure of a dataframe will be clear to you.
-
-However, dataframes are not merely vectors - they are a specific type of object with their own functionality, which we will cover in this lesson.
+However, dataframes are not merely vectors - they are a specific type of object with their own functionality, which we will cover in this lesson. As an aside, the [cheat sheets](https://www.rstudio.com/resources/cheatsheets/) for `dplyr` and `readr` may be useful when reviewing this lesson.
 
 We are going to use GLATOS-style detection extracts for this lesson.
 
@@ -574,7 +572,7 @@ all_dets <- rbind(lamprey_dets, walleye_dets) #Now join the two dataframes
 
 ### Dealing with Datetimes
 
-Datetime data is in a special format which is neither numeric nor character. It can be tricky to deal with, too, since Excel frequently reformats dates in any file it opens. We also have to concern ourselves with practical matters of time, like time zone and date formatting. Fortunately, the `lubridate` library gives us a whole host of functionality to manage datetime data.
+Datetime data is in a special format which is neither numeric nor character. It can be tricky to deal with, too, since Excel frequently reformats dates in any file it opens. We also have to concern ourselves with practical matters of time, like time zone and date formatting. Fortunately, the `lubridate` library gives us a whole host of functionality to manage datetime data.  For additional help, the [cheat sheet](https://www.rstudio.com/resources/cheatsheets/) for `lubridate` may prove a useful resource.
 
 We'll also use a `dplyr` function called `mutate`, which lets us add new columns or change existing ones, while preserving the existing data in the table. Be careful not to confuse this with its sister function `transmute`, which adds or manipulates columns while *dropping* existing data. If you're ever in doubt as to which is which, remember: `?mutate` and `?transmute` will bring up the help files.
 
@@ -600,7 +598,7 @@ In this lesson, we're going to introduce a package called `dplyr`. dplyr takes a
 
 You may not be familiar with dataframes by name, but you may recognize the structure. Dataframes are arranged into rows and columns, not unlike tables in typical spreadsheet format (ex: Excel). In R, they are represented as vectors of vectors: that is, a vector wherein each column is itself a vector. If you are familiar with matrices, or two-dimensional arrays in other languages, the structure of a dataframe will be clear to you.
 
-However, dataframes are not merely vectors- they are a specific type of object with their own functionality, which we will cover in this lesson.
+However, dataframes are not merely vectors- they are a specific type of object with their own functionality, which we will cover in this lesson. As an aside, the [cheat sheets](https://www.rstudio.com/resources/cheatsheets/) for `dplyr` and `readr` may be useful when reviewing this lesson.
 
 We are going to use OTN-style detection extracts for this lesson. If you're unfamiliar with detection extracts formats from OTN-style database nodes, see the documentation [here](https://members.oceantrack.org/data/otn-detection-extract-documentation-matched-to-animals)
 
@@ -770,7 +768,7 @@ View(gmr_matched_18_19)
 
 ### Dealing with Datetimes
 
-Datetime data is in a special format which is neither numeric nor character. It can be tricky to deal with, too, since Excel frequently reformats dates in any file it opens. We also have to concern ourselves with practical matters of time, like time zone and date formatting. Fortunately, the `lubridate` library gives us a whole host of functionality to manage datetime data.
+Datetime data is in a special format which is neither numeric nor character. It can be tricky to deal with, too, since Excel frequently reformats dates in any file it opens. We also have to concern ourselves with practical matters of time, like time zone and date formatting. Fortunately, the `lubridate` library gives us a whole host of functionality to manage datetime data. For additional help, the [cheat sheet](https://www.rstudio.com/resources/cheatsheets/) for `lubridate` may prove a useful resource.
 
 We'll also use a `dplyr` function called `mutate`, which lets us add new columns or change existing ones, while preserving the existing data in the table. Be careful not to confuse this with its sister function `transmute`, which adds or manipulates columns while *dropping* existing data. If you're ever in doubt as to which is which, remember: `?mutate` and `?transmute` will bring up the help files.
 

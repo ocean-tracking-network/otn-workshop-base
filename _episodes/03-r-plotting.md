@@ -18,7 +18,7 @@ keypoints:
 
 ### Background
 
-Now that we have learned how to import, inspect, and manipulate our data, we are next going to learn how to visualize it. R provides a robust plotting suite in the library `ggplot2`. `ggplot2` takes advantage of tidyverse pipes and chains of data manipulation to build plotting code. Additionally, it separates the aesthetics of the plot (what are we plotting) from the styling of the plot (what the plot looks like). What this means is that data aesthetics and styles can be built separately and then combined and recombined to produce modular, reusable plotting code.
+Now that we have learned how to import, inspect, and manipulate our data, we are next going to learn how to visualize it. R provides a robust plotting suite in the library `ggplot2`. `ggplot2` takes advantage of tidyverse pipes and chains of data manipulation to build plotting code. Additionally, it separates the aesthetics of the plot (what are we plotting) from the styling of the plot (what the plot looks like). What this means is that data aesthetics and styles can be built separately and then combined and recombined to produce modular, reusable plotting code. If `ggplot` seems daunting, the [cheat sheet](https://www.rstudio.com/resources/cheatsheets/) may prove useful. 
 
 While `ggplot2` function calls can look daunting at first, they follow a single formula, detailed below.
 
