@@ -13,11 +13,11 @@ questions:
 
 ### Dataframes and dplyr
 
-In this lesson, we're going to introduce a package called `dplyr`. dplyr takes advantage of an operator called a pipe to create chains of data manipulation that produce powerful exploratory summaries. It also provides a suite of further functionality for manipulating dataframes: tabular sets of data that are common in data analysis. If you've imported the `tidyverse` library, as we did during setup and in the last episode, then congratulations: you already have dplyr (along with a host of other useful packages).
+In this lesson, we're going to introduce a package called `dplyr`. dplyr takes advantage of an operator called a pipe to create chains of data manipulation that produce powerful exploratory summaries. It also provides a suite of further functionality for manipulating dataframes: tabular sets of data that are common in data analysis. If you've imported the `tidyverse` library, as we did during setup and in the last episode, then congratulations: you already have dplyr (along with a host of other useful packages). As an aside, the [cheat sheets](https://www.rstudio.com/resources/cheatsheets/) for `dplyr` and `readr` may be useful when reviewing this lesson.
 
 You may not be familiar with dataframes by name, but you may recognize the structure. Dataframes are arranged into rows and columns, not unlike tables in typical spreadsheet format (ex: Excel). In R, they are represented as vectors of vectors: that is, a vector wherein each column is itself a vector. If you are familiar with matrices, or two-dimensional arrays in other languages, the structure of a dataframe will be clear to you.
 
-However, dataframes are not merely vectors- they are a specific type of object with their own functionality, which we will cover in this lesson. As an aside, the [cheat sheets](https://www.rstudio.com/resources/cheatsheets/) for `dplyr` and `readr` may be useful when reviewing this lesson.
+However, dataframes are not merely vectors- they are a specific type of object with their own functionality, which we will cover in this lesson. 
 
 We are going to use OTN-style detection extracts for this lesson. If you're unfamiliar with detection extracts formats from OTN-style database nodes, see the documentation [here](https://members.oceantrack.org/data/otn-detection-extract-documentation-matched-to-animals)
 
@@ -208,11 +208,11 @@ There are too many useful lubridate functions to cover in the scope of this less
 
 ### Dataframes and dplyr
 
-In this lesson, we're going to introduce a package called `dplyr`. dplyr takes advantage of an operator called a pipe to create chains of data manipulation that produce powerful exploratory summaries. It also provides a suite of further functionality for manipulating dataframes: tabular sets of data that are common in data analysis. If you've imported the `tidyverse` library, as we did during setup and in the last episode, then congratulations: you already have dplyr (along with a host of other useful packages).
+In this lesson, we're going to introduce a package called `dplyr`. dplyr takes advantage of an operator called a pipe to create chains of data manipulation that produce powerful exploratory summaries. It also provides a suite of further functionality for manipulating dataframes: tabular sets of data that are common in data analysis. If you've imported the `tidyverse` library, as we did during setup and in the last episode, then congratulations: you already have dplyr (along with a host of other useful packages). As an aside, the [cheat sheets](https://www.rstudio.com/resources/cheatsheets/) for `dplyr` and `readr` may be useful when reviewing this lesson.
 
 You may not be familiar with dataframes by name, but you may recognize the structure. Dataframes are arranged into rows and columns, not unlike tables in typical spreadsheet format (ex: Excel). In R, they are represented as vectors of vectors: that is, a vector wherein each column is itself a vector. If you are familiar with matrices, or two-dimensional arrays in other languages, the structure of a dataframe will be clear to you.
 
-However, dataframes are not merely vectors- they are a specific type of object with their own functionality, which we will cover in this lesson. As an aside, the [cheat sheets](https://www.rstudio.com/resources/cheatsheets/) for `dplyr` and `readr` may be useful when reviewing this lesson.
+However, dataframes are not merely vectors- they are a specific type of object with their own functionality, which we will cover in this lesson. 
 
 We are going to use OTN-style detection extracts for this lesson. If you're unfamiliar with detection extracts formats from OTN-style database nodes, see the documentation [here](https://members.oceantrack.org/data/otn-detection-extract-documentation-matched-to-animals)
 
@@ -405,9 +405,11 @@ There are too many useful lubridate functions to cover in the scope of this less
 
 ### Dataframes and dplyr
 
-In this lesson, we're going to introduce a package called `dplyr`. dplyr takes advantage of an operator called a pipe to create chains of data manipulation that produce powerful exploratory summaries. It also provides a suite of further functionality for manipulating dataframes: tabular sets of data that are common in data analysis. If you've imported the `tidyverse` library, as we did during setup and in the last episode, then congratulations: you already have dplyr (along with a host of other useful packages).
+In this lesson, we're going to introduce a package called `dplyr`. dplyr takes advantage of an operator called a pipe to create chains of data manipulation that produce powerful exploratory summaries. It also provides a suite of further functionality for manipulating dataframes: tabular sets of data that are common in data analysis. If you've imported the `tidyverse` library, as we did during setup and in the last episode, then congratulations: you already have dplyr (along with a host of other useful packages). As an aside, the [cheat sheets](https://www.rstudio.com/resources/cheatsheets/) for `dplyr` and `readr` may be useful when reviewing this lesson.
 
-However, dataframes are not merely vectors - they are a specific type of object with their own functionality, which we will cover in this lesson. As an aside, the [cheat sheets](https://www.rstudio.com/resources/cheatsheets/) for `dplyr` and `readr` may be useful when reviewing this lesson.
+You may not be familiar with dataframes by name, but you may recognize the structure. Dataframes are arranged into rows and columns, not unlike tables in typical spreadsheet format (ex: Excel). In R, they are represented as vectors of vectors: that is, a vector wherein each column is itself a vector. If you are familiar with matrices, or two-dimensional arrays in other languages, the structure of a dataframe will be clear to you.
+
+However, dataframes are not merely vectors - they are a specific type of object with their own functionality, which we will cover in this lesson. 
 
 We are going to use GLATOS-style detection extracts for this lesson.
 
@@ -594,11 +596,11 @@ There are too many useful lubridate functions to cover in the scope of this less
 
 ### Dataframes and dplyr
 
-In this lesson, we're going to introduce a package called `dplyr`. dplyr takes advantage of an operator called a pipe to create chains of data manipulation that produce powerful exploratory summaries. It also provides a suite of further functionality for manipulating dataframes: tabular sets of data that are common in data analysis. If you've imported the `tidyverse` library, as we did during setup and in the last episode, then congratulations: you already have dplyr (along with a host of other useful packages).
+In this lesson, we're going to introduce a package called `dplyr`. dplyr takes advantage of an operator called a pipe to create chains of data manipulation that produce powerful exploratory summaries. It also provides a suite of further functionality for manipulating dataframes: tabular sets of data that are common in data analysis. If you've imported the `tidyverse` library, as we did during setup and in the last episode, then congratulations: you already have dplyr (along with a host of other useful packages). As an aside, the [cheat sheets](https://www.rstudio.com/resources/cheatsheets/) for `dplyr` and `readr` may be useful when reviewing this lesson.
 
 You may not be familiar with dataframes by name, but you may recognize the structure. Dataframes are arranged into rows and columns, not unlike tables in typical spreadsheet format (ex: Excel). In R, they are represented as vectors of vectors: that is, a vector wherein each column is itself a vector. If you are familiar with matrices, or two-dimensional arrays in other languages, the structure of a dataframe will be clear to you.
 
-However, dataframes are not merely vectors- they are a specific type of object with their own functionality, which we will cover in this lesson. As an aside, the [cheat sheets](https://www.rstudio.com/resources/cheatsheets/) for `dplyr` and `readr` may be useful when reviewing this lesson.
+However, dataframes are not merely vectors- they are a specific type of object with their own functionality, which we will cover in this lesson. 
 
 We are going to use OTN-style detection extracts for this lesson. If you're unfamiliar with detection extracts formats from OTN-style database nodes, see the documentation [here](https://members.oceantrack.org/data/otn-detection-extract-documentation-matched-to-animals)
 
