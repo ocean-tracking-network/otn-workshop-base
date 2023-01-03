@@ -2,7 +2,7 @@
 
 ## Set your working directory
 
-setwd("../fact/")
+setwd("../../data/act")
 library(glatos)
 library(tidyverse)
 library(VTrack)
@@ -32,7 +32,7 @@ format <- cols( # Heres a col spec to use when reading in the files
   datereleasedpublic = col_logical()
 )
 detections <- tibble()
-for (detfile in list.files('.', full.names = TRUE, pattern = "tqcs.*\\.zip")) {
+for (detfile in list.files('.', full.names = TRUE, pattern = "proj.*\\.zip")) {
   print(detfile)
   tmp_dets <- read_csv(detfile, col_types = format)
   detections <- bind_rows(detections, tmp_dets)
@@ -46,17 +46,18 @@ write_csv(detections, 'all_dets.csv', append = FALSE)
 # Save our detections file data into a dataframe called detections
 detections <- read_otn_detections('all_dets.csv')
 
-detections <- detections %>% slice(1:100000) # subset our example data to help this workshop run
 
 # View first 2 rows of output
 head(detections, 2)
+
+#Subset our example data to help this workshop run.
+#detections <- detections %>% slice(1:100000)
 
 ## Filtering False Detections ####
 ## ?glatos::false_detections
 
 # write the filtered data (no rows deleted, just a filter column added)
 # to a new det_filtered object
-#detections$transmitter_codespace = unlist(detections$transmitter_codespace)
 detections_filtered <- false_detections(detections, tf=3600, show_plot=TRUE)
 head(detections_filtered)
 nrow(detections_filtered)
@@ -113,7 +114,7 @@ sum_animal_location
 
 # Create a custom vector of Animal IDs to pass to the summary function
 # look only for these ids when doing your summary
-tagged_fish <- c('TQCS-1049258-2008-02-14', '	TQCS-1049269-2008-02-28')
+tagged_fish <- c('PROJ58-1218508-2015-10-13', 'PROJ58-1218510-2015-10-13')
 
 sum_animal_custom <- summarize_detections(det=detections_filtered,
                                           animals=tagged_fish,  # Supply the vector to the function
@@ -149,7 +150,7 @@ detections_w_events <- detection_events(detections_filtered,
 #Using all the events data will take too long, we will subset to just use a couple animals
 events %>% group_by(animal_id) %>% summarise(count=n()) %>% arrange(desc(count))
 
-subset_animals <- c('TQCS-1049274-2008-02-28', 'TQCS-1049271-2008-02-28', 'TQCS-1049258-2008-02-14')
+subset_animals <- c('PROJ59-1191631-2014-07-09', 'PROJ59-1191628-2014-07-07', 'PROJ64-1218527-2016-06-07')
 events_subset <- events %>% filter(animal_id %in% subset_animals)
 
 events_subset
@@ -157,6 +158,7 @@ events_subset
 rik_data <- residence_index(events_subset,
                             calculation_method = 'kessel')
 rik_data
+
 
 # Calc residence index using the time interval method, interval set to 6 hours
 # "Kessel" method is a special case of "time_interval" where time_interval_size = "1 day"
@@ -176,12 +178,12 @@ rit_data
 
 abacus_plot(detections_w_events,
             location_col='station',
-            main='TQCS Detections by Station') # can use plot() variables here, they get passed thru to plot()
+            main='ACT Detections by Station') # can use plot() variables here, they get passed thru to plot()
 
 # pick a single fish to plot
-abacus_plot(detections_filtered[detections_filtered$animal_id== "TQCS-1049273-2008-02-28",],
+abacus_plot(detections_filtered[detections_filtered$animal_id== "PROJ58-1218508-2015-10-13",],
             location_col='station',
-            main="TQCS-1049273-2008-02-28 Detections By Station")
+            main="PROJ58-1218508-2015-10-13 Detections By Station")
 
 # Bubble Plots for Spatial Distribution of Fish ####
 # bubble variable gets the summary data that was created to make the plot
@@ -189,26 +191,25 @@ detections_filtered
 
 ?detection_bubble_plot
 
-# We'll use raster to get a polygon to plot on
+# We'll use raster to get a polygon to plot against
 library(raster)
 USA <- getData('GADM', country="USA", level=1)
-FL <- USA[USA$NAME_1=="Florida",]
+MD <- USA[USA$NAME_1=="Maryland",]
 
-#Alternative method of getting the polygon. 
-f <-  'http://biogeo.ucdavis.edu/data/gadm3.6/Rsp/gadm36_USA_1_sp.rds'
-b <- basename(f)
-download.file(f, b, mode="wb", method="curl")
-USA <- readRDS('gadm36_USA_1_sp.rds')
-FL <- USA[USA$NAME_1=="Florida",]
-
-bubble_station <- detection_bubble_plot(detections_filtered, 
-                                out_file = 'tqcs_bubble.png',
-                                location_col = 'station',
-                                map = FL,
-                                col_grad=c('white', 'green'),
-                                background_xlim = c(-81, -80),
-                                background_ylim = c(26, 28))
+bubble_station <- detection_bubble_plot(detections_filtered,
+                                        background_ylim = c(38, 40),
+                                        background_xlim = c(-77, -76),
+                                        map = MD,
+                                        location_col = 'station',
+                                        out_file = 'act_bubbles_by_stations.png')
 bubble_station
+
+bubble_array <- detection_bubble_plot(detections_filtered,
+                                      background_ylim = c(38, 40),
+                                      background_xlim = c(-77, -76),
+                                      map = MD,
+                                      out_file = 'act_bubbles_by_array.png')
+bubble_array
 
 
 # Challenge 1 ----
