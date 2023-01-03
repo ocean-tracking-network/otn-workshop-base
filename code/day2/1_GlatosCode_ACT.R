@@ -2,7 +2,7 @@
 
 ## Set your working directory
 
-setwd("../../data/act")
+setwd("YOUR/PATH/TO/data/act")
 library(glatos)
 library(tidyverse)
 library(VTrack)

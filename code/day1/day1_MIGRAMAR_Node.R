@@ -13,7 +13,7 @@ library(viridis)
 library(plotly)
 library(ggmap)
 
-setwd('YOUR/PATH/TO/migramar-student-workshop-2022/') #set folder you're going to work in
+setwd('YOUR/PATH/TO/data/migramar') #set folder you're going to work in
 getwd() #check working directory
 
 # Intro to R --------
@@ -95,7 +95,7 @@ heights[complete.cases(heights)] #select only complete cases
 
 #imports file into R. paste the filepath to the unzipped file here!
 
-gmr_matched_2018 <- read_csv("data/migramar/gmr_matched_detections_2018.csv")
+gmr_matched_2018 <- read_csv("gmr_matched_detections_2018.csv")
 
 ## Exploring Detection Extracts ----
 
@@ -147,7 +147,7 @@ gmr_matched_2018 %>% #Take gmr_matched_2018, AND THEN...
 
 ## Joining Detection Extracts ----
 
-gmr_matched_2019 <- read_csv("data/migramar/gmr_matched_detections_2019.csv") #First, read in our file.
+gmr_matched_2019 <- read_csv("gmr_matched_detections_2019.csv") #First, read in our file.
 
 gmr_matched_18_19 <- rbind(gmr_matched_2018, gmr_matched_2019) #Now join the two dataframes
 
@@ -224,8 +224,8 @@ view(gmr_matched_18_19) #Check to make sure we already have our tag matches, fro
 #gmr_matched_18_19 <- gmr_matched_18_19 %>% distinct() # Use distinct to remove duplicates. 
 
 ## Array Matches ----
-gmr_qual_2018 <- read_csv("data/migramar/gmr_qualified_detections_2018.csv")
-gmr_qual_2019 <- read_csv("data/migramar/gmr_qualified_detections_2019.csv")
+gmr_qual_2018 <- read_csv("gmr_qualified_detections_2018.csv")
+gmr_qual_2019 <- read_csv("gmr_qualified_detections_2019.csv")
 gmr_qual_18_19 <- rbind(gmr_qual_2018, gmr_qual_2019) 
 
 
@@ -234,11 +234,11 @@ gmr_qual_18_19 <- rbind(gmr_qual_2018, gmr_qual_2019)
 library(readxl)
 
 # Deployment Metadata
-gmr_deploy <- read_excel("data/migramar/gmr-deployment-short-form.xls", sheet = "Deployment")
+gmr_deploy <- read_excel("gmr-deployment-short-form.xls", sheet = "Deployment")
 view(gmr_deploy)
 
 # Tag metadata
-gmr_tag <- read_excel("data/migramar/gmr_tagging_metadata.xls", sheet = "Tag Metadata") 
+gmr_tag <- read_excel("gmr_tagging_metadata.xls", sheet = "Tag Metadata") 
 view(gmr_tag)
 
 #keep in mind the timezone of the columns
