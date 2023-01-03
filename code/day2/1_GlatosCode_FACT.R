@@ -217,5 +217,5 @@ bubble_station
 # Hint: ?detection_bubble_plot will help a lot
 # Here's some code to get you started
 
-nw <- c(38.75, -76.75)
-se <- c(39, -76.25)
+nw <- c(26, -80)
+se <- c(28, -81)
