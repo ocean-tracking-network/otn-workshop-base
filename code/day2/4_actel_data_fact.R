@@ -43,10 +43,6 @@ for (detfile in list.files('.', full.names = TRUE, pattern = "tqcs.*\\.zip")) {
   proj_dets <- bind_rows(proj_dets, tmp_dets)
 }
 
-# read in the tag metadata:
-tag_metadata <- readr::read_csv('TQCS_metadata_tagging.csv', 
-                                skip=4)
-
 #Filter out all the non-TEQ detections. 
 proj_dets <- proj_dets %>% 
   distinct() %>% 
@@ -54,12 +50,21 @@ proj_dets <- proj_dets %>%
   filter(detectedby == 'TEQ') %>%
   slice(1:100000)
 
-deploy_metadata <- read_csv('TEQ_Deployments_201001_201201.csv') %>%
+# read in the tag metadata:
+tag_metadata <- readr::read_csv('TQCS_metadata_tagging.csv')
+
+deploy_metadata <- read_csv('') %>%
   # Add a very quick and dirty receiver group column.
   mutate(rcvrgroup = ARRAY)
 # Also tried to figure out if there was a pattern to station naming that we could take advantage of
 # but nothing obvious materialized.
 # mutate(rcvrgroup = paste(collectioncode, stringr::str_replace_all(station_name, "[:digit:]", ""), sep='_'))
+
+deploy_metadata <- read_csv('TEQ_Deployments_201001_201201.csv') %>%
+  # Add a very quick and dirty receiver group column.
+  mutate(rcvrgroup = ifelse(ARRAY %in% c('TQCS', 'TEQ'), # if we're talking PROJ61
+                            paste0(ARRAY,STATION_NO), #let my receiver group be the station name
+                            collectioncode)) # for other project receivers just make it their whole project code.
 
 # Let's review the groups quickly to see if we under or over-shot what our receiver groups should be.
 # nb. hiding the legend because there are too many categories.
