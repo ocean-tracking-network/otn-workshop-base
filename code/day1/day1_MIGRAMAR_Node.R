@@ -1,10 +1,5 @@
 # Intro to R for Telemetry Summaries --------
 
-# Prepared by Ocean Tracking Network in Feb 2022
-# for MigraMar Network Student Workshop 2022
-# contact otndc@dal.ca for questions
-
-
 # Installs and Setup --------
 library(tidyverse)# really neat collection of packages! https://www.tidyverse.org/
 library(lubridate)
@@ -545,6 +540,8 @@ receivers <- gmr_matched_18_19_no_release %>%
   as.data.frame() 
 
 view(receivers)
+
+# number of stations visited, start and end dates, and track length
 
 animal_id_summary <- gmr_matched_18_19_no_release %>% 
   group_by(catalognumber) %>%

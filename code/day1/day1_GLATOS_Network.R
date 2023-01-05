@@ -90,7 +90,7 @@ heights[complete.cases(heights)] #select only complete cases
 
 #imports file into R. paste the filepath to the unzipped file here!
 
-lamprey_dets <- read_csv("inst_extdata_lamprey_detections.csv", guess_max = 3102) 
+lamprey_dets <- read_csv("inst_extdata_lamprey_detections.csv", guess_max = 3103) 
 
 ## Exploring Detection Extracts ----
 
@@ -209,7 +209,7 @@ View(all_dets) #already have our tag matches
 
 # if you do not have the variable created from a previous lesson, you can use the following code to re-create it:
 
-#lamprey_dets <- read_csv("inst_extdata_lamprey_detections.csv", guess_max = 3102)
+#lamprey_dets <- read_csv("inst_extdata_lamprey_detections.csv", guess_max = 3103)
 #walleye_dets <- read_csv("inst_extdata_walleye_detections.csv", guess_max = 9595) #remember guess_max from prev section!
 # lets join these two detection files together!
 #all_dets <- rbind(lamprey_dets, walleye_dets)
