@@ -424,7 +424,7 @@ To import your data from your CSV file, we just need to pass the file path to re
 ~~~
 #imports file into R. paste the filepath to the unzipped file here!
 
-lamprey_dets <- read_csv("inst_extdata_lamprey_detections.csv", guess_max = 3102)
+lamprey_dets <- read_csv("inst_extdata_lamprey_detections.csv", guess_max = 3103)
 
 ~~~
 {: .language-r}
@@ -615,7 +615,7 @@ To import your data from your CSV file, we just need to pass the file path to re
 ~~~
 #imports file into R. paste the filepath to the unzipped file here!
 
-gmr_matched_2018 <- read_csv("data/migramar/gmr_matched_detections_2018.csv")
+gmr_matched_2018 <- read_csv("gmr_matched_detections_2018.csv")
 
 ~~~
 {: .language-r}
@@ -756,7 +756,7 @@ We're now going to briefly touch on a few useful dataframe use-cases that aren't
 One function that we'll need to know is `rbind`, a base R function which lets us combine two R objects together. Since detections for animals tagged during a study often appear in multiple years, this functionality will let us merge the dataframes together. We'll also use `distinct`, a `dplyr` function that lets us trim out duplicate release records for each animal, since these are listed in each detection extract.
 
 ~~~
-gmr_matched_2019 <- read_csv("data/migramar/gmr_matched_detections_2019.csv") #First, read in our file.
+gmr_matched_2019 <- read_csv("gmr_matched_detections_2019.csv") #First, read in our file.
 
 gmr_matched_18_19 <- rbind(gmr_matched_2018, gmr_matched_2019) #Now join the two dataframes
 
