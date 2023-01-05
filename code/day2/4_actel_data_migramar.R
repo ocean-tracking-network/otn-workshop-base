@@ -116,14 +116,23 @@ actel_tag_releases <- tag_metadata %>% mutate(Station.name = `RELEASE_LOCATION (
   #  mutate(Array = 'PROJ61JUGNO_2A') %>% # Set this to the closest array to your release locations
   # if this is different for multiple release groups, can do things like this to subset case-by-case:
   # here Station.name is the release location 'station' name, and the value after ~ will be assigned to all.
-  mutate(Array = case_when(Station.name %in% c('Red Banks', 'Eldorado', 'Williamsburg') ~ 'PROJ61UTEAST', 
-                           Station.name == 'Woodrow Wilson Bridge' ~ 'PROJ56',
-                           Station.name == 'Adjacent to Lyons Creek' ~ 'PROJ61JUGNO_5',
-                           Station.name == 'Merkle Wildlife Sanctuary' ~ 'PROJ61JUGNO_2A',
-                           Station.name == 'Nottingham' ~ 'PROJ61NOTTIN',
-                           Station.name == 'Sneaking Point' ~ 'PROJ61MAGRUD',
-                           Station.name == 'Jug Bay Dock' ~ 'PROJ61JUGDCK')) %>% # This value needs to be the nearest array to the release site
+  mutate(Array = case_when(Station.name %in% c('Derrumbe Wolf',
+                                               'Darwin Anchorage',
+                                               'Mosquera inside',
+                                               'Puerto Baltra',
+                                               'Bachas',
+                                               'Playa Millonarios Baltra',
+                                               'La Seca',
+                                               'Punta Vicente Roca') ~ 'Derrumbe Wolf', 
+                           Station.name %in% c('Wolf Anchorage',
+                                               'Wolf Fondeadero') ~ 'Derrumbe Shark Point',
+                           Station.name %in% c('Arco Darwin',
+                                               'Manuelita, Cocos',
+                                               'Darwin, Galapagos',
+                                               'West Cocos Seamount') ~ 'Darwin Cleaning Station'
+                           )) %>% # This value needs to be the nearest array to the release site
   distinct(Station.name, Latitude, Longitude, Array, Type)
+
 
 # Combine Releases and Receivers ------
 
