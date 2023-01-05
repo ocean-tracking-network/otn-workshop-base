@@ -26,8 +26,8 @@ View(proj58_matched_full) #Check to make sure we already have our tag matches, f
 
 # if you do not have the variable created from a previous lesson, you can use the following code to re-create it:
 
-proj58_matched_2016 <- read_csv("proj58_matched_detections_2016.csv") #Import 2016 detections
-proj58_matched_2017 <- read_csv("proj58_matched_detections_2017.csv") # Import 2017 detections
+proj58_matched_2016 <- read_csv("proj58_matched_detections_2016.zip") #Import 2016 detections
+proj58_matched_2017 <- read_csv("proj58_matched_detections_2017.zip") # Import 2017 detections
 proj58_matched_full <- rbind(proj58_matched_2016, proj58_matched_2017) #Now join the two dataframes
 # release records for animals often appear in >1 year, this will remove the duplicates
 proj58_matched_full <- proj58_matched_full %>% distinct() # Use distinct to remove duplicates. 
@@ -38,12 +38,9 @@ proj58_matched_full <- proj58_matched_full %>% distinct() # Use distinct to remo
 Next, we will load in and join our Array matches. Ensure you replace the filepath to show the files as they appear in your working directory.
 ~~~
 
-proj61_qual_2016 <- read_csv("proj61_qualified_detections_2016_fixed.csv")
-proj61_qual_2017 <- read_csv("proj61_qualified_detections_2017_fixed.csv", guess_max = 25309)
+proj61_qual_2016 <- read_csv("proj61_qualified_detections_2016_fixed.zip")
+proj61_qual_2017 <- read_csv("proj61_qualified_detections_2017_fixed.zip", guess_max = 25309)
 proj61_qual_16_17_full <- rbind(proj61_qual_2016, proj61_qual_2017) 
-
-
-proj61_qual_16_17_full <- proj61_qual_16_17_full %>% slice(1:100000) #subset our example data for ease of analysis!
 ~~~
 {: .language-r}
 
@@ -85,7 +82,7 @@ View(tqcs_matched_10_11) #already have our Tag matches, from a previous lesson.
 # if you do not have the variable created from a previous lesson, you can use the following code to re-create it:
 
 tqcs_matched_2010 <- read_csv("tqcs_matched_detections_2010.zip", guess_max = 117172) #Import 2010 detections
-tqcs_matched_2011 <- read_csv("tqcs_matched_detections_2011.zip", guess_max = 41880) #Import 2011 detections
+tqcs_matched_2011 <- read_csv("tqcs_matched_detections_2011.zip", guess_max = 41881) #Import 2011 detections
 tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #Now join the two dataframes
 # release records for animals often appear in >1 year, this will remove the duplicates
 tqcs_matched_10_11_full <- tqcs_matched_10_11_full %>% distinct() # Use distinct to remove duplicates. 

@@ -30,9 +30,10 @@ For the purposes of this lesson, we will only cover read_csv; however, there is 
 To import your data from your CSV file, we just need to pass the file path to read_csv, and assign the output to a variable. Note that the file path you give to read_csv will be relative to the working directory you set in the last lesson, so keep that in mind.
 
 ~~~
-#imports file into R. paste the filepath to the unzipped file here!
+#imports file into R. paste the filepath to the file here!
+#read_csv can take both csv and zip files, as long as the zip file contains a csv.
 
-proj58_matched_2016 <- read_csv("proj58_matched_detections_2016.csv")
+proj58_matched_2016 <- read_csv("proj58_matched_detections_2016.zip")
 
 ~~~
 {: .language-r}
@@ -171,7 +172,7 @@ We're now going to briefly touch on a few useful dataframe use-cases that aren't
 One function that we'll need to know is `rbind`, a base R function which lets us combine two R objects together. Since detections for animals tagged during a study often appear in multiple years, this functionality will let us merge the dataframes together. We'll also use `distinct`, a `dplyr` function that lets us trim out duplicate release records for each animal, since these are listed in each detection extract.
 
 ~~~
-proj58_matched_2017 <- read_csv("proj58_matched_detections_2017.csv") #First, read in our file.
+proj58_matched_2017 <- read_csv("proj58_matched_detections_2017.zip") #First, read in our file.
 
 proj58_matched_full <- rbind(proj58_matched_2016, proj58_matched_2017) #Now join the two dataframes
 
@@ -370,7 +371,7 @@ We're now going to briefly touch on a few useful dataframe use-cases that aren't
 One function that we'll need to know is `rbind`, a base R function which lets us combine two R objects together. Since detections for animals tagged during a study often appear in multiple years, this functionality will let us merge the dataframes together. We'll also use `distinct`, a `dplyr` function that lets us trim out duplicate release records for each animal, since these are listed in each detection extract.
 
 ~~~
-tqcs_matched_2011 <- read_csv("tqcs_matched_detections_2011.zip", guess_max = 41880) #Import 2011 detections
+tqcs_matched_2011 <- read_csv("tqcs_matched_detections_2011.zip", guess_max = 41881) #Import 2011 detections
 
 tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #Now join the two dataframes
 
