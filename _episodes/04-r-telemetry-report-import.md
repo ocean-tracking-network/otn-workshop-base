@@ -216,8 +216,8 @@ view(gmr_matched_18_19) #Check to make sure we already have our tag matches, fro
 
 # if you do not have the variable created from a previous lesson, you can use the following code to re-create it:
 
-#gmr_matched_2018 <- read_csv("data/migramar/gmr_matched_detections_2018.csv") #Import 2018 detections
-#gmr_matched_2019 <- read_csv("data/migramar/gmr_matched_detections_2019.csv") # Import 2019 detections
+#gmr_matched_2018 <- read_csv("gmr_matched_detections_2018.csv") #Import 2018 detections
+#gmr_matched_2019 <- read_csv("gmr_matched_detections_2019.csv") # Import 2019 detections
 #gmr_matched_18_19 <- rbind(gmr_matched_2018, gmr_matched_2019) #Now join the two dataframes
 # release records for animals often appear in >1 year, this will remove the duplicates
 #gmr_matched_18_19 <- gmr_matched_18_19 %>% distinct() # Use distinct to remove duplicates. 
@@ -229,8 +229,8 @@ view(gmr_matched_18_19) #Check to make sure we already have our tag matches, fro
 Next, we will load in and join our Array matches. Ensure you replace the filepath to show the files as they appear in your working directory.
 
 ~~~
-gmr_qual_2018 <- read_csv("data/migramar/gmr_qualified_detections_2018.csv")
-gmr_qual_2019 <- read_csv("data/migramar/gmr_qualified_detections_2019.csv")
+gmr_qual_2018 <- read_csv("gmr_qualified_detections_2018.csv")
+gmr_qual_2019 <- read_csv("gmr_qualified_detections_2019.csv")
 gmr_qual_18_19 <- rbind(gmr_qual_2018, gmr_qual_2019) 
 ~~~
 {: .language-r}
@@ -242,11 +242,11 @@ To give meaning to these detections we should import our Instrument Deployment M
 library(readxl)
 
 # Deployment Metadata
-gmr_deploy <- read_excel("data/migramar/gmr-deployment-short-form.xls", sheet = "Deployment")
+gmr_deploy <- read_excel("gmr-deployment-short-form.xls", sheet = "Deployment")
 view(gmr_deploy)
 
 # Tag metadata
-gmr_tag <- read_excel("data/migramar/gmr_tagging_metadata.xls", sheet = "Tag Metadata") #you may need the "skip = 4" argument here
+gmr_tag <- read_excel("gmr_tagging_metadata.xls", sheet = "Tag Metadata") #you may need the "skip = 4" argument here
 view(gmr_tag)
 
 #remember: we learned how to switch timezone of datetime columns above, 
