@@ -24,7 +24,7 @@ Our first step is setting our working directory and importing the relevant libra
 ~~~
 ## Set your working directory ####
 
-setwd("./data/act")
+setwd("YOUR/PATH/TO/data/act")
 library(glatos)
 library(tidyverse)
 library(VTrack)
@@ -260,7 +260,7 @@ Our first step is setting our working directory and importing the relevant libra
 ~~~
 ## Set your working directory ####
 
-setwd("./data/fact")
+setwd("YOUR/PATH/TO/data/fact")
 library(glatos)
 library(tidyverse)
 library(VTrack)
@@ -497,7 +497,7 @@ Our first step is setting our working directory and importing the relevant libra
 ~~~
 ## Set your working directory ####
 
-setwd("./data/glatos")
+setwd("YOUR/PATH/TO/data/glatos")
 library(glatos)
 library(tidyverse)
 library(VTrack)
