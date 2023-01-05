@@ -88,9 +88,9 @@ heights[complete.cases(heights)] #select only complete cases
 
 ## Importing data from CSV ----
 
-#imports file into R. paste the filepath to the unzipped file here!
+#imports file into R. paste the filepath to the file here!
 
-proj58_matched_2016 <- read_csv("proj58_matched_detections_2016.csv")
+proj58_matched_2016 <- read_csv("proj58_matched_detections_2016.zip")
 
 ## Exploring Detection Extracts ----
 
@@ -142,7 +142,7 @@ proj58_matched_2016 %>% #Take proj58_matched_2016, AND THEN...
 
 ## Joining Detection Extracts ----
 
-proj58_matched_2017 <- read_csv("proj58_matched_detections_2017.csv") #First, read in our file.
+proj58_matched_2017 <- read_csv("proj58_matched_detections_2017.zip") #First, read in our file.
 
 proj58_matched_full <- rbind(proj58_matched_2016, proj58_matched_2017) #Now join the two dataframes
 
@@ -212,18 +212,16 @@ View(proj58_matched_full) #Check to make sure we already have our tag matches, f
 
 # if you do not have the variable created from a previous lesson, you can use the following code to re-create it:
 
-#proj58_matched_2016 <- read_csv("proj58_matched_detections_2016.csv") #Import 2016 detections
-#proj58_matched_2017 <- read_csv("proj58_matched_detections_2017.csv") # Import 2017 detections
+#proj58_matched_2016 <- read_csv("proj58_matched_detections_2016.zip") #Import 2016 detections
+#proj58_matched_2017 <- read_csv("proj58_matched_detections_2017.zip") # Import 2017 detections
 #proj58_matched_full <- rbind(proj58_matched_2016, proj58_matched_2017) #Now join the two dataframes
 # release records for animals often appear in >1 year, this will remove the duplicates
 #proj58_matched_full <- proj58_matched_full %>% distinct() # Use distinct to remove duplicates. 
 
 ## Array Matches ----
-proj61_qual_2016 <- read_csv("proj61_qualified_detections_2016_fixed.csv")
-proj61_qual_2017 <- read_csv("proj61_qualified_detections_2017_fixed.csv", guess_max = 25309)
+proj61_qual_2016 <- read_csv("proj61_qualified_detections_2016_fixed.zip")
+proj61_qual_2017 <- read_csv("proj61_qualified_detections_2017_fixed.zip", guess_max = 25309)
 proj61_qual_16_17_full <- rbind(proj61_qual_2016, proj61_qual_2017) 
-
-proj61_qual_16_17_full <- proj61_qual_16_17_full %>% slice(1:100000) #subset our example data for ease of analysis!
 
 ## Tagging and Deployment Metadata  ----
 #These are saved as XLS/XLSX files, so we need a different library to read them in.
@@ -255,7 +253,6 @@ names(full_receivers)
 
 #make a basemap for all of the stations, using the min/max deploy lat and longs as bounding box
 
-
 base <- get_stamenmap(
   bbox = c(left = min(full_receivers$stn_long), 
            bottom = min(full_receivers$stn_lat), 
@@ -263,7 +260,7 @@ base <- get_stamenmap(
            top = max(full_receivers$stn_lat)),
   maptype = "terrain-background", 
   crop = FALSE,
-  zoom = 4)
+  zoom = 6)
 
 #filter for stations you want to plot - this is very customizable
 
@@ -390,7 +387,7 @@ proj61_qual_summary <- proj61_qual_16_17_full %>%
 
 #view our summary table
 
-proj61_qual_summary #remember, this is just the first 10,000 rows!
+proj61_qual_summary 
 
 #export our summary table
 
@@ -405,7 +402,7 @@ proj61_det_summary  <- proj61_qual_16_17_full  %>%
   group_by(station, year = year(datecollected), month = month(datecollected)) %>% 
   summarize(count =n())
 
-proj61_det_summary #remember: this is a subset!
+proj61_det_summary 
 
 # Create a new data product, det_days, that give you the unique dates that an animal was seen by a station
 stationsum <- proj61_qual_16_17_full %>% 
@@ -420,7 +417,7 @@ View(stationsum)
 
 ## Plot of Detections ----
 
-proj61_qual_16_17_full %>%  #remember: this is a subset!
+proj61_qual_16_17_full %>%  
   mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
   mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
   group_by(year_month) %>% #can group by station, species etc.
@@ -582,6 +579,8 @@ receivers <- proj58_matched_full_no_release %>%
 
 View(receivers)
 
+# number of stations visited, start and end dates, and track length
+
 animal_id_summary <- proj58_matched_full_no_release %>% 
   group_by(catalognumber) %>%
   summarise(dets = length(catalognumber),
@@ -614,42 +613,6 @@ proj58_matched_full_no_release  %>%
 #Use the color scales in this package to make plots that are pretty, 
 #better represent your data, easier to read by those with colorblindness, and print well in grey scale.
 library(viridis)
-
-# monthly latitudinal distribution of your animals (works best w >1 species)
-proj58_matched_full %>%
-  group_by(m=month(datecollected), catalognumber, scientificname) %>% #make our groups
-  summarise(mean=mean(latitude)) %>% #mean lat
-  ggplot(aes(m %>% factor, mean, colour=scientificname, fill=scientificname))+ #the data is supplied, but no info on how to show it!
-  geom_point(size=3, position="jitter")+   # draw data as points, and use jitter to help see all points instead of superimposition
-  #coord_flip()+   #flip x y, not needed here
-  scale_colour_manual(values = "blue")+ #change the colour to represent the species better!
-  scale_fill_manual(values = "grey")+ 
-  geom_boxplot()+ #another layer
-  geom_violin(colour="black") #and one more layer
-
-
-#There are other ways to present a summary of data like this that we might have chosen. 
-#geom_density2d() will give us a KDE for our data points and give us some contours across our chosen plot axes.
-
-proj58_matched_full %>% 
-  group_by(month=month(datecollected), catalognumber, scientificname) %>%
-  summarise(meanlat=mean(latitude)) %>%
-  ggplot(aes(month, meanlat, colour=scientificname, fill=scientificname))+
-  geom_point(size=3, position="jitter")+
-  scale_colour_manual(values = "blue")+
-  scale_fill_manual(values = "grey")+
-  geom_density2d(size=7, lty=1) #this is the only difference from the plot above 
-
-#anything you specify in the aes() is applied to the actual data points/whole plot, 
-#anything specified in geom() is applied to that layer only (colour, size...)
-
-# per-individual density contours - lots of plots: called facets!
-
-proj58_matched_full %>%
-  ggplot(aes(longitude, latitude))+
-  facet_wrap(~catalognumber)+ #make one plot per individual
-  geom_violin()
-#Warnings going on above.
 
 # an easy abacus plot!
 
@@ -692,3 +655,39 @@ movMap <-
 #to size the dots by number of detections you could do something like: size = (log(length(animal)id))?
 
 movMap
+
+# monthly latitudinal distribution of your animals (works best w >1 species)
+proj58_matched_full %>%
+  group_by(m=month(datecollected), catalognumber, scientificname) %>% #make our groups
+  summarise(mean=mean(latitude)) %>% #mean lat
+  ggplot(aes(m %>% factor, mean, colour=scientificname, fill=scientificname))+ #the data is supplied, but no info on how to show it!
+  geom_point(size=3, position="jitter")+   # draw data as points, and use jitter to help see all points instead of superimposition
+  #coord_flip()+   #flip x y, not needed here
+  scale_colour_manual(values = "blue")+ #change the colour to represent the species better!
+  scale_fill_manual(values = "grey")+ 
+  geom_boxplot()+ #another layer
+  geom_violin(colour="black") #and one more layer
+
+
+#There are other ways to present a summary of data like this that we might have chosen. 
+#geom_density2d() will give us a KDE for our data points and give us some contours across our chosen plot axes.
+
+proj58_matched_full %>% 
+  group_by(month=month(datecollected), catalognumber, scientificname) %>%
+  summarise(meanlat=mean(latitude)) %>%
+  ggplot(aes(month, meanlat, colour=scientificname, fill=scientificname))+
+  geom_point(size=3, position="jitter")+
+  scale_colour_manual(values = "blue")+
+  scale_fill_manual(values = "grey")+
+  geom_density2d(linewidth=7, lty=1) #this is the only difference from the plot above 
+
+#anything you specify in the aes() is applied to the actual data points/whole plot, 
+#anything specified in geom() is applied to that layer only (colour, size...)
+
+# per-individual density contours - lots of plots: called facets!
+
+proj58_matched_full %>%
+  ggplot(aes(longitude, latitude))+
+  facet_wrap(~catalognumber)+ #make one plot per individual
+  geom_violin()
+#Warnings going on above.
