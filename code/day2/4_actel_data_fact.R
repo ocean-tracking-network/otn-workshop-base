@@ -53,13 +53,6 @@ proj_dets <- proj_dets %>%
 # read in the tag metadata:
 tag_metadata <- readr::read_csv('TQCS_metadata_tagging.csv')
 
-deploy_metadata <- read_csv('') %>%
-  # Add a very quick and dirty receiver group column.
-  mutate(rcvrgroup = ARRAY)
-# Also tried to figure out if there was a pattern to station naming that we could take advantage of
-# but nothing obvious materialized.
-# mutate(rcvrgroup = paste(collectioncode, stringr::str_replace_all(station_name, "[:digit:]", ""), sep='_'))
-
 deploy_metadata <- read_csv('TEQ_Deployments_201001_201201.csv') %>%
   # Add a very quick and dirty receiver group column.
   mutate(rcvrgroup = ifelse(ARRAY %in% c('TQCS', 'TEQ'), # if we're talking PROJ61
@@ -82,51 +75,15 @@ proj_dets %>% count(detectedby)
 # And how many of our tags are getting detections back:
 proj_dets %>% filter(receiver != 'release') %>% count(tagname)
 
-# OK most of those who have more than an isolated detection are in our deploy metadata.
-# just one OTN project to add.
-
-# For OTN projects, we would be able to add in any deployments of OTN receivers from the OTN GeoServer:
-
-# if we wanted to grab and add V2LGMXSNAP receivers to our deployment metadata
-# using OTN's public station history records on GeoServer:
-# otn_geoserver_stations_url = 'https://members.oceantrack.org/geoserver/otn/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=otn:stations_receivers&outputFormat=csv&cql_filter=collectioncode=%27V2LGMXSNAP%27'
-## TODO: Actel needs serial numbers for receivers, so OTN 
-#  will add serial numbers to this layer, and then we can just
-#  urlencode the CQL-query for which projects you want, 
-#  so you can write your list in 'plaintext' and embed it in the url
-
-# For today, we've made an extract for V2LGMXSNAP and included it in the data folder:
-otn_deploy_metadata <- readr::read_csv('otn_moorings_receivers_202104130938.csv') %>%
-  mutate(rcvrgroup = collectioncode)
-
-# Tack OTN stations to the end of the MATOS extract.
-# These are in the exact same format because OTN and MATOS's databases are the
-# same format, so we can easily coordinate our output formats.
-all_stations <- bind_rows(deploy_metadata, otn_deploy_metadata)
-
-# For ACT/FACT projects - we could use GeoServer to share this information, and could even add
-# an authentication layer to let ACT members do this same trick to fetch deploy histories!
-
-# So now this is our animal tagging metadata
-# tag_metadata %>% View
-
-# these are our detections: 
-
-# proj_dets %>% View
-
-# These are our deployments:
-
-# all_stations %>% View
-
 # Mutate metadata into Actel format ----
 
 # Create a station entry from the glatos array and station number.
 # --- add station to receiver metadata ----
-full_receiver_meta <- all_stations %>%
+full_receiver_meta <- deploy_metadata %>%
   dplyr::mutate(
-    station = paste(collectioncode, station_name, sep = '-')
+    station = paste(ARRAY, STATION_NO, sep = '-')
   ) %>% 
-  filter(is.na(rcvrstatus)|rcvrstatus != 'lost')
+  filter(is.na(`RECOVERED (y/n/l)`)|`RECOVERED (y/n/l)` != 'l')
 
 # Actel Biometrics ------------
 
@@ -141,11 +98,11 @@ actel_biometrics <- tag_metadata %>% dplyr::mutate(Release.date = format(UTC_REL
 )
 # Actel Deployments ----
 # deployments is based in the receiver deployment metadata sheet
-actel_deployments <- full_receiver_meta %>% dplyr::filter(!is.na(recovery_date)) %>%
+actel_deployments <- full_receiver_meta %>% dplyr::filter(!is.na(`RECOVER_DATE_TIME (yyyy-mm-ddThh:mm:ss)`)) %>%
   mutate(Station.name = station,
-         Start = format(deploy_date, actel_datefmt), # no time data for these deployments
-         Stop = format(recovery_date, actel_datefmt),  # not uncommon for this region
-         Receiver = rcvrserial) %>%
+         Start = format(`DEPLOY_DATE_TIME   (yyyy-mm-ddThh:mm:ss)`, actel_datefmt), # no time data for these deployments
+         Stop = format(`RECOVER_DATE_TIME (yyyy-mm-ddThh:mm:ss)`, actel_datefmt),  # not uncommon for this region
+         Receiver = INS_SERIAL_NO) %>%
   arrange(Receiver, Start)
 
 
@@ -169,8 +126,8 @@ actel_dets <- proj_dets %>% dplyr::filter(receiver != 'release') %>%
 
 # Prepare and style entries for receivers
 actel_receivers <- full_receiver_meta %>% dplyr::mutate( Station.name = station,
-                                                         Latitude = deploy_lat,
-                                                         Longitude = deploy_long,
+                                                         Latitude = DEPLOY_LAT,
+                                                         Longitude = DEPLOY_LONG,
                                                          Type='Hydrophone') %>%
   dplyr::mutate(Array=rcvrgroup) %>%    # Having too many distinct arrays breaks things.
   dplyr::select(Station.name, Latitude, Longitude, Array, Type) %>%
