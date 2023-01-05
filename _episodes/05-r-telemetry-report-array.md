@@ -38,7 +38,7 @@ base <- get_stamenmap(
            top = max(full_receivers$stn_lat)),
   maptype = "terrain-background", 
   crop = FALSE,
-  zoom = 4)
+  zoom = 6)
 
 #filter for stations you want to plot - this is very customizable
 
@@ -200,7 +200,7 @@ proj61_qual_summary <- proj61_qual_16_17_full %>%
 
 #view our summary table
 
-proj61_qual_summary #remember, this is just the first 10,000 rows!
+proj61_qual_summary 
 
 #export our summary table
 
@@ -220,7 +220,7 @@ proj61_det_summary  <- proj61_qual_16_17_full  %>%
   group_by(station, year = year(datecollected), month = month(datecollected)) %>% 
   summarize(count =n())
 
-proj61_det_summary #remember: this is a subset!
+proj61_det_summary
 
 # Create a new data product, det_days, that give you the unique dates that an animal was seen by a station
 stationsum <- proj61_qual_16_17_full %>% 
@@ -241,7 +241,7 @@ Lets make an informative plot using `ggplot` showing the number of matched detec
 
 ~~~
 
-proj61_qual_16_17_full %>%  #remember: this is a subset!
+proj61_qual_16_17_full %>%  
   mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
   mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
   group_by(year_month) %>% #can group by station, species etc.
@@ -402,7 +402,7 @@ teq_qual_summary <- teq_qual_10_11 %>%
 
 #view our summary table
 
-teq_qual_summary #remember, this is just the first 10,000 rows! We subsetted the dataset upon import!
+teq_qual_summary #remember, this is just the first 100,000 rows! We subsetted the dataset upon import!
 
 #export our summary table
 

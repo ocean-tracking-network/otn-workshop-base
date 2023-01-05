@@ -193,6 +193,8 @@ receivers <- proj58_matched_full_no_release %>%
 
 View(receivers)
 
+# number of stations visited, start and end dates, and track length
+
 animal_id_summary <- proj58_matched_full_no_release %>% 
   group_by(catalognumber) %>%
   summarise(dets = length(catalognumber),
@@ -239,41 +241,6 @@ Some examples of complex plotting options. The most useful of these may include 
 #better represent your data, easier to read by those with colorblindness, and print well in grey scale.
 library(viridis)
 
-proj58_matched_full %>%
-  group_by(m=month(datecollected), catalognumber, scientificname) %>% #make our groups
-  summarise(mean=mean(latitude)) %>% #mean lat
-  ggplot(aes(m %>% factor, mean, colour=scientificname, fill=scientificname))+ #the data is supplied, but no info on how to show it!
-  geom_point(size=3, position="jitter")+   # draw data as points, and use jitter to help see all points instead of superimposition
-  #coord_flip()+   #flip x y, not needed here
-  scale_colour_manual(values = "blue")+ #change the colour to represent the species better!
-  scale_fill_manual(values = "grey")+ 
-  geom_boxplot()+ #another layer
-  geom_violin(colour="black") #and one more layer
-
-
-#There are other ways to present a summary of data like this that we might have chosen. 
-#geom_density2d() will give us a KDE for our data points and give us some contours across our chosen plot axes.
-
-proj58_matched_full %>% 
-  group_by(month=month(datecollected), catalognumber, scientificname) %>%
-  summarise(meanlat=mean(latitude)) %>%
-  ggplot(aes(month, meanlat, colour=scientificname, fill=scientificname))+
-  geom_point(size=3, position="jitter")+
-  scale_colour_manual(values = "blue")+
-  scale_fill_manual(values = "grey")+
-  geom_density2d(size=7, lty=1) #this is the only difference from the plot above 
-
-#anything you specify in the aes() is applied to the actual data points/whole plot, 
-#anything specified in geom() is applied to that layer only (colour, size...)
-
-# per-individual density contours - lots of plots: called facets!
-
-proj58_matched_full %>%
-  ggplot(aes(longitude, latitude))+
-  facet_wrap(~catalognumber)+ #make one plot per individual
-  geom_violin()
-#Warnings going on above.
-
 # an easy abacus plot!
 
 abacus_animals <- 
@@ -315,6 +282,44 @@ movMap <-
 #to size the dots by number of detections you could do something like: size = (log(length(animal)id))?
 
 movMap
+
+
+# monthly latitudinal distribution of your animals (works best w >1 species)
+
+proj58_matched_full %>%
+  group_by(m=month(datecollected), catalognumber, scientificname) %>% #make our groups
+  summarise(mean=mean(latitude)) %>% #mean lat
+  ggplot(aes(m %>% factor, mean, colour=scientificname, fill=scientificname))+ #the data is supplied, but no info on how to show it!
+  geom_point(size=3, position="jitter")+   # draw data as points, and use jitter to help see all points instead of superimposition
+  #coord_flip()+   #flip x y, not needed here
+  scale_colour_manual(values = "blue")+ #change the colour to represent the species better!
+  scale_fill_manual(values = "grey")+ 
+  geom_boxplot()+ #another layer
+  geom_violin(colour="black") #and one more layer
+
+
+#There are other ways to present a summary of data like this that we might have chosen. 
+#geom_density2d() will give us a KDE for our data points and give us some contours across our chosen plot axes.
+
+proj58_matched_full %>% 
+  group_by(month=month(datecollected), catalognumber, scientificname) %>%
+  summarise(meanlat=mean(latitude)) %>%
+  ggplot(aes(month, meanlat, colour=scientificname, fill=scientificname))+
+  geom_point(size=3, position="jitter")+
+  scale_colour_manual(values = "blue")+
+  scale_fill_manual(values = "grey")+
+  geom_density2d(linewidth=7, lty=1) #this is the only difference from the plot above 
+
+#anything you specify in the aes() is applied to the actual data points/whole plot, 
+#anything specified in geom() is applied to that layer only (colour, size...)
+
+# per-individual density contours - lots of plots: called facets!
+
+proj58_matched_full %>%
+  ggplot(aes(longitude, latitude))+
+  facet_wrap(~catalognumber)+ #make one plot per individual
+  geom_violin()
+#Warnings going on above.
 ~~~
 {: .language-r}
 
@@ -551,41 +556,6 @@ Some examples of complex plotting options. The most useful of these may include 
 #better represent your data, easier to read by those with colorblindness, and print well in grey scale.
 library(viridis)
 
-# monthly latitudinal distribution of your animals (works best w >1 species)
-
-tqcs_matched_10_11 %>%
-  group_by(m=month(datecollected), catalognumber, scientificname) %>% #make our groups
-  summarise(mean=mean(latitude)) %>% #mean lat
-  ggplot(aes(m %>% factor, mean, colour=scientificname, fill=scientificname))+ #the data is supplied, but no info on how to show it!
-  geom_point(size=3, position="jitter")+   # draw data as points, and use jitter to help see all points instead of superimposition
-  #coord_flip()+   #flip x y, not needed here
-  scale_colour_manual(values = "blue")+ #change the colour to represent the species better!
-  scale_fill_manual(values = "grey")+ 
-  geom_boxplot()+ #another layer
-  geom_violin(colour="black") #and one more layer
-
-
-#There are other ways to present a summary of data like this that we might have chosen. 
-#geom_density2d() will give us a KDE for our data points and give us some contours across our chosen plot axes.
-
-tqcs_matched_10_11 %>% #doesnt work on the subsetted data, back to original dataset for this one
-  group_by(month=month(datecollected), catalognumber, scientificname) %>%
-  summarise(meanlat=mean(latitude)) %>%
-  ggplot(aes(month, meanlat, colour=scientificname, fill=scientificname))+
-  geom_point(size=3, position="jitter")+
-  scale_colour_manual(values = "blue")+
-  scale_fill_manual(values = "grey")+
-  geom_density2d(size=7, lty=1) #this is the only difference from the plot above 
-
-#anything you specify in the aes() is applied to the actual data points/whole plot, 
-#anything specified in geom() is applied to that layer only (colour, size...)
-
-# per-individual density contours - lots of plots: called facets!
-tqcs_matched_10_11 %>%
-  ggplot(aes(longitude, latitude))+
-  facet_wrap(~catalognumber)+ #make one plot per individual
-  geom_violin()
-
 # an easy abacus plot!
 
 abacus_animals <- 
@@ -627,6 +597,41 @@ movMap <-
 #to size the dots by number of detections you could do something like: size = (log(length(animal)id))?
 
 movMap
+
+# monthly latitudinal distribution of your animals (works best w >1 species)
+
+tqcs_matched_10_11 %>%
+  group_by(m=month(datecollected), catalognumber, scientificname) %>% #make our groups
+  summarise(mean=mean(latitude)) %>% #mean lat
+  ggplot(aes(m %>% factor, mean, colour=scientificname, fill=scientificname))+ #the data is supplied, but no info on how to show it!
+  geom_point(size=3, position="jitter")+   # draw data as points, and use jitter to help see all points instead of superimposition
+  #coord_flip()+   #flip x y, not needed here
+  scale_colour_manual(values = "blue")+ #change the colour to represent the species better!
+  scale_fill_manual(values = "grey")+ 
+  geom_boxplot()+ #another layer
+  geom_violin(colour="black") #and one more layer
+
+
+#There are other ways to present a summary of data like this that we might have chosen. 
+#geom_density2d() will give us a KDE for our data points and give us some contours across our chosen plot axes.
+
+tqcs_matched_10_11 %>% #doesnt work on the subsetted data, back to original dataset for this one
+  group_by(month=month(datecollected), catalognumber, scientificname) %>%
+  summarise(meanlat=mean(latitude)) %>%
+  ggplot(aes(month, meanlat, colour=scientificname, fill=scientificname))+
+  geom_point(size=3, position="jitter")+
+  scale_colour_manual(values = "blue")+
+  scale_fill_manual(values = "grey")+
+  geom_density2d(linewidth=7, lty=1) #this is the only difference from the plot above 
+
+#anything you specify in the aes() is applied to the actual data points/whole plot, 
+#anything specified in geom() is applied to that layer only (colour, size...)
+
+# per-individual density contours - lots of plots: called facets!
+tqcs_matched_10_11 %>%
+  ggplot(aes(longitude, latitude))+
+  facet_wrap(~catalognumber)+ #make one plot per individual
+  geom_violin()
 
 ~~~
 {: .language-r}
