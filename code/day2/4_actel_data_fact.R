@@ -7,9 +7,31 @@ library(tidyverse)
 library(readxl)
 
 # set working directory to the data folder for this workshop
+setwd('YOUR/PATH/TO/data/fact')
 
-# Our project's detections file - I'll use readr to read everything from proj59 in at once:
+#Add this for when we read in the file. 
+format <- cols( # Heres a col spec to use when reading in the files
+  .default = col_character(),
+  datelastmodified = col_date(format = ""),
+  bottom_depth = col_double(),
+  receiver_depth = col_double(),
+  sensorname = col_character(),
+  sensorraw = col_character(),
+  sensorvalue = col_character(),
+  sensorunit = col_character(),
+  datecollected = col_datetime(format = ""),
+  longitude = col_double(),
+  latitude = col_double(),
+  yearcollected = col_double(),
+  monthcollected = col_double(),
+  daycollected = col_double(),
+  julianday = col_double(),
+  timeofday = col_double(),
+  datereleasedtagger = col_logical(),
+  datereleasedpublic = col_logical()
+)
 
+# Our project's detections file - I'll use readr to read everything from TQCS in at once:
 proj_dets <- list.files(pattern="tqcs_*.zip") %>% 
   map_df(~readr::read_csv(.))
 # note: readr::read_csv will read in csvs inside zip files no problem.
@@ -25,7 +47,13 @@ for (detfile in list.files('.', full.names = TRUE, pattern = "tqcs.*\\.zip")) {
 tag_metadata <- readr::read_csv('TQCS_metadata_tagging.csv', 
                                 skip=4)
 
-# And we can import first a subset of the deployments in MATOS that were deemed OK to publish
+#Filter out all the non-TEQ detections. 
+proj_dets <- proj_dets %>% 
+  distinct() %>% 
+  filter(receiver != "release") %>% 
+  filter(detectedby == 'TEQ') %>%
+  slice(1:100000)
+
 deploy_metadata <- read_csv('TEQ_Deployments_201001_201201.csv') %>%
   # Add a very quick and dirty receiver group column.
   mutate(rcvrgroup = ARRAY)

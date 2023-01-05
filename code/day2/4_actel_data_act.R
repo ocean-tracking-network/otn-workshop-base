@@ -7,6 +7,7 @@ library(tidyverse)
 library(readxl)
 
 # set working directory to the data folder for this workshop
+setwd("YOUR/PATH/TO/data/act")
 
 # Our project's detections file - I'll use readr to read everything from proj59 in at once:
 
