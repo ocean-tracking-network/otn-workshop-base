@@ -424,7 +424,7 @@ To import your data from your CSV file, we just need to pass the file path to re
 ~~~
 #imports file into R. paste the filepath to the unzipped file here!
 
-lamprey_dets <- read_csv("inst_extdata_lamprey_detections.csv", guess_max = 3102)
+lamprey_dets <- read_csv("inst_extdata_lamprey_detections.csv", guess_max = 3103)
 
 ~~~
 {: .language-r}
