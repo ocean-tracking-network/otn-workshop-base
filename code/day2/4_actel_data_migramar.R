@@ -127,9 +127,9 @@ actel_tag_releases <- tag_metadata %>% mutate(Station.name = `RELEASE_LOCATION (
                            Station.name %in% c('Wolf Anchorage',
                                                'Wolf Fondeadero') ~ 'GMRWolf_Shark Point',
                            Station.name %in% c('Arco Darwin',
-                                               'Manuelita, Cocos',
-                                               'Darwin, Galapagos',
-                                               'West Cocos Seamount') ~ 'GMRDarwin_Cleaning Station'
+                                               'Darwin, Galapagos') ~ 'GMRDarwin_Cleaning Station',
+                           Station.name %in% c('Manuelita, Cocos',
+                                               'West Cocos Seamount') ~ 'GMRDarwin_Bus stop'
                            )) %>% # This value needs to be the nearest array to the release site
   distinct(Station.name, Latitude, Longitude, Array, Type)
 
