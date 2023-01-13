@@ -18,7 +18,7 @@ proj_dets <- list.files(pattern="proj59_matched_detections*") %>%
 
 # read in the tag metadata:
 
-tag_metadata <- readxl::read_excel('Tag_Metadata/Proj59_Metadata_bluecatfish.xls', 
+tag_metadata <- readxl::read_excel('../act/Tag_Metadata/Proj59_Metadata_bluecatfish.xls', 
                                    sheet='Tag Metadata', # use the Tag Metadata sheet from this excel file
                                    skip=4) # skip the first 4 lines as they're 'preamble'
 
