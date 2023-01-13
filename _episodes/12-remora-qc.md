@@ -10,10 +10,7 @@ questions:
 checks for acoustic telemetry detection data. The second is to match detections with environmental
 conditions at the time of detection. This lesson will cover the former functionality. 
 
-`remora`'s original design only allowed for data collected by IMOS, in the area surrounding Australia.
-OTN has taken it on to globalize the code, allowing for detections from any location or institution
-to be processed. As such, some functions are not available in base remora, and must be taken from
-the OTN fork and the appropriate branch. 
+`remora`'s original design only allowed for data collected by IMOS, in the area surrounding Australia. OTN has taken it on to globalize the code, allowing for detections from any location or institution to be processed. As such, some functions are not available in base remora, and must be taken from the OTN fork and the appropriate branch. 
 
 To install the appropriate branch, run the following code:
 
@@ -145,3 +142,9 @@ tests_vector <-  c("FDA_QC",
 otn_test_tag_qc <- remora::runQC(otn_files, data_format = "otn", tests_vector = tests_vector, .parallel = FALSE, .progress = TRUE)
 ~~~
 {: .language-r}
+
+`otn_test_tag_qc` should be a dataframe containing your data, with new columns attached to contain flags representing each of the QC flags and what they returned. The meanings for each test's QC output can be found in the original [Hoenner et al](https://www.nature.com/articles/sdata2017206) paper that describes Remora's QC process.
+
+We use the `tests_vector` variable to decide which tests we want to run on our data. By adding or removing different tests, we can change what gets run on the data and fine-tune our results to only include those tests we're interested in. The tests listed above are the only ones currently available (note that the OTN fork of `remora` is in active development and the Detection Distribution test is not fully functional at present). 
+
+The call to runQC also includes the parameter 'data_format', which can be either 'imos' or 'otn' (it is 'imos' by default). This indicates which format our data is in. If the data is in IMOS format, it will run through the QC normally. If it is in OTN format, the runQC function will run the column mapping function (`otn_imos_column_map`) on the data before we run it through the QC tests. In either case, we receive in return a single detections dataframe containing columns with the QC flags. 
