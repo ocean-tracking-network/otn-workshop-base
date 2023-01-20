@@ -50,9 +50,6 @@ detections <- read_otn_detections('all_dets.csv')
 # View first 2 rows of output
 head(detections, 2)
 
-#Subset our example data to help this workshop run.
-#detections <- detections %>% slice(1:100000)
-
 ## Filtering False Detections ####
 ## ?glatos::false_detections
 

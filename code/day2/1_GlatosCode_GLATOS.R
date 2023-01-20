@@ -11,27 +11,6 @@ library(lubridate)
 # First we need to create one detections file from all our detection extracts.
 library(utils)
 
-format <- cols( # Heres a col spec to use when reading in the files
-  .default = col_character(),
-  datelastmodified = col_date(format = ""),
-  bottom_depth = col_double(),
-  receiver_depth = col_double(),
-  sensorname = col_character(),
-  sensorraw = col_character(),
-  sensorvalue = col_character(),
-  sensorunit = col_character(),
-  datecollected = col_datetime(format = ""),
-  longitude = col_double(),
-  latitude = col_double(),
-  yearcollected = col_double(),
-  monthcollected = col_double(),
-  daycollected = col_double(),
-  julianday = col_double(),
-  timeofday = col_double(),
-  datereleasedtagger = col_logical(),
-  datereleasedpublic = col_logical()
-)
-
 det_file_name <- system.file("extdata", "walleye_detections.csv",
                              package = "glatos")
 
