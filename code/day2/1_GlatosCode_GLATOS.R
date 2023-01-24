@@ -2,7 +2,7 @@
 
 ## Set your working directory
 
-setwd("YOUR/PATH/TO/data/fact/")
+setwd("YOUR/PATH/TO/data/glatos/")
 library(glatos)
 library(tidyverse)
 library(VTrack)
@@ -11,42 +11,15 @@ library(lubridate)
 # First we need to create one detections file from all our detection extracts.
 library(utils)
 
-format <- cols( # Heres a col spec to use when reading in the files
-  .default = col_character(),
-  datelastmodified = col_date(format = ""),
-  bottom_depth = col_double(),
-  receiver_depth = col_double(),
-  sensorname = col_character(),
-  sensorraw = col_character(),
-  sensorvalue = col_character(),
-  sensorunit = col_character(),
-  datecollected = col_datetime(format = ""),
-  longitude = col_double(),
-  latitude = col_double(),
-  yearcollected = col_double(),
-  monthcollected = col_double(),
-  daycollected = col_double(),
-  julianday = col_double(),
-  timeofday = col_double(),
-  datereleasedtagger = col_logical(),
-  datereleasedpublic = col_logical()
-)
-detections <- tibble()
-for (detfile in list.files('.', full.names = TRUE, pattern = "tqcs.*\\.zip")) {
-  print(detfile)
-  tmp_dets <- read_csv(detfile, col_types = format)
-  detections <- bind_rows(detections, tmp_dets)
-}
-write_csv(detections, 'all_dets.csv', append = FALSE)
+det_file_name <- system.file("extdata", "walleye_detections.csv",
+                             package = "glatos")
 
 
 ## glatos help files are helpful!!
 ?read_otn_deployments
 
 # Save our detections file data into a dataframe called detections
-detections <- read_otn_detections('all_dets.csv')
-
-detections <- detections %>% slice(1:100000) # subset our example data to help this workshop run
+detections <- read_glatos_detections(det_file=det_file_name)
 
 # View first 2 rows of output
 head(detections, 2)
@@ -113,7 +86,7 @@ sum_animal_location
 
 # Create a custom vector of Animal IDs to pass to the summary function
 # look only for these ids when doing your summary
-tagged_fish <- c('TQCS-1049258-2008-02-14', '	TQCS-1049269-2008-02-28')
+tagged_fish <- c('22','23')
 
 sum_animal_custom <- summarize_detections(det=detections_filtered,
                                           animals=tagged_fish,  # Supply the vector to the function
@@ -149,7 +122,7 @@ detections_w_events <- detection_events(detections_filtered,
 #Using all the events data will take too long, we will subset to just use a couple animals
 events %>% group_by(animal_id) %>% summarise(count=n()) %>% arrange(desc(count))
 
-subset_animals <- c('TQCS-1049274-2008-02-28', 'TQCS-1049271-2008-02-28', 'TQCS-1049258-2008-02-14')
+subset_animals <- c('22', '153')
 events_subset <- events %>% filter(animal_id %in% subset_animals)
 
 events_subset
@@ -176,12 +149,12 @@ rit_data
 
 abacus_plot(detections_w_events,
             location_col='station',
-            main='TQCS Detections by Station') # can use plot() variables here, they get passed thru to plot()
+            main='Walleye detections by station') # can use plot() variables here, they get passed thru to plot()
 
 # pick a single fish to plot
-abacus_plot(detections_filtered[detections_filtered$animal_id== "TQCS-1049273-2008-02-28",],
+abacus_plot(detections_filtered[detections_filtered$animal_id== "22",],
             location_col='station',
-            main="TQCS-1049273-2008-02-28 Detections By Station")
+            main="Animal 22 Detections By Station")
 
 # Bubble Plots for Spatial Distribution of Fish ####
 # bubble variable gets the summary data that was created to make the plot
@@ -189,27 +162,14 @@ detections_filtered
 
 ?detection_bubble_plot
 
-# We'll use raster to get a polygon to plot on
-library(raster)
-USA <- getData('GADM', country="USA", level=1)
-FL <- USA[USA$NAME_1=="Florida",]
-
-#Alternative method of getting the polygon. 
-f <-  'http://biogeo.ucdavis.edu/data/gadm3.6/Rsp/gadm36_USA_1_sp.rds'
-b <- basename(f)
-download.file(f, b, mode="wb", method="curl")
-USA <- readRDS('gadm36_USA_1_sp.rds')
-FL <- USA[USA$NAME_1=="Florida",]
-
-bubble_station <- detection_bubble_plot(detections_filtered, 
-                                out_file = 'tqcs_bubble.png',
-                                location_col = 'station',
-                                map = FL,
-                                col_grad=c('white', 'green'),
-                                background_xlim = c(-81, -80),
-                                background_ylim = c(26, 28))
+bubble_station <- detection_bubble_plot(detections_filtered,
+                                        location_col = 'station',
+                                        out_file = 'walleye_bubbles_by_stations.png')
 bubble_station
 
+bubble_array <- detection_bubble_plot(detections_filtered,
+                                      out_file = 'walleye_bubbles_by_array.png')
+bubble_array
 
 # Challenge 1 ----
 # Create a bubble plot of the area on which we zoomed in earlier. Set the bounding box using the provided nw + se cordinates, change the colour scale and
@@ -217,5 +177,6 @@ bubble_station
 # Hint: ?detection_bubble_plot will help a lot
 # Here's some code to get you started
 
-nw <- c(26, -80)
-se <- c(28, -81)
+erie_arrays <- c('DRF', 'DRL', 'DRU', 'MAU', 'RAR', 'SCL', 'SCM', 'TSR') #given
+nw <- c(43, -83.75) #given
+se <- c(41.25, -82) #given

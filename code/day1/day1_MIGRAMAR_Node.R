@@ -233,7 +233,7 @@ gmr_deploy <- read_excel("gmr-deployment-short-form.xls", sheet = "Deployment")
 view(gmr_deploy)
 
 # Tag metadata
-gmr_tag <- read_excel("data/migramar/gmr_tagging_metadata.xls", sheet = "Tag Metadata") 
+gmr_tag <- read_excel("gmr_tagging_metadata.xls", sheet = "Tag Metadata") 
 view(gmr_tag)
 
 #keep in mind the timezone of the columns
