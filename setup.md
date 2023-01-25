@@ -86,10 +86,10 @@ install.packages('knitr', dependencies = TRUE)
 
 ### `remora` Workshop Requirements
 ```
-#install.packages('readr')
-#install.packages('sf')
-#install.packages('stars')
-#devtools::install_github('ocean-tracking-network/remora@get_data_qc', force=TRUE)
+install.packages('readr')
+install.packages('sf')
+install.packages('stars')
+devtools::install_github('ocean-tracking-network/remora@get_data_qc', force=TRUE)
 ```
 
 # Dataset and Code
