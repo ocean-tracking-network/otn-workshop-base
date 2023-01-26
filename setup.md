@@ -9,13 +9,13 @@ You will requre 1) all the correct programs, 2) all the listed R packages 3) the
 
 ### Please see the attached document for program instructions: - [Program Install Instructions.docx](/Resources/install_instructions.docx)
 -  R version: 3.6.x or newer (recommend 4.0.x) and RStudio
--  Rtools (Windows users only) and GDAL are only required for Workshop Day 2
+-  Rtools (Windows users only) and GDAL are only required for the Advanced Telemetry Workshop
 
 Once all of the programs are installed, open RStudio and run the below package install scripts. It's best to run it line by line instead of all at once in case there are errors.
 
 <b>Note:</b> When running through the installs, you may encounter a prompt asking you to upgrade dependent packages. Choosing Option `3: None`, works in most situations and will prevent upgrades of packages you weren't explicitly looking to upgrade.
 
-### Beginning R Workshop Requirements
+### Beginner R Workshop Requirements
 
 ```r
 
@@ -38,7 +38,7 @@ install.packages("readxl")
 install.packages("viridis")
 ```
 
-### Advanced Telemtry Workshop Requirements
+### Advanced Telemetry Workshop Requirements
 <b>Note:</b> When running through the installs, you may encounter a prompt asking you to upgrade dependent packages. Choosing Option `3: None`, works in most situations and will prevent upgrades of packages you weren't explicitly looking to upgrade.
 
 ```r
