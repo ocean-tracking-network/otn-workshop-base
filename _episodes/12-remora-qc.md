@@ -1,16 +1,15 @@
 ---
 title: Quality Control Checks with Remora
-teaching: 0
+teaching: 15
 exercises: 0
 questions:
 - "How do I use Remora to quality check my data?"
 ---
 
-`remora` (Rapid Extraction of Marine Observations for Roving Animals) is a program developed by researchers with IMOS to perform two critical functions. The first is to provide quality control
-checks for acoustic telemetry detection data. The second is to match detections with environmental
+`remora` [(Rapid Extraction of Marine Observations for Roving Animals)](https://github.com/IMOS-AnimalTracking/remora) is a program developed by researchers with IMOS to perform two critical functions. The first is to provide quality control checks for acoustic telemetry detection data. The second is to match detections with environmental
 conditions at the time of detection. This lesson will cover the former functionality. 
 
-`remora`'s original design only allowed for data collected by IMOS, in the area surrounding Australia. OTN has taken it on to globalize the code, allowing for detections from any location or institution to be processed. As such, some functions are not available in base remora, and must be taken from the OTN fork and the appropriate branch. 
+`remora`'s original design only allowed for data collected by [IMOS](https://imos.org.au/facilities/animaltracking), in the area surrounding Australia. OTN has taken it on to globalize the code, allowing for detections from any location or institution to be processed. As such, some functions are not available in base remora, and must be taken from the OTN fork and the appropriate branch. 
 
 To install the appropriate branch, run the following code:
 
@@ -21,7 +20,8 @@ library(devtools)
 devtools::install_github('ocean-tracking-network/remora@get_data_qc', force=TRUE)
 library(remora)
 ~~~
-{: .langauge-r}
+{: .language-r}
+
 
 There are other packages that need to be installed and activated but these will have been covered in
 the workshop setup file. 
@@ -65,8 +65,10 @@ To map your data from OTN to IMOS format, we can use the following code. Note th
 ~~~
 #Read in the test data as a CSV. 
 otn_test_data <- read_csv("./testDataOTN/qc_princess.csv") #Put your path to your test file here. 
+
 #Return the mapped data
 otn_mapped_test <- remora::otn_imos_column_map(otn_test_data)
+
 #If you want to check your work. otn_mapped_test is a list of dataframes, so keep that in mind. 
 View(otn_mapped_test)
 ~~~
@@ -90,6 +92,7 @@ Before we can run the QC checks, we need to set up those shapefiles we downloade
 ~~~
 #Load the shapefile with st_read. 
 shark_shp <- sf::st_read("./testDataOTN/SHARKS_RAYS_CHIMAERAS/SHARKS_RAYS_CHIMAERAS.shp")
+
 #We're using the binomial name and bounding box that befits our species and area but feel free to sub in your own when you work with other datasets.
 blue_shark_shp <- shark_shp[shark_shp$binomial == 'Prionace glauca',]
 blue_shark_crop <- st_crop(blue_shark_shp,  xmin=-68.4, ymin=42.82, xmax=-60.53, ymax=45.0)
@@ -118,6 +121,7 @@ The last element we need to set up is a map of coastlines, which `remora` will u
 ~~~
 #We also need a raster for the ocean. We'll load this from a mid-resolution tif file, for testing purposes. 
 world_raster <- raster("./testDataOTN/NE2_50M_SR.tif")
+
 #And crop it based on our cropped blue shark extent. 
 world_raster_sub <- crop(world_raster, blue_shark_crop)
 ~~~
