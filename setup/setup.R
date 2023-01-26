@@ -74,6 +74,12 @@ library(remotes)
 remotes::install_github("hugomflavio/actel",
                         build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
 
+#Remora workshop requirements
+install.packages('readr')
+install.packages('sf')
+install.packages('stars')
+devtools::install_github('ocean-tracking-network/remora@get_data_qc', force=TRUE)
+
 ### Dataset and Code -----
 # Once the packages are installed, you can download the datasets and code for this workshop from [workshop-git-URL].
 # 1) Select the GREEN "code" button at the top and choose "Download ZIP"
