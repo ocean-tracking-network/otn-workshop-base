@@ -74,7 +74,6 @@ library(remotes)
 remotes::install_github("hugomflavio/actel",
                         build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
 
-
 # Install packages for animating detection data
 
 remotes::install_github("jmlondon/pathroutr")
@@ -83,6 +82,12 @@ install.packages('sf')
 install.packages('plotly')
 install.packages('gganimate')
 install.packages('ggspatial')
+
+#Remora workshop requirements
+install.packages('readr')
+install.packages('sf')
+install.packages('stars')
+devtools::install_github('ocean-tracking-network/remora@get_data_qc', force=TRUE)
 
 ### Dataset and Code -----
 # Once the packages are installed, you can download the datasets and code for this workshop from [workshop-git-URL].
