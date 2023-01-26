@@ -93,6 +93,14 @@ install.packages('gganimate')
 install.packages('ggspatial')
 ```        
 
+### `remora` Workshop Requirements
+```
+install.packages('readr')
+install.packages('sf')
+install.packages('stars')
+devtools::install_github('ocean-tracking-network/remora@get_data_qc', force=TRUE)
+```
+
 # Dataset and Code
 
 <b>Once the above packages are installed</b>, you can download the datasets and code for this workshop from <b>[this link](https://github.com/ocean-tracking-network/otn-workshop-base/tree/master)</b>
