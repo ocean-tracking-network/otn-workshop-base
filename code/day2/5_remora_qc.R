@@ -1,37 +1,48 @@
-#To install the appropriate branch, run the following code:
-
-install.packages('devtools')
-library(devtools)
-
+#If you need the installs.
+#install.packages('readr')
+#install.packages('tidyverse')
+#install.packages('sf')
+#install.packages('sp')
+#install.packages('raster')
+#install.packages('stars')
 devtools::install_github('ocean-tracking-network/remora@get_data_qc', force=TRUE)
+
+library(readr)
+library(tidyverse)
 library(remora)
+library(sf)
+library(sp)
+library(raster)
+library(stars)
+library(glatos)
+library(utils)
 
-# Run the following code to download and unzip the file to your working directory.
-download.file("https://members.oceantrack.org/data/share/testdataotn.zip/@@download/file/testDataOTN.zip", 
-              "./testDataOTN.zip")
+setwd('YOUR/PATH/TO/remora')
 
+download.file("https://members.oceantrack.org/data/share/testdataotn.zip/@@download/file/testDataOTN.zip", "./testDataOTN.zip")
 unzip("testDataOTN.zip")
 
-#To map your data from OTN to IMOS format, we can use the following code. 
-# Note that we are only passing in a detection extract dataframe- 
-# keep that in mind when we inspect the results of the mapping function.
+#IMOS test data, as something to reference against if you want it.
+imos_files <- list(det = system.file(file.path("test_data","IMOS_detections.csv"), package = "remora"),
+                   rmeta = system.file(file.path("test_data","IMOS_receiver_deployment_metadata.csv"),
+                                       package = "remora"),
+                   tmeta = system.file(file.path("test_data","IMOS_transmitter_deployment_metadata.csv"),
+                                       package = "remora"),
+                   meas = system.file(file.path("test_data","IMOS_animal_measurements.csv"),
+                                      package = "remora"))
 
-#Read in the test data as a CSV. 
 otn_test_data <- read_csv("./testDataOTN/qc_princess.csv") #Put your path to your test file here. 
-
-#Return the mapped data
 otn_mapped_test <- remora::otn_imos_column_map(otn_test_data)
-
-#If you want to check your work. otn_mapped_test is a list of dataframes, so keep that in mind. 
+#If you want to check your work. 
 View(otn_mapped_test)
 
-# set up a list of file paths
+#The above code isn't meant to be run on its own just yet, the ideal is that you can pass it to QC without having to manually map it. 
+otn_files <- list(det = "./testDataOTN/qc_princess.csv") #Put your path to your files here
 
-otn_files <- list(det = "./testDataOTN/qc_princess.csv")
-
-#Load the shapefile with st_read. 
+#The QC functions rely on having shapefiles for distributions and study areas to calculate distances. 
+#We've got to get a shapefile for the Blue Shark test data, one is included here for sharks but for alternative data you will need your own appropriate one.
+#We got ours from IUCN so maybe start there!
 shark_shp <- sf::st_read("./testDataOTN/SHARKS_RAYS_CHIMAERAS/SHARKS_RAYS_CHIMAERAS.shp")
-
 #We're using the binomial name and bounding box that befits our species and area but feel free to sub in your own when you work with other datasets.
 blue_shark_shp <- shark_shp[shark_shp$binomial == 'Prionace glauca',]
 blue_shark_crop <- st_crop(blue_shark_shp,  xmin=-68.4, ymin=42.82, xmax=-60.53, ymax=45.0)
@@ -45,7 +56,6 @@ blue_shark_spatial <- as_Spatial(blue_shark_crop)
 
 #We also need a raster for the ocean. We'll load this from a mid-resolution tif file, for testing purposes. 
 world_raster <- raster("./testDataOTN/NE2_50M_SR.tif")
-
 #And crop it based on our cropped blue shark extent. 
 world_raster_sub <- crop(world_raster, blue_shark_crop)
 
@@ -60,6 +70,6 @@ tests_vector <-  c("FDA_QC",
                    "Detection_QC")
 
 #In a perfect world, when you run this code, you will get output with QC attached. 
-otn_test_tag_qc <- remora::runQC(otn_files, data_format = "otn", 
-                                 tests_vector = tests_vector, .parallel = FALSE, .progress = TRUE)
+otn_test_tag_qc <- remora::runQC(imos_files, data_format = "imos", tests_vector = tests_vector, .parallel = FALSE, .progress = TRUE)
 
+qc_shapes_test <- get_qc_shapes(blue_shark_shp, otn_test_data)
