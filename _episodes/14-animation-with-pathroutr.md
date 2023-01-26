@@ -14,7 +14,7 @@ We will begin in much the same way we did for our basic animation lesson with ge
 
 ### Preparing our Data 
 
-We will start out in the same way we did for the basic animation. We will use the same assumptions about the data this time and only look at one fish. We will also filter down the data and only look at **5 detection events** as an example subset due to the computational intensity of `pathroutr` and its calculations.
+Just as in the basic animations lesson, we will only look at one fish. We will also filter down the data and only look at **5 detection events** as an example subset due to the computational intensity of `pathroutr` and its calculations.
 
 ~~~
 library(glatos)

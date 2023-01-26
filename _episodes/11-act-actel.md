@@ -12,7 +12,7 @@ questions:
 
 ### Preparing our data to use in Actel
 
-So now, as the last piece of stock curriculum for this workshop, let's quickly look at how we can take the data reports we get from the ACT-MATOS (or any other OTN-compatible data partner, like FACT, or OTN proper) and make it ready for Actel.
+So now, as the last piece of stock curriculum for this workshop, let's quickly look at how we can take the data reports we get from the ACT-MATOS (or any other OTN-compatible data partner, like FACT, or OTN proper) and make it ready for `Actel`.
 
 ~~~
 # Using ACT-style data in Actel ####
@@ -114,7 +114,7 @@ all_stations <- bind_rows(deploy_metadata, otn_deploy_metadata)
 
 # Mutate metadata into Actel format ----
 
-# Create a station entry from the glatos array and station number.
+# Create a station entry from the projectcode and station number.
 # --- add station to receiver metadata ----
 full_receiver_meta <- all_stations %>%
   dplyr::mutate(
@@ -128,10 +128,10 @@ full_receiver_meta <- all_stations %>%
 
 ### Formatting - Tagging and Deployment Data
 
-As we saw earlier, tagging metadata is entered into Actel as `biometrics`, and deployment metadata as `deployments`. These data structures also require a few specially named columns, and a properly formatted date.
+As we saw earlier, tagging metadata is entered into `Actel` as `biometrics`, and deployment metadata as `deployments`. These data structures also require a few specially named columns, and a properly formatted date.
 ~~~
 # All dates will be supplied to Actel in this format:
-actel_datefmt = '%Y-%m-%d %H:%M:%S
+actel_datefmt = '%Y-%m-%d %H:%M:%S'
 
 # biometrics is the tag metadata. If you have a tag metadata sheet, it looks like this:
 
@@ -156,7 +156,7 @@ actel_deployments <- full_receiver_meta %>% dplyr::filter(!is.na(recovery_date))
 
 ### Detections
 
-For detections, a few columns need to exist: `Transmitter` holds the full transmitter ID. `Receiver` holds the receiver serial number, `Timestamp` has the detection times, and we use a couple of Actel functions to split `CodeSpace` and `Signal` from the full `transmitter_id`.
+For detections, a few columns need to exist: `Transmitter` holds the full transmitter ID. `Receiver` holds the receiver serial number, `Timestamp` has the detection times, and we use a couple of `Actel` functions to split `CodeSpace` and `Signal` from the full `transmitter_id`.
 
 ~~~
 # Renaming some columns in the Detection extract files   
@@ -264,7 +264,7 @@ e # discard all detections at unknown receivers - this is almost never
 
 There will very likely be some issues with the data that the `Actel` checkers find and warn us about. Detections outside the deployment time bounds, receivers that aren't in your metadata. For the purposes of today, we will drop those rows from the final copy of the data, but you can take these prompts as cues to verify your input metadata is accurate and complete. It is up to you in the end to determine whether there is a problem with the data, or an overzealous check that you can safely ignore. Here our demo is using a very deeply subsetted version of one project's data, and it's not surprising to be missing some deployments.
 
-Once you have an Actel object, you can run `explore()` to generate your project's summary reports:
+Once you have an `Actel` object, you can run `explore()` to generate your project's summary reports:
 ~~~
 # actel::explore()
 
@@ -286,7 +286,7 @@ n  # don't save a copy of the results to a RData object... this time.
 {: .language-r}
 
 
-Review the file that Actel pops up in our browser. It presumed our Arrays were arranged linearly and alphabetically, which is of course not correct! 
+Review the file that `Actel` pops up in our browser. It presumed our Arrays were arranged linearly and alphabetically, which is of course not correct! 
 
 
 ### Custom spatial.txt files for Actel
@@ -326,7 +326,7 @@ mapview(rcvr_spatial, popup = popupTable(our_receivers,
 
 Can we design a graph and write it into spatial.txt that fits all these Arrays together? The station value we put in Array for our PROJ61 and PROJ60 projects looks to be a bit too granular for our purposes. Maybe we can combine many arrays that are co-located in open water into a singular 'zone', preserving the complexity of the river systems but creating a large basin to which we can connect the furthest downstream of those river arrays.
 
-To do this, we only need to update the arrays in our spatial.csv file or actel_spatial dataframe. We don't need to edit our source metadata! We will have to define a spatial.txt file and how these newly defined Arrays interconnect. While there won't be time to do that for this example dataset and its large and very complicated region, this approach is definitely suitable for small river systems and even perhaps for multiple river systems feeding a bay and onward to the open water. If you'd like to apply Actel to your data and want to define a custom spatial.txt file, there are some code examples included in code/day2/5_actel_custom_spatial.R that might be helpful to get you started.
+To do this, we only need to update the arrays in our spatial.csv file or `actel_spatial` dataframe. We don't need to edit our source metadata! We will have to define a spatial.txt file and how these newly defined Arrays interconnect. While there won't be time to do that for this example dataset and its large and very complicated region, this approach is definitely suitable for small river systems and even perhaps for multiple river systems feeding a bay and onward to the open water. If you'd like to apply `Actel` to your data and want to define a custom spatial.txt file, there are some code examples included in `code/day2/5_actel_custom_spatial.R` that might be helpful to get you started.
 
 ## MIGRAMAR Node
 
@@ -395,7 +395,7 @@ proj_dets %>% filter(receiver != 'release') %>% count(tagname)
 
 # Mutate metadata into Actel format ----
 
-# Create a station entry from the glatos array and station number.
+# Create a station entry from the projectcode and station number.
 # --- add station to receiver metadata ----
 full_receiver_meta <- deploy_metadata %>%
   dplyr::mutate(
@@ -409,10 +409,10 @@ We've now imported our data, and renamed a few columns from the receiver metadat
 
 ### Formatting - Tagging and Deployment Data
 
-As we saw earlier, tagging metadata is entered into Actel as `biometrics`, and deployment metadata as `deployments`. These data structures also require a few specially named columns, and a properly formatted date.
+As we saw earlier, tagging metadata is entered into `Actel` as `biometrics`, and deployment metadata as `deployments`. These data structures also require a few specially named columns, and a properly formatted date.
 ~~~
 # All dates will be supplied to Actel in this format:
-actel_datefmt = '%Y-%m-%d %H:%M:%S
+actel_datefmt = '%Y-%m-%d %H:%M:%S'
 
 # biometrics is the tag metadata. If you have a tag metadata sheet, it looks like this:
 
@@ -437,7 +437,7 @@ actel_deployments <- full_receiver_meta %>% dplyr::filter(!is.na(`RECOVER_DATE_T
 
 ### Detections
 
-For detections, a few columns need to exist: `Transmitter` holds the full transmitter ID. `Receiver` holds the receiver serial number, `Timestamp` has the detection times, and we use a couple of Actel functions to split `CodeSpace` and `Signal` from the full `transmitter_id`.
+For detections, a few columns need to exist: `Transmitter` holds the full transmitter ID. `Receiver` holds the receiver serial number, `Timestamp` has the detection times, and we use a couple of `Actel` functions to split `CodeSpace` and `Signal` from the full `transmitter_id`.
 
 ~~~
 # Renaming some columns in the Detection extract files   
@@ -552,7 +552,7 @@ e # discard all detections at unknown receivers - this is almost never
 
 There will very likely be some issues with the data that the `Actel` checkers find and warn us about. Detections outside the deployment time bounds, receivers that aren't in your metadata. For the purposes of today, we will drop those rows from the final copy of the data, but you can take these prompts as cues to verify your input metadata is accurate and complete. It is up to you in the end to determine whether there is a problem with the data, or an overzealous check that you can safely ignore. Here our demo is using a very deeply subsetted version of one project's data, and it's not surprising to be missing some deployments.
 
-Once you have an Actel object, you can run `explore()` to generate your project's summary reports:
+Once you have an `Actel` object, you can run `explore()` to generate your project's summary reports:
 ~~~
 # actel::explore()
 
@@ -574,7 +574,7 @@ n  # don't save a copy of the results to a RData object... this time.
 {: .language-r}
 
 
-Review the file that Actel pops up in our browser. It presumed our Arrays were arranged linearly and alphabetically, which is of course not correct! 
+Review the file that `Actel` pops up in our browser. It presumed our Arrays were arranged linearly and alphabetically, which is of course not correct! 
 
 
 ### Custom spatial.txt files for Actel
@@ -614,4 +614,4 @@ mapview(rcvr_spatial, popup = popupTable(our_receivers,
 
 Can we design a graph and write it into spatial.txt that fits all these Arrays together? The station value we put in Array for our PROJ61 and PROJ60 projects looks to be a bit too granular for our purposes. Maybe we can combine many arrays that are co-located in open water into a singular 'zone', preserving the complexity of the river systems but creating a large basin to which we can connect the furthest downstream of those river arrays.
 
-To do this, we only need to update the arrays in our spatial.csv file or actel_spatial dataframe. We don't need to edit our source metadata! We will have to define a spatial.txt file and how these newly defined Arrays interconnect. While there won't be time to do that for this example dataset and its large and very complicated region, this approach is definitely suitable for small river systems and even perhaps for multiple river systems feeding a bay and onward to the open water. If you'd like to apply Actel to your data and want to define a custom spatial.txt file, there are some code examples included in code/day2/5_actel_custom_spatial.R that might be helpful to get you started.
+To do this, we only need to update the arrays in our spatial.csv file or `actel_spatial` dataframe. We don't need to edit our source metadata! We will have to define a spatial.txt file and how these newly defined Arrays interconnect. While there won't be time to do that for this example dataset and its large and very complicated region, this approach is definitely suitable for small river systems and even perhaps for multiple river systems feeding a bay and onward to the open water. If you'd like to apply `Actel` to your data and want to define a custom spatial.txt file we can help you get started.
