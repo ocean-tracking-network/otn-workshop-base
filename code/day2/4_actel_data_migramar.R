@@ -1,4 +1,4 @@
-# Using ACT-style data in Actel ####
+# Using MigraMar-style data in Actel ####
 
 library(actel)
 library(stringr)
@@ -9,7 +9,7 @@ library(readxl)
 # set working directory to the data folder for this workshop
 setwd("YOUR/PATH/TO/data/migramar")
 
-# Our project's detections file - I'll use readr to read everything from proj59 in at once:
+# Our project's detections file - I'll use readr to read everything from GMR in at once:
 
 proj_dets <- list.files(pattern="gmr_matched_detections*") %>% 
   map_df(~readr::read_csv(.))
@@ -23,7 +23,7 @@ tag_metadata <- readxl::read_excel('gmr_tagging_metadata.xls',
                                    ) # skip the first 4 lines as they're 'preamble'
 
 
-# And we can import first a subset of the deployments in MATOS that were deemed OK to publish
+# And we can import our deployment metadata
 deploy_metadata <- readxl::read_excel('gmr-deployment-short-form.xls', sheet='Deployment') %>%
   # Add a very quick and dirty receiver group column.
   mutate(rcvrgroup = ifelse(OTN_ARRAY %in% c('GMR'), # if we're talking GMR
@@ -48,7 +48,7 @@ proj_dets %>% filter(receiver != 'release') %>% count(tagname)
 
 # Mutate metadata into Actel format ----
 
-# Create a station entry from the glatos array and station number.
+# Create a station entry from the projectcode and station number.
 # --- add station to receiver metadata ----
 full_receiver_meta <- deploy_metadata %>%
   dplyr::mutate(
