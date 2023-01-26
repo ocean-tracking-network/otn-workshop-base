@@ -82,6 +82,15 @@ install.packages('raster')
 # Install packages for building/displaying R Markdown
 install.packages('rmarkdown')
 install.packages('knitr', dependencies = TRUE)
+
+# Install packages for animating detection data
+
+remotes::install_github("jmlondon/pathroutr")
+
+install.packages('sf')
+install.packages('plotly')
+install.packages('gganimate')
+install.packages('ggspatial')
 ```        
 
 # Dataset and Code
