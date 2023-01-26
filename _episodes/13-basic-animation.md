@@ -11,7 +11,7 @@ Static plots are excellent tools and are appropriate a lot of the time, but ther
 
 ### Getting our Packages
 
-If not done already, we will first need to ensure we have all the required packages libraried in our R session.
+If not done already, we will first need to ensure we have all the required packages activated in our R session.
 
 ~~~
 library(glatos)
@@ -49,7 +49,7 @@ plot_data <- detection_events %>%
 ~~~
 {: .language-r}
 
-Additionally, animating many animal tracks can be compuationally intensive as well as create a potentially confusing plot, so for this lesson we will only be plotting one fish. We well subset our data by filtering where the `animal_id` is equal to `PROJ58-1218508-2015-10-13`.
+Additionally, animating many animal tracks can be computationally intensive as well as create a potentially confusing plot, so for this lesson we will only be plotting one fish. We well subset our data by filtering where the `animal_id` is equal to `PROJ58-1218508-2015-10-13`.
 
 ~~~
 one_fish <- plot_data[plot_data$animal_id == "PROJ58-1218508-2015-10-13",] 

@@ -7,7 +7,7 @@ questions:
 
 ---
 
-Basic animations using `ggainimate` are great for many purposes but you will soon run into issues where your fish tracks are moving across land barriers, especially in more complex environments. This is because the `geom` used in the previous lesson choose the most direct path between two detection points. To avoid this we need to use a specific land avoidance tool. For our next animation we will use the `pathroutr` package which you can find out more about [here](https://jmlondon.github.io/pathroutr/). 
+Basic animations using `gganimate` are great for many purposes but you will soon run into issues where your fish tracks are moving across land barriers, especially in more complex environments. This is because the `geom` used in the previous lesson choose the most direct path between two detection points. To avoid this we need to use a specific land avoidance tool. For our next animation we will use the `pathroutr` package which you can find out more about [here](https://jmlondon.github.io/pathroutr/). 
 
 We will begin in much the same way we did for our basic animation lesson with getting our data ready, but things will differ when we start to use `pathroutr` since there are specific data formats expected.
 
@@ -59,14 +59,14 @@ shape_file <- USA[USA$NAME_1 == 'Maryland',]
 ~~~
 {: .language-r}
 
-This shapefile is a great start, but we need the format to be an `sf` `multipolygon`. To do that we will run the `st_as_sf` function on our shapefile. We also want to change the coorindate reference system (CRS) of the file to a projected coordinate system since we will be mapping this plot flat. To do that we will run `st_transform` and provide it the value `5070`.
+This shapefile is a great start, but we need the format to be an `sf` `multipolygon`. To do that we will run the `st_as_sf` function on our shapefile. We also want to change the coordinate reference system (CRS) of the file to a projected coordinate system since we will be mapping this plot flat. To do that we will run `st_transform` and provide it the value `5070`.
 
 ~~~
 md_polygon <- st_as_sf(single_poly) %>% st_transform(5070)
 ~~~
 {: .language-r}
 
-### Formatting our Datset
+### Formatting our Dataset
 
 We will also need to make some changes to our detection data as well, in order to work with `pathroutr`. To start we will need to turn the path of our fish movements into a `SpatialPoints` format. To do that we will get the `deploy_long` and `deploy_lat` with `dplyr::select` and add them to a variable called `path`. 
 
@@ -104,7 +104,7 @@ track_pts <- st_sample(plot_path, size = 10000, type = "regular")
 ~~~
 {: .language-r}
 
-The first `pathroutr` function we will use is `prt_visgraph`. This creates a visibility graph that connects all of the vertices for our shapefile with a Delaunay triangle mesh and removes any edges that cross land. You could think of this part as creating the viable routes an animal could swim through (marking the "water" as vaiable).
+The first `pathroutr` function we will use is `prt_visgraph`. This creates a visibility graph that connects all of the vertices for our shapefile with a Delaunay triangle mesh and removes any edges that cross land. You could think of this part as creating the viable routes an animal could swim through (marking the "water" as viable).
 
 ~~~
 vis_graph <- prt_visgraph(md_polygon, buffer = 150)
