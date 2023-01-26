@@ -50,6 +50,7 @@ This package is designed for studies where animals tagged with acoustic tags are
 
 Author: Dr. Hugo Flavio, ( hflavio@wlu.ca )
 
+
 ####  Intro to the `remora` Package
 
 This package is designed for the Rapid Extraction of Marine Observations for Roving Animals (`remora`). This is [an R package](https://github.com/IMOS-AnimalTracking/remora) that enables the integration of animal acoustic telemetry data with oceanographic observations collected by ocean observing programs. It includes functions for:
@@ -63,3 +64,9 @@ Whilst the functions in `remora` were primarily developed to work with acoustic 
 
 Maintainer: Created by a team from [IMOS Animal Tracking Facility](https://imos.org.au/facilities/animaltracking), adapted to work on OTN-formatted data by Bruce Delo ( bruce.delo@dal.ca )
 
+
+#### Intro to the `pathroutr` Package
+
+The goal of `pathroutr` is to provide functions for re-routing paths that cross land around barrier polygons. The use-case in mind is movement paths derived from location estimates of marine animals. Due to error associated with these locations it is not uncommon for these tracks to cross land. The `pathroutr` package aims to provide a pragmatic and fast solution for re-routing these paths around land and along an efficient path. You can learn more [here](https://github.com/jmlondon/pathroutr)
+
+Author: Dr. Josh M London ( josh.london@noaa.gov )
