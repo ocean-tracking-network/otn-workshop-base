@@ -74,6 +74,16 @@ library(remotes)
 remotes::install_github("hugomflavio/actel",
                         build_opts = c("--no-resave-data", "--no-manual"), build_vignettes = TRUE)
 
+
+# Install packages for animating detection data
+
+remotes::install_github("jmlondon/pathroutr")
+
+install.packages('sf')
+install.packages('plotly')
+install.packages('gganimate')
+install.packages('ggspatial')
+
 ### Dataset and Code -----
 # Once the packages are installed, you can download the datasets and code for this workshop from [workshop-git-URL].
 # 1) Select the GREEN "code" button at the top and choose "Download ZIP"
