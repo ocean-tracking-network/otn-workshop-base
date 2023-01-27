@@ -5,7 +5,7 @@
 #install.packages('sp')
 #install.packages('raster')
 #install.packages('stars')
-devtools::install_github('ocean-tracking-network/remora@get_data_qc', force=TRUE)
+devtools::install_github('ocean-tracking-network/remora@workshop_ready', force=TRUE)
 
 library(readr)
 library(tidyverse)
@@ -70,6 +70,6 @@ tests_vector <-  c("FDA_QC",
                    "Detection_QC")
 
 #In a perfect world, when you run this code, you will get output with QC attached. 
-otn_test_tag_qc <- remora::runQC(imos_files, data_format = "imos", tests_vector = tests_vector, .parallel = FALSE, .progress = TRUE)
+otn_test_tag_qc <- remora::runQC(otn_files, data_format = "otn", tests_vector = tests_vector, .parallel = FALSE, .progress = TRUE)
 
 qc_shapes_test <- get_qc_shapes(blue_shark_shp, otn_test_data)
