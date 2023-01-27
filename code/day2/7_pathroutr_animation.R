@@ -7,6 +7,8 @@ library(ggspatial)
 library(sp)
 library(raster)
 
+setwd("YOUR/PATH/TO/data/act")
+
 detection_events <- #create detections event variable
   read_otn_detections('proj58_matched_detections_2016.csv') %>% # reading detections
   false_detections(tf = 3600) %>%  #find false detections
