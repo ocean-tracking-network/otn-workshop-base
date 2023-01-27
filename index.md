@@ -4,11 +4,11 @@ root: .  # Is the only page that doesn't follow the pattern /:path/index.html
 permalink: index.html  # Is the only page that doesn't follow the pattern /:path/index.html
 ---
 
-This pair of workshops will introduce the R programming language, popular in the field of biologging.
+This collection of lessons will introduce the R programming language, popular in the field of biologging.
 
-In session one we will explore some of the popular software packages suitable for exploring and plotting acoustic telemetry data, including `dplyr` and `ggplot2`, for the purpose of generating summaries for reports.
+This is an advanced workshop, and the basics of the R progamming language will not be covered.
 
-The second session offers a brief overview of the `glatos` R package for performing detection filtering, various calculations and plotting. The data is then transformed for ingestion into the powerful acoustic telemetry packages `remora` and `actel`, along with examples from each package. 
+This session offers a brief overview of the `glatos` R package for performing detection filtering, various calculations and plotting. The data is then transformed for ingestion into the powerful acoustic telemetry package `actel`. We then explore multiple ways to animate fish tracks, exploring `gganimate` and `pathroutr`, and finally we introduce some quality control functions from `remora`. 
 
 If you have questions about this curriculum, please reach out to otndc@dal.ca
 {% include links.md %}
