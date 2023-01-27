@@ -18,9 +18,9 @@ Please contact **OTNDC@DAL.CA** if you are interested in connecting with your re
 
 ##  Intended Audience
 
-This set of workshop material is directed at researchers who are ready to begin the work of acoustic telemetry data analysis. The first few lessons will begin with introductory R - no previous coding experince required. The workshop material progresses into more advanced techniques as we move along, beginning around lesson 8 "Introduction to Glatos". 
+This set of workshop material is directed at researchers who are ready to begin the work of acoustic telemetry data analysis. There are no introductory R lessons provided, but "intro to R for telemetry" material can be explored [here](https://ocean-tracking-network.github.io/otn-workshop-base/).
 
-If you'd like to refresh your R coding skills outside of this workshop curriculum, we recommend [Data Analysis and Visualization in R for Ecologists](https://datacarpentry.org/R-ecology-lesson/ "Website for R ecology lesson") as a good starting point. Much of this content is included in the first two lessons of this workshop.
+If you'd like to refresh your basic R coding skills outside of this workshop curriculum, we recommend [Data Analysis and Visualization in R for Ecologists](https://datacarpentry.org/R-ecology-lesson/ "Website for R ecology lesson") as a good starting point. Much of this content is included in the first two lessons of [this workshop](https://ocean-tracking-network.github.io/otn-workshop-base/).
 
 ##  Getting Started
 
