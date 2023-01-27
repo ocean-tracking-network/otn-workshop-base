@@ -5,7 +5,6 @@
 setwd("YOUR/PATH/TO/data/glatos/")
 library(glatos)
 library(tidyverse)
-library(VTrack)
 library(lubridate)
 
 # First we need to create one detections file from all our detection extracts.
