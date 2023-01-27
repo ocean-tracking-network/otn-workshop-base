@@ -18,7 +18,7 @@ proj_dets <- list.files(pattern="proj59_matched_detections*") %>%
 
 # read in the tag metadata:
 
-tag_metadata <- readxl::read_excel('../act/Tag_Metadata/Proj59_Metadata_bluecatfish.xls', 
+tag_metadata <- readxl::read_excel('Tag_Metadata/Proj59_Metadata_bluecatfish.xls', 
                                    sheet='Tag Metadata', # use the Tag Metadata sheet from this excel file
                                    skip=4) # skip the first 4 lines as they're 'preamble'
 
@@ -201,7 +201,7 @@ actel_project <- preload(biometrics = actel_biometrics,
                          tz = tz)
 
 # Alas, we're going to have to discard a bunch of detections here, 
-# as our subsetted demo data doesn't have deployment metadat for certain 
+# as our subsetted demo data doesn't have deployment metadata for certain 
 # receivers / time periods and is missing some station deployments
 
 e # discard all detections at unknown receivers - this is almost never
