@@ -114,7 +114,7 @@ OK, now we have a biometrics file of our tag releases with names for each place 
 setwd('actel_example')
 
 # Run analysis. Note: This will open an analysis report on your web browser.
-exp.results <- explore(tz = 'US/Central', report = TRUE)
+exp.results <- explore(tz = 'Europe/Copenhagen', report = TRUE)
 
 # Because this is an example dataset, this analysis will run very smoothly. 
 # Real data is not always this nice to us!
