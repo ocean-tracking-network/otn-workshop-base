@@ -17,7 +17,7 @@ To install the appropriate branch, run the following code:
 install.packages('devtools')
 library(devtools)
 
-devtools::install_github('ocean-tracking-network/remora@get_data_qc', force=TRUE)
+devtools::install_github('ocean-tracking-network/remora@workshop_ready', force=TRUE)
 library(remora)
 ~~~
 {: .language-r}
