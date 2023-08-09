@@ -3,21 +3,35 @@ Telemetry workshop materials created by OTN, to be curated and taught to future 
 
 ## Cloning/Remixing OTN Workshop Base
 
-First, you will need to create a copy of the repository. We do this with the GitHub importer. This lets us create a version of the workshop content that is untethered from the base template and will neither 
-influence, nor be influenced by, the ton-workshop-base repository. 
+First, you will need to create a copy of the repository. We do this by forking the repository. 
 
-1. Go to the Github importer here: https://github.com/new/import.
-2. The first field asks for your ‘old’ repository’s clone URL. Go to the OTN Workshop Base repo (https://github.com/ocean-tracking-network/otn-workshop-base/tree/master), click the green “CODE” button, and 
-select ‘HTTPS’. Then, copy the URL and paste it into the field on the import page. The URL will end in ‘.git’. If it doesn’t, make sure you copied it properly. 
-3. Select the organization that will own the repository. In general you will want this to be ocean-tracking-network. 
-4. Give the workshop repository a name. The standard so far is to date it and say who the workshop is for (I.e, 2022-fact-workshop). More detail can be provided at your discretion, but not less. 
-5. Leave the repo visibility as “public.” 
-6. Click ‘Begin Import’. The import will take a few minutes. 
-7. When the import finishes, it will give you a link to your new repository. 
+*How to fork a repo:*
 
-When you import the repository, Github will automatically generate a Pages site out of the gh-pages branch. This is how we build websites in the Carpentries style for each workshop. Github WILL do this 
-automatically, you do not need to do anything. It may take some time for Github to build and deploy the site. If something goes wrong with this process, you’ll receive an e-mail at the address associated with 
-the GitHub account that owns the new repository. In this case, contact a developer to see that the error gets fixed. 
+1. Go to the otn-workshop-base repository homepage
+
+2. In the top right-hand of the page (just under the profile picture), click the 'Fork' button (between "Unwatch" and "Star").
+
+3. Make sure the 'Owner' is set to 'ocean-tracking-network.'
+
+4. Give the repo a meaningful name. Typical format is yyyy-organization-subject-workshop, where yyyy is the year the workshop is taking place, organization is the audience to whom we're giving it, and subject is the course material we're teaching.
+
+5. Provide a useful description.
+
+6. Click Create Fork.
+
+Once the fork is created, you will need to follow a few short steps to get the site up and running.
+
+*How to stand up the website:*
+
+1. In your new fork's repo site, go to the "Settings" tab (it's just under the 'Unwatch' button next to the 'Fork' button).
+
+2. In the left sidebar of that page, click the 'Pages' tab.
+
+3. Under the 'Source' section, set the source branch to gh-pages (the folder will default to /(root), this is fine). Click 'Save'. This step will happen automatically when you push a commit to gh-pages, but it's fine to do it manually too.
+
+4. The site will now be published at the link on this page (in the highlighted box at the top of the settings). Note that it may take a while for the site to be visible, depending on your caching settings. Give it about 15 minutes.
+
+If something goes wrong with the site build, you’ll receive an e-mail at the address associated with the GitHub account that owns the new repository. In this case, contact a developer to see that the error gets fixed. 
 
 From here there are two branches with which you need to be concerned if you are building a workshop: master and gh-pages. ‘Master’ contains all of the R code for the lessons. If you want to make changes to 
 the code, work with master as your base. Gh-pages is the branch that controls the display of the workshop website. If you want to change lesson content, work with gh-pages at your base. 
@@ -29,5 +43,6 @@ You are also free to add or delete lessons from your branch as befits the worksh
 feature sequential numbers. If you do not do this, the links between lessons will be broken. 
 
 Lessons are written in Markdown so be sure that your formatting is correct. Additional Markdown guidance can be found [here](https://www.markdownguide.org/cheat-sheet/). 
-
+ 
+You can find these instructions and more at the [OTW Wiki page](https://github.com/ocean-tracking-network/otn-workshop-base/wiki).
 
