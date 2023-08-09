@@ -5,7 +5,7 @@ Telemetry workshop materials created by OTN, to be curated and taught to future 
 
 First, you will need to create a copy of the repository. We do this by forking the repository. 
 
-*How to fork a repo:*
+**How to fork a repo:**
 
 1. Go to the otn-workshop-base repository homepage
 
@@ -21,7 +21,7 @@ First, you will need to create a copy of the repository. We do this by forking t
 
 Once the fork is created, you will need to follow a few short steps to get the site up and running.
 
-*How to stand up the website:*
+**How to stand up the website:**
 
 1. In your new fork's repo site, go to the "Settings" tab (it's just under the 'Unwatch' button next to the 'Fork' button).
 
