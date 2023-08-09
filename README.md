@@ -33,14 +33,11 @@ Once the fork is created, you will need to follow a few short steps to get the s
 
 If something goes wrong with the site build, you’ll receive an e-mail at the address associated with the GitHub account that owns the new repository. In this case, contact a developer to see that the error gets fixed. 
 
-From here there are two branches with which you need to be concerned if you are building a workshop: master and gh-pages. ‘Master’ contains all of the R code for the lessons. If you want to make changes to 
-the code, work with master as your base. Gh-pages is the branch that controls the display of the workshop website. If you want to change lesson content, work with gh-pages at your base. 
+From here there are two branches with which you need to be concerned if you are building a workshop: `master` and `gh-pages`. ‘Master’ contains all of the R code for the lessons. If you want to make changes to the code, work with master as your base. Gh-pages is the branch that controls the display of the workshop website. If you want to change lesson content, work with gh-pages as your base. 
 
-Note that while master contains the code itself, lessons in gh-pages contain references to, and snippets of, the code. Gh-pages will NOT be updated if you update the code in master- it is your responsibility 
-to make sure that any changes you make to the code in master are reflected in gh-pages’ lesson text. 
+Note that while master contains the code itself, lessons in gh-pages contain references to, and snippets of, the code. Gh-pages will NOT be updated if you update the code in master- it is your responsibility to make sure that any changes you make to the code in master are reflected in gh-pages’ lesson text. 
 
-You are also free to add or delete lessons from your branch as befits the workshop you are giving; however, note that if you do this, you WILL need to renumber the remaining lessons so that their titles 
-feature sequential numbers. If you do not do this, the links between lessons will be broken. 
+You are also free to add or delete lessons from your branch as befits the workshop you are giving; however, note that if you do this, you WILL need to renumber the remaining lessons so that their titles feature sequential numbers. If you do not do this, the links between lessons will be broken. 
 
 Lessons are written in Markdown so be sure that your formatting is correct. Additional Markdown guidance can be found [here](https://www.markdownguide.org/cheat-sheet/). 
  
