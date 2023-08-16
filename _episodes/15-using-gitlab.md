@@ -4,34 +4,20 @@ teaching: 15
 exercises: 0
 questions:
 - "What is the difference between GitHub and GitLab?"
-- "How do I use GitLab for version control?"
+- "Why does OTN use both GitHub and GitLab for project management?"
 ---
 
-At OTN, we use both GitHub and GitLab to manage our repositories. If you are familiar with GitHub, many of the concepts in GitLab will be easy for you to pick up. Both services implement Git, the version-control software, but GitHub repositories are publicly viewable, while GitLab maintains only allows those with access to see repository contents. This allows you to maintain privacy on projects that are not ready for public release, or that may have sensitive data or information included in their code. GitLab also (at time of writing) has a more robust set of continuous integration/testing tools, which may be useful for your project. 
+At OTN, we use both GitHub and GitLab to manage our repositories. Both services implement Git, the version-control software, but GitHub repositories are publicly viewable, while GitLab maintains only allows those with access to see repository contents. This allows us to maintain privacy on projects that are not ready for public release, or that may have sensitive data or information included in their code. GitLab also (at time of writing) has a more robust set of continuous integration/testing tools, which are useful for some projects.
 
-While GitLab mostly operates through a web interface, a functional knowledge of command-line Git is necessary for such operations as pulling, pushing, branching and merging repositories. Some of the basics will feature in this lesson but be aware that a comprehensive explanation of Git is beyond the scope of this lesson. 
+GitLab provides a broad range of versioning control functionality through its web interface; however, technical explanations of how to use them are beyond the scope of this document. This lesson is more about why we at OTN use GitLab and where it fits in our processes. GitLab maintains its own comprehensive documentation, however. If you have used any Git-derived service before, many of the concepts will be familiar to you. Here are a few links to relevant documentation: 
+- [Creating a Project](https://docs.gitlab.com/ee/user/project/)
+- [Opening Merge Requests](https://docs.gitlab.com/ee/user/project/merge_requests/index.html)
+- [Working with Issues](https://docs.gitlab.com/ee/user/project/issues/index.html)
 
-Additionally, while this lesson will give you the fundamentals to stand up and use a repository, GitLab has a range of functionality that is beyond the scope of this lesson. We recommend that you also use the GitLab documentation [here] (https://docs.gitlab.com/ee/) to continue your learning and supplement this lesson.
+Why use both GitHub and GitLab? There are several reasons, chief among them that GitLab provides more robust access control for private repositories. In the course of OTN's work, it is not uncommon to have code that we need to work on or even distribute, but not make entirely public. A good example are the iPython Utilities notebooks that we and our node managers use to upload data into our database. Node Managers outside of OTN need to be able to use and potentially modify these notebooks, but we don't wish for them to be publicly available, since they may contain code that we don't want anyone oustide of the node network to run. We therefore want to keep the repository private in macro, but allow specific users to pull the repository and use it. GitHub only allows private repositories for free users to ahve a maximum of three collaborators, whereas GitLab imposes no such limits. This makes GitLab the preferred option for code that needs to remain private. We do sometimes migrate code from GitLab to our GitHub page when we are ready for the code to be more public, as with resonATe. In other words, we use GitHub and GitLab at different stages of the software development process depending on who needs access. 
 
-With these two caveats in mind, we can begin by creating a project. To create a new project, click **Create New** at the top of the left hand sidebar and select **New Project/Repository**. You'll be presented with the option to build a blank project or to start from one of several templates. Templates will create your repository with a few default files that can help you start if you're building towards a specific goal. This lesson assumes you will create a blank project. 
+At the time of writing, GitLab also has a different approach to automated CI/CD and testing than GitHub. GitHub's recent feature, GitHub Actions, allows for a range of automated processes that can influence both the code base and a project's online GitHub portal. GitLab's CI/CD automation focuses more on testing and deploying code, and is currently more robust and established than Actions. This may change over time, however. 
 
-You'll be asked to fill out a few pieces of information about your repository-to-be. When you're done, click the "Create Project" button. 
-
-Alternatively, if you have a local repository out of which you want to create a GitLab repo, you can do that as well. You will need an SSH key for your GitLab account and permissions to create new projects in the repository. More information on the first can be found [here](https://docs.gitlab.com/ee/user/ssh.html#add-an-ssh-key-to-your-gitlab-account). For the second, if you do not already have it, you will need to request permissions from the person managing your organisation's GitLab account. 
-
-Once you have fulfilled these requirements, though, you can push a local collection of folders into GitLab and make a repository out of it. When we push to GitLab, we can choose to use either SSH or HTTPS. SSH is more secure, since it relies on your own personal SSH keys, whereas HTTPS is for simple, password-based Git usage, and is less technical but also less secure. In general, we strongly recommend you use SSH. You can do this by opening your Terminal window and typing the following:
-~~~
-git push --set-upstream git@gitlab.example.com:namespace/myproject.git master
-~~~
-{:.language-bash}
-
-This will push with SSH. If you would rather push with HTTPS, you can use the following command:
-
-~~~
-git push --set-upstream https://gitlab.example.com/namespace/myproject.git master
-~~~
-{:.language-bash}
-
-However, as stated above, SSH is preferred. 
+In a more general sense, we use both GitHub and GitLab because having familiarity with both allows us to future-proof ourselves against one or the other changing with short notice. Absent any consideration of features and appropriateness for a given project, the nature of GitHub and its corporate ownership means that it can change very quickly, possibly in ways that make it unsustainable for our needs. Likewise, GitLab is open-core, and may introduce new features from community developers that are not desirable for certain projects. Using both at this stage and developing familiarity along both axes means that we can migrate projects to and from each as appropriate. It also ensures that the dev team is used to working in multiple environments, in case we need to introduce different version-control services in the future.
 
 
