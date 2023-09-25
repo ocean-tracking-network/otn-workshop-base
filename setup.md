@@ -28,6 +28,9 @@ install.packages('ggmap')
 # Plotly - Interactive web-based data visualization
 install.packages('plotly')
 
+# Lubridate - part of Tidyverse, improves the process of creating date objects
+install.packages('lubridate')
+
 # ReadXL - reads Excel format
 install.packages("readxl")
 
