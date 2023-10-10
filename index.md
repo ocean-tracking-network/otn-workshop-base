@@ -8,7 +8,7 @@ This pair of lessons will introduce some concepts in the R programming language,
 
 In session one we will explore some of the popular software packages suitable for exploring and plotting acoustic telemetry data, including `dplyr` and `ggplot2`, for the purpose of generating summaries for reports.
 
-The second session offers a brief overview of the `glatos` R package for performing detection filtering and then used to create animal movement animations.
+The second session offers a brief overview of the `glatos` R package for performing detection filtering and then used to create animal movement animations using `gganimate` and `pathroutr`.
 
 If you have questions about this curriculum, please reach out to otndc@dal.ca
 {% include links.md %}
