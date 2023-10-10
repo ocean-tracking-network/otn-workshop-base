@@ -33,6 +33,8 @@ For the purposes of this lesson we will assume that any detection that did not p
 Finally, we use the `detection_events` function with station as the `location_col` argument to get our detection events.
 
 ~~~
+unzip('nsbs_matched_detections_2022.zip', overwrite = TRUE)
+
 detection_events <- #create detections event variable
   read_otn_detections('nsbs_matched_detections_2022/nsbs_matched_detections_2022.csv') %>%
   false_detections(tf = 3600) %>%  #find false detections
