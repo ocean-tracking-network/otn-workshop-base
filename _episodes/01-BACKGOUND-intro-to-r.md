@@ -1,5 +1,5 @@
 ---
-title: Intro to R
+title: BACKGOUND - Intro to R
 teaching: 30
 exercises: 20
 questions:
