@@ -25,9 +25,10 @@ library(pathroutr)
 library(ggspatial)
 library(sp)
 library(raster)
+library(geodata)
 
 detection_events <- #create detections event variable
-  read_otn_detections('proj58_matched_detections_2016.csv') %>% # reading detections
+  read_otn_detections('nsbs_matched_detections_2022.csv') %>% # reading detections
   false_detections(tf = 3600) %>%  #find false detections
   filter(passed_filter != FALSE) %>% 
   detection_events(location_col = 'station', time_sep=3600)
@@ -35,27 +36,26 @@ detection_events <- #create detections event variable
 plot_data <- detection_events %>% 
   dplyr::select(animal_id, mean_longitude,mean_latitude, first_detection)
 
-one_fish <- plot_data[plot_data$animal_id == "PROJ58-1218518-2015-09-16",]
-
-one_fish <- one_fish %>% filter(mean_latitude < 38.90 & mean_latitude > 38.87) %>% 
-  slice(155:160)
+one_fish <- plot_data[plot_data$animal_id == "NSBS-1393342-2021-08-10",] 
 
 ~~~
 {: .language-r}
 
 ### Getting our Shapefile
 
-The first big difference between our basic animation lesson and this lesson is that we will need a shapefile of the study area, so `pathroutr` can determine where the landmasses are located. To do this we will use the `getData` function from the `raster` library which gets geographic data for anywhere in the world. The first argument we will pass to `getData` is the name of the dataset we want to use, for our visualization we will use `GADM`. When you use `GADM` with `getData` you need to provide a `country` argument, which is specified by a country's 3 letter ISO code. In our case we will pass `USA`. Last, we pass an argument for `level`, this is how much we would like the data to be subdivided. Since we are only interested in a portion of the country we will pass `level` the value of `1` which means that the data will be divided by states. When we run this code we will get back a `SpatialPolygonsDataFrame` with the shapefiles for the US states.
+The first big difference between our basic animation lesson and this lesson is that we will need a shapefile of the study area, so `pathroutr` can determine where the landmasses are located. To do this we will use the `gadm` function from the `geodata` library which gets administrative boundaries (i.e, borders) for anywhere in the world. The first argument we will pass to `gadm` is the name of the country we wish to get, in this case, Canada. We will specify `level` as 1, meaning we want our data to be subdivided at the first level after 'country' (in this case, provinces). 0 would get us a single shapefile of the entire country; 1 will get us individual shapefiles of each province. We must also provide a path for the downloaded shapes to be stored (`./geodata` here), and optionally a resolution. `gadm` only has two possible values for resolution: 1 for 'high' and 2 for 'low'. We'll use low resolution here because as we will see, for this plot it is good enough and will reduce the size of the data objects we download.
+
+This is only one way to get a shapefile for our coastlines- you may find you prefer a different method. Regardless, this is the one we'll use for now. 
 
 ~~~
-USA<-getData('GADM', country='USA', level=1)
+CAN<-gadm('CANADA', level=1, path="./geodata", resolution=2)
 ~~~
 {: .language-r}
 
-Since we only need one state we will have to filter out the states we don't need. We can do this by filtering the data frame using the same filtering methods we have explored in previous lessons.
+We only need one province, which we can select using the filtering methods common to R. 
 
 ~~~
-shape_file <- USA[USA$NAME_1 == 'Maryland',]
+shape_file <- CAN[CAN$NAME_1 == 'Nova Scotia',]
 ~~~
 {: .language-r}
 
@@ -86,7 +86,7 @@ We can do a quick plot to just check how things look at this stage and see if th
 
 ~~~
 ggplot() + 
-  ggspatial::annotation_spatial(md_polygon, fill = "cornsilk3", size = 0) +
+  ggspatial::annotation_spatial(ns_polygon, fill = "cornsilk3", size = 0) +
   geom_point(data = path, aes(x=unlist(map(geometry,1)), y=unlist(map(geometry,2)))) +
   geom_path(data = path, aes(x=unlist(map(geometry,1)), y=unlist(map(geometry,2))))  +
   theme_void()
@@ -107,14 +107,14 @@ track_pts <- st_sample(plot_path, size = 10000, type = "regular")
 The first `pathroutr` function we will use is `prt_visgraph`. This creates a visibility graph that connects all of the vertices for our shapefile with a Delaunay triangle mesh and removes any edges that cross land. You could think of this part as creating the viable routes an animal could swim through (marking the "water" as viable).
 
 ~~~
-vis_graph <- prt_visgraph(md_polygon, buffer = 150)
+vis_graph <- prt_visgraph(ns_polygon, buffer = 150)
 ~~~
 {: .language-r}
 
 To reroute our paths around the landmasses we will call the `prt_reroute` function. Passing `track_pts`, `md_polygon`, and `vis_graph` as arguments. To have a fully updated path we can run the `prt_update_points` function, passing our new path `track_pts_fix` with our old path `track_pts`.
 
 ~~~
-track_pts_fix <- prt_reroute(track_pts, land_barrier, vis_graph, blend = TRUE)
+track_pts_fix <- prt_reroute(track_pts, ns_polygon, vis_graph, blend = TRUE)
 
 track_pts_fix <- prt_update_points(track_pts_fix, track_pts)
 ~~~
@@ -126,7 +126,7 @@ For `geom_point` and `geom_path` we will pass in `track_pts_fix` for the `data` 
 
 ~~~
 pathroutrplot <- ggplot() + 
-  ggspatial::annotation_spatial(md_polygon, fill = "cornsilk3", size = 0) +
+  ggspatial::annotation_spatial(ns_polygon, fill = "cornsilk3", size = 0) +
   geom_point(data = track_pts_fix, aes(x=unlist(map(geometry,1)), y=unlist(map(geometry,2)))) +
   geom_path(data = track_pts_fix, aes(x=unlist(map(geometry,1)), y=unlist(map(geometry,2))))  +
   theme_void()

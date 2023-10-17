@@ -123,7 +123,7 @@ Finally, to see our new animation we call the `animate` function with  `otn.plot
 otn.plot <-
   otn.plot +
   labs(subtitle = 'Date: {format(frame_along, "%d %b %Y")}') +
-  transition_reveal(first_detection) +å
+  transition_reveal(first_detection) +
   shadow_mark(past = TRUE, future = FALSE)
 
 animate(otn.plot)
