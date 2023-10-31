@@ -148,3 +148,14 @@ pathroutrplot.animation <-
 gganimate::animate(pathroutrplot.animation)
 ~~~
 {: .language-r}
+
+> ## A Note on Detail
+>
+> You'll note that the animation we've generated still crosses the landmass at certain points. This is a combination of several factors: our coastline polygon is not very high-res, our animation does not have many frames, and what frames it does have are not rendered in great detail. We can increase all of these and get a more accurate plot. For example:
+> - We can specify `resolution=1` when downloading our shapefile from GADM.
+> - We can increase the `nframes` variable in our call to `gganimate::animate`.
+> - We can pass `detail = 2` or higher to the call to `gganimate::animate`.
+> All of these will give us an animation that more scrupulously respects the landmass, however, they will all bloat the runtime of the code significantly. This may not be a consideration when you create your own animations, but they do make it impractical for this workshop. 
+> Embedded below is an animation created with high-resolution polygons and animation parameters to show an example of the kind of animation we could create with more time and processing power. 
+> ![High-resolution Pathroutr animation](../files/highres_pathroutr.gif)
+{: .callout}
