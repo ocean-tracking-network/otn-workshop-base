@@ -41,6 +41,13 @@ one_fish <- plot_data[plot_data$animal_id == "NSBS-1393342-2021-08-10",]
 ~~~
 {: .language-r}
 
+There is one small tweak we are going to make that is not immediately intuitive, and which we're only doing for the sake of this lesson. The blue sharks in our dataset have not given us many opportunities to demonstrate `pathroutr`'s awareness of coastlines. In order to give you a fuller demonstration of the package, we are going to cheat and shift the data 0.5 degrees to the west, which brings it more into contact with the Nova Scotian coastline and lets us show off `pathroutr` more completely. You do not need to do this with your real data.
+
+~~~
+one_fish_shifted <- one_fish %>% mutate(mean_longitude_shifted = mean_longitude-0.5)
+~~~
+{: .language-r}
+
 ### Getting our Shapefile
 
 The first big difference between our basic animation lesson and this lesson is that we will need a shapefile of the study area, so `pathroutr` can determine where the landmasses are located. To do this we will use the `gadm` function from the `geodata` library which gets administrative boundaries (i.e, borders) for anywhere in the world. The first argument we will pass to `gadm` is the name of the country we wish to get, in this case, Canada. We will specify `level` as 1, meaning we want our data to be subdivided at the first level after 'country' (in this case, provinces). 0 would get us a single shapefile of the entire country; 1 will get us individual shapefiles of each province. We must also provide a path for the downloaded shapes to be stored (`./geodata` here), and optionally a resolution. `gadm` only has two possible values for resolution: 1 for 'high' and 2 for 'low'. We'll use low resolution here because as we will see, for this plot it is good enough and will reduce the size of the data objects we download.
@@ -73,7 +80,7 @@ We will also need to make some changes to our detection data as well, in order t
 Using the `SpatialPoints` function we will pass our new  `path` variable  and `CRS("+proj=longlat +datum=WGS84 +no_defs")` for the `proj4string` argument. Just like for our shapefile we will need to turn our path into an `sf` object by using the `st_as_sf` function and change the CRS to a projected coordinate system because we will be mapping it flat.
 
 ~~~
-path <- one_fish %>%  dplyr::select(mean_longitude,mean_latitude)
+path <- one_fish_shifted %>%  dplyr::select(mean_longitude_shifted,mean_latitude)
 
 path <- SpatialPoints(path, proj4string = CRS("+proj=longlat +datum=WGS84 +no_defs"))
 
@@ -145,7 +152,7 @@ pathroutrplot.animation <-
   transition_reveal(fid) +
   shadow_mark(past = TRUE, future = FALSE)
 
-gganimate::animate(pathroutrplot.animation)
+gganimate::animate(pathroutrplot.animation, nframes=100, detail=2)
 ~~~
 {: .language-r}
 
@@ -155,6 +162,7 @@ gganimate::animate(pathroutrplot.animation)
 > - We can specify `resolution=1` when downloading our shapefile from GADM.
 > - We can increase the `nframes` variable in our call to `gganimate::animate`.
 > - We can pass `detail = 2` or higher to the call to `gganimate::animate`.
+>
 > All of these will give us an animation that more scrupulously respects the landmass, however, they will all bloat the runtime of the code significantly. This may not be a consideration when you create your own animations, but they do make it impractical for this workshop. 
 > Embedded below is an animation created with high-resolution polygons and animation parameters to show an example of the kind of animation we could create with more time and processing power. 
 > ![High-resolution Pathroutr animation](../files/highres_pathroutr.gif)
