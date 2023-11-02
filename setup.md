@@ -76,7 +76,8 @@ install.packages('gganimate')
 install.packages('ggspatial')
 
 #Install packages for YAPS lessons.
-library(remotes remotes::install_github("robertlennox/miscYAPS")
+library(remotes)
+remotes::install_github("robertlennox/miscYAPS")
 
 
 ```
