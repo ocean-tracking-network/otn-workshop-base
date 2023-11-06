@@ -14,7 +14,8 @@ While we are still developing this lesson as templated text, as with the other l
 
 The following code is meant to be run alongside this powerpoint. 
 
-```remotes::install_github("robertlennox/miscYAPS")
+~~~
+remotes::install_github("robertlennox/miscYAPS")
 require(yaps)
 require(miscYAPS)
 
@@ -65,4 +66,5 @@ data(aur)
 btnstorel <- BTN::storel 
 raster::plot(btnstorel)
 points(tr$x, tr$y, pch=1)
-```
+~~~
+{: .language-r}
