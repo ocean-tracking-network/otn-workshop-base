@@ -1,5 +1,5 @@
 ---
-title: BACKGOUND - Starting with Data Frames
+title: BACKGROUND - Starting with Data Frames
 teaching: 25
 exercises: 10
 questions:

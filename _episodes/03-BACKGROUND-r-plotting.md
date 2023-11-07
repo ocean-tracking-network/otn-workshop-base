@@ -1,5 +1,5 @@
 ---
-title: BACKGOUND - Intro to Plotting
+title: BACKGROUND - Intro to Plotting
 teaching: 15
 exercises: 10
 questions:
