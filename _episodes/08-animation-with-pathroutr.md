@@ -30,7 +30,7 @@ library(geodata)
 detection_events <- #create detections event variable
   read_otn_detections('nsbs_matched_detections_2022.csv') %>% # reading detections
   false_detections(tf = 3600) %>%  #find false detections
-  filter(passed_filter != FALSE) %>% 
+  dplyr::filter(passed_filter != FALSE) %>% 
   detection_events(location_col = 'station', time_sep=3600)
 
 plot_data <- detection_events %>% 
@@ -69,7 +69,7 @@ shape_file <- CAN[CAN$NAME_1 == 'Nova Scotia',]
 This shapefile is a great start, but we need the format to be an `sf` `multipolygon`. To do that we will run the `st_as_sf` function on our shapefile. We also want to change the coordinate reference system (CRS) of the file to a projected coordinate system since we will be mapping this plot flat. To do that we will run `st_transform` and provide it the value `5070`.
 
 ~~~
-md_polygon <- st_as_sf(single_poly) %>% st_transform(5070)
+ns_polygon <- st_as_sf(single_poly) %>% st_transform(5070)
 ~~~
 {: .language-r}
 
@@ -114,7 +114,7 @@ track_pts <- st_sample(plot_path, size = 10000, type = "regular")
 The first `pathroutr` function we will use is `prt_visgraph`. This creates a visibility graph that connects all of the vertices for our shapefile with a Delaunay triangle mesh and removes any edges that cross land. You could think of this part as creating the viable routes an animal could swim through (marking the "water" as viable).
 
 ~~~
-vis_graph <- prt_visgraph(ns_polygon, buffer = 150)
+vis_graph <- prt_visgraph(ns_polygon, buffer = 100)
 ~~~
 {: .language-r}
 

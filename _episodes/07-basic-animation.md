@@ -38,7 +38,7 @@ unzip('nsbs_matched_detections_2022.zip', overwrite = TRUE)
 detection_events <- #create detections event variable
   read_otn_detections('nsbs_matched_detections_2022/nsbs_matched_detections_2022.csv') %>%
   false_detections(tf = 3600) %>%  #find false detections
-  filter(passed_filter != FALSE) %>% 
+  dplyr::filter(passed_filter != FALSE) %>% 
   detection_events(location_col = 'station', time_sep=3600)
 ~~~
 {: .language-r}
@@ -104,7 +104,7 @@ otn.plot <-
   ggmap(basemap) +
   geom_point(data = one_fish, aes(x = mean_longitude, y = mean_latitude), size = 2) +
   geom_path(data = one_fish, aes(x = mean_longitude, y = mean_latitude)) +
-  labs(title = "ACT animation",
+  labs(title = "NSBS Animation",
        x = "Longitude", y = "Latitude", color = "Tag ID")
 
 ggplotly(otn.plot)
