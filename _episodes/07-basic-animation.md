@@ -63,7 +63,7 @@ one_fish <- plot_data[plot_data$animal_id == "NSBS-1393342-2021-08-10",]
 
 Now that we have our data we can begin to create our plot. We will start with creating a static plot and then once happy with that, we will animate it.
 
-The first thing we will do for our plot is download the basemap. This will provide the background for our plot. To do this we will use the `get_stamenmap` function from `ggmap`. This function gets a Stamen Map based off a bounding box that we provide. "Stamen" is the name of the service that provides the map tiles. To create the bounding box we will pass a vector of four values to the argument `bbox` ; those four values represent the left, bottom, right, and top boundaries of the map. 
+The first thing we will do for our plot is download the basemap. This will provide the background for our plot. To do this we will use the `get_stadiamap` function from `ggmap`. This function gets a Stamen Map based off a bounding box that we provide. "Stamen" is the name of the service that provides the map tiles, but it was recently bought by Stadia, so the name of the function has changed. To create the bounding box we will pass a vector of four values to the argument `bbox` ; those four values represent the left, bottom, right, and top boundaries of the map. 
 
 To determine which values are needed we will use the `min` and `max` function on the `mean_longitude` and `mean_latitude` columns of our `one_fish` variable.  `min(one_fish$mean_longitude)` will be our left-most bound, `min(one_fish$mean_latitude)` will be our bottom bound, `max(one_fish$mean_longitude)` will be our right-most bound, and `max(one_fish$mean_latitude)` will be our top bound. This gives most of what we need for our basemap but we can further customize our plot with `maptype` which will change what type of map we use, `crop` which will crop raw map tiles to the specified bounding box, and `zoom` which will adjust the zoom level of the map.
 
@@ -78,12 +78,12 @@ To determine which values are needed we will use the `min` and `max` function on
 
 ~~~
 basemap <- 
-  get_stamenmap(
+  get_stadiamap(
     bbox = c(left = min(one_fish$mean_longitude),
              bottom = min(one_fish$mean_latitude), 
              right = max(one_fish$mean_longitude), 
              top = max(one_fish$mean_latitude)),
-    maptype = "toner-lite",
+    maptype = "stamen_toner_lite",
     crop = FALSE, 
     zoom = 7)
 
