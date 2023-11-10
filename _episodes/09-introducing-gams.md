@@ -1,5 +1,5 @@
 ---
-title: Introduction to Visualisation with GAMs
+title: Spatial and Temporal Modelling with GAMs
 exercises: 0
 questions:
   - What are GAMs?
