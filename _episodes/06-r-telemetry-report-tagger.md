@@ -27,12 +27,12 @@ Where were my fish observed? We will make a static map of all the receiver stati
 First, we set a basemap using the aesthetics and bounding box we desire. Next, we add the detection locations onto the basemap and look at our creation! 
 
 ~~~
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(nsbs_matched_full_no_release$longitude),
            bottom = min(nsbs_matched_full_no_release$latitude), 
            right = max(nsbs_matched_full_no_release$longitude), 
            top = max(nsbs_matched_full_no_release$latitude)),
-  maptype = "toner-lite", 
+  maptype = "stamen_toner_lite", 
   crop = FALSE,
   zoom = 5)
 

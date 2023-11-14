@@ -15,12 +15,12 @@ We can do the same exact thing with the deployment metadata from OUR project onl
 ~~~
 names(hfx_deploy)
 
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(hfx_deploy$DEPLOY_LONG), 
            bottom = min(hfx_deploy$DEPLOY_LAT), 
            right = max(hfx_deploy$DEPLOY_LONG), 
            top = max(hfx_deploy$DEPLOY_LAT)),
-  maptype = "toner-lite", 
+  maptype = "stamen_toner_lite", 
   crop = FALSE,
   zoom = 5)
 
