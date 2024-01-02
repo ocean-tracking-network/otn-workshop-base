@@ -6,15 +6,15 @@ questions:
 - "How can I expand my learning?"
 ---
 
-OTN has hosted other workshops in the past which contain different code sets that may be useful to explore after this workshop.
+OTN has hosted other workshops in the past which contain different code sets that may be useful to explore after this workshop. *Please note the date each workshop was last edited! Newer workshops will be more relevant and may contain fewer bugs.*
 
-- [General telemetry workflow](https://ocean-tracking-network.github.io/jb-acoustic-telemetry/index.html)
+- [General telemetry workflow 2019](https://ocean-tracking-network.github.io/jb-acoustic-telemetry/index.html)
 
 - IdeasOTN Telemetry Workshop Series 2020: [code available here](https://github.com/kimwhoriskey/ideasOTNtws2020code) and [videos available on our YouTube here](https://www.youtube.com/playlist?list=PL_06zLsCWuDRnmIKaMHTBlg5KTKS76k6u)
 
 - [GLATOS meeting workshop 2020](https://ocean-tracking-network.github.io/2020-02-27-glatos-workshop/index.html)
 
-- [GLATOS meeting intro to R 2020](https://caitlinbate.github.io/2020-02-23-glatos/index.html)
+- [GLATOS meeting intro to R workshop 2020](https://caitlinbate.github.io/2020-02-23-glatos/index.html)
 
 - [DFO workshop 2020](https://ocean-tracking-network.github.io/2020-03-11-DFOBIO-telemetry-workshop/)
 
@@ -30,4 +30,10 @@ OTN has hosted other workshops in the past which contain different code sets tha
 
 - [MigraMar workshop 2022](https://ocean-tracking-network.github.io/migramar-student-workshop-2022/index.html)
 
-Many of our Intro to R workshops are based upon this curriculum from [The Carpentries](https://datacarpentry.org/R-ecology-lesson/).
+- [ACT/MATOS advanced workshop 2023](https://ocean-tracking-network.github.io/2023-01-ACT-advanced-workshop/)
+
+- [GLATOS workshop 2023](https://ocean-tracking-network.github.io/2023-GLATOS-intro-R-workshop/)
+
+- [CANSSI advanced early career researcher workshop 2023](https://ocean-tracking-network.github.io/2023-canssi-ecr-workshop/)
+
+Many of our Intro to R workshops are based upon this curriculum from [The Carpentries](https://datacarpentry.org/R-ecology-lesson/index.html).
