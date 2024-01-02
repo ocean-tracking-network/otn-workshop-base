@@ -24,7 +24,6 @@ Our first step is setting our working directory and importing the relevant libra
 setwd("YOUR/PATH/TO/data/act")
 library(glatos)
 library(tidyverse)
-library(VTrack)
 library(utils)
 library(lubridate)
 ~~~
@@ -243,7 +242,6 @@ Our first step is setting our working directory and importing the relevant libra
 setwd("YOUR/PATH/TO/data/fact")
 library(glatos)
 library(tidyverse)
-library(VTrack)
 library(utils)
 library(lubridate)
 ~~~
@@ -467,7 +465,6 @@ Our first step is setting our working directory and importing the relevant libra
 setwd("YOUR/PATH/TO/data/glatos")
 library(glatos)
 library(tidyverse)
-library(VTrack)
 library(utils)
 library(lubridate)
 ~~~
@@ -662,7 +659,6 @@ Our first step is setting our working directory and importing the relevant libra
 setwd("YOUR/PATH/TO/data/migramar")
 library(glatos)
 library(tidyverse)
-library(VTrack)
 library(utils)
 library(lubridate)
 ~~~

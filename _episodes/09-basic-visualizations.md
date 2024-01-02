@@ -1,5 +1,5 @@
 ---
-title: Basic Visualization and Plotting
+title: Basic Visualization and Plotting with glatos
 teaching: 30
 exercises: 0
 questions:
