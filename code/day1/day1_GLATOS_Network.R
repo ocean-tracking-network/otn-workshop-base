@@ -263,12 +263,12 @@ names(glatos_receivers)
 
 #make a basemap for all of the stations, using the min/max deploy lat and longs as bounding box
 
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(glatos_receivers$deploy_long), 
            bottom = min(glatos_receivers$deploy_lat), 
            right = max(glatos_receivers$deploy_long), 
            top = max(glatos_receivers$deploy_lat)),
-  maptype = "terrain-background", 
+  maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 8)
 
@@ -308,12 +308,12 @@ ggsave(plot = glatos_map, filename = "glatos_map.tiff", units="in", width=15, he
 #can specify location, file type and dimensions
 
 ## Array Map - Static ----
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(walleye_recievers$DEPLOY_LONG), 
            bottom = min(walleye_recievers$DEPLOY_LAT), 
            right = max(walleye_recievers$DEPLOY_LONG), 
            top = max(walleye_recievers$DEPLOY_LAT)),
-  maptype = "terrain-background", 
+  maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 8)
 
@@ -418,12 +418,12 @@ View(stationsum)
 # Creating Summary Reports: Taggers --------
 
 ## Detection/Release Map - Static ----
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(all_dets$deploy_long),
            bottom = min(all_dets$deploy_lat), 
            right = max(all_dets$deploy_long), 
            top = max(all_dets$deploy_lat)),
-  maptype = "terrain-background", 
+  maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 8)
 

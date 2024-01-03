@@ -246,12 +246,12 @@ library(ggmap)
 names(gmr_deploy)
 
 
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(gmr_deploy$DEPLOY_LONG),
            bottom = min(gmr_deploy$DEPLOY_LAT),
            right = max(gmr_deploy$DEPLOY_LONG),
            top = max(gmr_deploy$DEPLOY_LAT)),
-  maptype = "terrain",
+  maptype = "stamen_terrain",
   crop = FALSE,
   zoom = 12)
 
@@ -397,12 +397,12 @@ gmr_matched_18_19_no_release <- gmr_matched_18_19  %>%
   dplyr::filter(receiver != "release")
 
 ## Detection Map - Static ----
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(gmr_matched_18_19_no_release$longitude),
            bottom = min(gmr_matched_18_19_no_release$latitude), 
            right = max(gmr_matched_18_19_no_release$longitude), 
            top = max(gmr_matched_18_19_no_release$latitude)),
-  maptype = "terrain", 
+  maptype = "stamen_terrain", 
   crop = FALSE,
   zoom = 12)
 

@@ -253,12 +253,12 @@ names(full_receivers)
 
 #make a basemap for all of the stations, using the min/max deploy lat and longs as bounding box
 
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(full_receivers$stn_long), 
            bottom = min(full_receivers$stn_lat), 
            right = max(full_receivers$stn_long), 
            top = max(full_receivers$stn_lat)),
-  maptype = "terrain-background", 
+  maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 6)
 
@@ -300,12 +300,12 @@ ggsave(plot = full_receivers_map, filename = "act_matos.tiff", units="in", width
 names(proj61_deploy)
 
 
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(proj61_deploy$DEPLOY_LONG), 
            bottom = min(proj61_deploy$DEPLOY_LAT), 
            right = max(proj61_deploy$DEPLOY_LONG), 
            top = max(proj61_deploy$DEPLOY_LAT)),
-  maptype = "terrain-background", 
+  maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 5)
 
@@ -443,12 +443,12 @@ proj58_matched_full_no_release <- proj58_matched_full  %>%
   filter(receiver != "release")
 
 ## Detection/Release Map - Static ----
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(proj58_matched_full_no_release$longitude),
            bottom = min(proj58_matched_full_no_release$latitude), 
            right = max(proj58_matched_full_no_release$longitude), 
            top = max(proj58_matched_full_no_release$latitude)),
-  maptype = "terrain-background", 
+  maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 5)
 
