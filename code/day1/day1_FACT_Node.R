@@ -250,12 +250,12 @@ names(teq_deploy)
 
 #make a basemap for your stations, using the min/max deploy lat and longs as bounding box
 
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(teq_deploy$DEPLOY_LONG), 
            bottom = min(teq_deploy$DEPLOY_LAT), 
            right = max(teq_deploy$DEPLOY_LONG), 
            top = max(teq_deploy$DEPLOY_LAT)),
-  maptype = "terrain-background", 
+  maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 8)
 
@@ -413,12 +413,12 @@ tqcs_matched_10_11_full_no_release <- tqcs_matched_10_11_full %>%
   filter(receiver != "release")
 
 ## Detection/Release Map - Static ----
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(tqcs_matched_10_11$longitude),
            bottom = min(tqcs_matched_10_11$latitude), 
            right = max(tqcs_matched_10_11$longitude), 
            top = max(tqcs_matched_10_11$latitude)),
-  maptype = "terrain-background", 
+  maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 8)
 

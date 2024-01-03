@@ -31,12 +31,12 @@ actel_receivers <- actel_receivers %>% filter(Station.name %in% actel_deployment
 
 actel_spatial_sum <- actel_spatial_sum %>% filter(Station.name %in% actel_deployments$Station.name)
 
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(actel_deployments$deploy_long), 
            bottom = min(actel_deployments$deploy_lat), 
            right = max(actel_deployments$deploy_long), 
            top = max(actel_deployments$deploy_lat)),
-  maptype = "toner", 
+  maptype = "stamen_toner", 
   crop = FALSE,
   zoom = 12)
 

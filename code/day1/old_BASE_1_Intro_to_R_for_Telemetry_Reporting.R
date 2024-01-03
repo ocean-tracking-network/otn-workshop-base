@@ -284,12 +284,12 @@ full_receivers
 names(full_receivers)
 
 #make a basemap for all of the stations, using the min/max deploy lat and longs as bounding box
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(full_receivers$station_long), 
            bottom = min(full_receivers$station_lat), 
            right = max(full_receivers$station_long), 
            top = max(full_receivers$station_lat)),
-  maptype = "terrain-background", 
+  maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 8)
 
@@ -331,12 +331,12 @@ ggsave(plot = proj61_map, filename = "proj61_map.tiff", units="in", width=15, he
 names(proj61_deploy)
 
 
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(proj61_deploy$DEPLOY_LONG), 
            bottom = min(proj61_deploy$DEPLOY_LAT), 
            right = max(proj61_deploy$DEPLOY_LONG), 
            top = max(proj61_deploy$DEPLOY_LAT)),
-  maptype = "terrain-background", 
+  maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 8)
 
@@ -435,12 +435,12 @@ write_csv(proj61_qual_summary, "data/proj61_summary.csv", col_names = TRUE)
 
 #5. map detections
 
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(proj58_matched_full$longitude),
            bottom = min(proj58_matched_full$latitude), 
            right = max(proj58_matched_full$longitude), 
            top = max(proj58_matched_full$latitude)),
-  maptype = "terrain-background", 
+  maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 8)
 
