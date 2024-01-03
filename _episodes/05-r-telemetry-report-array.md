@@ -31,12 +31,12 @@ names(full_receivers)
 #make a basemap for all of the stations, using the min/max deploy lat and longs as bounding box
 
 
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(full_receivers$stn_long), 
            bottom = min(full_receivers$stn_lat), 
            right = max(full_receivers$stn_long), 
            top = max(full_receivers$stn_lat)),
-  maptype = "terrain-background", 
+  maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 6)
 
@@ -84,12 +84,12 @@ We can do the same exact thing with the deployment metadata from OUR project onl
 names(proj61_deploy)
 
 
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(proj61_deploy$DEPLOY_LONG), 
            bottom = min(proj61_deploy$DEPLOY_LAT), 
            right = max(proj61_deploy$DEPLOY_LONG), 
            top = max(proj61_deploy$DEPLOY_LAT)),
-  maptype = "terrain-background", 
+  maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 5)
 
@@ -279,12 +279,12 @@ names(teq_deploy)
 
 #make a basemap for your stations, using the min/max deploy lat and longs as bounding box
 
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(teq_deploy$DEPLOY_LONG), 
            bottom = min(teq_deploy$DEPLOY_LAT), 
            right = max(teq_deploy$DEPLOY_LONG), 
            top = max(teq_deploy$DEPLOY_LAT)),
-  maptype = "terrain-background", 
+  maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 8)
 
@@ -495,12 +495,12 @@ names(glatos_receivers)
 
 #make a basemap for all of the stations, using the min/max deploy lat and longs as bounding box
 
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(glatos_receivers$deploy_long), 
            bottom = min(glatos_receivers$deploy_lat), 
            right = max(glatos_receivers$deploy_long), 
            top = max(glatos_receivers$deploy_lat)),
-  maptype = "terrain-background", 
+  maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 8)
 
@@ -546,12 +546,12 @@ ggsave(plot = glatos_map, filename = "glatos_map.tiff", units="in", width=15, he
 We can do the same exact thing with the deployment metadata from OUR project only! This will use metadata imported from our Workbook.
 
 ~~~
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(walleye_recievers$DEPLOY_LONG), 
            bottom = min(walleye_recievers$DEPLOY_LAT), 
            right = max(walleye_recievers$DEPLOY_LONG), 
            top = max(walleye_recievers$DEPLOY_LAT)),
-  maptype = "terrain-background", 
+  maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 8)
 
@@ -698,12 +698,12 @@ library(ggmap)
 
 names(gmr_deploy)
 
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(gmr_deploy$DEPLOY_LONG),
            bottom = min(gmr_deploy$DEPLOY_LAT),
            right = max(gmr_deploy$DEPLOY_LONG),
            top = max(gmr_deploy$DEPLOY_LAT)),
-  maptype = "terrain",
+  maptype = "stamen_terrain",
   crop = FALSE,
   zoom = 12)
 

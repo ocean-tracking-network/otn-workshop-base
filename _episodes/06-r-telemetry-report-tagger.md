@@ -31,12 +31,12 @@ Where were my fish observed? We will make a static map of all the receiver stati
 First, we set a basemap using the aesthetics and bounding box we desire. Next, we add the detection locations onto the basemap and look at our creation! 
 
 ~~~
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(proj58_matched_full_no_release$longitude),
            bottom = min(proj58_matched_full_no_release$latitude), 
            right = max(proj58_matched_full_no_release$longitude), 
            top = max(proj58_matched_full_no_release$latitude)),
-  maptype = "terrain-background", 
+  maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 5)
 
@@ -349,12 +349,12 @@ Where were my fish observed? We will make a static map of all the receiver stati
 First, we set a basemap using the aesthetics and bounding box we desire. Next, we add the detection locations onto the basemap and look at our creation! 
 
 ~~~
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(tqcs_matched_10_11$longitude),
            bottom = min(tqcs_matched_10_11$latitude), 
            right = max(tqcs_matched_10_11$longitude), 
            top = max(tqcs_matched_10_11$latitude)),
-  maptype = "terrain-background", 
+  maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 8)
 
@@ -645,12 +645,12 @@ Where were my fish observed? We will make a static map of all the receiver stati
 First, we set a basemap using the aesthetics and bounding box we desire. Next, we add the detection locations onto the basemap and look at our creation! 
 
 ~~~
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(all_dets$deploy_long),
            bottom = min(all_dets$deploy_lat), 
            right = max(all_dets$deploy_long), 
            top = max(all_dets$deploy_lat)),
-  maptype = "terrain-background", 
+  maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 8)
 
@@ -913,12 +913,12 @@ Where were my fish observed? We will make a static map of all the receiver stati
 First, we set a basemap using the aesthetics and bounding box we desire. Next, we add the detection locations onto the basemap and look at our creation! 
 
 ~~~
-base <- get_stamenmap(
+base <- get_stadiamap(
   bbox = c(left = min(gmr_matched_18_19_no_release$longitude),
            bottom = min(gmr_matched_18_19_no_release$latitude), 
            right = max(gmr_matched_18_19_no_release$longitude), 
            top = max(gmr_matched_18_19_no_release$latitude)),
-  maptype = "terrain", 
+  maptype = "stamen_terrain", 
   crop = FALSE,
   zoom = 12)
 
