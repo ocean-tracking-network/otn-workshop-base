@@ -66,7 +66,7 @@ View(proj58_tag)
 
 ## FACT Node
 
-## Importing all the datasets
+### Importing all the datasets
 Now that we have an idea of what an exploratory workflow might look like with Tidyverse libraries like `dplyr` and `ggplot2`, let's look at how we might implement a common telemetry workflow using these tools. 
 
 We are going to use OTN-style detection extracts for this lesson. If you're unfamiliar with detection extracts formats from OTN-style database nodes, see the documentation [here](https://members.oceantrack.org/data/otn-detection-extract-documentation-matched-to-animals). 
@@ -121,7 +121,7 @@ View(tqcs_tag)
 
 ## GLATOS Network
 
-## Importing all the datasets
+### Importing all the datasets
 Now that we have an idea of what an exploratory workflow might look like with Tidyverse libraries like `dplyr` and `ggplot2`, let's look at how we might implement a common telemetry workflow using these tools. 
 
 For the GLATOS Network you will receive Detection Extracts which include all the Tag matches for your animals. These can be used to create many meaningful summary reports.
@@ -198,7 +198,7 @@ View(glatos_receivers)
 
 ## MigraMar Node 
 
-## Importing all the datasets
+### Importing all the datasets
 Now that we have an idea of what an exploratory workflow might look like with Tidyverse libraries like `dplyr` and `ggplot2`, let's look at how we might implement a common telemetry workflow using these tools. 
 
 We are going to use OTN-style detection extracts for this lesson. If you're unfamiliar with detection extracts formats from OTN-style database nodes, see the documentation [here](https://members.oceantrack.org/data/otn-detection-extract-documentation-matched-to-animals). 
@@ -254,7 +254,7 @@ view(gmr_tag)
 ## OTN Node 
 
 
-## Importing all the datasets
+### Importing all the datasets
 Let's look at how we might implement a common telemetry workflow using Tidyverse libraries like `dplyr` and `ggplot2`. 
 
 We are going to use OTN-style detection extracts for this lesson. If you're unfamiliar with detection extracts formats from OTN-style database nodes, see the documentation [here](https://members.oceantrack.org/data/otn-detection-extract-documentation-matched-to-animals). 

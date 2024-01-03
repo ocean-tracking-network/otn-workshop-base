@@ -470,7 +470,7 @@ library(lubridate)
 ~~~
 {: .language-r}
 
-If you are following along with the workshop in the workshop repository, there should be a folder in 'data/' containing data corresponding to your node (at time of writing, FACT, ACT, or GLATOS). `glatos` can function with both GLATOS and OTN Node-formatted data, but the functions are different for each. Both, however, provide a marked performance boost over base R, and both ensure that the resulting data set will be compatible with the rest of the `glatos` framework.
+If you are following along with the workshop in the workshop repository, there should be a folder in 'data/' containing data corresponding to your node (at time of writing, FACT, ACT, GLATOS, or MigraMar). `glatos` can function with both GLATOS and OTN Node-formatted data, but the functions are different for each. Both, however, provide a marked performance boost over base R, and both ensure that the resulting data set will be compatible with the rest of the `glatos` framework.
 
 We'll start by importing one of the `glatos` package's built-in datasets. `glatos` comes with a few datasets that are useful for testing code on a dataset known to work with the package's functions. For this workshop, we'll continue using the walleye data that we've been working with in previous lessons. First, we'll use the  `system.file` function to build the filepath to the walleye data. This saves us having to track down the file in the `glatos` package's file structure- R can find it for us automatically.
 
