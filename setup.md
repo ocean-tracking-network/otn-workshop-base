@@ -27,6 +27,8 @@ install.packages('lubridate')
 
 # GGmap - complimentary to ggplot2, which is in the Tidyverse
 install.packages('ggmap')
+#This is a temporarily available API key you can use for plotting StadiaMaps in ggmap this workshop. You SHOULD NOT rely on this key being available after the workshop.
+ggmap::register_stadiamaps("b01d1235-69e8-49ea-b3bd-c35b42424b00")
 
 # Plotly - Interactive web-based data visualization
 install.packages('plotly')
