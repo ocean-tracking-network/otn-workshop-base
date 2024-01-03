@@ -199,7 +199,7 @@ basemap <-
              bottom = min(one_fish$mean_latitude), 
              right = max(one_fish$mean_longitude), 
              top = max(one_fish$mean_latitude)),
-    maptype = "stamen_toner_-_lite",
+    maptype = "stamen_toner_lite",
     crop = FALSE, 
     zoom = 8)
 
