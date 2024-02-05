@@ -36,4 +36,8 @@ OTN has hosted other workshops in the past which contain different code sets tha
 
 - [CANSSI advanced early career researcher workshop 2023](https://ocean-tracking-network.github.io/2023-canssi-ecr-workshop/)
 
+- [FACT workshop 2024](https://ocean-tracking-network.github.io/2024-fact-meeting-workshop/index.html)
+
+- [Dalhousie Biologging Course 2024](https://ocean-tracking-network.github.io/2024-biologging-class/index.html)
+
 Many of our Intro to R workshops are based upon this curriculum from [The Carpentries](https://datacarpentry.org/R-ecology-lesson/index.html).
