@@ -265,7 +265,7 @@ teq_deploy_plot <- teq_deploy %>%
   mutate(deploy_date=ymd_hms(DEPLOY_DATE_TIME....yyyy.mm.ddThh.mm.ss.)) %>% #make a datetime
   mutate(recover_date=ymd_hms(RECOVER_DATE_TIME..yyyy.mm.ddThh.mm.ss.)) %>% #make a datetime
   filter(!is.na(deploy_date)) %>% #no null deploys
-  filter(deploy_date > 2010-07-03) %>% #only looking at certain deployments!
+  filter(deploy_date > '2010-07-03') %>% #only looking at certain deployments!
   group_by(STATION_NO) %>% 
   summarise(MeanLat=mean(DEPLOY_LAT), MeanLong=mean(DEPLOY_LONG)) #get the mean location per station
 
