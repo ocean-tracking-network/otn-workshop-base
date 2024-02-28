@@ -103,7 +103,7 @@ We will continue with `glatos` for one more lesson, in which we will cover some 
 
 ## GLATOS Network
 
-`glatos` has more advanced analytic tools that let you manipulate your data further. We'll cover a few of these features now, to show you how to take your data beyond just filtering and event creation. We'll also show you how to move your data from `glatos` to VTrack, another powerful suite of data manipulation tools. By combining the `glatos` package's powerful built-in functions with its interoperability across scientific R packages, we'll show you how to derive powerful insights from your data, and format it in a way that lets you demonstrate them.
+`glatos` has more advanced analytic tools that let you manipulate your data further. We'll cover a few of these features now, to show you how to take your data beyond just filtering and event creation. By combining the `glatos` package's powerful built-in functions with its interoperability across scientific R packages, we'll show you how to derive powerful insights from your data, and format it in a way that lets you demonstrate them.
 
 `glatos` can be used to get the residence index of your animals at all the different stations. In fact, `glatos` offers five different methods for calculating Residence Index. For this lesson, we will showcase two of them, but more information on the others can be found in the `glatos` documentation.
 
