@@ -150,7 +150,7 @@ If you had another column that describes the location of a detection, and you wo
 # For example we will create a uniq_station column for if you have duplicate station names across projects
 
 detections_filtered_special <- detections_filtered %>%
-  mutate(station_uniq = paste(glatos_array, station, sep=':'))
+  mutate(station_uniq = paste(glatos_project_receiver, station, sep=':'))
 
 sum_location_special <- summarize_detections(detections_filtered_special, location_col = 'station_uniq', summ_type='location')
 
@@ -375,7 +375,7 @@ If you had another column that describes the location of a detection, and you wo
 # For example we will create a uniq_station column for if you have duplicate station names across projects
 
 detections_filtered_special <- detections_filtered %>%
-  mutate(station_uniq = paste(glatos_array, station, sep=':'))
+  mutate(station_uniq = paste(glatos_project_receiver, station, sep=':'))
 
 sum_location_special <- summarize_detections(detections_filtered_special, location_col = 'station_uniq', summ_type='location')
 
@@ -565,7 +565,7 @@ If you had another column that describes the location of a detection, and you wo
 # For example we will create a uniq_station column for if you have duplicate station names across projects
 
 detections_filtered_special <- detections_filtered %>%
-  mutate(station_uniq = paste(glatos_array, station, sep=':'))
+  mutate(station_uniq = paste(glatos_project_receiver, station, sep=':'))
 
 sum_location_special <- summarize_detections(detections_filtered_special, location_col = 'station_uniq', summ_type='location')
 
@@ -784,7 +784,7 @@ If you had another column that describes the location of a detection, and you wo
 # For example we will create a uniq_station column for if you have duplicate station names across projects
 
 detections_filtered_special <- detections_filtered %>%
-  mutate(station_uniq = paste(glatos_array, station, sep=':'))
+  mutate(station_uniq = paste(glatos_project_receiver, station, sep=':'))
 
 sum_location_special <- summarize_detections(detections_filtered_special, location_col = 'station_uniq', summ_type='location')
 
