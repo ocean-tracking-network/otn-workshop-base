@@ -88,7 +88,7 @@ otn_files_ugacci <- list(det = "./testDataOTN/ugaaci_matched_detections_2017.csv
 
 This format is necessary because if you have receiver and tag metadata, you can pass those in as well by supplying 'rec' and 'tag' entries in the vector. However, if all you have is a detection extract, Remora will use that to infer Receiver and Tag metadata. This is not a perfect system, but for most analyses you can do with Remora, it is good enough. 
 
-You will note that some of the tests above reference a species home range. To determine that, we are going to use occurrence data from OBIS and GBIF to create a polygon that we can pass through to the QC functions. The code is contained within a function called getOccurrence, which invokes code written by Steve Formel to get occurrence data from both OBIS and GBIF and combine it into a single dataframe.
+You will note that some of the tests above reference a species home range. To determine that, we are going to use occurrence data from OBIS and GBIF to create a polygon that we can pass through to the QC functions. The code is contained within a function called getOccurrence, which invokes code written by [Steve Formel](https://www.gbif.us/post/2024/searching-with-aphiaids/) to get occurrence data from both OBIS and GBIF and combine it into a single dataframe.
 
 ~~~
 #Add the scientific name of the species in question...
@@ -99,27 +99,40 @@ sturgeonOccurrence <- getOccurrence(scientific_name)
 ~~~
 {:.language-r}
 
-
-
+The next step is to take the occurrence data and pass that to createPolygon, which will return a spatial object representing the species' home range. This function invokes code written by Jessica Castellanos, as well as the voluModel library, to create an alpha hull out of the occurrence data points. Most of the parameters we can pass to createPolygon are passed directly through to voluModel's `marineBackground` function. 
 
 ~~~
-#These are the available tests at time of writing. Detection Distribution isn't working yet and so we have commented it out. 
-tests_vector <-  c("FDA_QC",
-                   "Velocity_QC",
-                   "Distance_QC",
-                   #"DetectionDistribution_QC",
-                   "DistanceRelease_QC",
-                   "ReleaseDate_QC",
-                   "ReleaseLocation_QC",
-                   "Detection_QC")
-
-#In a perfect world, when you run this code, you will get output with QC attached. 
-otn_test_tag_qc <- remora::runQC(otn_files, data_format = "otn", tests_vector = tests_vector, .parallel = FALSE, .progress = TRUE)
+sturgeonPolygon <- createPolygon(sturgeonOccurrence, fraction=1, partsCount=1, buff=100000, clipToCoast = "aquatic")
 ~~~
-{: .language-r}
+{:.language-r}
 
-`otn_test_tag_qc` should be a dataframe containing your data, with new columns attached to contain flags representing each of the QC flags and what they returned. The meanings for each test's QC output can be found in the original [Hoenner et al](https://www.nature.com/articles/sdata2017206) paper that describes Remora's QC process.
+Note that while here we are passing it the dataframe variable, if you have your own occurrence file you can pass the filename and createPolygon will read that in. 
 
-We use the `tests_vector` variable to decide which tests we want to run on our data. By adding or removing different tests, we can change what gets run on the data and fine-tune our results to only include those tests we're interested in. The tests listed above are the only ones currently available (note that the OTN fork of `remora` is in active development and the Detection Distribution test is not fully functional at present). 
+With all of that in hand, we can run the QC function, like so: 
 
-The call to runQC also includes the parameter 'data_format', which can be either 'imos' or 'otn' (it is 'imos' by default). This indicates which format our data is in. If the data is in IMOS format, it will run through the QC normally. If it is in OTN format, the runQC function will run the column mapping function (`otn_imos_column_map`) on the data before we run it through the QC tests. In either case, we receive in return a single detections dataframe containing columns with the QC flags. 
+~~~
+otn_test_tag_qc <- runQC(otn_files_ugacci, 
+                         data_format = "otn", 
+                         tests_vector = tests_vector, 
+                         shapefile = sturgeonPolygon, 
+                         col_spec = NULL, 
+                         fda_type = "pincock", 
+                         rollup = TRUE,
+                         world_raster = world_raster,
+                         .parallel = FALSE, .progress = TRUE)
+~~~
+{:.language-r}
+
+
+Most of these parameters are self explanatory. Of note, though, is 'rollup', which- when set to TRUE, will return not only the normal Remora output (a nested tibble containing per-animal QC information), but a CSV file containing your original detection extract with the appropriate QC information attached. 
+
+To get a quick visualization of our data, we can pass it to plotQC, a Remora function with some alterations for OTN data, and see an interactive Leaflet map of our data. 
+
+~~~
+plotQC(otn_test_tag_qc, distribution_shp = sturgeonPolygon, data_format = "otn")
+~~~
+{:.language-r}
+
+
+This concludes the workshop material for Remora. For additional information about the package's original intentions, details can be found in the original [Hoenner et al](https://www.nature.com/articles/sdata2017206) paper that describes Remora's QC process.
+
