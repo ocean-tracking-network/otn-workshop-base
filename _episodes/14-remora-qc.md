@@ -9,7 +9,7 @@ questions:
 `remora` [(Rapid Extraction of Marine Observations for Roving Animals)](https://github.com/IMOS-AnimalTracking/remora) is a program developed by researchers with IMOS to perform two critical functions. The first is to provide quality control checks for acoustic telemetry detection data. The second is to match detections with environmental
 conditions at the time of detection. This lesson will cover the former functionality. 
 
-`remora`'s original design only allowed for data collected by [IMOS](https://imos.org.au/facilities/animaltracking), in the area surrounding Australia. OTN has taken it on to globalize the code, allowing for detections from any location or institution to be processed. As such, some functions are not available in base remora, and must be taken from the OTN fork and the appropriate branch. 
+`remora`'s original design only allowed for quality control on data collected by [IMOS](https://imos.org.au/facilities/animaltracking), in the area surrounding Australia. OTN has taken it on to globalize the code, allowing for detections from any location or institution to be processed. As such, some functions are not available in base remora, and must be taken from the OTN fork and the appropriate branch. 
 
 To install the appropriate branch, run the following code:
 
@@ -17,7 +17,7 @@ To install the appropriate branch, run the following code:
 install.packages('devtools')
 library(devtools)
 
-devtools::install_github('ocean-tracking-network/remora@workshop_ready', force=TRUE)
+devtools::install_github('ocean-tracking-network/remora@nicerHulls', force=TRUE)
 library(remora)
 ~~~
 {: .language-r}
@@ -34,102 +34,73 @@ unzip("testDataOTN.zip")
 ~~~
 {: .language-r}
 
-The test data folder contains a simplified OTN-format detection file (qc_princess.csv), a tif map of the world, and a selection of shapefiles representing the home ranges of different species of sharks, rays, and chimeras. We will use these latter two files for certain QC tests. In the future, you'll be able to replace this test data with world maps and animal range shapefiles that better align with your data. 
+The test data folder contains test data from UGACCI and FSUGG that we can test against, and a tif map of the world. We need the latter for certain QC tests. You can replace it with a file of your own if you so desire after this workshop. 
 
-Now that we have some test data, we can start to run `remora`. First, we'll do a few things just to show how the code works. The QC functions take as input a list of filepaths. There are four files that must be supplied for the QC code to run properly, in base Remora (we'll get into some of the newer functionality). These are as follows: 
+Now that we have some test data, we can start to run `remora`. 
 
-* A file containing detection information. 
-* A file containing receiver deployment metadata.
-* A file containing tag metadata.
-* A file containing animal measurement information.
+Through this lesson we may refer to "IMOS-format" or "OTN-format" data. This may be confusing, since all the files have a '.csv' extension. What we're referring to are the names and presence of certain columns. Remora, having originally been written to handle IMOS' data, expects to receive a file with certain column names. OTN does not use the same column names, even though the data is often analogous. For example, in IMOS detection data, the column containing the species' common name is called `species_common_name`. In OTN detection data, the column is called `commonname`. The data in the two columns is analogous, but `remora` expects to see the former and will not accept the latter. 
 
-The code below shows what a complete list might look like. We won't use `imos_files` for this lesson, but it is illustrative.
+To get around this limitation, we're in the process of writing a second package, `surimi`, that will allow users to translate data between institutional formats. At present, Surimi can only translate data from the OTN format to the IMOS format and from the IMOS format to the OTN format. However, we aim to expand this across more institutions to allow better transit of data products between analysis packages.
 
-~~~
-imos_files <- list(det = system.file(file.path("test_data","IMOS_detections.csv"), package = "remora"),
-                   rmeta = system.file(file.path("test_data","IMOS_receiver_deployment_metadata.csv"),
-                                       package = "remora"),
-                   tmeta = system.file(file.path("test_data","IMOS_transmitter_deployment_metadata.csv"),
-                                       package = "remora"),
-                   meas = system.file(file.path("test_data","IMOS_animal_measurements.csv"),
-                                      package = "remora"))
-~~~
-{: .language-r}
+For the purposes of this code, you do not need to do any additional manipulation of the test data- Remora invokes the appropriate `surimi` functions to make the data ingestible.
 
-Through this lesson we may refer to "IMOS-format" or "OTN-format" data. This may be confusing, since all the files are CSV format. What we're referring to are the names and presence of certain columns. Remora, having originally been written to handle IMOS' data, expects to receive a file with certain column names. OTN does not use the same column names, even though the data is often analogous. For example, in IMOS detection data, the column containing the species' common name is called `species_common_name`. In OTN detection data, the column is called `commonname`. The data in the two columns is analogous, but `remora` expects to see the former and will not accept the latter. 
-
-To get around this limitation, we've written additional functions that will take OTN-format data and convert it to IMOS-format data so as to make it ingestible by `remora`. We'll demonstrate what these functions look like and how to run them, although do note that if you pass OTN-format data to the QC functions directly (as we will later), you do not need to run this function- it will happen as part of the QC process. 
-
-To map your data from OTN to IMOS format, we can use the following code. Note that we are only passing in a detection extract dataframe- keep that in mind when we inspect the results of the mapping function.
+Let's begin by making sure we have our raster of world landmasses. We can load this with the `raster` library as such:
 
 ~~~
-#Read in the test data as a CSV. 
-otn_test_data <- read_csv("./testDataOTN/qc_princess.csv") #Put your path to your test file here. 
-
-#Return the mapped data
-otn_mapped_test <- remora::otn_imos_column_map(otn_test_data)
-
-#If you want to check your work. otn_mapped_test is a list of dataframes, so keep that in mind. 
-View(otn_mapped_test)
+world_raster <- raster::raster("./testDataOTN/NE2_50M_SR.tif")
 ~~~
-{: .language-r}
+{:.language-r}
 
-Note that although we only supplied a detection extract to `otn_imos_column_map`, the returned dataframe contains multiple formatted dataframes. This is because we have built the code to allow for a researcher to supply only their detection extracts. In this event, receiver and tag metadata are derived from information in the detection extract. These are incomplete, but they are enough to run some QC tests on. 
+We can now pass `world_raster` through to the QC process. Some of the tests to do with measuring distances require this raster. 
 
-This is just illustrative, for now. As stated, this functionality will be run if you pass OTN data directly to the QC functions. Let's do that now. 
-
-First, set up a list of file paths, as we did initially with the IMOS data above. 
+We'll also set up what we call our 'test vector'. This is a vector containing the names of all the tests you want to run. For the purposes of this workshop, we're going to run all of our tests, but you can comment out tests that you don't want to run. 
 
 ~~~
-otn_files <- list(det = "./testDataOTN/qc_princess.csv")
+tests_vector <-  c("FDA_QC",
+                   "Velocity_QC",
+                   "Distance_QC",
+                   "DetectionDistribution_QC",
+                   "DistanceRelease_QC",
+                   "ReleaseDate_QC",
+                   "ReleaseLocation_QC",
+                   "Detection_QC")
 ~~~
-{: .language-r}
+{:.language-r}
 
-In keeping with the above, we're just going to supply a detection extract rather than all of the relevant metadata. This will illustrate the functionality we have designed. You are able to supply receiver and tag metadata if you have it, however. 
+The tests are as follows: 
+1. False Detection Algorithm: Is the detection likely to be false? Remora has an algorithm for determining whether or not a detection is false, but for OTN data, we invoke the Pincock filter as implemented in the `glatos` library. 
+2. Velocity Check: Would the fish have had to travel at an unreasonable speed to get from its last detection to this one?
+3. Distance Check: Was the fish detected an unreasonable distance from the last detection?
+4. Detection Distribution: Was the fish detected within its species home range? 
+5. Distance from Release: Was the fish detected a reasonable distance from the tag release? 
+6. Release Date: Was the detection from before the release date? 
+7. Release Location: Was the release within the species home range or 500km of the detection?
+8. Detection Quality Control: An aggregation of the 7 previous tests to provide a final score as to the detection's likely legitimacy. Scores range from 1 (Valid) to 4 (Invalid).
 
-Before we can run the QC checks, we need to set up those shapefiles we downloaded so that `remora` can use them. First, we'll set up the shape representing blue shark distribution range. 
+An important note: if you're taking your data from an OTN node, the Release Date and Release Location QC will have already been done on the data during ingestion into OTN's database. You can still run them, and some other Remora functionality still depends on them, but they will not be counted towards the aggregation step, so as not to bias the results. 
+
+Now, we can begin to operate on our files. First, create a vector containing the name of the detection file. 
 
 ~~~
-#Load the shapefile with st_read. 
-shark_shp <- sf::st_read("./testDataOTN/SHARKS_RAYS_CHIMAERAS/SHARKS_RAYS_CHIMAERAS.shp")
-
-#We're using the binomial name and bounding box that befits our species and area but feel free to sub in your own when you work with other datasets.
-blue_shark_shp <- shark_shp[shark_shp$binomial == 'Prionace glauca',]
-blue_shark_crop <- st_crop(blue_shark_shp,  xmin=-68.4, ymin=42.82, xmax=-60.53, ymax=45.0)
+otn_files_ugacci <- list(det = "./testDataOTN/ugaaci_matched_detections_2017.csv")
 ~~~
 {: .language-r}
 
-Now we need to create a transition layer, which is a simple raster that will help QC tests determine which areas represent water and which ones represent land. We can use the `glatos` library that we've already covered to do this. 
+This format is necessary because if you have receiver and tag metadata, you can pass those in as well by supplying 'rec' and 'tag' entries in the vector. However, if all you have is a detection extract, Remora will use that to infer Receiver and Tag metadata. This is not a perfect system, but for most analyses you can do with Remora, it is good enough. 
+
+You will note that some of the tests above reference a species home range. To determine that, we are going to use occurrence data from OBIS and GBIF to create a polygon that we can pass through to the QC functions. The code is contained within a function called getOccurrence, which invokes code written by Steve Formel to get occurrence data from both OBIS and GBIF and combine it into a single dataframe.
 
 ~~~
-#Make a transition layer for later...
-shark_transition <- glatos::make_transition2(blue_shark_crop)
-shark_tr <- shark_transition$transition
+#Add the scientific name of the species in question...
+scientific_name <- "Acipenser oxyrinchus"
+
+#And pass it through to getOccurrence.
+sturgeonOccurrence <- getOccurrence(scientific_name)
 ~~~
-{: .language-r}
+{:.language-r}
 
-We will also need to cast our cropped shapefile to a Spatial polygon so that `remora` can use it with an awareness of latitude and longitude. 
 
-~~~
-#And also a spatial polygon that we can use later. 
-blue_shark_spatial <- as_Spatial(blue_shark_crop)
-~~~
-{: .language-r}
 
-The last element we need to set up is a map of coastlines, which `remora` will use to tie together the above elements to perform QC tests that involve, for example, calculating shortest distance, or whether or not the fish was detected in its home range (we will outline the available tests below). For this, we will use a mid-resolution .tif file from Natural Earth, which we will then crop using our cropped shapefile, giving us an appropriately sized chunk of coastline data. 
-
-~~~
-#We also need a raster for the ocean. We'll load this from a mid-resolution tif file, for testing purposes. 
-world_raster <- raster("./testDataOTN/NE2_50M_SR.tif")
-
-#And crop it based on our cropped blue shark extent. 
-world_raster_sub <- crop(world_raster, blue_shark_crop)
-~~~
-{: .language-r}
-
-Note that although we have supplied these files as test data, these specific files aren't the only ones that can be used. If you have data sources that better suit your own data, then when you QC it you should use them. So far this is all about giving you an awareness of what Remora needs to get set up. 
-
-Now that we have all of that set up, we can finally run our data through the quality control tests. That looks like this: 
 
 ~~~
 #These are the available tests at time of writing. Detection Distribution isn't working yet and so we have commented it out. 
