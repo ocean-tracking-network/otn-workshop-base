@@ -203,7 +203,7 @@ cbcnr_matched_full %>% mutate(dateCollectedUTC=ymd_hms(dateCollectedUTC)) #Use t
 {: .language-r}
 
 
-We've just used a single function, `ymd_hms`, but with it we've been able to completely reformat the entire datecollected column. `ymd_hms` is short for Year, Month, Day, Hours, Minutes, and Seconds. For example, at time of writing, it's 2021-05-14 14:21:40. Other format functions exist too, like `dmy_hms`, which specifies the day first and year third (i.e, 14-05-2021 14:21:40). Investigate the documentation to find which is right for you.
+We've just used a single function, `ymd_hms`, but with it we've been able to completely reformat the entire datecollectedUTC column. `ymd_hms` is short for Year, Month, Day, Hours, Minutes, and Seconds. For example, at time of writing, it's 2021-05-14 14:21:40. Other format functions exist too, like `dmy_hms`, which specifies the day first and year third (i.e, 14-05-2021 14:21:40). Investigate the documentation to find which is right for you.
 
 There are too many useful lubridate functions to cover in the scope of this lesson. These include `parse_date_time`, which can be used to read in date data in multiple formats, which is useful if you have a column contianing heterogenous date data; as well as `with_tz`, which lets you make your data sensitive to timezones (including automatic daylight savings time awareness). Dates are a tricky subject, so be sure to investigate `lubridate` to make sure you find the functions you need.
 
@@ -405,7 +405,7 @@ tqcs_matched_10_11 %>% mutate(dateCollectedUTC=ymd_hms(dateCollectedUTC)) #Use t
 {: .language-r}
 
 
-We've just used a single function, `ymd_hms`, but with it we've been able to completely reformat the entire datecollected column. `ymd_hms` is short for Year, Month, Day, Hours, Minutes, and Seconds. For example, at time of writing, it's 2021-05-14 14:21:40. Other format functions exist too, like `dmy_hms`, which specifies the day first and year third (i.e, 14-05-2021 14:21:40). Investigate the documentation to find which is right for you.
+We've just used a single function, `ymd_hms`, but with it we've been able to completely reformat the entire datecollectedUTC column. `ymd_hms` is short for Year, Month, Day, Hours, Minutes, and Seconds. For example, at time of writing, it's 2021-05-14 14:21:40. Other format functions exist too, like `dmy_hms`, which specifies the day first and year third (i.e, 14-05-2021 14:21:40). Investigate the documentation to find which is right for you.
 
 There are too many useful lubridate functions to cover in the scope of this lesson. These include `parse_date_time`, which can be used to read in date data in multiple formats, which is useful if you have a column contianing heterogenous date data; as well as `with_tz`, which lets you make your data sensitive to timezones (including automatic daylight savings time awareness). Dates are a tricky subject, so be sure to investigate `lubridate` to make sure you find the functions you need.
 
@@ -794,7 +794,7 @@ gmr_matched_18_19 %>% mutate(dateCollectedUTC=ymd_hms(dateCollectedUTC)) #Use th
 {: .language-r}
 
 
-We've just used a single function, `ymd_hms`, but with it we've been able to completely reformat the entire datecollected column. `ymd_hms` is short for Year, Month, Day, Hours, Minutes, and Seconds. For example, at time of writing, it's 2021-05-14 14:21:40. Other format functions exist too, like `dmy_hms`, which specifies the day first and year third (i.e, 14-05-2021 14:21:40). Investigate the documentation to find which is right for you.
+We've just used a single function, `ymd_hms`, but with it we've been able to completely reformat the entire datecollectedUTC column. `ymd_hms` is short for Year, Month, Day, Hours, Minutes, and Seconds. For example, at time of writing, it's 2021-05-14 14:21:40. Other format functions exist too, like `dmy_hms`, which specifies the day first and year third (i.e, 14-05-2021 14:21:40). Investigate the documentation to find which is right for you.
 
 There are too many useful lubridate functions to cover in the scope of this lesson. These include `parse_date_time`, which can be used to read in date data in multiple formats, which is useful if you have a column contianing heterogenous date data; as well as `with_tz`, which lets you make your data sensitive to timezones (including automatic daylight savings time awareness). Dates are a tricky subject, so be sure to investigate `lubridate` to make sure you find the functions you need.
 
@@ -991,6 +991,6 @@ nsbs_matched_full %>% mutate(dateCollectedUTC=ymd_hms(dateCollectedUTC)) #Use th
 {: .language-r}
 
 
-We've just used a single function, `ymd_hms`, but with it we've been able to completely reformat the entire datecollected column. `ymd_hms` is short for Year, Month, Day, Hours, Minutes, and Seconds. For example, at time of writing, it's 2021-05-14 14:21:40. Other format functions exist too, like `dmy_hms`, which specifies the day first and year third (i.e, 14-05-2021 14:21:40). Investigate the documentation to find which is right for you.
+We've just used a single function, `ymd_hms`, but with it we've been able to completely reformat the entire datecollectedUTC column. `ymd_hms` is short for Year, Month, Day, Hours, Minutes, and Seconds. For example, at time of writing, it's 2021-05-14 14:21:40. Other format functions exist too, like `dmy_hms`, which specifies the day first and year third (i.e, 14-05-2021 14:21:40). Investigate the documentation to find which is right for you.
 
 There are too many useful lubridate functions to cover in the scope of this lesson. These include `parse_date_time`, which can be used to read in date data in multiple formats, which is useful if you have a column contianing heterogenous date data; as well as `with_tz`, which lets you make your data sensitive to timezones (including automatic daylight savings time awareness). Dates are a tricky subject, so be sure to investigate `lubridate` to make sure you find the functions you need.

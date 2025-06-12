@@ -55,7 +55,7 @@ full_receivers_plot <- full_receivers %>%
 # you could choose to plot stations which are within a certain bounding box!
 # to do this you would add another filter to the above data, before passing to the map
 # ex: add this line after the mutate() clauses:
-# filter(latitude <= 0.5 & latitude >= 24.5 & longitude <= 0.6 & longitude >= 34.9)
+# filter(decimalLatitude <= 0.5 & decimalLatitude >= 24.5 & decimalLongitude <= 0.6 & decimalLongitude >= 34.9)
 
 
 #add your stations onto your basemap
@@ -303,7 +303,7 @@ teq_deploy_plot <- teq_deploy %>%
 # you could choose to plot stations which are within a certain bounding box!
 # to do this you would add another filter to the above data, before passing to the map
 # ex: add this line after the mutate() clauses:
-	# filter(latitude >= 0.5 & latitude <= 24.5 & longitude >= 0.6 & longitude <= 34.9)
+	# filter(decimalLatitude >= 0.5 & decimalLatitude <= 24.5 & decimalLongitude >= 0.6 & decimalLongitude <= 34.9)
 
 
 #add your stations onto your basemap
@@ -518,7 +518,7 @@ glatos_deploy_plot <- glatos_receivers %>%
 # you could choose to plot stations which are within a certain bounding box!
 #to do this you would add another filter to the above data, before passing to the map
 # ex: add this line after the mutate() clauses:
-# filter(latitude <= 0.5 & latitude >= 24.5 & longitude <= 0.6 & longitude >= 34.9)
+# filter(decimalLatitude <= 0.5 & decimalLatitude >= 24.5 & decimalLongitude <= 0.6 & decimalLongitude >= 34.9)
 
 
 #add your stations onto your basemap
