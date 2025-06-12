@@ -7,6 +7,8 @@ questions:
     - "How do I explore my data set?"
     - "What are some basic data manipulation functions?"
 ---
+**NOTE:** this workshop has been update to align with OTN's 2025 Detection Extract Format. For older detection extracts, please see the this lesson: [Archived OTN Workshop](https://ocean-tracking-network.github.io/otn-workshop-2025-06/). 
+
 **Note to instructors: please choose the relevant Network below when teaching**
 
 ## ACT Node
@@ -33,27 +35,27 @@ To import your data from your CSV file, we just need to pass the file path to re
 #imports file into R. paste the filepath to the file here!
 #read_csv can take both csv and zip files, as long as the zip file contains a csv.
 
-proj58_matched_2016 <- read_csv("proj58_matched_detections_2016.zip")
+cbcnr_matched_2016 <- read_csv("cbcnr_matched_detections_2016.zip")
 
 ~~~
 {: .language-r}
 
-We can now refer to the variable `proj58_matched_2016` to access, manipulate, and view the data from our CSV. In the next sections, we will explore some of the basic operations you can perform on dataframes.
+We can now refer to the variable `cbcnr_matched_2016` to access, manipulate, and view the data from our CSV. In the next sections, we will explore some of the basic operations you can perform on dataframes.
 
 ### Exploring Detection Extracts
 
 Let's start with a practical example. What can we find out about these matched detections? We'll begin by running the code below, and then give some insight into what each function does. Remember, if you're ever confused about the purpose of a function, you can use '?' followed by the function name (i.e, ?head, ?View) to get more information.
 
 ~~~
-head(proj58_matched_2016) #first 6 rows
-View(proj58_matched_2016) #can also click on object in Environment window
-str(proj58_matched_2016) #can see the type of each column (vector)
-glimpse(proj58_matched_2016) #similar to str()
+head(cbcnr_matched_2016) #first 6 rows
+View(cbcnr_matched_2016) #can also click on object in Environment window
+str(cbcnr_matched_2016) #can see the type of each column (vector)
+glimpse(cbcnr_matched_2016) #similar to str()
 
 #summary() is a base R function that will spit out some quick stats about a vector (column)
 #the $ syntax is the way base R selects columns from a data frame
 
-summary(proj58_matched_2016$latitude)
+summary(cbcnr_matched_2016$decimalLatitude)
 ~~~
 {: .language-r}
 
@@ -71,13 +73,13 @@ Using what you now know about summary functions, try to answer the challenge bel
 
 > ## Detection Extracts Challenge
 >
-> Question 1: What is the class of the **station** column in proj58_matched_2016, and how many rows and columns are in the proj58_matched_2016 dataset??
+> Question 1: What is the class of the **station** column in cbcnr_matched_2016, and how many rows and columns are in the cbcnr_matched_2016 dataset??
 > > ## Solution
 > > The column is a character, and there are 7,693 rows with 36 columns
 > > ~~~
-> > str(proj58_matched_2016)
+> > str(cbcnr_matched_2016)
 > > # or
-> > glimpse(proj58_matched_2016)
+> > glimpse(cbcnr_matched_2016)
 > > ~~~
 > > {: .language-r}
 > {: .solution}
@@ -94,9 +96,9 @@ library(dplyr) #can use tidyverse package dplyr to do exploration on dataframes 
 
 # %>% is a "pipe" which allows you to join functions together in sequence.
 
-proj58_matched_2016 %>% dplyr::select(6) #selects column 6
+cbcnr_matched_2016 %>% dplyr::select(6) #selects column 6
 
-# Using the above transliteration: "take proj58_matched_2016 AND THEN select column number 6 from it using the select function in the dplyr library"
+# Using the above transliteration: "take cbcnr_matched_2016 AND THEN select column number 6 from it using the select function in the dplyr library"
 
 ~~~
 {: .language-r}
@@ -106,26 +108,27 @@ You may have noticed another unfamiliar operator above, the double colon (`::`).
 Let's explore a few other examples of how we can use dplyr and pipes to manipulate our dataframe.
 
 ~~~
-proj58_matched_2016 %>% slice(1:5) #selects rows 1 to 5 in the dplyr way
-# Take proj58_matched_2016 AND THEN slice rows 1 through 5.
+cbcnr_matched_2016 %>% slice(1:5) #selects rows 1 to 5 in the dplyr way
+# Take cbcnr_matched_2016 AND THEN slice rows 1 through 5.
 
 #We can also use multiple pipes.
-proj58_matched_2016 %>%
-  distinct(detectedby) %>% nrow #number of arrays that detected my fish in dplyr!
-# Take proj58_matched_2016 AND THEN select only the unique entries in the detectedby column AND THEN count them with nrow.
+cbcnr_matched_2016 %>% 
+  distinct(detectedBy) %>% 
+  nrow #number of arrays that detected my fish in dplyr!
+# Take cbcnr_matched_2016 AND THEN select only the unique entries in the detectedBy column AND THEN count them with nrow.
 
 #We can do the same as above with other columns too.
-proj58_matched_2016 %>%
-  distinct(catalognumber) %>%
-  nrow #number of animals that were detected
-# Take proj58_matched_2016 AND THEN select only the unique entries in the catalognumber column AND THEN count them with nrow.
+cbcnr_matched_2016 %>% 
+  distinct(catalogNumber) %>% 
+  nrow #number of animals that were detected 
+# Take cbcnr_matched_2016 AND THEN select only the unique entries in the catalogNumber column AND THEN count them with nrow.
 
 #We can use filtering to conditionally select rows as well.
-proj58_matched_2016 %>% filter(catalognumber=="PROJ58-1191602-2014-07-24")
-# Take proj58_matched_2016 AND THEN select only those rows where catalognumber is equal to the above value.
+cbcnr_matched_2016 %>% filter(catalogNumber=="CBCNR-1191602-2014-07-24") 
+# Take cbcnr_matched_2016 AND THEN select only those rows where catalogNumber is equal to the above value.
 
-proj58_matched_2016 %>% filter(monthcollected >= 10) #all dets in/after October of 2016
-# Take proj58_matched_2016 AND THEN select only those rows where monthcollected is greater than or equal to 10.
+cbcnr_matched_2016 %>% filter(decimalLatitude >= 38)  #all dets in/after October of 2016
+# Take cbcnr_matched_2016 AND THEN select only those rows where latitude is greater than or equal to 38. 
 ~~~
 {: .language-r}
 
@@ -134,9 +137,9 @@ These are all ways to extract a specific subset of our data, but `dplyr` can als
 ~~~
 #get the mean value across a column using GroupBy and Summarize
 
-proj58_matched_2016 %>% #Take proj58_matched_2016, AND THEN...
-  group_by(catalognumber) %>%  #Group the data by catalognumber- that is, create a group within the dataframe where each group contains all the rows related to a specific catalognumber. AND THEN...
-  summarise(MeanLat=mean(latitude)) #use summarise to add a new column containing the mean latitude of each group. We named this new column "MeanLat" but you could name it anything
+cbcnr_matched_2016 %>% #Take cbcnr_matched_2016, AND THEN...
+  group_by(catalogNumber) %>%  #Group the data by catalogNumber- that is, create a group within the dataframe where each group contains all the rows related to a specific catalogNumber. AND THEN...
+  summarise(MeanLat=mean(decimalLatitude)) #use summarise to add a new column containing the mean decimalLatitude of each group. We named this new column "MeanLat" but you could name it anything
 
 ~~~
 {: .language-r}
@@ -145,22 +148,22 @@ With just a few lines of code, we've created a dataframe that contains each of o
 
 > ## Data Manipulation Challenge
 >
-> Question 1: Find the max lat and max longitude for animal "PROJ58-1191602-2014-07-24".
+> Question 1: Find the max lat and max longitude for animal "CBCNR-1191602-2014-07-24".
 > > ## Solution
 > > ~~~
-> > proj58_matched_2016 %>%
-> >  filter(catalognumber=="PROJ58-1191602-2014-07-24") %>%
-> >  summarise(MaxLat=max(latitude), MaxLong=max(longitude))
+> > cbcnr_matched_2016 %>%
+> >  filter(catalogNumber=="CBCNR-1191602-2014-07-24") %>%
+> >  summarise(MaxLat=max(decimalLatitude), MaxLong=max(decimalLongitude))
 > > ~~~
 > > {: .language-r}
 > {: .solution}
-> Question 2: Find the min lat/long of each animal for detections occurring in/after April.
+> Question 2: Find the min lat/long of each animal for detections occurring in June.
 > > ## Solution
 > > ~~~
-> > proj58_matched_2016 %>%
-> >   filter(monthcollected >= 4 ) %>%
-> >   group_by(catalognumber) %>%
-> >   summarise(MinLat=min(latitude), MinLong=min(longitude))
+> > cbcnr_matched_2016 %>%
+> >   filter(month(dateCollectedUTC) == 6) %>%
+> >   group_by(catalogNumber) %>%
+> >   summarise(MinLat=min(decimalLatitude), MinLong=min(decimalLongitude))
 > > ~~~
 > > {: .language-r}
 > {: .solution}
@@ -172,14 +175,14 @@ We're now going to briefly touch on a few useful dataframe use-cases that aren't
 One function that we'll need to know is `rbind`, a base R function which lets us combine two R objects together. Since detections for animals tagged during a study often appear in multiple years, this functionality will let us merge the dataframes together. We'll also use `distinct`, a `dplyr` function that lets us trim out duplicate release records for each animal, since these are listed in each detection extract.
 
 ~~~
-proj58_matched_2017 <- read_csv("proj58_matched_detections_2017.zip") #First, read in our file.
+cbcnr_matched_2017 <- read_csv("cbcnr_matched_detections_2017.zip") #First, read in our file.
 
-proj58_matched_full <- rbind(proj58_matched_2016, proj58_matched_2017) #Now join the two dataframes
+cbcnr_matched_full <- rbind(cbcnr_matched_2016, cbcnr_matched_2017) #Now join the two dataframes
 
 # release records for animals often appear in >1 year, this will remove the duplicates
-proj58_matched_full <- proj58_matched_full %>% distinct() # Use distinct to remove duplicates.
+cbcnr_matched_full <- cbcnr_matched_full %>% distinct() # Use distinct to remove duplicates. 
 
-View(proj58_matched_full)  
+View(cbcnr_matched_full)  
 ~~~
 {: .language-r}
 
@@ -191,11 +194,11 @@ Datetime data is in a special format which is neither numeric nor character. It 
 We'll also use a `dplyr` function called `mutate`, which lets us add new columns or change existing ones, while preserving the existing data in the table. Be careful not to confuse this with its sister function `transmute`, which adds or manipulates columns while *dropping* existing data. If you're ever in doubt as to which is which, remember: `?mutate` and `?transmute` will bring up the help files.
 
 ~~~
-library(lubridate) #Import our Lubridate library.
+library(lubridate) #Import our Lubridate library. 
 
-proj58_matched_full %>% mutate(datecollected=ymd_hms(datecollected)) #Use the lubridate function ymd_hms to change the format of the date.
+cbcnr_matched_full %>% mutate(dateCollectedUTC=ymd_hms(dateCollectedUTC)) #Use the lubridate function ymd_hms to change the format of the date.
 
-#as.POSIXct(proj58_matched_full$datecollected) #this is the base R way - if you ever see this function 
+#as.POSIXct(cbcnr_matched_full$dateCollectedUTC) #this is the base R way - if you ever see this function
 ~~~
 {: .language-r}
 
@@ -252,7 +255,8 @@ glimpse(tqcs_matched_2010) #similar to str()
 #summary() is a base R function that will spit out some quick stats about a vector (column)
 #the $ syntax is the way base R selects columns from a data frame
 
-summary(tqcs_matched_2010$latitude)
+summary(tqcs_matched_2010$decimalLatitude)
+
 ~~~
 {: .language-r}
 
@@ -309,22 +313,23 @@ tqcs_matched_2010 %>% slice(1:5) #selects rows 1 to 5 in the dplyr way
 # Take tqcs_matched_2010 AND THEN slice rows 1 through 5.
 
 #We can also use multiple pipes.
-tqcs_matched_2010 %>%
-  distinct(detectedby) %>% nrow #number of arrays that detected my fish in dplyr!
-# Take tqcs_matched_2010 AND THEN select only the unique entries in the detectedby column AND THEN count them with nrow.
+tqcs_matched_2010 %>% 
+  distinct(detectedBy) %>% nrow #number of arrays that detected my fish in dplyr!
+# Take tqcs_matched_2010 AND THEN select only the unique entries in the detectedBy column AND THEN count them with nrow.
 
 #We can do the same as above with other columns too.
-tqcs_matched_2010 %>%
-  distinct(catalognumber) %>%
-  nrow #number of animals that were detected
-# Take tqcs_matched_2010 AND THEN select only the unique entries in the catalognumber column AND THEN count them with nrow.
+tqcs_matched_2010 %>% 
+  distinct(catalogNumber) %>% 
+  nrow #number of animals that were detected 
+# Take tqcs_matched_2010 AND THEN select only the unique entries in the catalogNumber column AND THEN count them with nrow.
 
 #We can use filtering to conditionally select rows as well.
-tqcs_matched_2010 %>% filter(catalognumber=="TQCS-1049258-2008-02-14")
-# Take tqcs_matched_2010 AND THEN select only those rows where catalognumber is equal to the above value.
+tqcs_matched_2010 %>% filter(catalogNumber=="TQCS-1049258-2008-02-14") 
+# Take tqcs_matched_2010 AND THEN select only those rows where catalogNumber is equal to the above value.
 
-tqcs_matched_2010 %>% filter(monthcollected >= 10) #all dets in/after October of 2016
-# Take tqcs_matched_2010 AND THEN select only those rows where monthcollected is greater than or equal to 10.
+tqcs_matched_2010 %>% filter(decimalLatitude >= 27.20)  
+# Take tqcs_matched_2010 AND THEN select only those rows where latitude is greater than or equal to 27.20. 
+
 ~~~
 {: .language-r}
 
@@ -334,8 +339,8 @@ These are all ways to extract a specific subset of our data, but `dplyr` can als
 #get the mean value across a column using GroupBy and Summarize
 
 tqcs_matched_2010 %>% #Take tqcs_matched_2010, AND THEN...
-  group_by(catalognumber) %>%  #Group the data by catalognumber- that is, create a group within the dataframe where each group contains all the rows related to a specific catalognumber. AND THEN...
-  summarise(MeanLat=mean(latitude)) #use summarise to add a new column containing the mean latitude of each group. We named this new column "MeanLat" but you could name it anything
+  group_by(catalogNumber) %>%  #Group the data by catalogNumber- that is, create a group within the dataframe where each group contains all the rows related to a specific catalogNumber. AND THEN...
+  summarise(MeanLat=mean(decimalLatitude)) #use summarise to add a new column containing the mean decimalLatitude of each group. We named this new column "MeanLat" but you could name it anything
 
 ~~~
 {: .language-r}
@@ -348,8 +353,8 @@ With just a few lines of code, we've created a dataframe that contains each of o
 > > ## Solution
 > > ~~~
 > > tqcs_matched_2010 %>%
-> >  filter(catalognumber=="TQCS-1049258-2008-02-14") %>%
-> >  summarise(MaxLat=max(latitude), MaxLong=max(longitude))
+> >  filter(catalogNumber=="TQCS-1049258-2008-02-14") %>%
+> >  summarise(MaxLat=max(decimalLatitude), MaxLong=max(decimalLongitude))
 > > ~~~
 > > {: .language-r}
 > {: .solution}
@@ -357,9 +362,9 @@ With just a few lines of code, we've created a dataframe that contains each of o
 > > ## Solution
 > > ~~~
 > > tqcs_matched_2010 %>%
-> >   filter(monthcollected == 7) %>%
-> >   group_by(catalognumber) %>%
-> >   summarise(MinLat=min(latitude), MinLong=min(longitude))
+> >   filter(month(dateCollectedUTC) == 7)
+> >   group_by(catalogNumber) %>%
+> >   summarise(MinLat=min(latdecimalLatitudeitude), MinLong=min(decimalLongitude))
 > > ~~~
 > > {: .language-r}
 > {: .solution}
@@ -376,9 +381,11 @@ tqcs_matched_2011 <- read_csv("tqcs_matched_detections_2011.zip", guess_max = 41
 tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #Now join the two dataframes
 
 #release records for animals often appear in >1 year, this will remove the duplicates
-tqcs_matched_10_11_full <- tqcs_matched_10_11_full %>% distinct() # Use distinct to remove duplicates.
+tqcs_matched_10_11_full <- tqcs_matched_10_11_full %>% distinct() # Use distinct to remove duplicates. 
 
-tqcs_matched_10_11 <- tqcs_matched_10_11_full %>% slice(1:100000) # subset our example data to help this workshop run smoother!
+tqcs_matched_10_11 <- tqcs_matched_10_11_full %>% slice(1:110000) # subset our example data to help this workshop run smoother!
+tqcs_matched_10_11 <- tqcs_matched_10_11 %>% filter(detectedBy != 'PIRAT.PFRL') #removing erroneous detection in Hawaii
+
 ~~~
 {: .language-r}
 
@@ -391,9 +398,9 @@ We'll also use a `dplyr` function called `mutate`, which lets us add new columns
 ~~~
 library(lubridate) #Import our Lubridate library.
 
-tqcs_matched_10_11 %>% mutate(datecollected=ymd_hms(datecollected)) #Use the lubridate function ymd_hms to change the format of the date.
+tqcs_matched_10_11 %>% mutate(dateCollectedUTC=ymd_hms(dateCollectedUTC)) #Use the lubridate function ymd_hms to change the format of the date.
 
-#as.POSIXct(tqcs_matched_10_11$datecollected) #this is the base R way - if you ever see this function 
+#as.POSIXct(tqcs_matched_10_11$dateCollectedUTC) #this is the base R way - if you ever see this function
 ~~~
 {: .language-r}
 
@@ -636,7 +643,7 @@ glimpse(gmr_matched_2018) #similar to str()
 #summary() is a base R function that will spit out some quick stats about a vector (column)
 #the $ syntax is the way base R selects columns from a data frame
 
-summary(gmr_matched_2018$latitude)
+summary(gmr_matched_2018$decimalLatitude)
 ~~~
 {: .language-r}
 
@@ -695,22 +702,23 @@ gmr_matched_2018 %>% slice(1:5) #selects rows 1 to 5 in the dplyr way
 
 #We can also use multiple pipes.
 gmr_matched_2018 %>% 
-  distinct(detectedby) %>% 
+  distinct(detectedBy) %>% 
   nrow #number of arrays that detected my fish in dplyr!
-# Take gmr_matched_2018 AND THEN select only the unique entries in the detectedby column AND THEN count them with nrow.
+# Take gmr_matched_2018 AND THEN select only the unique entries in the detectedBy column AND THEN count them with nrow.
 
 #We can do the same as above with other columns too.
 gmr_matched_2018 %>% 
-  distinct(catalognumber) %>% 
+  distinct(catalogNumber) %>% 
   nrow #number of animals that were detected 
-# Take gmr_matched_2018 AND THEN select only the unique entries in the catalognumber column AND THEN count them with nrow.
+# Take gmr_matched_2018 AND THEN select only the unique entries in the catalogNumber column AND THEN count them with nrow.
 
 #We can use filtering to conditionally select rows as well.
-gmr_matched_2018 %>% dplyr::filter(catalognumber=="GMR-25718-2014-01-17") 
-# Take gmr_matched_2018 AND THEN select only those rows where catalognumber is equal to the above value.
+gmr_matched_2018 %>% dplyr::filter(catalogNumber=="GMR-25718-2014-01-17") 
+# Take gmr_matched_2018 AND THEN select only those rows where catalogNumber is equal to the above value.
 
-gmr_matched_2018 %>% dplyr::filter(monthcollected >= 10) #all dets in/after October of 2018
-# Take gmr_matched_2018 AND THEN select only those rows where monthcollected is greater than or equal to 10. 
+gmr_matched_2018 %>% dplyr::filter(decimalLatitude >= 0) 
+# Take gmr_matched_2018 AND THEN select only those rows where latitude is greater than or equal to 0. 
+
 ~~~
 {: .language-r}
 
@@ -720,8 +728,8 @@ These are all ways to extract a specific subset of our data, but `dplyr` can als
 #get the mean value across a column using GroupBy and Summarize
 
 gmr_matched_2018 %>% #Take gmr_matched_2018, AND THEN...
-  group_by(catalognumber) %>%  #Group the data by catalognumber- that is, create a group within the dataframe where each group contains all the rows related to a specific catalognumber. AND THEN...
-  summarise(MeanLat=mean(latitude)) #use summarise to add a new column containing the mean latitude of each group. We named this new column "MeanLat" but you could name it anything
+  group_by(catalogNumber) %>%  #Group the data by catalogNumber- that is, create a group within the dataframe where each group contains all the rows related to a specific catalogNumber. AND THEN...
+  summarise(MeanLat=mean(decimalLatitude)) #use summarise to add a new column containing the mean decimalLatitude of each group. We named this new column "MeanLat" but you could name it anything
 
 ~~~
 {: .language-r}
@@ -734,8 +742,8 @@ With just a few lines of code, we've created a dataframe that contains each of o
 > > ## Solution
 > > ~~~
 > > gmr_matched_2018 %>%
-> >  dplyr::filter(catalognumber=="GMR-25720-2014-01-18") %>%
-> >  summarise(MaxLat=max(latitude), MaxLong=max(longitude)
+> >  dplyr::filter(catalogNumber=="GMR-25720-2014-01-18") %>%
+> >  summarise(MaxLat=max(decimalLatitude), MaxLong=max(decimalLongitude)
 > > ~~~
 > > {: .language-r}
 > {: .solution}
@@ -744,8 +752,8 @@ With just a few lines of code, we've created a dataframe that contains each of o
 > > ~~~
 > > gmr_matched_2018 %>%
 > >   filter(monthcollected >= 4 ) %>%
-> >   group_by(catalognumber) %>%
-> >   summarise(MinLat=min(latitude), MinLong=min(longitude))
+> >   group_by(catalogNumber) %>%
+> >   summarise(MinLat=min(decimalLatitude), MinLong=min(longitdecimalLongitudeude))
 > > ~~~
 > > {: .language-r}
 > {: .solution}
@@ -764,7 +772,7 @@ gmr_matched_18_19 <- rbind(gmr_matched_2018, gmr_matched_2019) #Now join the two
 # release records for animals often appear in >1 year, this will remove the duplicates
 gmr_matched_18_19 <- gmr_matched_18_19 %>% distinct() # Use distinct to remove duplicates. 
 
-View(gmr_matched_18_19)  
+view(gmr_matched_18_19) 
 ~~~
 {: .language-r}
 
@@ -778,9 +786,10 @@ We'll also use a `dplyr` function called `mutate`, which lets us add new columns
 ~~~
 library(lubridate) #Import our Lubridate library.
 
-gmr_matched_18_19 %>% mutate(datecollected=ymd_hms(datecollected)) #Use the lubridate function ymd_hms to change the format of the date.
+gmr_matched_18_19 %>% mutate(dateCollectedUTC=ymd_hms(dateCollectedUTC)) #Use the lubridate function ymd_hms to change the format of the date.
 
-#as.POSIXct(gmr_matched_18_19$datecollected) #this is the base R way - if you ever see this function 
+#as.POSIXct(gmr_matched_18_19$dateCollectedUTC) #this is the base R way - if you ever see this function
+
 ~~~
 {: .language-r}
 
@@ -833,7 +842,7 @@ glimpse(nsbs_matched_2021) #similar to str()
 #summary() is a base R function that will spit out some quick stats about a vector (column)
 #the $ syntax is the way base R selects columns from a data frame
 
-summary(nsbs_matched_2021$latitude)
+summary(nsbs_matched_2021$decimalLatitude)
 ~~~
 {: .language-r}
 
@@ -891,21 +900,21 @@ nsbs_matched_2021 %>% slice(1:5) #selects rows 1 to 5 in the dplyr way
 
 #We can also use multiple pipes.
 nsbs_matched_2021 %>%
-  distinct(detectedby) %>% nrow #number of arrays that detected my fish in dplyr!
+  distinct(detectedBy) %>% nrow #number of arrays that detected my fish in dplyr!
 # Take nsbs_matched_2021 AND THEN select only the unique entries in the detectedby column AND THEN count them with nrow.
 
 #We can do the same as above with other columns too.
 nsbs_matched_2021 %>%
-  distinct(catalognumber) %>%
+  distinct(catalogNumber) %>%
   nrow #number of animals that were detected
 # Take nsbs_matched_2021 AND THEN select only the unique entries in the catalognumber column AND THEN count them with nrow.
 
 #We can use filtering to conditionally select rows as well.
-nsbs_matched_2021 %>% filter(catalognumber=="NSBS-1393332-2021-08-05")
+nsbs_matched_2021 %>% filter(catalogNumber=="NSBS-1393332-2021-08-05")
 # Take nsbs_matched_2021 AND THEN select only those rows where catalognumber is equal to the above value.
 
-nsbs_matched_2021 %>% filter(monthcollected >= 10) #all dets in/after October of 2016
-# Take nsbs_matched_2021 AND THEN select only those rows where monthcollected is greater than or equal to 10.
+nsbs_matched_2021 %>% filter(decimalLatitude >= 44.00) 
+# Take nsbs_matched_2021 AND THEN select only those rows where latitude is greater than or equal to 44.
 ~~~
 {: .language-r}
 
@@ -915,8 +924,9 @@ These are all ways to extract a specific subset of our data, but `dplyr` can als
 #get the mean value across a column using GroupBy and Summarize
 
 nsbs_matched_2021 %>% #Take nsbs_matched_2021, AND THEN...
-  group_by(catalognumber) %>%  #Group the data by catalognumber- that is, create a group within the dataframe where each group contains all the rows related to a specific catalognumber. AND THEN...
-  summarise(MeanLat=mean(latitude)) #use summarise to add a new column containing the mean latitude of each group. We named this new column "MeanLat" but you could name it anything
+  group_by(catalogNumber) %>%  #Group the data by catalogNumber- that is, create a group within the dataframe where each group contains all the rows related to a specific catalogNumber. AND THEN...
+  summarise(MeanLat=mean(decimalLatitude)) #use summarise to add a new column containing the mean decimalLatitude of each group. We named this new column "MeanLat" but you could name it anything
+
 
 ~~~
 {: .language-r}
@@ -929,8 +939,8 @@ With just a few lines of code, we've created a dataframe that contains each of o
 > > ## Solution
 > > ~~~
 > > nsbs_matched_2021 %>%
-> >  filter(catalognumber=="NSBS-1393332-2021-08-05") %>%
-> >  summarise(MaxLat=max(latitude), MaxLong=max(longitude))
+> >  filter(catalogNumber=="NSBS-1393332-2021-08-05") %>%
+> >  summarise(MaxLat=max(latidecimalLatitudetude), MaxLong=max(decimalLongitude))
 > > ~~~
 > > {: .language-r}
 > {: .solution}
@@ -939,8 +949,8 @@ With just a few lines of code, we've created a dataframe that contains each of o
 > > ~~~
 > > nsbs_matched_2021 %>%
 > >   filter(monthcollected >= 4 ) %>%
-> >   group_by(catalognumber) %>%
-> >   summarise(MinLat=min(latitude), MinLong=min(longitude))
+> >   group_by(catalogNumber) %>%
+> >   summarise(MinLat=min(decimalLatitude), MinLong=min(decimalLongitude))
 > > ~~~
 > > {: .language-r}
 > {: .solution}
@@ -973,9 +983,10 @@ We'll also use a `dplyr` function called `mutate`, which lets us add new columns
 ~~~
 library(lubridate) #Import our Lubridate library.
 
-nsbs_matched_full %>% mutate(datecollected=ymd_hms(datecollected)) #Use the lubridate function ymd_hms to change the format of the date.
+nsbs_matched_full %>% mutate(dateCollectedUTC=ymd_hms(dateCollectedUTC)) #Use the lubridate function ymd_hms to change the format of the date.
 
-#as.POSIXct(nsbs_matched_full$datecollected) #this is the base R way - if you ever see this function 
+#as.POSIXct(nsbs_matched_full$dateCollectedUTC) #this is the base R way - if you ever see this function 
+
 ~~~
 {: .language-r}
 
