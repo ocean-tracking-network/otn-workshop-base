@@ -68,7 +68,7 @@ length(heights_above_67)
 #1. What is is the class of the station column in nsbs_matched_2021?
 #2. How many rows and columns are in the nsbs_matched_2021 dataset?
 
-#Answer 5: The column is a character, and there are 2,305 rows with 36 columns
+#Answer 5: The column is a character, and there are 2,938  rows with 29 columns
 str(nsbs_matched_2021)
 # or
 glimpse(nsbs_matched_2021)
@@ -76,20 +76,20 @@ glimpse(nsbs_matched_2021)
 
 
 # Challenge 6 ----
-#1. Find the max lat and max longitude for animal “NSBS-1393332-2021-08-05”.
+#1. Find the max lat and max decimalLongitude for animal “NSBS-1393332-2021-08-05”.
 #2. Find the min lat/long of each animal for detections occurring in/after April.
 
 #Answer 6:
 #1. 
 nsbs_matched_2021 %>%
-  filter(catalognumber=="NSBS-1393332-2021-08-05") %>%
-  summarise(MaxLat=max(latitude), MaxLong=max(longitude))
+  filter(catalogNumber=="NSBS-1393332-2021-08-05") %>%
+  summarise(MaxLat=max(decimalLatitude), MaxLong=max(decimalLongitude))
 
 #2. 
 nsbs_matched_2021 %>%
-  filter(monthcollected >= 4 ) %>%
-  group_by(catalognumber) %>%
-  summarise(MinLat=min(latitude), MinLong=min(longitude))
+  filter(month(dateCollectedUTC) >= 4 ) %>%
+  group_by(catalogNumber) %>%
+  summarise(MinLat=min(decimalLatitude), MinLong=min(decimalLongitude))
 
 
 # Challenge 7 ----
@@ -98,8 +98,8 @@ nsbs_matched_2021 %>%
 
 #Answer 7: 
 nsbs_matched_full %>%  
-  filter(catalognumber=="NSBS-1393332-2021-08-05") %>%
-  ggplot(aes(longitude, latitude, colour = detectedby)) +
+  filter(catalogNumber=="NSBS-1393332-2021-08-05") %>%
+  ggplot(aes(decimalLongitude, decimalLatitude, colour = detectedBy)) +
   geom_point()
 
 #Question: what other geoms are there? Try typing `geom_` into R to see what it suggests!

@@ -90,19 +90,19 @@ heights[complete.cases(heights)] #select only complete cases
 
 #imports file into R. paste the filepath to the file here!
 
-proj58_matched_2016 <- read_csv("proj58_matched_detections_2016.zip")
+cbcnr_matched_2016 <- read_csv("cbcnr_matched_detections_2016.zip")
 
 ## Exploring Detection Extracts ----
 
-head(proj58_matched_2016) #first 6 rows
-View(proj58_matched_2016) #can also click on object in Environment window
-str(proj58_matched_2016) #can see the type of each column (vector)
-glimpse(proj58_matched_2016) #similar to str()
+head(cbcnr_matched_2016) #first 6 rows
+View(cbcnr_matched_2016) #can also click on object in Environment window
+str(cbcnr_matched_2016) #can see the type of each column (vector)
+glimpse(cbcnr_matched_2016) #similar to str()
 
 #summary() is a base R function that will spit out some quick stats about a vector (column)
 #the $ syntax is the way base R selects columns from a data frame
 
-summary(proj58_matched_2016$latitude)
+summary(cbcnr_matched_2016$decimalLatitude)
 
 ## Data Manipulation ----
 
@@ -110,54 +110,54 @@ library(dplyr) #can use tidyverse package dplyr to do exploration on dataframes 
 
 # %>% is a "pipe" which allows you to join functions together in sequence.
 
-proj58_matched_2016 %>% dplyr::select(6) #selects column 6
-# Using the above transliteration: "take proj58_matched_2016 AND THEN select column number 6 from it using the select function in the dplyr library"
+cbcnr_matched_2016 %>% dplyr::select(6) #selects column 6
+# Using the above transliteration: "take cbcnr_matched_2016 AND THEN select column number 6 from it using the select function in the dplyr library"
 
-proj58_matched_2016 %>% slice(1:5) #selects rows 1 to 5 in the dplyr way
-# Take proj58_matched_2016 AND THEN slice rows 1 through 5.
+cbcnr_matched_2016 %>% slice(1:5) #selects rows 1 to 5 in the dplyr way
+# Take cbcnr_matched_2016 AND THEN slice rows 1 through 5.
 
 #We can also use multiple pipes.
-proj58_matched_2016 %>% 
-  distinct(detectedby) %>% 
+cbcnr_matched_2016 %>% 
+  distinct(detectedBy) %>% 
   nrow #number of arrays that detected my fish in dplyr!
-# Take proj58_matched_2016 AND THEN select only the unique entries in the detectedby column AND THEN count them with nrow.
+# Take cbcnr_matched_2016 AND THEN select only the unique entries in the detectedBy column AND THEN count them with nrow.
 
 #We can do the same as above with other columns too.
-proj58_matched_2016 %>% 
-  distinct(catalognumber) %>% 
+cbcnr_matched_2016 %>% 
+  distinct(catalogNumber) %>% 
   nrow #number of animals that were detected 
-# Take proj58_matched_2016 AND THEN select only the unique entries in the catalognumber column AND THEN count them with nrow.
+# Take cbcnr_matched_2016 AND THEN select only the unique entries in the catalogNumber column AND THEN count them with nrow.
 
 #We can use filtering to conditionally select rows as well.
-proj58_matched_2016 %>% filter(catalognumber=="PROJ58-1191602-2014-07-24") 
-# Take proj58_matched_2016 AND THEN select only those rows where catalognumber is equal to the above value.
+cbcnr_matched_2016 %>% filter(catalogNumber=="CBCNR-1191602-2014-07-24") 
+# Take cbcnr_matched_2016 AND THEN select only those rows where catalogNumber is equal to the above value.
 
-proj58_matched_2016 %>% filter(monthcollected >= 10) #all dets in/after October of 2016
-# Take proj58_matched_2016 AND THEN select only those rows where monthcollected is greater than or equal to 10. 
+cbcnr_matched_2016 %>% filter(decimalLatitude >= 38)  #all dets in/after October of 2016
+# Take cbcnr_matched_2016 AND THEN select only those rows where latitude is greater than or equal to 38. 
 
 #get the mean value across a column using GroupBy and Summarize
-proj58_matched_2016 %>% #Take proj58_matched_2016, AND THEN...
-  group_by(catalognumber) %>%  #Group the data by catalognumber- that is, create a group within the dataframe where each group contains all the rows related to a specific catalognumber. AND THEN...
-  summarise(MeanLat=mean(latitude)) #use summarise to add a new column containing the mean latitude of each group. We named this new column "MeanLat" but you could name it anything
+cbcnr_matched_2016 %>% #Take cbcnr_matched_2016, AND THEN...
+  group_by(catalogNumber) %>%  #Group the data by catalogNumber- that is, create a group within the dataframe where each group contains all the rows related to a specific catalogNumber. AND THEN...
+  summarise(MeanLat=mean(decimalLatitude)) #use summarise to add a new column containing the mean decimalLatitude of each group. We named this new column "MeanLat" but you could name it anything
 
 ## Joining Detection Extracts ----
 
-proj58_matched_2017 <- read_csv("proj58_matched_detections_2017.zip") #First, read in our file.
+cbcnr_matched_2017 <- read_csv("cbcnr_matched_detections_2017.zip") #First, read in our file.
 
-proj58_matched_full <- rbind(proj58_matched_2016, proj58_matched_2017) #Now join the two dataframes
+cbcnr_matched_full <- rbind(cbcnr_matched_2016, cbcnr_matched_2017) #Now join the two dataframes
 
 # release records for animals often appear in >1 year, this will remove the duplicates
-proj58_matched_full <- proj58_matched_full %>% distinct() # Use distinct to remove duplicates. 
+cbcnr_matched_full <- cbcnr_matched_full %>% distinct() # Use distinct to remove duplicates. 
 
-View(proj58_matched_full) 
+View(cbcnr_matched_full) 
 
 ## Dealing with Datetimes ----
 
 library(lubridate) #Import our Lubridate library. 
 
-proj58_matched_full %>% mutate(datecollected=ymd_hms(datecollected)) #Use the lubridate function ymd_hms to change the format of the date.
+cbcnr_matched_full %>% mutate(dateCollectedUTC=ymd_hms(dateCollectedUTC)) #Use the lubridate function ymd_hms to change the format of the date.
 
-#as.POSIXct(proj58_matched_full$datecollected) #this is the base R way - if you ever see this function
+#as.POSIXct(cbcnr_matched_full$dateCollectedUTC) #this is the base R way - if you ever see this function
 
 # Intro to Plotting with ggplot2 ----
 
@@ -174,16 +174,16 @@ proj58_matched_full %>% mutate(datecollected=ymd_hms(datecollected)) #Use the lu
 
 #<MAPPINGS> refers to the aesthetic mappings for the data- 
 #that is, which columns in the data will be used to determine which attributes of the graph. 
-#For example, if you have columns for latitude and longitude, you may want to map these onto the X and Y axes of the graph. 
+#For example, if you have columns for decimalLatitude and decimalLongitude, you may want to map these onto the X and Y axes of the graph. 
 
 #<GEOM_FUNCTION> refers to the style of the plot: what type of plot are we going to make.
 
 library(ggplot2)
 
-proj58_matched_full_plot <- ggplot(data = proj58_matched_full, 
-                                   mapping = aes(x = longitude, y = latitude)) #can assign a base
+cbcnr_matched_full_plot <- ggplot(data = cbcnr_matched_full, 
+                                   mapping = aes(x = decimalLongitude, y = decimalLatitude)) #can assign a base
 
-proj58_matched_full_plot + 
+cbcnr_matched_full_plot + 
   geom_point(alpha=0.1, 
              colour = "blue") 
 #This will layer our chosen geom onto our plot template. 
@@ -193,13 +193,13 @@ proj58_matched_full_plot +
 
 #you can combine with dplyr pipes
 
-proj58_matched_full %>%  
-  ggplot(aes(longitude, latitude)) +
+cbcnr_matched_full %>%  
+  ggplot(aes(decimalLongitude, decimalLatitude)) +
   geom_point() #geom = the type of plot
 
 
-proj58_matched_full %>%  
-  ggplot(aes(longitude, latitude, colour = commonname)) + 
+cbcnr_matched_full %>%  
+  ggplot(aes(decimalLongitude, decimalLatitude, colour = commonName)) + 
   geom_point()
 #anything you specify in the aes() is applied to the actual data points/whole plot,
 #anything specified in geom() is applied to that layer only (colour, size...). sometimes you have >1 geom layer so this makes more sense!
@@ -208,32 +208,33 @@ proj58_matched_full %>%
 # Creating Summary Reports: Importing --------
 
 ## Tag Matches ----
-View(proj58_matched_full) #Check to make sure we already have our tag matches, from a previous episode
+View(cbcnr_matched_full) #Check to make sure we already have our tag matches, from a previous episode
 
 # if you do not have the variable created from a previous lesson, you can use the following code to re-create it:
 
-#proj58_matched_2016 <- read_csv("proj58_matched_detections_2016.zip") #Import 2016 detections
-#proj58_matched_2017 <- read_csv("proj58_matched_detections_2017.zip") # Import 2017 detections
-#proj58_matched_full <- rbind(proj58_matched_2016, proj58_matched_2017) #Now join the two dataframes
+#cbcnr_matched_2016 <- read_csv("cbcnr_matched_detections_2016.zip") #Import 2016 detections
+#cbcnr_matched_2017 <- read_csv("cbcnr_matched_detections_2017.zip") # Import 2017 detections
+#cbcnr_matched_full <- rbind(cbcnr_matched_2016, cbcnr_matched_2017) #Now join the two dataframes
 # release records for animals often appear in >1 year, this will remove the duplicates
-#proj58_matched_full <- proj58_matched_full %>% distinct() # Use distinct to remove duplicates. 
+#cbcnr_matched_full <- cbcnr_matched_full %>% distinct() # Use distinct to remove duplicates. 
 
 ## Array Matches ----
-proj61_qual_2016 <- read_csv("proj61_qualified_detections_2016_fixed.zip")
-proj61_qual_2017 <- read_csv("proj61_qualified_detections_2017_fixed.zip", guess_max = 25309)
-proj61_qual_16_17_full <- rbind(proj61_qual_2016, proj61_qual_2017) 
+
+serc1_qual_2016 <- read_csv("serc1_qualified_detections_2016.zip")
+serc1_qual_2017 <- read_csv("serc1_qualified_detections_2017.zip", guess_max = 25309)
+serc1_qual_16_17_full <- rbind(serc1_qual_2016, serc1_qual_2017) 
 
 ## Tagging and Deployment Metadata  ----
 #These are saved as XLS/XLSX files, so we need a different library to read them in.
 library(readxl)
 
 # Deployment Metadata
-proj61_deploy <- read_excel("Deploy_metadata_2016_2017/deploy_sercarray_proj61_2016_2017.xlsx", sheet = "Deployment", skip=3)
-View(proj61_deploy)
+serc1_deploy <- read_excel("Deploy_metadata_2016_2017/deploy_sercarray_serc1_2016_2017.xlsx", sheet = "Deployment", skip=3)
+View(serc1_deploy)
 
 # Tag metadata
-proj58_tag <- read_excel("Tag_Metadata/Proj58_Metadata_cownoseray.xlsx", sheet = "Tag Metadata", skip=4) 
-View(proj58_tag)
+cbcnr_tag <- read_excel("Tag_Metadata/cbcnr_Metadata_cownoseray.xlsx", sheet = "Tag Metadata", skip=4) 
+View(cbcnr_tag)
 
 #keep in mind the timezone of the columns
 
@@ -275,7 +276,7 @@ full_receivers_plot <- full_receivers %>%
 # you could choose to plot stations which are within a certain bounding box!
 # to do this you would add another filter to the above data, before passing to the map
 # ex: add this line after the mutate() clauses:
-# filter(latitude <= 0.5 & latitude >= 24.5 & longitude <= 0.6 & longitude >= 34.9)
+# filter(decimalLatitude <= 0.5 & decimalLatitude >= 24.5 & decimalLongitude <= 0.6 & decimalLongitude >= 34.9)
 
 
 #add your stations onto your basemap
@@ -297,21 +298,21 @@ ggsave(plot = full_receivers_map, filename = "act_matos.tiff", units="in", width
 #can specify file location, file type and dimensions
 
 ## Array Map - Static ----
-names(proj61_deploy)
+names(serc1_deploy)
 
 
 base <- get_stadiamap(
-  bbox = c(left = min(proj61_deploy$DEPLOY_LONG), 
-           bottom = min(proj61_deploy$DEPLOY_LAT), 
-           right = max(proj61_deploy$DEPLOY_LONG), 
-           top = max(proj61_deploy$DEPLOY_LAT)),
+  bbox = c(left = min(serc1_deploy$DEPLOY_LONG), 
+           bottom = min(serc1_deploy$DEPLOY_LAT), 
+           right = max(serc1_deploy$DEPLOY_LONG), 
+           top = max(serc1_deploy$DEPLOY_LAT)),
   maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 5)
 
 #filter for stations you want to plot - this is very customizable
 
-proj61_deploy_plot <- proj61_deploy %>% 
+serc1_deploy_plot <- serc1_deploy %>% 
   mutate(deploy_date=ymd_hms(`DEPLOY_DATE_TIME   (yyyy-mm-ddThh:mm:ss)`)) %>% #make a datetime
   mutate(recover_date=ymd_hms(`RECOVER_DATE_TIME (yyyy-mm-ddThh:mm:ss)`)) %>% #make a datetime
   filter(!is.na(deploy_date)) %>% #no null deploys
@@ -322,20 +323,20 @@ proj61_deploy_plot <- proj61_deploy %>%
 
 #add your stations onto your basemap
 
-proj61_map <- 
+serc1_map <- 
   ggmap(base, extent='panel') + 
   ylab("Latitude") +
   xlab("Longitude") +
-  geom_point(data = proj61_deploy_plot, #filtering for recent deployments
+  geom_point(data = serc1_deploy_plot, #filtering for recent deployments
              aes(x = MeanLong,y = MeanLat, colour = STATION_NO), #specify the data
              shape = 19, size = 2) #lots of aesthetic options here!
 
 #view your receiver map!
-proj61_map
+serc1_map
 
 #save your receiver map into your working directory
 
-ggsave(plot = proj61_map, filename = "proj61_map.tiff", units="in", width=15, height=8) 
+ggsave(plot = serc1_map, filename = "serc1_map.tiff", units="in", width=15, height=8) 
 
 #can specify location, file type and dimensions
 
@@ -355,71 +356,71 @@ geo_styling <- list(
   countrycolor = toRGB("gray85")
 )
 
-#decide what data you're going to use. Let's use proj61_deploy_plot, which we created above for our static map.
+#decide what data you're going to use. Let's use serc1_deploy_plot, which we created above for our static map.
 
-proj61_map_plotly <- plot_geo(proj61_deploy_plot, lat = ~MeanLat, lon = ~MeanLong)  
+serc1_map_plotly <- plot_geo(serc1_deploy_plot, lat = ~MeanLat, lon = ~MeanLong)  
 
 #add your markers for the interactive map
 
-proj61_map_plotly <- proj61_map_plotly %>% add_markers(
+serc1_map_plotly <- serc1_map_plotly %>% add_markers(
   text = ~paste(STATION_NO, MeanLat, MeanLong, sep = "<br />"),
   symbol = I("square"), size = I(8), hoverinfo = "text" 
 )
 
 #Add layout (title + geo stying)
 
-proj61_map_plotly <- proj61_map_plotly %>% layout(
-  title = 'Project 61 Deployments<br />(> 2011-07-03)', geo = geo_styling
+serc1_map_plotly <- serc1_map_plotly %>% layout(
+  title = 'SERC 1 Deployments<br />(> 2011-07-03)', geo = geo_styling
 )
 
 #View map
 
-proj61_map_plotly
+serc1_map_plotly
 
 ## Summary of Animals Detected ----
 # How many of each animals did we detect from each collaborator, by species, per station
 
-proj61_qual_summary <- proj61_qual_16_17_full %>% 
-  filter(datecollected > '2016-06-01') %>% #select timeframe, stations etc.
-  group_by(trackercode, station, tag_contact_pi, tag_contact_poc) %>% 
+serc1_qual_summary <- serc1_qual_16_17_full %>% 
+  filter(dateCollectedUTC > '2016-06-01') %>% #select timeframe, stations etc.
+  group_by(trackerCode, station, contactPI, contactPOC) %>% 
   summarize(count = n()) %>% 
-  select(trackercode, tag_contact_pi, tag_contact_poc, station, count)
+  select(trackerCode, contactPI, contactPOC, station, count)
 
 #view our summary table
 
-proj61_qual_summary 
+serc1_qual_summary 
 
 #export our summary table
 
-write_csv(proj61_qual_summary, "proj61_summary.csv", col_names = TRUE)
+write_csv(serc1_qual_summary, "serc1_summary.csv", col_names = TRUE)
 
 ## Summary of Detections ----
 
 # number of detections per month/year per station 
 
-proj61_det_summary  <- proj61_qual_16_17_full  %>% 
-  mutate(datecollected=ymd_hms(datecollected))  %>% 
-  group_by(station, year = year(datecollected), month = month(datecollected)) %>% 
+serc1_det_summary  <- serc1_qual_16_17_full  %>% 
+  mutate(dateCollectedUTC=ymd_hms(dateCollectedUTC))  %>% 
+  group_by(station, year = year(dateCollectedUTC), month = month(dateCollectedUTC)) %>% 
   summarize(count =n())
 
-proj61_det_summary 
+serc1_det_summary 
 
 # Create a new data product, det_days, that give you the unique dates that an animal was seen by a station
-stationsum <- proj61_qual_16_17_full %>% 
+stationsum <- serc1_qual_16_17_full %>% 
   group_by(station) %>%
-  summarise(num_detections = length(datecollected),
-            start = min(datecollected),
-            end = max(datecollected),
-            uniqueIDs = length(unique(fieldnumber)), 
-            det_days=length(unique(as.Date(datecollected))))
+  summarise(num_detections = length(dateCollectedUTC),
+            start = min(dateCollectedUTC),
+            end = max(dateCollectedUTC),
+            uniqueIDs = length(unique(tagName)), 
+            det_days=length(unique(as.Date(dateCollectedUTC))))
 View(stationsum)
 
 
 ## Plot of Detections ----
 
-proj61_qual_16_17_full %>%  
-  mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
-  mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
+serc1_qual_16_17_full %>%  
+  mutate(dateCollectedUTC=ymd_hms(dateCollectedUTC)) %>% #make datetime
+  mutate(year_month = floor_date(dateCollectedUTC, "months")) %>% #round to month
   group_by(year_month) %>% #can group by station, species etc.
   summarize(count =n()) %>% #how many dets per year_month
   ggplot(aes(x = (month(year_month) %>% as.factor()), 
@@ -430,7 +431,7 @@ proj61_qual_16_17_full %>%
   geom_bar(stat = "identity", position = "dodge2")+ 
   xlab("Month")+
   ylab("Total Detection Count")+
-  ggtitle('Proj61 Animal Detections by Month')+ #title
+  ggtitle('SERC1 Animal Detections by Month')+ #title
   labs(fill = "Year") #legend title
 
 
@@ -439,15 +440,15 @@ proj61_qual_16_17_full %>%
 ## New Dataframe ----
 #optional dataset to use: detections with releases filtered out!
 
-proj58_matched_full_no_release <- proj58_matched_full  %>% 
+cbcnr_matched_full_no_release <- cbcnr_matched_full  %>% 
   filter(receiver != "release")
 
 ## Detection/Release Map - Static ----
 base <- get_stadiamap(
-  bbox = c(left = min(proj58_matched_full_no_release$longitude),
-           bottom = min(proj58_matched_full_no_release$latitude), 
-           right = max(proj58_matched_full_no_release$longitude), 
-           top = max(proj58_matched_full_no_release$latitude)),
+  bbox = c(left = min(cbcnr_matched_full_no_release$decimalLongitude),
+           bottom = min(cbcnr_matched_full_no_release$decimalLatitude), 
+           right = max(cbcnr_matched_full_no_release$decimalLongitude), 
+           top = max(cbcnr_matched_full_no_release$decimalLatitude)),
   maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 5)
@@ -455,17 +456,17 @@ base <- get_stadiamap(
 
 #add your releases and detections onto your basemap
 
-proj58_map <- 
+cbcnr_map <- 
   ggmap(base, extent='panel') +
   ylab("Latitude") +
   xlab("Longitude") +
-  geom_point(data = proj58_matched_full_no_release, 
-             aes(x = longitude,y = latitude), #specify the data
+  geom_point(data = cbcnr_matched_full_no_release, 
+             aes(x = decimalLongitude,y = decimalLatitude), #specify the data
              colour = 'blue', shape = 19, size = 2) #lots of aesthetic options here!
 
 #view your tagging map!
 
-proj58_map
+cbcnr_map
 
 ## Detection/Release Map - Interactive ----
 #set your basemap
@@ -482,21 +483,21 @@ geo_styling <- list(
 
 #decide what data you're going to use
 
-detections_map_plotly <- plot_geo(proj58_matched_full_no_release, lat = ~latitude, lon = ~longitude) 
+detections_map_plotly <- plot_geo(cbcnr_matched_full_no_release, lat = ~decimalLatitude, lon = ~decimalLongitude) 
 
 #add your markers for the interactive map
 detections_map_plotly <- detections_map_plotly %>% add_markers(
-  text = ~paste(catalognumber, commonname, paste("Date detected:", datecollected), 
-                paste("Latitude:", latitude), paste("Longitude",longitude), 
-                paste("Detected by:", detectedby), paste("Station:", station), 
-                paste("Project:",collectioncode), sep = "<br />"),
+  text = ~paste(catalogNumber, commonName, paste("Date detected:", dateCollectedUTC), 
+                paste("Latitude:", decimalLatitude), paste("Longitude",decimalLongitude), 
+                paste("Detected by:", detectedBy), paste("Station:", station), 
+                paste("Project:",collectionCode), sep = "<br />"),
   symbol = I("square"), size = I(8), hoverinfo = "text" 
 )
 
 #Add layout (title + geo stying)
 
 detections_map_plotly <- detections_map_plotly %>% layout(
-  title = 'Project 58 Detections', geo = geo_styling
+  title = 'CBCNR Detections', geo = geo_styling
 )
 
 #View map
@@ -506,7 +507,7 @@ detections_map_plotly
 
 # summary of animals you've tagged
 
-proj58_tag_summary <- proj58_tag %>% 
+cbcnr_tag_summary <- cbcnr_tag %>% 
   mutate(UTC_RELEASE_DATE_TIME = ymd_hms(UTC_RELEASE_DATE_TIME)) %>% 
   #filter(UTC_RELEASE_DATE_TIME > '2016-06-01') %>% #select timeframe, specific animals etc.
   group_by(year = year(UTC_RELEASE_DATE_TIME), COMMON_NAME_E) %>% 
@@ -519,60 +520,60 @@ proj58_tag_summary <- proj58_tag %>%
 
 #view our summary table
 
-proj58_tag_summary
+cbcnr_tag_summary
 
 ## Detection Attributes ----
 # Average location of each animal, without release records
 
-proj58_matched_full_no_release %>% 
-  group_by(catalognumber) %>% 
+cbcnr_matched_full_no_release %>% 
+  group_by(catalogNumber) %>% 
   summarize(NumberOfStations = n_distinct(station),
-            AvgLat = mean(latitude),
-            AvgLong =mean(longitude))
+            AvgLat = mean(decimalLatitude),
+            AvgLong =mean(decimalLongitude))
 
 #Now lets try to join our metadata and detection extracts.
 #First we need to make a tagname column in the tag metadata (to match the Detection Extract), and figure out the enddate of the tag battery.
 
-proj58_tag <- proj58_tag %>% 
+cbcnr_tag <- cbcnr_tag %>% 
   mutate(enddatetime = (ymd_hms(UTC_RELEASE_DATE_TIME) + days(EST_TAG_LIFE))) %>% #adding enddate
-  mutate(tagname = paste(TAG_CODE_SPACE,TAG_ID_CODE, sep = '-')) #adding tagname column
+  mutate(tagName = paste(TAG_CODE_SPACE,TAG_ID_CODE, sep = '-')) #adding tagname column
 
 #Now we join by tagname, to the detection dataset (without the release information)
 
-tag_joined_dets <- left_join(x = proj58_matched_full_no_release, y = proj58_tag, by = "tagname") #join!
+tag_joined_dets <- left_join(x = cbcnr_matched_full_no_release, y = cbcnr_tag, by = "tagName") #join!
 
 #make sure any redeployed tags have matched within their deployment period only
 
 tag_joined_dets <- tag_joined_dets %>% 
-  filter(datecollected >= UTC_RELEASE_DATE_TIME & datecollected <= enddatetime)
+  filter(dateCollectedUTC >= UTC_RELEASE_DATE_TIME & dateCollectedUTC <= enddatetime)
 
 View(tag_joined_dets)
 
 #Lets use this new joined dataframe to make summaries!
 #Avg length per location
 
-proj58_tag_det_summary <- tag_joined_dets %>% 
-  group_by(detectedby, station, latitude, longitude)  %>%  
+cbcnr_tag_det_summary <- tag_joined_dets %>% 
+  group_by(detectedBy, station, decimalLatitude, decimalLongitude)  %>%  
   summarise(AvgSize = mean(`LENGTH (m)`, na.rm=TRUE))
 
-proj58_tag_det_summary
+cbcnr_tag_det_summary
 
 #export our summary table as CSV
-write_csv(proj58_tag_det_summary, "detections_summary.csv", col_names = TRUE)
+write_csv(cbcnr_tag_det_summary, "detections_summary.csv", col_names = TRUE)
 
 # count detections per transmitter, per array
 
-proj58_matched_full_no_release %>% 
-  group_by(catalognumber, station, detectedby, commonname) %>% 
+cbcnr_matched_full_no_release %>% 
+  group_by(catalogNumber, station, detectedBy, commonName) %>% 
   summarize(count = n()) %>% 
-  select(catalognumber, commonname, detectedby, station, count)
+  select(catalogNumber, commonName, detectedBy, station, count)
 
 # list all receivers each fish was seen on, and a number_of_receivers column too
 
-receivers <- proj58_matched_full_no_release %>% 
-  group_by(catalognumber) %>% 
+receivers <- cbcnr_matched_full_no_release %>% 
+  group_by(catalogNumber) %>% 
   mutate(stations = (list(unique(station)))) %>% #create a column with a list of the stations
-  dplyr::select(catalognumber, stations)  %>% #remove excess columns
+  dplyr::select(catalogNumber, stations)  %>% #remove excess columns
   distinct_all() %>% #keep only one record of each
   mutate(number_of_stations = sapply(stations, length)) %>% #sapply: applies a function across a List - in this case we are applying length()
   as.data.frame() 
@@ -581,21 +582,21 @@ View(receivers)
 
 # number of stations visited, start and end dates, and track length
 
-animal_id_summary <- proj58_matched_full_no_release %>% 
-  group_by(catalognumber) %>%
-  summarise(dets = length(catalognumber),
+animal_id_summary <- cbcnr_matched_full_no_release %>% 
+  group_by(catalogNumber) %>%
+  summarise(dets = length(catalogNumber),
             stations = length(unique(station)),
-            min = min(datecollected), 
-            max = max(datecollected), 
-            tracklength = max(datecollected)-min(datecollected))
+            min = min(dateCollectedUTC), 
+            max = max(dateCollectedUTC), 
+            tracklength = max(dateCollectedUTC)-min(dateCollectedUTC))
 
 View(animal_id_summary)
 
 ## Plot of Detection Counts ----
 
-proj58_matched_full_no_release  %>% 
-  mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
-  mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
+cbcnr_matched_full_no_release  %>% 
+  mutate(dateCollectedUTC=ymd_hms(dateCollectedUTC)) %>% #make datetime
+  mutate(year_month = floor_date(dateCollectedUTC, "months")) %>% #round to month
   group_by(year_month) %>% #can group by station, species etc.
   summarize(count =n()) %>% #how many dets per year_month
   ggplot(aes(x = (month(year_month) %>% as.factor()), 
@@ -606,7 +607,7 @@ proj58_matched_full_no_release  %>%
   geom_bar(stat = "identity", position = "dodge2")+ 
   xlab("Month")+
   ylab("Total Detection Count")+
-  ggtitle('Project 58 Detections by Month (2016-2017)')+ #title
+  ggtitle('CBCNR Detections by Month (2016-2017)')+ #title
   labs(fill = "Year") #legend title
 
 # Other Example Plots ----
@@ -617,7 +618,7 @@ library(viridis)
 # an easy abacus plot!
 
 abacus_animals <- 
-  ggplot(data = proj58_matched_full, aes(x = datecollected, y = catalognumber, col = detectedby)) +
+  ggplot(data = cbcnr_matched_full, aes(x = dateCollectedUTC, y = catalogNumber, col = detectedBy)) +
   geom_point() +
   ggtitle("Detections by animal") +
   theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
@@ -626,7 +627,7 @@ abacus_animals <-
 abacus_animals
 
 abacus_stations <- 
-  ggplot(data = proj58_matched_full,  aes(x = datecollected, y = detectedby, col = catalognumber)) +
+  ggplot(data = cbcnr_matched_full,  aes(x = dateCollectedUTC, y = detectedBy, col = catalogNumber)) +
   geom_point() +
   ggtitle("Detections by Array") +
   theme(plot.title = element_text(face = "bold", hjust = 0.5)) +
@@ -636,20 +637,20 @@ abacus_stations #might be better with just a subset, huh??
 
 # track movement using geom_path!!
 
-proj58_subset <- proj58_matched_full %>%
-  dplyr::filter(catalognumber %in% c('PROJ58-1191602-2014-07-24', 'PROJ58-1191606-2014-07-24', 
-                               'PROJ58-1191612-2014-08-21', 'PROJ58-1218518-2015-09-16'))
+cbcnr_subset <- cbcnr_matched_full %>%
+  dplyr::filter(catalogNumber %in% c('CBCNR-1191602-2014-07-24', 'CBCNR-1191606-2014-07-24', 
+                               'CBCNR-1191612-2014-08-21', 'CBCNR-1218518-2015-09-16'))
 
-View(proj58_subset)
+View(cbcnr_subset)
 
 movMap <- 
   ggmap(base, extent = 'panel') + #use the BASE we set up before
   ylab("Latitude") +
   xlab("Longitude") +
-  geom_path(data = proj58_subset, aes(x = longitude, y = latitude, col = commonname)) + #connect the dots with lines
-  geom_point(data = proj58_subset, aes(x = longitude, y = latitude, col = commonname)) + #layer the stations back on
+  geom_path(data = cbcnr_subset, aes(x = decimalLongitude, y = decimalLatitude, col = commonName)) + #connect the dots with lines
+  geom_point(data = cbcnr_subset, aes(x = decimalLongitude, y = decimalLatitude, col = commonName)) + #layer the stations back on
   scale_colour_manual(values = c("red", "blue"), name = "Species")+ #
-  facet_wrap(~catalognumber, nrow=2, ncol=2)+
+  facet_wrap(~catalogNumber, nrow=2, ncol=2)+
   ggtitle("Inferred Animal Paths")
 
 #to size the dots by number of detections you could do something like: size = (log(length(animal)id))?
@@ -657,10 +658,10 @@ movMap <-
 movMap
 
 # monthly latitudinal distribution of your animals (works best w >1 species)
-proj58_matched_full %>%
-  group_by(m=month(datecollected), catalognumber, scientificname) %>% #make our groups
-  summarise(mean=mean(latitude)) %>% #mean lat
-  ggplot(aes(m %>% factor, mean, colour=scientificname, fill=scientificname))+ #the data is supplied, but no info on how to show it!
+cbcnr_matched_full %>%
+  group_by(m=month(dateCollectedUTC), catalogNumber, scientificName) %>% #make our groups
+  summarise(mean=mean(decimalLatitude)) %>% #mean lat
+  ggplot(aes(m %>% factor, mean, colour=scientificName, fill=scientificName))+ #the data is supplied, but no info on how to show it!
   geom_point(size=3, position="jitter")+   # draw data as points, and use jitter to help see all points instead of superimposition
   #coord_flip()+   #flip x y, not needed here
   scale_colour_manual(values = "blue")+ #change the colour to represent the species better!
@@ -672,10 +673,10 @@ proj58_matched_full %>%
 #There are other ways to present a summary of data like this that we might have chosen. 
 #geom_density2d() will give us a KDE for our data points and give us some contours across our chosen plot axes.
 
-proj58_matched_full %>% 
-  group_by(month=month(datecollected), catalognumber, scientificname) %>%
-  summarise(meanlat=mean(latitude)) %>%
-  ggplot(aes(month, meanlat, colour=scientificname, fill=scientificname))+
+cbcnr_matched_full %>% 
+  group_by(month=month(dateCollectedUTC), catalogNumber, scientificName) %>%
+  summarise(meanlat=mean(decimalLatitude)) %>%
+  ggplot(aes(month, meanlat, colour=scientificName, fill=scientificName))+
   geom_point(size=3, position="jitter")+
   scale_colour_manual(values = "blue")+
   scale_fill_manual(values = "grey")+
@@ -686,8 +687,8 @@ proj58_matched_full %>%
 
 # per-individual density contours - lots of plots: called facets!
 
-proj58_matched_full %>%
-  ggplot(aes(longitude, latitude))+
-  facet_wrap(~catalognumber)+ #make one plot per individual
+cbcnr_matched_full %>%
+  ggplot(aes(decimalLongitude, decimalLatitude))+
+  facet_wrap(~catalogNumber)+ #make one plot per individual
   geom_violin()
 #Warnings going on above.
