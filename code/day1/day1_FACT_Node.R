@@ -217,7 +217,8 @@ View(tqcs_matched_10_11) #already have our Tag matches, from a previous lesson.
 #tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #Now join the two dataframes
 # release records for animals often appear in >1 year, this will remove the duplicates
 #tqcs_matched_10_11_full <- tqcs_matched_10_11_full %>% distinct() # Use distinct to remove duplicates. 
-#tqcs_matched_10_11 <- tqcs_matched_10_11_full %>% slice(1:100000) # subset our example data to help this workshop run smoother!
+#tqcs_matched_10_11 <- tqcs_matched_10_11_full %>% slice(1:110000) # subset our example data to help this workshop run smoother!
+#tqcs_matched_10_11 <- tqcs_matched_10_11 %>% filter(detectedBy != 'PIRAT.PFRL')
 
 ## Array Matches ----
 teq_qual_2010 <- read_csv("teq_qualified_detections_2010_ish.csv")

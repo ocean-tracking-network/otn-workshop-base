@@ -65,8 +65,8 @@ length(heights_above_67)
 
 
 # Challenge 5 ----
-#1. What is is the class of the station column in proj58_matched_2016?
-#2. How many rows and columns are in the proj58_matched_2016 dataset?
+#1. What is is the class of the station column in cbcnr_matched_2016?
+#2. How many rows and columns are in the cbcnr_matched_2016 dataset?
 
 #Answer 5: The column is a character, and there are 7,693 rows with 36 columns
 str(cbcnr_matched_2016)
@@ -93,7 +93,7 @@ cbcnr_matched_2016 %>%
 
 
 # Challenge 7 ----
-# try making a scatterplot showing the lat/long for animal "PROJ58-1218515-2015-10-13", 
+# try making a scatterplot showing the lat/long for animal "CBCNR-1218515-2015-10-13", 
 # coloured by detection array
 
 #Answer 7: 
