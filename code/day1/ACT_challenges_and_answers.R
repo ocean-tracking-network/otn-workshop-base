@@ -65,41 +65,41 @@ length(heights_above_67)
 
 
 # Challenge 5 ----
-#1. What is is the class of the station column in proj58_matched_2016?
-#2. How many rows and columns are in the proj58_matched_2016 dataset?
+#1. What is is the class of the station column in cbcnr_matched_2016?
+#2. How many rows and columns are in the cbcnr_matched_2016 dataset?
 
 #Answer 5: The column is a character, and there are 7,693 rows with 36 columns
-str(proj58_matched_2016)
+str(cbcnr_matched_2016)
 # or
-glimpse(proj58_matched_2016)
+glimpse(cbcnr_matched_2016)
 
 
 
 # Challenge 6 ----
-#1. Find the max lat and max longitude for animal "PROJ58-1191602-2014-07-24".
-#2. Find the min lat/long of each animal for detections occurring in/after April.
+#1. Find the max lat and max longitude for animal "CBCNR-1191602-2014-07-24".
+#2. Find the min lat/long of all animals, in June
 
 #Answer 6:
 #1. 
-proj58_matched_2016 %>% 
-  filter(catalognumber=="PROJ58-1191602-2014-07-24") %>% 
-  summarise(MaxLat=max(latitude), MaxLong=max(longitude))
+cbcnr_matched_2016 %>% 
+  filter(catalogNumber=="CBCNR-1191602-2014-07-24") %>% 
+  summarise(MaxLat=max(decimalLatitude), MaxLong=max(decimalLongitude))
 
 #2. 
-proj58_matched_2016 %>% 
-  filter(monthcollected >= 4 ) %>% 
-  group_by(catalognumber) %>% 
-  summarise(MinLat=min(latitude), MinLong=min(longitude))
+cbcnr_matched_2016 %>% 
+  filter(month(dateCollectedUTC) == 6)%>% 
+  group_by(catalogNumber) %>% 
+  summarise(MinLat=min(decimalLatitude), MinLong=min(decimalLongitude))
 
 
 # Challenge 7 ----
-# try making a scatterplot showing the lat/long for animal "PROJ58-1218515-2015-10-13", 
+# try making a scatterplot showing the lat/long for animal "CBCNR-1218515-2015-10-13", 
 # coloured by detection array
 
 #Answer 7: 
-proj58_matched_full %>%  
-  filter(catalognumber=="PROJ58-1218515-2015-10-13") %>% 
-  ggplot(aes(longitude, latitude, colour = detectedby)) + 
+cbcnr_matched_full %>%  
+  filter(catalogNumber=="CBCNR-1218515-2015-10-13") %>% 
+  ggplot(aes(decimalLongitude, decimalLatitude, colour = detectedBy)) + 
   geom_point()
 
 #Question: what other geoms are there? Try typing `geom_` into R to see what it suggests!

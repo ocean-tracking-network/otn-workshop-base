@@ -68,7 +68,7 @@ length(heights_above_67)
 #1. What is is the class of the station column in gmr_matched_2018?
 #2. How many rows and columns are in the gmr_matched_2018 dataset?
 
-#Answer 5: The column is a character, and there are 2,305 rows with 36 columns
+#Answer 5: The column is a character, and there are 4,610 rows with 29 columns
 str(gmr_matched_2018)
 # or
 glimpse(gmr_matched_2018)
@@ -76,20 +76,20 @@ glimpse(gmr_matched_2018)
 
 
 # Challenge 6 ----
-#1. Find the max lat and max longitude for animal "GMR-25720-2014-01-18".
+#1. Find the max lat and max decimalLongitude for animal "GMR-25720-2014-01-18".
 #2. Find the min lat/long of each animal for detections occurring in/after April.
 
 #Answer 6:
 #1. 
 gmr_matched_2018 %>% 
-  dplyr::filter(catalognumber=="GMR-25720-2014-01-18") %>% 
-  summarise(MaxLat=max(latitude), MaxLong=max(longitude))
+  dplyr::filter(catalogNumber=="GMR-25720-2014-01-18") %>% 
+  summarise(MaxLat=max(decimalLatitude), MaxLong=max(decimalLongitude))
 
 #2. 
 gmr_matched_2018 %>% 
-  dplyr::filter(monthcollected >= 4 ) %>% 
-  group_by(catalognumber) %>% 
-  summarise(MinLat=min(latitude), MinLong=min(longitude))
+  dplyr::filter(month(dateCollectedUTC) >= 4 ) %>% 
+  group_by(catalogNumber) %>% 
+  summarise(MinLat=min(decimalLatitude), MinLong=min(decimalLongitude))
 
 
 # Challenge 7 ----
@@ -98,8 +98,8 @@ gmr_matched_2018 %>%
 
 #Answer 7: 
 gmr_matched_18_19 %>%  
-  dplyr::filter(catalognumber=="GMR-25720-2014-01-18") %>% 
-  ggplot(aes(longitude, latitude, colour = station)) + 
+  dplyr::filter(catalogNumber=="GMR-25720-2014-01-18") %>% 
+  ggplot(aes(decimalLongitude, decimalLatitude, colour = station)) + 
   geom_point()
 
 #Question: what other geoms are there? Try typing `geom_` into R to see what it suggests!

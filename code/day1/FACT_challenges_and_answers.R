@@ -66,7 +66,7 @@ length(heights_above_67)
 #1. What is is the class of the station column in proj58_matched_2016?
 #2. How many rows and columns are in the proj58_matched_2016 dataset?
 
-#Answer 5: The column is a character, and there are 1,737,597 rows with 36 columns
+#Answer 5: The column is a character, and there are 1,748,275 rows with 29 columns
 str(tqcs_matched_2010)
 # or
 glimpse(tqcs_matched_2010)
@@ -74,20 +74,20 @@ glimpse(tqcs_matched_2010)
 
 
 # Challenge 6 ----
-#1. Find the max lat and max longitude for animal "TQCS-1049258-2008-02-14".
+#1. Find the max lat and max decimalLongitude for animal "TQCS-1049258-2008-02-14".
 #2. Find the min lat/long of each animal for detections occurring in July..
 
 #Answer 6:
 #1. 
 tqcs_matched_2010 %>% 
-  filter(catalognumber=="TQCS-1049258-2008-02-14") %>% 
-  summarise(MaxLat=max(latitude), MaxLong=max(longitude))
+  filter(catalogNumber=="TQCS-1049258-2008-02-14") %>% 
+  summarise(MaxLat=max(decimalLatitude), MaxLong=max(decimalLongitude))
 
 #2.
 tqcs_matched_2010 %>% 
-  filter(monthcollected == 7) %>% 
-  group_by(catalognumber) %>% 
-  summarise(MinLat=min(latitude), MinLong=min(longitude))
+  filter(month(dateCollectedUTC) == 7) %>% 
+  group_by(catalogNumber) %>% 
+  summarise(MinLat=min(decimalLatitude), MinLong=min(decimalLongitude))
 
 
 
@@ -98,6 +98,6 @@ tqcs_matched_2010 %>%
 
 #Answer 7:
 tqcs_matched_10_11  %>%  
-  filter(catalognumber=="TQCS-1049258-2008-02-14") %>% 
-  ggplot(aes(longitude, latitude, colour = detectedby)) + 
+  filter(catalogNumber=="TQCS-1049258-2008-02-14") %>% 
+  ggplot(aes(decimalLongitude, decimalLatitude, colour = detectedBy)) + 
   geom_point()
