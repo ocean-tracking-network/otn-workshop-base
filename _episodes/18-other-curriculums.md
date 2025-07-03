@@ -6,7 +6,10 @@ questions:
 - "How can I expand my learning?"
 ---
 
-OTN has hosted other workshops in the past which contain different code sets that may be useful to explore after this workshop. *Please note the date each workshop was last edited! Newer workshops will be more relevant and may contain fewer bugs.*
+**NOTE:** this workshop has been update to align with OTN's 2025 Detection Extract Format. For older detection extracts, please see the this lesson: [Archived OTN Workshop](https://ocean-tracking-network.github.io/otn-workshop-2025-06/). 
+
+
+OTN has hosted other workshops in the past which contain different code sets that may be useful to explore after this workshop. *Please note the date each workshop was last edited! Newer workshops will be more relevant and may contain fewer bugs. Older workshops will be built for older detection extract formats*
 
 - [General telemetry workflow 2019](https://ocean-tracking-network.github.io/jb-acoustic-telemetry/index.html)
 

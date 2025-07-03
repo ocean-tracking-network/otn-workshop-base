@@ -12,6 +12,8 @@ keypoints:
     - "You can feed output from dplyr's data manipulation functions into ggplot using pipes."
     - "Plotting various summaries and groupings of your data is good practice at the exploratory phase, and dplyr and ggplot make iterating different ideas straightforward."	  
 ---
+**NOTE:** this workshop has been update to align with OTN's 2025 Detection Extract Format. For older detection extracts, please see the this lesson: [Archived OTN Workshop](https://ocean-tracking-network.github.io/otn-workshop-2025-06/). 
+
 **Note to instructors: please choose the relevant Network below when teaching**
 
 ## ACT Node
@@ -43,8 +45,8 @@ Now that we've introduced `ggplot2`, let's build a functional example with our d
 library(ggplot2)
 
 # Build the plot and assign it to a variable.
-proj58_matched_full_plot <- ggplot(data = proj58_matched_full,
-                  mapping = aes(x = longitude, y = latitude)) #can assign a base
+cbcnr_matched_full_plot <- ggplot(data = cbcnr_matched_full, 
+                                   mapping = aes(x = decimalLongitude, y = decimalLatitude)) #can assign a base
 ~~~
 {: .language-r}
 
@@ -53,8 +55,8 @@ With a couple of lines of code, we've already mostly completed a simple scatter 
 We still have one step to add to our plotting code: the geom function. We'll be making a scatterplot, so we want to use `geom_point()`.
 
 ~~~
-proj58_matched_full_plot +
-  geom_point(alpha=0.1,
+cbcnr_matched_full_plot + 
+  geom_point(alpha=0.1, 
              colour = "blue")
 #This will layer our chosen geom onto our plot template.
 #alpha is a transparency argument in case points overlap. Try alpha = 0.02 to see how it works!
@@ -67,14 +69,13 @@ With just the above code, we've added our geom to our aesthetic and made our plo
 
 As a minor syntactic note, you can build your plots iteratively, without assigning them to a variable in-between. For this, we make use of `tidyverse` pipes.
 ~~~
-proj58_matched_full %>%  
-  ggplot(aes(longitude, latitude)) +
+cbcnr_matched_full %>%  
+  ggplot(aes(decimalLongitude, decimalLatitude)) +
   geom_point() #geom = the type of plot
 
-proj58_matched_full %>%  
-  ggplot(aes(longitude, latitude, colour = commonname)) +
+cbcnr_matched_full %>%  
+  ggplot(aes(decimalLongitude, decimalLatitude, colour = commonName)) + 
   geom_point()
-
 
 #anything you specify in the aes() is applied to the actual data points/whole plot,
 #anything specified in geom() is applied to that layer only (colour, size...). sometimes you have >1 geom layer so this makes more sense!
@@ -82,19 +83,19 @@ proj58_matched_full %>%
 ~~~
 {: .language-r}
 
-You can see that all we need to do to make this work is omit the 'data' parameter, since that's being passed in by the pipe. Note also that we've added `colour = commonname` to the second plot's aesthetic, meaning that the output will be coloured based on the species of the animal (if there is more than one included).
+You can see that all we need to do to make this work is omit the 'data' parameter, since that's being passed in by the pipe. Note also that we've added `colour = commonName` to the second plot's aesthetic, meaning that the output will be coloured based on the species of the animal (if there is more than one included).
 
 Remembering which of the `aes` or the `geom` controls which variable can be difficult, but here's a handy rule of thumb: anything specified in `aes()` will apply to the data points themselves, or the whole plot. They are broad statements about how the plot is to be displayed. Anything in the `geom_` function will apply only to that `geom_` layer. Keep this in mind, since it's possible for your plot to have more than one `geom_`!
 
 > ## Plotting and dplyr Challenge
 >
 > Try combining with `dplyr` functions in this challenge!
-> Try making a scatterplot showing the lat/long for animal "PROJ58-1218515-2015-10-13", coloured by detection array
+> Try making a scatterplot showing the lat/long for animal "CBCNR-1218515-2015-10-13", coloured by detection array
 > > ## Solution
 > > ~~~
-> > proj58_matched_full %>%  
-> >  filter(catalognumber=="PROJ58-1218515-2015-10-13") %>%
-> >  ggplot(aes(longitude, latitude, colour = detectedby)) +
+> > cbcnr_matched_full %>%  
+> >  filter(catalogNumber=="CBCNR-1218515-2015-10-13") %>%
+> >  ggplot(aes(decimalLongitude, decimalLatitude, colour = detectedBy)) +
 > >  geom_point()
 > > ~~~
 > > {: .language-r}
@@ -132,9 +133,9 @@ Now that we've introduced `ggplot2`, let's build a functional example with our d
 # Begin by importing the ggplot2 library, which you should have installed as part of setup.
 library(ggplot2)
 
-# Build the plot and assign it to a variable.
-tqcs_10_11_plot <- ggplot(data = tqcs_matched_10_11,
-                          mapping = aes(x = longitude, y = latitude)) #can assign a base
+tqcs_10_11_plot <- ggplot(data = tqcs_matched_10_11, 
+                          mapping = aes(x = decimalLongitude, y = decimalLatitude)) #can assign a base
+
 ~~~
 {: .language-r}
 
@@ -143,9 +144,9 @@ With a couple of lines of code, we've already mostly completed a simple scatter 
 We still have one step to add to our plotting code: the geom function. We'll be making a scatterplot, so we want to use `geom_point()`.
 
 ~~~
-tqcs_10_11_plot +
-  geom_point(alpha=0.1,
-             colour = "blue")  
+tqcs_10_11_plot + 
+  geom_point(alpha=0.1, 
+             colour = "blue") 
 #This will layer our chosen geom onto our plot template.
 #alpha is a transparency argument in case points overlap. Try alpha = 0.02 to see how it works!
 ~~~
@@ -158,13 +159,12 @@ With just the above code, we've added our geom to our aesthetic and made our plo
 As a minor syntactic note, you can build your plots iteratively, without assigning them to a variable in-between. For this, we make use of `tidyverse` pipes.
 ~~~
 tqcs_matched_10_11 %>%  
-  ggplot(aes(longitude, latitude)) +
+  ggplot(aes(decimalLongitude, decimalLatitude)) +
   geom_point() #geom = the type of plot
 
 tqcs_matched_10_11 %>%  
-  ggplot(aes(longitude, latitude, colour = commonname)) +
+  ggplot(aes(decimalLongitude, decimalLatitude, colour = commonName)) + 
   geom_point()
-
 
 #anything you specify in the aes() is applied to the actual data points/whole plot,
 #anything specified in geom() is applied to that layer only (colour, size...). sometimes you have >1 geom layer so this makes more sense!
@@ -172,7 +172,7 @@ tqcs_matched_10_11 %>%
 ~~~
 {: .language-r}
 
-You can see that all we need to do to make this work is omit the 'data' parameter, since that's being passed in by the pipe. Note also that we've added `colour = commonname` to the second plot's aesthetic, meaning that the output will be coloured based on the species of the animal (if there is more than one included).
+You can see that all we need to do to make this work is omit the 'data' parameter, since that's being passed in by the pipe. Note also that we've added `colour = commonName` to the second plot's aesthetic, meaning that the output will be coloured based on the species of the animal (if there is more than one included).
 
 Remembering which of the `aes` or the `geom` controls which variable can be difficult, but here's a handy rule of thumb: anything specified in `aes()` will apply to the data points themselves, or the whole plot. They are broad statements about how the plot is to be displayed. Anything in the `geom_` function will apply only to that `geom_` layer. Keep this in mind, since it's possible for your plot to have more than one `geom_`!
 
@@ -183,8 +183,8 @@ Remembering which of the `aes` or the `geom` controls which variable can be diff
 > > ## Solution
 > > ~~~
 > > tqcs_matched_10_11  %>%  
-> >  filter(catalognumber=="TQCS-1049258-2008-02-14") %>%
-> >  ggplot(aes(longitude, latitude, colour = detectedby)) +
+> >  filter(catalogNumber=="TQCS-1049258-2008-02-14") %>%
+> >  ggplot(aes(decimalLongitude, decimalLatitude, colour = detectedBy)) +
 > >  geom_point()
 > > ~~~
 > > {: .language-r}
@@ -313,7 +313,7 @@ library(ggplot2)
 
 # Build the plot and assign it to a variable.
 gmr_matched_18_19_plot <- ggplot(data = gmr_matched_18_19, 
-                                   mapping = aes(x = longitude, y = latitude)) #can assign a base
+                                   mapping = aes(x = decimalLongitude, y = decimalLatitude)) #can assign a base
 
 ~~~
 {: .language-r}
@@ -338,11 +338,12 @@ With just the above code, we've added our geom to our aesthetic and made our plo
 As a minor syntactic note, you can build your plots iteratively, without assigning them to a variable in-between. For this, we make use of `tidyverse` pipes.
 ~~~
 gmr_matched_18_19 %>%  
-  ggplot(aes(longitude, latitude)) +
+  ggplot(aes(decimalLongitude, decimalLatitude)) +
   geom_point() #geom = the type of plot
 
+
 gmr_matched_18_19 %>%  
-  ggplot(aes(longitude, latitude, colour = commonname)) + 
+  ggplot(aes(decimalLongitude, decimalLatitude, colour = commonName)) + 
   geom_point()
 
 #anything you specify in the aes() is applied to the actual data points/whole plot,
@@ -362,8 +363,8 @@ Remembering which of the `aes` or the `geom` controls which variable can be diff
 > > ## Solution
 > > ~~~
 > > gmr_matched_18_19 %>%  
-> >  filter(catalognumber=="GMR-25720-2014-01-18") %>%
-> >  ggplot(aes(longitude, latitude, colour = station)) +
+> >  filter(catalogNumber=="GMR-25720-2014-01-18") %>%
+> >  ggplot(aes(decimalLongitude, decimalLatitude, colour = station)) +
 > >  geom_point()
 > > ~~~
 > > {: .language-r}
@@ -402,7 +403,8 @@ library(ggplot2)
 
 # Build the plot and assign it to a variable.
 nsbs_matched_full_plot <- ggplot(data = nsbs_matched_full,
-                  mapping = aes(x = longitude, y = latitude)) #can assign a base
+                                 mapping = aes(x = decimalLongitude, y = decimalLatitude)) #can assign a base
+
 ~~~
 {: .language-r}
 
@@ -426,13 +428,12 @@ With just the above code, we've added our geom to our aesthetic and made our plo
 As a minor syntactic note, you can build your plots iteratively, without assigning them to a variable in-between. For this, we make use of `tidyverse` pipes.
 ~~~
 nsbs_matched_full %>%  
-  ggplot(aes(longitude, latitude)) +
+  ggplot(aes(decimalLongitude, decimalLatitude)) +
   geom_point() #geom = the type of plot
 
 nsbs_matched_full %>%  
-  ggplot(aes(longitude, latitude, colour = commonname)) +
+  ggplot(aes(decimalLongitude, decimalLatitude, colour = commonName)) +
   geom_point()
-
 
 #anything you specify in the aes() is applied to the actual data points/whole plot,
 #anything specified in geom() is applied to that layer only (colour, size...). sometimes you have >1 geom layer so this makes more sense!
@@ -440,7 +441,7 @@ nsbs_matched_full %>%
 ~~~
 {: .language-r}
 
-You can see that all we need to do to make this work is omit the 'data' parameter, since that's being passed in by the pipe. Note also that we've added `colour = commonname` to the second plot's aesthetic, meaning that the output will be coloured based on the species of the animal (if there is more than one included).
+You can see that all we need to do to make this work is omit the 'data' parameter, since that's being passed in by the pipe. Note also that we've added `colour = commonName` to the second plot's aesthetic, meaning that the output will be coloured based on the species of the animal (if there is more than one included).
 
 Remembering which of the `aes` or the `geom` controls which variable can be difficult, but here's a handy rule of thumb: anything specified in `aes()` will apply to the data points themselves, or the whole plot. They are broad statements about how the plot is to be displayed. Anything in the `geom_` function will apply only to that `geom_` layer. Keep this in mind, since it's possible for your plot to have more than one `geom_`!
 
@@ -451,8 +452,8 @@ Remembering which of the `aes` or the `geom` controls which variable can be diff
 > > ## Solution
 > > ~~~
 > > nsbs_matched_full %>%  
-> >  filter(catalognumber=="NSBS-1393332-2021-08-05") %>%
-> >  ggplot(aes(longitude, latitude, colour = detectedby)) +
+> >  filter(catalogNumber=="NSBS-1393332-2021-08-05") %>%
+> >  ggplot(aes(decimalLongitude, decimalLatitude, colour = detectedBy)) +
 > >  geom_point()
 > > ~~~
 > > {: .language-r}

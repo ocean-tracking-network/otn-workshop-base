@@ -26,6 +26,8 @@ If you'd like to refresh your R coding skills outside of this workshop curriculu
 
 Please follow the instrucions in the **"Setup"** tab along the top menu to install all required software, packages and data files. If you have questions or are running into errors please reach out to **OTNDC@DAL.CA** for support.
 
+**NOTE:** this workshop has been update to align with OTN's 2025 Detection Extract Format. For older detection extracts, please see the this lesson: [Archived OTN Workshop](https://ocean-tracking-network.github.io/otn-workshop-2025-06/). 
+
 ##  Intro to Telemetry Data Analysis
 
 OTN-affiliated telemetry networks all provide researchers with pre-formatted datasets, which are easily ingested into these data analysis tools.

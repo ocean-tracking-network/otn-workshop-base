@@ -7,6 +7,8 @@ questions:
     - "How do I import all the datasets?"
 ---
 
+**NOTE:** this workshop has been update to align with OTN's 2025 Detection Extract Format. For older detection extracts, please see the this lesson: [Archived OTN Workshop](https://ocean-tracking-network.github.io/otn-workshop-2025-06/). 
+
 **Note to instructors: please choose the relevant Network below when teaching**
 
 ## ACT Node 
@@ -22,15 +24,15 @@ To illustrate the many meaningful summary reports which can be created use detec
 
 First, we will comfirm we have our Tag Matches stored in a dataframe.
 ~~~
-View(proj58_matched_full) #Check to make sure we already have our tag matches, from a previous episode
+View(cbcnr_matched_full) #Check to make sure we already have our tag matches, from a previous episode
 
 # if you do not have the variable created from a previous lesson, you can use the following code to re-create it:
 
-proj58_matched_2016 <- read_csv("proj58_matched_detections_2016.zip") #Import 2016 detections
-proj58_matched_2017 <- read_csv("proj58_matched_detections_2017.zip") # Import 2017 detections
-proj58_matched_full <- rbind(proj58_matched_2016, proj58_matched_2017) #Now join the two dataframes
+#cbcnr_matched_2016 <- read_csv("cbcnr_matched_detections_2016.zip") #Import 2016 detections
+#cbcnr_matched_2017 <- read_csv("cbcnr_matched_detections_2017.zip") # Import 2017 detections
+#cbcnr_matched_full <- rbind(cbcnr_matched_2016, cbcnr_matched_2017) #Now join the two dataframes
 # release records for animals often appear in >1 year, this will remove the duplicates
-proj58_matched_full <- proj58_matched_full %>% distinct() # Use distinct to remove duplicates. 
+#cbcnr_matched_full <- cbcnr_matched_full %>% distinct() # Use distinct to remove duplicates. 
 ~~~
 {: .language-r}
 
@@ -38,9 +40,10 @@ proj58_matched_full <- proj58_matched_full %>% distinct() # Use distinct to remo
 Next, we will load in and join our Array matches. Ensure you replace the filepath to show the files as they appear in your working directory.
 ~~~
 
-proj61_qual_2016 <- read_csv("proj61_qualified_detections_2016_fixed.zip")
-proj61_qual_2017 <- read_csv("proj61_qualified_detections_2017_fixed.zip", guess_max = 25309)
-proj61_qual_16_17_full <- rbind(proj61_qual_2016, proj61_qual_2017) 
+serc1_qual_2016 <- read_csv("serc1_qualified_detections_2016.zip")
+serc1_qual_2017 <- read_csv("serc1_qualified_detections_2017.zip", guess_max = 25309)
+serc1_qual_16_17_full <- rbind(serc1_qual_2016, serc1_qual_2017) 
+
 ~~~
 {: .language-r}
 
@@ -52,12 +55,12 @@ To give meaning to these detections we should import our Instrument Deployment M
 library(readxl)
 
 # Deployment Metadata
-proj61_deploy <- read_excel("Deploy_metadata_2016_2017/deploy_sercarray_proj61_2016_2017.xlsx", sheet = "Deployment", skip=3)
-View(proj61_deploy)
+serc1_deploy <- read_excel("Deploy_metadata_2016_2017/deploy_sercarray_serc1_2016_2017.xlsx", sheet = "Deployment", skip=3)
+View(serc1_deploy)
 
 # Tag metadata
-proj58_tag <- read_excel("Tag_Metadata/Proj58_Metadata_cownoseray.xlsx", sheet = "Tag Metadata", skip=4) 
-View(proj58_tag)
+cbcnr_tag <- read_excel("Tag_Metadata/cbcnr_Metadata_cownoseray.xlsx", sheet = "Tag Metadata", skip=4) 
+View(cbcnr_tag)
 
 #remember: we learned how to switch timezone of datetime columns above, 
 # if that is something you need to do with your dataset!
@@ -81,20 +84,21 @@ View(tqcs_matched_10_11) #already have our Tag matches, from a previous lesson.
 
 # if you do not have the variable created from a previous lesson, you can use the following code to re-create it:
 
-tqcs_matched_2010 <- read_csv("tqcs_matched_detections_2010.zip", guess_max = 117172) #Import 2010 detections
-tqcs_matched_2011 <- read_csv("tqcs_matched_detections_2011.zip", guess_max = 41881) #Import 2011 detections
-tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #Now join the two dataframes
+#tqcs_matched_2010 <- read_csv("tqcs_matched_detections_2010.csv", guess_max = 117172) #Import 2010 detections
+#tqcs_matched_2011 <- read_csv("tqcs_matched_detections_2011.csv", guess_max = 41881) #Import 2011 detections
+#tqcs_matched_10_11_full <- rbind(tqcs_matched_2010, tqcs_matched_2011) #Now join the two dataframes
 # release records for animals often appear in >1 year, this will remove the duplicates
-tqcs_matched_10_11_full <- tqcs_matched_10_11_full %>% distinct() # Use distinct to remove duplicates. 
-tqcs_matched_10_11 <- tqcs_matched_10_11_full %>% slice(1:100000) # subset our example data to help this workshop run smoother!
+#tqcs_matched_10_11_full <- tqcs_matched_10_11_full %>% distinct() # Use distinct to remove duplicates. 
+#tqcs_matched_10_11 <- tqcs_matched_10_11_full %>% slice(1:100000) # subset our example data to help this workshop run smoother!
+tqcs_matched_10_11 <- tqcs_matched_10_11 %>% filter(detectedBy != 'PIRAT.PFRL') #removing erroneous detection in Hawaii
 ~~~
 {: .language-r}
 
 Next, we will load in and join our Array matches.
 
 ~~~
-teq_qual_2010 <- read_csv("teq_qualified_detections_2010.zip")
-teq_qual_2011 <- read_csv("teq_qualified_detections_2011.zip")
+teq_qual_2010 <- read_csv("teq_qualified_detections_2010_ish.csv")
+teq_qual_2011 <- read_csv("teq_qualified_detections_2011_ish.csv")
 teq_qual_10_11_full <- rbind(teq_qual_2010, teq_qual_2011) 
 
 teq_qual_10_11 <- teq_qual_10_11_full %>% slice(1:100000) #subset our example data for ease of analysis!
@@ -213,8 +217,8 @@ view(gmr_matched_18_19) #Check to make sure we already have our tag matches, fro
 
 # if you do not have the variable created from a previous lesson, you can use the following code to re-create it:
 
-#gmr_matched_2018 <- read_csv("gmr_matched_detections_2018.csv") #Import 2018 detections
-#gmr_matched_2019 <- read_csv("gmr_matched_detections_2019.csv") # Import 2019 detections
+#gmr_matched_2018 <- read_csv("data/migramar/gmr_matched_detections_2018.csv") #Import 2018 detections
+#gmr_matched_2019 <- read_csv("data/migramar/gmr_matched_detections_2019.csv") # Import 2019 detections
 #gmr_matched_18_19 <- rbind(gmr_matched_2018, gmr_matched_2019) #Now join the two dataframes
 # release records for animals often appear in >1 year, this will remove the duplicates
 #gmr_matched_18_19 <- gmr_matched_18_19 %>% distinct() # Use distinct to remove duplicates. 
@@ -281,9 +285,10 @@ view(nsbs_matched_full) #Check to make sure we already have our tag matches, fro
 Next, we will load in and join our Array matches. Ensure you replace the filepath to show the files as they appear in your working directory, if needed.
 ~~~
 
-hfx_qual_2021 <- read_csv("hfx_qualified_detections_2021_workshop.csv")
-hfx_qual_2022 <- read_csv("hfx_qualified_detections_2022_workshop.csv") 
+hfx_qual_2021 <- read_csv("hfx_qualified_detections_2021.csv")
+hfx_qual_2022 <- read_csv("hfx_qualified_detections_2022.csv") 
 hfx_qual_21_22_full <- rbind(hfx_qual_2021, hfx_qual_2022) 
+
 ~~~
 {: .language-r}
 

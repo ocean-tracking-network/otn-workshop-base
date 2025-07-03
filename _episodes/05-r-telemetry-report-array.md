@@ -7,6 +7,8 @@ questions:
     - "How do I summarize and plot my detections?"
 ---
 
+**NOTE:** this workshop has been update to align with OTN's 2025 Detection Extract Format. For older detection extracts, please see the this lesson: [Archived OTN Workshop](https://ocean-tracking-network.github.io/otn-workshop-2025-06/). 
+
 **Note to instructors: please choose the relevant Network below when teaching**
 
 ## ACT Node
@@ -53,7 +55,7 @@ full_receivers_plot <- full_receivers %>%
 # you could choose to plot stations which are within a certain bounding box!
 # to do this you would add another filter to the above data, before passing to the map
 # ex: add this line after the mutate() clauses:
-# filter(latitude <= 0.5 & latitude >= 24.5 & longitude <= 0.6 & longitude >= 34.9)
+# filter(decimalLatitude <= 0.5 & decimalLatitude >= 24.5 & decimalLongitude <= 0.6 & decimalLongitude >= 34.9)
 
 
 #add your stations onto your basemap
@@ -81,45 +83,45 @@ ggsave(plot = full_receivers_map, filename = "full_receivers_map.tiff", units="i
 We can do the same exact thing with the deployment metadata from OUR project only!
 
 ~~~
-names(proj61_deploy)
+names(serc1_deploy)
 
 
 base <- get_stadiamap(
-  bbox = c(left = min(proj61_deploy$DEPLOY_LONG), 
-           bottom = min(proj61_deploy$DEPLOY_LAT), 
-           right = max(proj61_deploy$DEPLOY_LONG), 
-           top = max(proj61_deploy$DEPLOY_LAT)),
+  bbox = c(left = min(serc1_deploy$DEPLOY_LONG), 
+           bottom = min(serc1_deploy$DEPLOY_LAT), 
+           right = max(serc1_deploy$DEPLOY_LONG), 
+           top = max(serc1_deploy$DEPLOY_LAT)),
   maptype = "stamen_terrain_background", 
   crop = FALSE,
   zoom = 5)
 
 #filter for stations you want to plot - this is very customizable
 
-proj61_deploy_plot <- proj61_deploy %>% 
-  dplyr::mutate(deploy_date=ymd_hms(`DEPLOY_DATE_TIME   (yyyy-mm-ddThh:mm:ss)`)) %>% #make a datetime
-  dplyr::mutate(recover_date=ymd_hms(`RECOVER_DATE_TIME (yyyy-mm-ddThh:mm:ss)`)) %>% #make a datetime
-  dplyr::filter(!is.na(deploy_date)) %>% #no null deploys
-  dplyr::filter(deploy_date > '2011-07-03' & recover_date < '2018-12-11') %>% #only looking at certain deployments, can add start/end dates here
-  dplyr::group_by(STATION_NO) %>% 
-  dplyr::summarise(MeanLat=mean(DEPLOY_LAT), MeanLong=mean(DEPLOY_LONG)) #get the mean location per station, in case there is >1 deployment
+serc1_deploy_plot <- serc1_deploy %>% 
+  mutate(deploy_date=ymd_hms(`DEPLOY_DATE_TIME   (yyyy-mm-ddThh:mm:ss)`)) %>% #make a datetime
+  mutate(recover_date=ymd_hms(`RECOVER_DATE_TIME (yyyy-mm-ddThh:mm:ss)`)) %>% #make a datetime
+  filter(!is.na(deploy_date)) %>% #no null deploys
+  filter(deploy_date > '2011-07-03' & recover_date < '2018-12-11') %>% #only looking at certain deployments, can add start/end dates here
+  group_by(STATION_NO) %>% 
+  summarise(MeanLat=mean(DEPLOY_LAT), MeanLong=mean(DEPLOY_LONG)) #get the mean location per station, in case there is >1 deployment
 
 
 #add your stations onto your basemap
 
-proj61_map <- 
+serc1_map <- 
   ggmap(base, extent='panel') + 
   ylab("Latitude") +
   xlab("Longitude") +
-  geom_point(data = proj61_deploy_plot, #filtering for recent deployments
+  geom_point(data = serc1_deploy_plot, #filtering for recent deployments
              aes(x = MeanLong,y = MeanLat, colour = STATION_NO), #specify the data
              shape = 19, size = 2) #lots of aesthetic options here!
 
 #view your receiver map!
-proj61_map
+serc1_map
 
 #save your receiver map into your working directory
 
-ggsave(plot = proj61_map, filename = "proj61_map.tiff", units="in", width=15, height=8) 
+ggsave(plot = serc1_map, filename = "serc1_map.tiff", units="in", width=15, height=8) 
 
 #can specify location, file type and dimensions
 ~~~
@@ -151,9 +153,9 @@ geo_styling <- list(
 Then, we choose which Deployment Metadata dataset we wish to use and identify the columns containing Latitude and Longitude, using the `plot_geo` function. 
 
 ~~~
-#decide what data you're going to use. Let's use proj61_deploy_plot, which we created above for our static map.
+#decide what data you're going to use. Let's use serc1_deploy_plot, which we created above for our static map.
 
-proj61_map_plotly <- plot_geo(proj61_deploy_plot, lat = ~MeanLat, lon = ~MeanLong)  
+serc1_map_plotly <- plot_geo(serc1_deploy_plot, lat = ~MeanLat, lon = ~MeanLong)   
 ~~~
 {: .language-r}
 
@@ -161,7 +163,7 @@ Next, we use the `add_markers` function to write out what information we would l
 ~~~
 #add your markers for the interactive map
 
-proj61_map_plotly <- proj61_map_plotly %>% add_markers(
+serc1_map_plotly <- serc1_map_plotly %>% add_markers(
   text = ~paste(STATION_NO, MeanLat, MeanLong, sep = "<br />"),
   symbol = I("square"), size = I(8), hoverinfo = "text" 
 )
@@ -172,13 +174,13 @@ Finally, we add all this information together, along with a title, using the `la
 ~~~
 #Add layout (title + geo stying)
 
-proj61_map_plotly <- proj61_map_plotly %>% layout(
-  title = 'Project 61 Deployments<br />(> 2011-07-03)', geo = geo_styling
+serc1_map_plotly <- serc1_map_plotly %>% layout(
+  title = 'SERC 1 Deployments<br />(> 2011-07-03)', geo = geo_styling
 )
 
 #View map
 
-proj61_map_plotly
+serc1_map_plotly
 ~~~
 {: .language-r}
 
@@ -192,19 +194,19 @@ Let's find out more about the animals detected by our array! These summary stati
 # How many of each animal did we detect from each collaborator, per station
 library(dplyr)
 
-proj61_qual_summary <- proj61_qual_16_17_full %>% 
-  filter(datecollected > '2016-06-01') %>% #select timeframe, stations etc.
-  group_by(trackercode, station, tag_contact_pi, tag_contact_poc) %>% 
+serc1_qual_summary <- serc1_qual_16_17_full %>% 
+  filter(dateCollectedUTC > '2016-06-01') %>% #select timeframe, stations etc.
+  group_by(trackerCode, station, contactPI, contactPOC) %>% 
   summarize(count = n()) %>% 
-  select(trackercode, tag_contact_pi, tag_contact_poc, station, count)
+  select(trackerCode, contactPI, contactPOC, station, count)
 
 #view our summary table
 
-proj61_qual_summary 
+serc1_qual_summary 
 
 #export our summary table
 
-write_csv(proj61_qual_summary, "data/proj61_summary.csv", col_names = TRUE)
+write_csv(serc1_qual_summary, "serc1_summary.csv", col_names = TRUE)
 ~~~
 {: .language-r}
 
@@ -215,21 +217,23 @@ These `dplyr` summaries can suggest array performance, hotspot stations, and be 
 ~~~
 # number of detections per month/year per station 
 
-proj61_det_summary  <- proj61_qual_16_17_full  %>% 
-  mutate(datecollected=ymd_hms(datecollected))  %>% 
-  group_by(station, year = year(datecollected), month = month(datecollected)) %>% 
+serc1_det_summary  <- serc1_qual_16_17_full  %>% 
+  mutate(dateCollectedUTC=ymd_hms(dateCollectedUTC))  %>% 
+  group_by(station, year = year(dateCollectedUTC), month = month(dateCollectedUTC)) %>% 
   summarize(count =n())
 
-proj61_det_summary
+serc1_det_summary 
 
 # Create a new data product, det_days, that give you the unique dates that an animal was seen by a station
-stationsum <- proj61_qual_16_17_full %>% 
+
+stationsum <- serc1_qual_16_17_full %>% 
   group_by(station) %>%
-  summarise(num_detections = length(datecollected),
-            start = min(datecollected),
-            end = max(datecollected),
-            uniqueIDs = length(unique(fieldnumber)), 
-            det_days=length(unique(as.Date(datecollected))))
+  summarise(num_detections = length(dateCollectedUTC),
+            start = min(dateCollectedUTC),
+            end = max(dateCollectedUTC),
+            uniqueIDs = length(unique(tagName)), 
+            det_days=length(unique(as.Date(dateCollectedUTC))))
+
 View(stationsum)
 
 ~~~
@@ -240,10 +244,9 @@ View(stationsum)
 Lets make an informative plot using `ggplot` showing the number of matched detections, per year and month. Remember: we can combine `dplyr` data manipulation and plotting into one step, using pipes!
 
 ~~~
-
-proj61_qual_16_17_full %>%  
-  mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
-  mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
+serc1_qual_16_17_full %>%  
+  mutate(dateCollectedUTC=ymd_hms(dateCollectedUTC)) %>% #make datetime
+  mutate(year_month = floor_date(dateCollectedUTC, "months")) %>% #round to month
   group_by(year_month) %>% #can group by station, species etc.
   summarize(count =n()) %>% #how many dets per year_month
   ggplot(aes(x = (month(year_month) %>% as.factor()), 
@@ -254,9 +257,8 @@ proj61_qual_16_17_full %>%
   geom_bar(stat = "identity", position = "dodge2")+ 
   xlab("Month")+
   ylab("Total Detection Count")+
-  ggtitle('Proj61 Animal Detections by Month')+ #title
+  ggtitle('SERC1 Animal Detections by Month')+ #title
   labs(fill = "Year") #legend title
-
 ~~~
 {: .language-r}
 
@@ -301,7 +303,7 @@ teq_deploy_plot <- teq_deploy %>%
 # you could choose to plot stations which are within a certain bounding box!
 # to do this you would add another filter to the above data, before passing to the map
 # ex: add this line after the mutate() clauses:
-	# filter(latitude >= 0.5 & latitude <= 24.5 & longitude >= 0.6 & longitude <= 34.9)
+	# filter(decimalLatitude >= 0.5 & decimalLatitude <= 24.5 & decimalLongitude >= 0.6 & decimalLongitude <= 34.9)
 
 
 #add your stations onto your basemap
@@ -395,10 +397,10 @@ Let's find out more about the animals detected by our array! These summary stati
 library(dplyr)
 
 teq_qual_summary <- teq_qual_10_11 %>% 
-  filter(datecollected > '2010-06-01') %>% #select timeframe, stations etc.
-  group_by(trackercode, scientificname, tag_contact_pi, tag_contact_poc) %>% 
+  filter(dateCollectedUTC > '2010-06-01') %>% #select timeframe, stations etc.
+  group_by(trackerCode, scientificName, contactPI, contactPOC) %>% 
   summarize(count = n()) %>% 
-  select(trackercode, tag_contact_pi, tag_contact_poc, scientificname, count)
+  select(trackerCode, contactPI, contactPOC, scientificName, count)
 
 #view our summary table
 
@@ -406,7 +408,7 @@ teq_qual_summary #remember, this is just the first 100,000 rows! We subsetted th
 
 #export our summary table
 
-write_csv(teq_qual_summary, "code/day1/teq_detection_summary_June2010_to_Dec2011.csv", col_names = TRUE)
+write_csv(teq_qual_summary, "teq_detection_summary_June2010_to_Dec2011.csv", col_names = TRUE)
 
 ~~~
 {: .language-r}
@@ -422,17 +424,15 @@ These `dplyr` summaries can suggest array performance, hotspot stations, and be 
 # number of detections per month/year per station 
 
 teq_det_summary  <- teq_qual_10_11  %>% 
-  mutate(datecollected=ymd_hms(datecollected))  %>% 
-  group_by(station, year = year(datecollected), month = month(datecollected)) %>% 
+  group_by(station, year = year(dateCollectedUTC), month = month(dateCollectedUTC)) %>% 
   summarize(count =n())
 
 teq_det_summary #remember: this is a subset!
 
 # number of detections per month/year per station & species
 
-teq_anim_summary  <- teq_qual_10_11  %>% 
-  mutate(datecollected=ymd_hms(datecollected))  %>% 
-  group_by(station, year = year(datecollected), month = month(datecollected), scientificname) %>% 
+teq_anim_summary  <- teq_qual_10_11  %>%  
+  group_by(station, year = year(dateCollectedUTC), month = month(dateCollectedUTC), scientificName) %>% 
   summarize(count =n())
 
 teq_anim_summary # remember: this is a subset!
@@ -440,13 +440,14 @@ teq_anim_summary # remember: this is a subset!
 # Create a new data product, det_days, that give you the unique dates that an animal was seen by a station
 stationsum <- teq_qual_10_11 %>% 
   group_by(station) %>%
-  summarise(num_detections = length(datecollected),
-            start = min(datecollected),
-            end = max(datecollected),
-            species = length(unique(scientificname)),
-            uniqueIDs = length(unique(fieldnumber)), 
-            det_days=length(unique(as.Date(datecollected))))
+  summarise(num_detections = length(dateCollectedUTC),
+            start = min(dateCollectedUTC),
+            end = max(dateCollectedUTC),
+            species = length(unique(scientificName)),
+            uniqueIDs = length(unique(tagName)), 
+            det_days=length(unique(as.Date(dateCollectedUTC))))
 View(stationsum)
+
 
 ~~~
 {: .language-r}
@@ -459,15 +460,15 @@ Lets make an informative plot using `ggplot` showing the number of matched detec
 #try with teq_qual_10_11_full if you're feeling bold! takes about 1 min to run on a fast machine
 
 teq_qual_10_11 %>% 
-  mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
-  mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
+  mutate(dateCollectedUTC=as.POSIXct(dateCollectedUTC)) %>% #make datetime
+  mutate(year_month = floor_date(dateCollectedUTC, "months")) %>% #round to month
   group_by(year_month) %>% #can group by station, species etc.
   summarize(count =n()) %>% #how many dets per year_month
   ggplot(aes(x = (month(year_month) %>% as.factor()), 
              y = count, 
              fill = (year(year_month) %>% as.factor())
-             )
-         )+ 
+  )
+  )+ 
   geom_bar(stat = "identity", position = "dodge2")+ 
   xlab("Month")+
   ylab("Total Detection Count")+
@@ -517,7 +518,7 @@ glatos_deploy_plot <- glatos_receivers %>%
 # you could choose to plot stations which are within a certain bounding box!
 #to do this you would add another filter to the above data, before passing to the map
 # ex: add this line after the mutate() clauses:
-# filter(latitude <= 0.5 & latitude >= 24.5 & longitude <= 0.6 & longitude >= 34.9)
+# filter(decimalLatitude <= 0.5 & decimalLatitude >= 24.5 & decimalLongitude <= 0.6 & decimalLongitude >= 34.9)
 
 
 #add your stations onto your basemap
@@ -814,10 +815,10 @@ Let's find out more about the animals detected by our array! These summary stati
 library(dplyr) #to ensure no functions have been masked by plotly
 
 gmr_qual_summary <- gmr_qual_18_19 %>% 
-  dplyr::filter(datecollected > '2018-06-01') %>% #select timeframe, stations etc.
-  group_by(trackercode, station, tag_contact_pi, tag_contact_poc) %>% 
-  summarize(count = n()) %>% 
-  dplyr::select(trackercode, tag_contact_pi, tag_contact_poc, station, count)
+  dplyr::filter(dateCollectedUTC > '2018-06-01') %>% #select timeframe, stations etc.
+  dplyr::group_by(trackerCode, station, contactPI, contactPOC) %>% 
+  dplyr::summarize(count = n()) %>% 
+  dplyr::select(trackerCode, contactPI, contactPOC, station, count)
 
 #view our summary table
 
@@ -837,20 +838,21 @@ These `dplyr` summaries can suggest array performance, hotspot stations, and be 
 # number of detections per month/year per station 
 
 gmr_det_summary  <- gmr_qual_18_19  %>% 
-  mutate(datecollected=ymd_hms(datecollected))  %>% 
-  group_by(station, year = year(datecollected), month = month(datecollected)) %>% 
+  mutate(dateCollectedUTC=ymd_hms(dateCollectedUTC))  %>% 
+  group_by(station, year = year(dateCollectedUTC), month = month(dateCollectedUTC)) %>% 
   summarize(count =n())
 
-gmr_det_summary
+gmr_det_summary 
+
 
 # Create a new data product, det_days, that give you the unique dates that an animal was seen by a station
 stationsum <- gmr_qual_18_19 %>% 
   group_by(station) %>%
-  summarise(num_detections = length(datecollected),
-            start = min(datecollected),
-            end = max(datecollected),
-            uniqueIDs = length(unique(fieldnumber)), 
-            det_days=length(unique(as.Date(datecollected))))
+  summarise(num_detections = length(dateCollectedUTC),
+            start = min(dateCollectedUTC),
+            end = max(dateCollectedUTC),
+            uniqueIDs = length(unique(tagName)), 
+            det_days=length(unique(as.Date(dateCollectedUTC))))
 view(stationsum)
 
 ~~~
@@ -863,8 +865,8 @@ Lets make an informative plot using `ggplot` showing the number of matched detec
 ~~~
 
 gmr_qual_18_19 %>%  
-  mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
-  mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
+  mutate(dateCollectedUTC=ymd_hms(dateCollectedUTC)) %>% #make datetime
+  mutate(year_month = floor_date(dateCollectedUTC, "months")) %>% #round to month
   group_by(year_month) %>% #can group by station, collaborator etc.
   summarize(count =n()) %>% #how many dets per year_month
   ggplot(aes(x = (month(year_month) %>% as.factor()), 
@@ -1001,10 +1003,11 @@ Let's find out more about the animals detected by our array! These summary stati
 library(dplyr)
 
 hfx_qual_summary <- hfx_qual_21_22_full %>% 
-  filter(datecollected > '2021-06-01') %>% #select timeframe, stations etc.
-  group_by(trackercode, station, tag_contact_pi, tag_contact_poc) %>% 
+  filter(dateCollectedUTC > '2021-06-01') %>% #select timeframe, stations etc.
+  group_by(trackerCode, station, contactPI, contactPOC) %>% 
   summarize(count = n()) %>% 
-  dplyr::select(trackercode, tag_contact_pi, tag_contact_poc, station, count)
+  dplyr::select(trackerCode, contactPI, contactPOC, station, count)
+
 
 #view our summary table
 
@@ -1024,8 +1027,8 @@ These `dplyr` summaries can suggest array performance, hotspot stations, and be 
 # number of detections per month/year per station 
 
 hfx_det_summary  <- hfx_qual_21_22_full  %>% 
-  mutate(datecollected=ymd_hms(datecollected))  %>% 
-  group_by(station, year = year(datecollected), month = month(datecollected)) %>% 
+  mutate(dateCollectedUTC=ymd_hms(dateCollectedUTC))  %>% 
+  group_by(station, year = year(dateCollectedUTC), month = month(dateCollectedUTC)) %>% 
   summarize(count =n())
 
 hfx_det_summary 
@@ -1033,11 +1036,11 @@ hfx_det_summary
 # Create a new data product, det_days, that give you the unique dates that an animal was seen by a station
 stationsum <- hfx_qual_21_22_full %>% 
   group_by(station) %>%
-  summarise(num_detections = length(datecollected),
-            start = min(datecollected),
-            end = max(datecollected),
-            uniqueIDs = length(unique(fieldnumber)), 
-            det_days=length(unique(as.Date(datecollected))))
+  summarise(num_detections = length(dateCollectedUTC),
+            start = min(dateCollectedUTC),
+            end = max(dateCollectedUTC),
+            uniqueIDs = length(unique(tagName)), 
+            det_days=length(unique(as.Date(dateCollectedUTC))))
 View(stationsum)
 
 ~~~
@@ -1050,8 +1053,8 @@ Lets make an informative plot using `ggplot` showing the number of matched detec
 ~~~
 
 hfx_qual_21_22_full %>%  
-  mutate(datecollected=ymd_hms(datecollected)) %>% #make datetime
-  mutate(year_month = floor_date(datecollected, "months")) %>% #round to month
+  mutate(dateCollectedUTC=ymd_hms(dateCollectedUTC)) %>% #make datetime
+  mutate(year_month = floor_date(dateCollectedUTC, "months")) %>% #round to month
   group_by(year_month) %>% #can group by station, species etc.
   summarize(count =n()) %>% #how many dets per year_month
   ggplot(aes(x = (month(year_month) %>% as.factor()), 
@@ -1064,6 +1067,5 @@ hfx_qual_21_22_full %>%
   ylab("Total Detection Count")+
   ggtitle('HFX Animal Detections by Month')+ #title
   labs(fill = "Year") #legend title
-
 ~~~
 {: .language-r}
