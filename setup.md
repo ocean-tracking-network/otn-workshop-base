@@ -22,6 +22,9 @@ Once all of the programs are installed, open RStudio and run the below package i
 # Tidyverse (data cleaning and arrangement)
 install.packages('tidyverse')
 
+# Nanoparquet (importing parquet files to dataframes)
+install.packages('nanoparquet')
+
 # Lubridate - part of Tidyverse, improves the process of creating date objects
 install.packages('lubridate')
 
