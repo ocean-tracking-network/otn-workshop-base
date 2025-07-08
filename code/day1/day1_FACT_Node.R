@@ -2,6 +2,7 @@
 
 # Installs and Setup --------
 library(tidyverse)# really neat collection of packages! https://www.tidyverse.org/
+library(nanoparquet)
 library(lubridate)
 library(readxl)
 library(viridis)
