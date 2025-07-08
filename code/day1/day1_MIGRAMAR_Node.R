@@ -7,6 +7,7 @@ library(readxl)
 library(viridis)
 library(plotly)
 library(ggmap)
+ggmap::register_stadiamaps("b01d1235-69e8-49ea-b3bd-c35b42424b00")
 
 setwd('YOUR/PATH/TO/data/migramar') #set folder you're going to work in
 getwd() #check working directory
