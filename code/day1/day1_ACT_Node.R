@@ -2,6 +2,7 @@
 
 # Installs and Setup --------
 library(tidyverse)# really neat collection of packages! https://www.tidyverse.org/
+library(nanoparquet)
 library(lubridate)
 library(readxl)
 library(viridis)
@@ -90,7 +91,11 @@ heights[complete.cases(heights)] #select only complete cases
 
 #imports file into R. paste the filepath to the file here!
 
+#If you are using a CSV file (or a ZIP file containing a CSV), run the line below.
 cbcnr_matched_2016 <- read_csv("cbcnr_matched_detections_2016.zip")
+
+#If you are using a PARQUET file (.parquet extension), uncomment and run the line below.
+#cbcnr_matched_2016 <- read_parquet("cbcnr_matched_detections_2016.parquet")
 
 ## Exploring Detection Extracts ----
 

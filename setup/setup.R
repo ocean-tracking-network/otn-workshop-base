@@ -16,6 +16,9 @@
 # Tidyverse (data cleaning and arrangement)
 install.packages('tidyverse')
 
+# Nanoparquet (reading parquet files into dataframes)
+install.packages('nanoparquet')
+
 # Lubridate - part of Tidyverse, improves the process of creating date objects
 install.packages('lubridate')
 
