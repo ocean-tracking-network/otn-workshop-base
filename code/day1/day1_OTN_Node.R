@@ -93,6 +93,9 @@ heights[complete.cases(heights)] #select only complete cases
 
 nsbs_matched_2021 <- read_csv("nsbs_matched_detections_2021.zip")
 
+#If you are using a PARQUET file (.parquet extension), uncomment and run the line below with the appropriate filename.
+#nsbs_matched_2021 <- read_parquet("nsbs_matched_2021.parquet")
+
 ## Exploring Detection Extracts ----
 head(nsbs_matched_2021) #first 6 rows
 View(nsbs_matched_2021) #can also click on object in Environment window

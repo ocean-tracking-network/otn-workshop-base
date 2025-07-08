@@ -92,6 +92,9 @@ heights[complete.cases(heights)] #select only complete cases
 
 gmr_matched_2018 <- read_csv("gmr_matched_detections_2018.csv")
 
+#If you are using a PARQUET file (.parquet extension), uncomment and run the line below with the appropriate filename.
+#gmr_matched_2018 <- read_parquet("gmr_matched_detections_2018.parquet")
+
 ## Exploring Detection Extracts ----
 
 head(gmr_matched_2018) #first 6 rows
