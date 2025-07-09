@@ -2,6 +2,7 @@
 
 # Installs and Setup --------
 library(tidyverse)# really neat collection of packages! https://www.tidyverse.org/
+library(nanoparquet)
 library(lubridate)
 library(readxl)
 library(viridis)
@@ -92,6 +93,9 @@ heights[complete.cases(heights)] #select only complete cases
 #read_csv can take both csv and zip files, as long as the zip file contains a csv.
 
 nsbs_matched_2021 <- read_csv("nsbs_matched_detections_2021.zip")
+
+#If you are using a PARQUET file (.parquet extension), uncomment and run the line below with the appropriate filename.
+#nsbs_matched_2021 <- read_parquet("nsbs_matched_2021.parquet")
 
 ## Exploring Detection Extracts ----
 head(nsbs_matched_2021) #first 6 rows

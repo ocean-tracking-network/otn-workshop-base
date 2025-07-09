@@ -2,6 +2,7 @@
 
 # Installs and Setup --------
 library(tidyverse)# really neat collection of packages! https://www.tidyverse.org/
+library(nanoparquet)
 library(lubridate)
 library(readxl)
 library(viridis)
@@ -90,6 +91,9 @@ heights[complete.cases(heights)] #select only complete cases
 #imports file into R. paste the filepath to the file here!
 
 tqcs_matched_2010 <- read_csv("tqcs_matched_detections_2010.zip", guess_max = 117172) #Import 2010 detections
+
+#If you are using a PARQUET file (.parquet extension), uncomment and run the line below with the appropriate filename.
+#tqcs_matched_2010 <- read_parquet("tqcs_matched_2010.parquet")
 
 ## Exploring Detection Extracts ----
 
