@@ -40,6 +40,15 @@ cbcnr_matched_2016 <- read_csv("cbcnr_matched_detections_2016.zip")
 ~~~
 {: .language-r}
 
+> ## Regarding Parquet Files
+> OTN now sends out detection extracts in `.parquet` format rather than only `.csv`. Full documentation on the parquet file format can be found [here](https://parquet.apache.org/docs/overview/), but in brief, it is an alternative to other tabular data formats that is designed for more efficient data storage and retrieval. If you have a parquet file, you will need to import it using `read_parquet` from the `nanoparquet` package rather than `read_csv`, like so:
+>~~~
+> cbcnr_matched_2016 <- read_parquet("cbcnr_matched_detections_2016.parquet")
+>~~~
+>{:.language-r}
+> Replace the filename with the appropriate path to your own parquet file. Everything hereafter will work the same: `read_parquet` imports the data as a dataframe, and the column names and data types are identical across the CSV and Parquet versions of the detection extract. That means once the data is imported into R, the rest of the code in the workshop will work identically on it. 
+{: .callout}
+
 We can now refer to the variable `cbcnr_matched_2016` to access, manipulate, and view the data from our CSV. In the next sections, we will explore some of the basic operations you can perform on dataframes.
 
 ### Exploring Detection Extracts
@@ -236,6 +245,16 @@ tqcs_matched_2010 <- read_csv("tqcs_matched_detections_2010.zip", guess_max = 11
 
 ~~~
 {: .language-r}
+
+> ## Regarding Parquet Files
+> OTN now sends out detection extracts in `.parquet` format rather than only `.csv`. Full documentation on the parquet file format can be found [here](https://parquet.apache.org/docs/overview/), but in brief, it is an alternative to other tabular data formats that is designed for more efficient data storage and retrieval. If you have a parquet file, you will need to import it using `read_parquet` from the `nanoparquet` package rather than `read_csv`, like so:
+>~~~
+> tqcs_matched_2010 <- read_parquet("tqcs_matched_detections_2010.parquet")
+>~~~
+>{:.language-r}
+> Replace the filename with the appropriate path to your own parquet file. Everything hereafter will work the same: `read_parquet` imports the data as a dataframe, and the column names and data types are identical across the CSV and Parquet versions of the detection extract. That means once the data is imported into R, the rest of the code in the workshop will work identically on it. 
+{: .callout}
+
 
 You may have noticed that our call to `read_csv` has a second argument: guess_max. This is a useful argument when some of our columns begin with a lot of NULL values. When determining what data type to assign to a column, rather than checking every single entry, R will check the first few and make a guess based on that. If the first few values are null, R will get confused and throw an error when it actually finds data further down in the column. `guess_max` lets us tell R exactly how many columns to read before trying to make a guess. This way, we know it will read enough entries in each column to actually find data, which it will prioritize over the NULL values when assigning a type to the column. This parameter isn't always necessary, but it can be vital depending on your dataset.
 
@@ -628,6 +647,15 @@ gmr_matched_2018 <- read_csv("gmr_matched_detections_2018.csv")
 ~~~
 {: .language-r}
 
+> ## Regarding Parquet Files
+> OTN now sends out detection extracts in `.parquet` format rather than only `.csv`. Full documentation on the parquet file format can be found [here](https://parquet.apache.org/docs/overview/), but in brief, it is an alternative to other tabular data formats that is designed for more efficient data storage and retrieval. If you have a parquet file, you will need to import it using `read_parquet` from the `nanoparquet` package rather than `read_csv`, like so:
+>~~~
+> gmr_matched_2018 <- read_parquet("gmr_matched_2018.parquet")
+>~~~
+>{:.language-r}
+> Replace the filename with the appropriate path to your own parquet file. Everything hereafter will work the same: `read_parquet` imports the data as a dataframe, and the column names and data types are identical across the CSV and Parquet versions of the detection extract. That means once the data is imported into R, the rest of the code in the workshop will work identically on it. 
+{: .callout}
+
 We can now refer to the variable `gmr_matched_2018` to access, manipulate, and view the data from our CSV. In the next sections, we will explore some of the basic operations you can perform on dataframes.
 
 ### Exploring Detection Extracts
@@ -826,6 +854,15 @@ nsbs_matched_2021 <- read_csv("nsbs_matched_detections_2021.zip")
 
 ~~~
 {: .language-r}
+
+> ## Regarding Parquet Files
+> OTN now sends out detection extracts in `.parquet` format rather than only `.csv`. Full documentation on the parquet file format can be found [here](https://parquet.apache.org/docs/overview/), but in brief, it is an alternative to other tabular data formats that is designed for more efficient data storage and retrieval. If you have a parquet file, you will need to import it using `read_parquet` from the `nanoparquet` package rather than `read_csv`, like so:
+>~~~
+> nsbs_matched_2021 <- read_parquet("nsbs_matched_detections_2021.parquet")
+>~~~
+>{:.language-r}
+> Replace the filename with the appropriate path to your own parquet file. Everything hereafter will work the same: `read_parquet` imports the data as a dataframe, and the column names and data types are identical across the CSV and Parquet versions of the detection extract. That means once the data is imported into R, the rest of the code in the workshop will work identically on it. 
+{: .callout}
 
 We can now refer to the variable `nsbs_matched_2021` to access, manipulate, and view the data from our CSV. In the next sections, we will explore some of the basic operations you can perform on dataframes.
 
