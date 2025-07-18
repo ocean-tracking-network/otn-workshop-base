@@ -6,6 +6,21 @@ title: Setup
 
 You will requre 1) all the correct programs, 2) all the listed R packages 3) the dataset and code. Instructions for all these are below.
 
+You can also use the following checklist to keep track of your progress. If you have trouble with any step of the process,
+do not hesitate to contact us and we will help you solve it in advance of the workshop. 
+
+**Software & Environment**
+- [] I have installed the latest version of R and RStudio. Note: Older versions may cause compatibility issues with some packages.
+- [] (Windows Users Only) I have installed RTools. Note: RTools is required to build and install certain R packages on Windows.
+- [] (Windows Users Only) I have confirmed that RTools is correctly added to my system's environment PATH variable. Note: This ensures RStudio can properly find and run them.
+- [] I have run the setup script from this page, and installed all relevant packages
+
+**Files & Resources**
+- [] I have downloaded the correct data files and scripts from the official source. Note: for this workshop, the official source is [here](LINK TO REPOSITORY)
+- [] The downloaded files are unzipped and saved in my RStudio instance's current working directory. Note: You can use `getwd()` in the RStudio console to check your current working directory and make sure your files are there. 
+
+**Network & Access (Only relevant if you are attending a workshop)**
+- [] I have connected to the correct Wi-Fi network. Note: Wi-Fi credentials are printed on the back of your name card
 
 ### Please see the attached document for program instructions: - [Program Install Instructions.docx](/Resources/install_instructions.docx)
 -  R version: 3.6.x or newer (recommend 4.0.x) and RStudio
@@ -108,11 +123,12 @@ install.packages('ggspatial')
 
 # Dataset and Code
 
-<b>Once the above packages are installed</b>, you can download the datasets and code for this workshop from <b>[this link](https://github.com/ocean-tracking-network/otn-workshop-base/tree/master)</b>
+If you are unfamiliar with using Git to download and access code, it is possible to instead download the code as a ZIP archive. This will prevent you from using any of Git's version control functionality, but you will otherwise have all of the code available once the archive is extracted. The steps are as follows:
 
-1. Select the GREEN "Code" button at the top and choose "Download ZIP"
-2. Unzip the folder and move to secure location on your computer (Documents, Desktop etc.)
-3. Copy the folder's path and use it to set your working directly in R using `setwd('<path-to-folder>')`.
+1. Navigate in your browser to the [repository for this workshop](Link to the workshop repository)
+2. Select the GREEN "Code" button at the top and choose "Download ZIP"
+3. Unzip the folder and move to secure location on your computer (Documents, Desktop etc.)
+4. Copy the folder's path and use it to set your working directly in R using `setwd('<path-to-folder>')`.
 
 If you are familiar with Git and Github, feel free to clone this repository as you normally would, by running `git clone https://github.com/ocean-tracking-network/otn-workshop-base.git` in a terminal program and following from step `3` above.
 
