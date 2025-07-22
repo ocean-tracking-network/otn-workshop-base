@@ -18,6 +18,15 @@ Now that we have an idea of what an exploratory workflow might look like with Ti
 
 We are going to use OTN-style detection extracts for this lesson. If you're unfamiliar with detection extracts formats from OTN-style database nodes, see the documentation [here](https://members.oceantrack.org/data/otn-detection-extract-documentation-matched-to-animals). 
 
+> ## Regarding Raw Data
+> Although this lesson assumes you are working with detection extracts from your node (processed data containing matches between animals and receivers), 
+> it is likely that you also have raw data directly from your instruments. If you are using Innovasea equipment, the file format for this raw data is '.vdat.' 
+> While reading and manipulating this raw data is beyond the scope of this workshop, there are tools available to help you with this. The rvdat (https://github.com/mhpob/rvdat/) 
+> package provides a lightweight R interface for inspecting .vdat file metadata and converting the data to .csv format. Additionally, .csv files created in this way can be 
+> read and manipulated with the glatos package, covered later in this workshop. In short, although the purpose of this workshop is to teach you to work with detection extracts, 
+> there exist related, robust options for managing your raw data as well.
+{: .callout}
+
 For the ACT Network you will receive Detection Extracts which include (1) Matched to Animals YYYY, (2) Detections Mapped to Other Trackers YYYY (also called Qualified) and (3) Unqualified Detections YYYY. In each case, the YYYY in the filename indicates the single year of data contained in the file. The types of detection extracts you receive will differ depending on the type of project you have regitered with the Network. ex: Tag-only projects will not receive Qualified and Unqualified detection extracts.
 
 To illustrate the many meaningful summary reports which can be created use detection extracts, we will import an example of Matched and Qualified extracts.
@@ -76,6 +85,15 @@ We are going to use OTN-style detection extracts for this lesson. If you're unfa
 
 For the FACT Network you will receive Detection Extracts which include (1) Matched to Animals YYYY, (2) Detections Mapped to Other Trackers - Extended YYYY (also called Qualified Extended) and (3) Unqualified Detections YYYY. In each case, the YYYY in the filename indicates the single year of data contained in the file and "extended" refers to the extra column provided to FACT Network members: "species detected". The types of detection extracts you receive will differ depending on the type of project you have regitered with the Network. If you have both an Array project and a Tag project you will likely need both sets of Detection Extracts.
 
+> ## Regarding Raw Data
+> Although this lesson assumes you are working with detection extracts from your node (processed data containing matches between animals and receivers), 
+> it is likely that you also have raw data directly from your instruments. If you are using Innovasea equipment, the file format for this raw data is '.vdat.' 
+> While reading and manipulating this raw data is beyond the scope of this workshop, there are tools available to help you with this. The rvdat (https://github.com/mhpob/rvdat/) 
+> package provides a lightweight R interface for inspecting .vdat file metadata and converting the data to .csv format. Additionally, .csv files created in this way can be 
+> read and manipulated with the glatos package, covered later in this workshop. In short, although the purpose of this workshop is to teach you to work with detection extracts, 
+> there exist related, robust options for managing your raw data as well.
+{: .callout}
+
 To illustrate the many meaningful summary reports which can be created use detection extracts, we will import an example of Matched and Qualified extracts.
 
 First, we will comfirm we have our Tag Matches stored in a dataframe.
@@ -129,6 +147,15 @@ View(tqcs_tag)
 Now that we have an idea of what an exploratory workflow might look like with Tidyverse libraries like `dplyr` and `ggplot2`, let's look at how we might implement a common telemetry workflow using these tools. 
 
 For the GLATOS Network you will receive Detection Extracts which include all the Tag matches for your animals. These can be used to create many meaningful summary reports.
+
+> ## Regarding Raw Data
+> Although this lesson assumes you are working with detection extracts from your node (processed data containing matches between animals and receivers), 
+> it is likely that you also have raw data directly from your instruments. If you are using Innovasea equipment, the file format for this raw data is '.vdat.' 
+> While reading and manipulating this raw data is beyond the scope of this workshop, there are tools available to help you with this. The rvdat (https://github.com/mhpob/rvdat/) 
+> package provides a lightweight R interface for inspecting .vdat file metadata and converting the data to .csv format. Additionally, .csv files created in this way can be 
+> read and manipulated with the glatos package, covered later in this workshop. In short, although the purpose of this workshop is to teach you to work with detection extracts, 
+> there exist related, robust options for managing your raw data as well.
+{: .callout}
 
 First, we will comfirm we have our Tag Matches stored in a dataframe.
 
@@ -207,7 +234,16 @@ Now that we have an idea of what an exploratory workflow might look like with Ti
 
 We are going to use OTN-style detection extracts for this lesson. If you're unfamiliar with detection extracts formats from OTN-style database nodes, see the documentation [here](https://members.oceantrack.org/data/otn-detection-extract-documentation-matched-to-animals). 
 
-For the ACT Network you will receive Detection Extracts which include (1) Matched to Animals YYYY, (2) Detections Mapped to Other Trackers YYYY (also called Qualified) and (3) Unqualified Detections YYYY. In each case, the YYYY in the filename indicates the single year of data contained in the file. The types of detection extracts you receive will differ depending on the type of project you have regitered with the Network. ex: Tag-only projects will not receive Qualified and Unqualified detection extracts.
+For MigraMar you will receive Detection Extracts which include (1) Matched to Animals YYYY, (2) Detections Mapped to Other Trackers YYYY (also called Qualified) and (3) Unqualified Detections YYYY. In each case, the YYYY in the filename indicates the single year of data contained in the file. The types of detection extracts you receive will differ depending on the type of project you have regitered with the Network. ex: Tag-only projects will not receive Qualified and Unqualified detection extracts.
+
+> ## Regarding Raw Data
+> Although this lesson assumes you are working with detection extracts from your node (processed data containing matches between animals and receivers), 
+> it is likely that you also have raw data directly from your instruments. If you are using Innovasea equipment, the file format for this raw data is '.vdat.' 
+> While reading and manipulating this raw data is beyond the scope of this workshop, there are tools available to help you with this. The rvdat (https://github.com/mhpob/rvdat/) 
+> package provides a lightweight R interface for inspecting .vdat file metadata and converting the data to .csv format. Additionally, .csv files created in this way can be 
+> read and manipulated with the glatos package, covered later in this workshop. In short, although the purpose of this workshop is to teach you to work with detection extracts, 
+> there exist related, robust options for managing your raw data as well.
+{: .callout}
 
 To illustrate the many meaningful summary reports which can be created use detection extracts, we will import an example of Matched and Qualified extracts.
 
@@ -264,6 +300,15 @@ Let's look at how we might implement a common telemetry workflow using Tidyverse
 We are going to use OTN-style detection extracts for this lesson. If you're unfamiliar with detection extracts formats from OTN-style database nodes, see the documentation [here](https://members.oceantrack.org/data/otn-detection-extract-documentation-matched-to-animals). 
 
 For OTN you will receive Detection Extracts which include (1) Matched to Animals YYYY, (2) Detections Mapped to Other Trackers YYYY (also called Qualified) and (3) Unqualified Detections YYYY. In each case, the YYYY in the filename indicates the single year of data contained in the file. The types of detection extracts you receive will differ depending on the type of project you have regitered with the Network. ex: Tag-only projects will not receive Qualified and Unqualified detection extracts.
+
+> ## Regarding Raw Data
+> Although this lesson assumes you are working with detection extracts from your node (processed data containing matches between animals and receivers), 
+> it is likely that you also have raw data directly from your instruments. If you are using Innovasea equipment, the file format for this raw data is '.vdat.' 
+> While reading and manipulating this raw data is beyond the scope of this workshop, there are tools available to help you with this. The rvdat (https://github.com/mhpob/rvdat/) 
+> package provides a lightweight R interface for inspecting .vdat file metadata and converting the data to .csv format. Additionally, .csv files created in this way can be 
+> read and manipulated with the glatos package, covered later in this workshop. In short, although the purpose of this workshop is to teach you to work with detection extracts, 
+> there exist related, robust options for managing your raw data as well.
+{: .callout}
 
 To illustrate the many meaningful summary reports which can be created use detection extracts, we will import an example of Matched and Qualified extracts.
 
