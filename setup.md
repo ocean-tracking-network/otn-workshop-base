@@ -9,6 +9,8 @@ You will requre 1) all the correct programs, 2) all the listed R packages 3) the
 You can also use the following checklist to keep track of your progress. If you have trouble with any step of the process,
 do not hesitate to contact us and we will help you solve it in advance of the workshop. 
 
+(NOTE FOR SITE DEVELOPERS: If the current workshop does not include the advanced lessons, RTools isn't necessary and the middle two entries in the software & environment checklist can be deleted.)
+
 **Software & Environment**
 - [] I have installed the latest version of R and RStudio. Note: Older versions may cause compatibility issues with some packages.
 - [] (Windows Users Only) I have installed RTools. Note: RTools is required to build and install certain R packages on Windows.
@@ -19,8 +21,10 @@ do not hesitate to contact us and we will help you solve it in advance of the wo
 - [] I have downloaded the correct data files and scripts from the official source. Note: for this workshop, the official source is [here](LINK TO REPOSITORY)
 - [] The downloaded files are unzipped and saved in my RStudio instance's current working directory. Note: You can use `getwd()` in the RStudio console to check your current working directory and make sure your files are there. 
 
-**Network & Access (Only relevant if you are attending a workshop)**
-- [] I have connected to the correct Wi-Fi network. Note: Wi-Fi credentials are printed on the back of your name card
+(NOTE FOR SITE DEVELOPERS: If appropriate, include a note in the list below for where Wi-Fi credentials can be found.)
+
+**Network & Access (Only relevant if you are attending an in-person workshop)**
+- [] I have connected to the correct Wi-Fi network.
 
 ### Please see the attached document for program instructions: - [Program Install Instructions.docx](/Resources/install_instructions.docx)
 -  R version: 3.6.x or newer (recommend 4.0.x) and RStudio
