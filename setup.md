@@ -127,12 +127,11 @@ install.packages('ggspatial')
 
 # Dataset and Code
 
-If you are unfamiliar with using Git to download and access code, it is possible to instead download the code as a ZIP archive. This will prevent you from using any of Git's version control functionality, but you will otherwise have all of the code available once the archive is extracted. The steps are as follows:
+<b>Once the above packages are installed</b>, you can download the datasets and code for this workshop from <b>[this link](https://github.com/ocean-tracking-network/otn-workshop-base/tree/master)</b>
 
-1. Navigate in your browser to the [repository for this workshop](Link to the workshop repository)
-2. Select the GREEN "Code" button at the top and choose "Download ZIP"
-3. Unzip the folder and move to secure location on your computer (Documents, Desktop etc.)
-4. Copy the folder's path and use it to set your working directly in R using `setwd('<path-to-folder>')`.
+1. Select the GREEN "Code" button at the top and choose "Download ZIP"
+2. Unzip the folder and move to secure location on your computer (Documents, Desktop etc.)
+3. Copy the folder's path and use it to set your working directly in R using `setwd('<path-to-folder>')`.
 
 If you are familiar with Git and Github, feel free to clone this repository as you normally would, by running `git clone https://github.com/ocean-tracking-network/otn-workshop-base.git` in a terminal program and following from step `3` above.
 
