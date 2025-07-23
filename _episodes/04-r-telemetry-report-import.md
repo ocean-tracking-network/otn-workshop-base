@@ -21,7 +21,7 @@ We are going to use OTN-style detection extracts for this lesson. If you're unfa
 > ## Regarding Raw Data
 > Although this lesson assumes you are working with detection extracts from your node (processed data containing matches between animals and receivers), 
 > it is likely that you also have raw data directly from your instruments. If you are using Innovasea equipment, the file format for this raw data is '.vdat.' 
-> While reading and manipulating this raw data is beyond the scope of this workshop, there are tools available to help you with this. The rvdat (https://github.com/mhpob/rvdat/) 
+> While reading and manipulating this raw data is beyond the scope of this workshop, there are tools available to help you with this. The [rvdat](https://github.com/mhpob/rvdat/) 
 > package provides a lightweight R interface for inspecting .vdat file metadata and converting the data to .csv format. Additionally, .csv files created in this way can be 
 > read and manipulated with the glatos package, covered later in this workshop. In short, although the purpose of this workshop is to teach you to work with detection extracts, 
 > there exist related, robust options for managing your raw data as well.
@@ -88,7 +88,7 @@ For the FACT Network you will receive Detection Extracts which include (1) Match
 > ## Regarding Raw Data
 > Although this lesson assumes you are working with detection extracts from your node (processed data containing matches between animals and receivers), 
 > it is likely that you also have raw data directly from your instruments. If you are using Innovasea equipment, the file format for this raw data is '.vdat.' 
-> While reading and manipulating this raw data is beyond the scope of this workshop, there are tools available to help you with this. The rvdat (https://github.com/mhpob/rvdat/) 
+> While reading and manipulating this raw data is beyond the scope of this workshop, there are tools available to help you with this. The [rvdat](https://github.com/mhpob/rvdat/) 
 > package provides a lightweight R interface for inspecting .vdat file metadata and converting the data to .csv format. Additionally, .csv files created in this way can be 
 > read and manipulated with the glatos package, covered later in this workshop. In short, although the purpose of this workshop is to teach you to work with detection extracts, 
 > there exist related, robust options for managing your raw data as well.
@@ -151,7 +151,7 @@ For the GLATOS Network you will receive Detection Extracts which include all the
 > ## Regarding Raw Data
 > Although this lesson assumes you are working with detection extracts from your node (processed data containing matches between animals and receivers), 
 > it is likely that you also have raw data directly from your instruments. If you are using Innovasea equipment, the file format for this raw data is '.vdat.' 
-> While reading and manipulating this raw data is beyond the scope of this workshop, there are tools available to help you with this. The rvdat (https://github.com/mhpob/rvdat/) 
+> While reading and manipulating this raw data is beyond the scope of this workshop, there are tools available to help you with this. The [rvdat](https://github.com/mhpob/rvdat/) 
 > package provides a lightweight R interface for inspecting .vdat file metadata and converting the data to .csv format. Additionally, .csv files created in this way can be 
 > read and manipulated with the glatos package, covered later in this workshop. In short, although the purpose of this workshop is to teach you to work with detection extracts, 
 > there exist related, robust options for managing your raw data as well.
@@ -239,7 +239,7 @@ For MigraMar you will receive Detection Extracts which include (1) Matched to An
 > ## Regarding Raw Data
 > Although this lesson assumes you are working with detection extracts from your node (processed data containing matches between animals and receivers), 
 > it is likely that you also have raw data directly from your instruments. If you are using Innovasea equipment, the file format for this raw data is '.vdat.' 
-> While reading and manipulating this raw data is beyond the scope of this workshop, there are tools available to help you with this. The rvdat (https://github.com/mhpob/rvdat/) 
+> While reading and manipulating this raw data is beyond the scope of this workshop, there are tools available to help you with this. The [rvdat](https://github.com/mhpob/rvdat/) 
 > package provides a lightweight R interface for inspecting .vdat file metadata and converting the data to .csv format. Additionally, .csv files created in this way can be 
 > read and manipulated with the glatos package, covered later in this workshop. In short, although the purpose of this workshop is to teach you to work with detection extracts, 
 > there exist related, robust options for managing your raw data as well.
@@ -304,7 +304,7 @@ For OTN you will receive Detection Extracts which include (1) Matched to Animals
 > ## Regarding Raw Data
 > Although this lesson assumes you are working with detection extracts from your node (processed data containing matches between animals and receivers), 
 > it is likely that you also have raw data directly from your instruments. If you are using Innovasea equipment, the file format for this raw data is '.vdat.' 
-> While reading and manipulating this raw data is beyond the scope of this workshop, there are tools available to help you with this. The rvdat (https://github.com/mhpob/rvdat/) 
+> While reading and manipulating this raw data is beyond the scope of this workshop, there are tools available to help you with this. The [rvdat](https://github.com/mhpob/rvdat/) 
 > package provides a lightweight R interface for inspecting .vdat file metadata and converting the data to .csv format. Additionally, .csv files created in this way can be 
 > read and manipulated with the glatos package, covered later in this workshop. In short, although the purpose of this workshop is to teach you to work with detection extracts, 
 > there exist related, robust options for managing your raw data as well.
