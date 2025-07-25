@@ -6,11 +6,12 @@ title: Setup
 
 You will requre 1) all the correct programs, 2) all the listed R packages 3) the dataset and code. Instructions for all these are below.
 
-> Setup Checklist
+> ## Setup Checklist
 > You can use the following checklist to keep track of your progress. If you have trouble with any step of the process,
 > do not hesitate to contact us and we will help you solve it in advance of the workshop. 
 >
 >(NOTE FOR SITE DEVELOPERS: If the current workshop does not include the advanced lessons, RTools isn't necessary and the middle two entries in the software & environment checklist can be deleted.)
+> 
 > **Software & Environment**
 > - I have installed the latest version of R and RStudio. Note: Older versions may cause compatibility issues with some packages.
 > - (Windows Users Only) I have installed RTools. Note: RTools is required to build and install certain R packages on Windows.
