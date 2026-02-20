@@ -129,7 +129,7 @@ install.packages('ggspatial')
 
 # Dataset and Code
 
-<b>Once the above packages are installed</b>, you can download the datasets and code for this workshop from <b>[this link](https://github.com/ocean-tracking-network/otn-workshop-base/tree/master)</b>
+<b>Once the above packages are installed</b>, you can download the datasets and code for this workshop from <b>[this link](https://github.com/ocean-tracking-network/glatos-workshop-2026/tree/master)</b>
 
 1. Select the GREEN "Code" button at the top and choose "Download ZIP"
 2. Unzip the folder and move to secure location on your computer (Documents, Desktop etc.)
